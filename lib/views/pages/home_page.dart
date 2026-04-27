@@ -1,4 +1,5 @@
 import 'package:animations_in_flutter/data/trip_list.dart';
+import 'package:animations_in_flutter/views/widgets/title_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +13,10 @@ class HomePage extends StatefulWidget {
 class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("images/bg.png"),
@@ -22,24 +24,16 @@ class _HomeState extends State<HomePage> {
             alignment: Alignment.topLeft,
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 30),
-            SizedBox(
-              height: 160,
-              child: Text(
-                'Flutter Animations',
-                style: TextStyle(
-                  fontSize: 36,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Flexible(child: TripWidget(trip: trips)),
-            //Sandbox(),
-          ],
+        child: Padding(
+          padding: EdgeInsets.only(top: size.height * 0.04),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              titleWidget("Flutter Animations"),
+              SizedBox(height: 35),
+              Expanded(child: TripWidget(trip: trips)),
+            ],
+          ),
         ),
       ),
     );
