@@ -1,4 +1,4 @@
-import 'package:animations_in_flutter/views/home_page.dart';
+import 'package:animations_in_flutter/views/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,6 +11,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Animation Demo', home: Home());
+    return MaterialApp(
+      title: 'Animation Demo',
+      home: Home(),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }

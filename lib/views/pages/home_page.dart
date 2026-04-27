@@ -1,14 +1,12 @@
-// ignore_for_file: library_private_types_in_public_api
-
-import 'package:animations_in_flutter/shared/screen_tile.dart';
-import 'package:animations_in_flutter/shared/trip_list.dart';
+import 'package:animations_in_flutter/data/trip_list.dart';
+import 'package:animations_in_flutter/views/widgets/trip_widget.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
-  _HomeState createState() => _HomeState();
+  State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
@@ -30,9 +28,16 @@ class _HomeState extends State<Home> {
             SizedBox(height: 30),
             SizedBox(
               height: 160,
-              child: ScreenTitle(text: 'Ninja Trips', key: Key('title')),
+              child: Text(
+                'Flutter Animations',
+                style: TextStyle(
+                  fontSize: 36,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-            Flexible(child: TripList()),
+            Flexible(child: TripWidget(trip: trips)),
             //Sandbox(),
           ],
         ),

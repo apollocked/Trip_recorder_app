@@ -1,11 +1,11 @@
-import 'package:animations_in_flutter/models/trip.dart';
-import 'package:animations_in_flutter/shared/heart.dart';
+import 'package:animations_in_flutter/model/trip.dart';
+import 'package:animations_in_flutter/views/widgets/heart.dart';
 import 'package:flutter/material.dart';
 import 'package:ipsum/ipsum.dart';
 
-class Details extends StatelessWidget {
+class DetailsPage extends StatelessWidget {
   final Trip trip;
-  const Details({super.key, required this.trip});
+  const DetailsPage({super.key, required this.trip});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class Details extends StatelessWidget {
               '${trip.nights} night stay for only \$${trip.price}',
               style: TextStyle(letterSpacing: 1),
             ),
-            trailing: Heart(),
+            trailing: HeartWidget(),
           ),
           Expanded(
             child: SingleChildScrollView(

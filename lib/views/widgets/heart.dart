@@ -1,15 +1,13 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 
-class Heart extends StatefulWidget {
-  const Heart({super.key});
+class HeartWidget extends StatefulWidget {
+  const HeartWidget({super.key});
 
   @override
-  _HeartState createState() => _HeartState();
+  State<HeartWidget> createState() => _HeartWidgetState();
 }
 
-class _HeartState extends State<Heart> {
+class _HeartWidgetState extends State<HeartWidget> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
