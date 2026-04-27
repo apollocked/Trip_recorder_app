@@ -16,11 +16,14 @@ class DetailsPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ClipRRect(
-            child: Image.asset(
-              'images/${trip.img}',
-              height: 360,
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
+            child: Hero(
+              tag: 'tag-image-${trip.img}',
+              child: Image.asset(
+                'images/${trip.img}',
+                height: 360,
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
             ),
           ),
           SizedBox(height: 30),

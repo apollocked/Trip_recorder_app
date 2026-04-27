@@ -42,7 +42,10 @@ class TripWidget extends StatelessWidget {
           ),
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset('images/${trip[index].img}', height: 50.0),
+            child: Hero(
+              tag: 'tag-image-${trip[index].img}',
+              child: Image.asset('images/${trip[index].img}', height: 50.0),
+            ),
           ),
           trailing: Text('\$${trip[index].price}'),
         );
