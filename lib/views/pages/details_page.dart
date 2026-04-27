@@ -14,7 +14,7 @@ class DetailsPage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
+        children: [
           ClipRRect(
             child: Image.asset(
               'images/${trip.img}',

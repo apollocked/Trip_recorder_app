@@ -25,7 +25,7 @@ class TripWidget extends StatelessWidget {
           contentPadding: EdgeInsets.all(25),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: [
               Text(
                 '${trip[index].nights} nights',
                 style: TextStyle(
