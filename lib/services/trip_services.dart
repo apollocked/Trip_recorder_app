@@ -43,4 +43,15 @@ class TripService extends ChangeNotifier {
     final String encoded = jsonEncode(_trips.map((t) => t.toJson()).toList());
     await prefs.setString('user_trips', encoded);
   }
+
+  // Toggle like status and persist
+  Future<void> toggleLike(int index) async {
+    if (index < 0 || index >= _trips.length) return;
+    _trips[index].isLiked = !_trips[index].isLiked;
+    notifyListeners();
+
+    final prefs = await SharedPreferences.getInstance();
+    final String encoded = jsonEncode(_trips.map((t) => t.toJson()).toList());
+    await prefs.setString('user_trips', encoded);
+  }
 }

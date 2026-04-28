@@ -1,5 +1,6 @@
-import 'package:animations_in_flutter/data/trip_list.dart';
+import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HeartWidget extends StatefulWidget {
   final int index;
@@ -53,14 +54,13 @@ class _HeartWidgetState extends State<HeartWidget>
   }
 
   void onPressed() {
-    if (trips[widget.index].isLiked) {
-      controller.reverse();
-      trips[widget.index].isLiked = false;
-    } else {
+    final tripService = Provider.of<TripService>(context, listen: false);
+    tripService.toggleLike(widget.index);
+    if (tripService.trips[widget.index].isLiked) {
       controller.forward();
-      trips[widget.index].isLiked = true;
+    } else {
+      controller.reverse();
     }
-    setState(() {});
   }
 
   @override

@@ -54,12 +54,7 @@ class DetailsPage extends StatelessWidget {
                   '${trip.nights} night stay for only \$${trip.price}',
                   style: TextStyle(letterSpacing: 1),
                 ),
-                trailing: InkWell(
-                  child: HeartWidget(isLiked: trip.isLiked, index: index),
-                  onTap: () {
-                    trip.isLiked = !trip.isLiked;
-                  },
-                ),
+                trailing: HeartWidget(isLiked: trip.isLiked, index: index),
               ),
             ),
           ),
