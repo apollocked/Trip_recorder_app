@@ -1,5 +1,6 @@
+import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/title_widget.dart';
-import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart';
+import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart'; // Ensure this matches your class name
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,28 +14,84 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    // iPad/Laptop check
+
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("images/bg.png"),
-            fit: BoxFit.fitWidth,
-            alignment: Alignment.topLeft,
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.only(top: size.height * 0.04),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              titleWidget("Flutter Animations"),
-              SizedBox(height: 35),
-              Expanded(child: TripListPage()),
-            ],
-          ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: size.height * 0.001),
+              child: SizedBox(
+                height: 250,
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            height: 300,
+                            child: TweenAnimationBuilder(
+                              tween: Tween<double>(begin: 0, end: 1),
+                              duration: const Duration(milliseconds: 400),
+                              builder: (context, value, child) =>
+                                  Opacity(opacity: value, child: child),
+                              child: Image.asset("images/bg.png"),
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            bottom: 65,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: size.width * 0.03,
+                                top: size.height * 0.04,
+                              ),
+                              child: titleWidget(
+                                "Flutter\nAnimations",
+                                context,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const Expanded(
+              child: TripListPage(), // Your animated list widget
+            ),
+          ],
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddTripPage()),
+          );
+        },
+
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        elevation: 4,
+        icon: const Icon(Icons.add_location_alt_rounded),
+        label: const Text(
+          "New Trip",
+          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.1),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

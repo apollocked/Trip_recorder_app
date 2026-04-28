@@ -12,14 +12,11 @@ class TripListPage extends StatefulWidget {
 
 class _TripListPageState extends State<TripListPage> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-
-  // This holds the items currently being displayed
   final List<Trip> _displayList = [];
 
   @override
   void initState() {
     super.initState();
-    // Start adding items after the first frame is rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _addTrips();
     });
@@ -27,6 +24,7 @@ class _TripListPageState extends State<TripListPage> {
 
   void _addTrips() async {
     for (int i = 0; i < trips.length; i++) {
+      await Future.delayed(const Duration(milliseconds: 150));
       _displayList.add(trips[i]);
       _listKey.currentState?.insertItem(i);
     }
@@ -34,12 +32,15 @@ class _TripListPageState extends State<TripListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedList(
-      key: _listKey,
-      initialItemCount: _displayList.length,
-      itemBuilder: (context, index, animation) {
-        return tripWidget(_displayList[index], animation, context);
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      child: AnimatedList(
+        key: _listKey,
+        initialItemCount: _displayList.length,
+        itemBuilder: (context, index, animation) {
+          return tripWidget(_displayList[index], animation, context, index);
+        },
+      ),
     );
   }
 }

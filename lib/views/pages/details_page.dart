@@ -1,15 +1,18 @@
 import 'package:animations_in_flutter/model/trip.dart';
+import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
 import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ipsum/ipsum.dart';
 
 class DetailsPage extends StatelessWidget {
   final Trip trip;
-  const DetailsPage({super.key, required this.trip});
+  final int index;
+  const DetailsPage({super.key, required this.trip, required this.index});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
       extendBodyBehindAppBar: true,
       body: Column(
@@ -19,12 +22,7 @@ class DetailsPage extends StatelessWidget {
             child: ClipRRect(
               child: Hero(
                 tag: 'tag-image-${trip.img}',
-                child: Image.asset(
-                  'images/${trip.img}',
-                  height: 360,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topCenter,
-                ),
+                child: coverImage(trip.img),
               ),
             ),
           ),
@@ -50,14 +48,19 @@ class DetailsPage extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Colors.grey[800],
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
                 subtitle: Text(
                   '${trip.nights} night stay for only \$${trip.price}',
                   style: TextStyle(letterSpacing: 1),
                 ),
-                trailing: HeartWidget(),
+                trailing: InkWell(
+                  child: HeartWidget(isLiked: trip.isLiked, index: index),
+                  onTap: () {
+                    trip.isLiked = !trip.isLiked;
+                  },
+                ),
               ),
             ),
           ),
@@ -80,8 +83,11 @@ class DetailsPage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Text(
                   Ipsum().paragraphs(1),
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(color: Colors.grey[500], fontSize: 16),
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey[600],
+                    height: 1.5,
+                  ),
                 ),
               ),
             ),

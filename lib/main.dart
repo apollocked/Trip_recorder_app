@@ -9,6 +9,15 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage(), debugShowCheckedModeBanner: false);
+    return MaterialApp(
+      theme: ThemeData(colorSchemeSeed: Colors.blueAccent, useMaterial3: true),
+      darkTheme: ThemeData(
+        colorSchemeSeed: Colors.blueAccent,
+        useMaterial3: true,
+        brightness: Brightness.dark,
+      ),
+      home: HomePage(),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }

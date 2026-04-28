@@ -18,8 +18,18 @@
 	<string>animations_in_flutter</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your gallery so you can pick photos for your trips.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera so you can take photos of your trips.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used for video recording if needed.</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App needs access to gallery to upload trip photos.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App needs access to camera to take trip photos.</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>

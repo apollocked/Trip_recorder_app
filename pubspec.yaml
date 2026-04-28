@@ -14,6 +14,8 @@ dependencies:
   ipsum: ^1.0.1
 
   cupertino_icons: ^1.0.8
+  image_picker: ^1.2.2
+  permission_handler:
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-Widget titleWidget(String title) {
+Widget titleWidget(String title, BuildContext context) {
   return SizedBox(
-    height: 80,
+    height: 89,
     child: TweenAnimationBuilder(
       tween: Tween(begin: 0.0, end: 1.0),
       curve: Curves.easeInOutQuint,
@@ -17,8 +17,8 @@ Widget titleWidget(String title) {
       child: Text(
         title,
         style: TextStyle(
-          fontSize: 36,
-          color: Colors.white,
+          fontSize: 26,
+          color: Theme.of(context).colorScheme.onSurface,
           fontWeight: FontWeight.bold,
         ),
       ),
