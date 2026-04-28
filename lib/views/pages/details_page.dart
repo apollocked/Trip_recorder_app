@@ -1,5 +1,5 @@
 import 'package:animations_in_flutter/model/trip.dart';
-import 'package:animations_in_flutter/views/widgets/heart.dart';
+import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ipsum/ipsum.dart';
 
