@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
 
@@ -14,6 +15,7 @@ class _AddTripPageState extends State<AddTripPage> {
   final _titleController = TextEditingController();
   final _priceController = TextEditingController();
   final _nightsController = TextEditingController();
+  final _descriptionController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   File? _imageFile;
 
@@ -22,6 +24,7 @@ class _AddTripPageState extends State<AddTripPage> {
     _titleController.dispose();
     _priceController.dispose();
     _nightsController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -105,10 +108,11 @@ class _AddTripPageState extends State<AddTripPage> {
                     nights: _nightsController.text,
                     img: _imageFile!.path,
                     date: _selectedDate,
+                    description: _descriptionController.text,
                   );
                   Navigator.pop(context, newTrip);
                 },
-                icon: const Icon(Icons.send_rounded),
+                icon: const Icon(Icons.save_rounded),
                 label: const Text("Save Trip"),
               ),
             ),
@@ -143,8 +147,10 @@ class _AddTripPageState extends State<AddTripPage> {
                   child: TextField(
                     controller: _priceController,
                     keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: const InputDecoration(
                       labelText: "Price",
+                      prefixText: "\$ ",
                       border: InputBorder.none,
                     ),
                   ),
@@ -153,6 +159,7 @@ class _AddTripPageState extends State<AddTripPage> {
                   child: TextField(
                     controller: _nightsController,
                     keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: const InputDecoration(
                       labelText: "Nights",
                       border: InputBorder.none,
@@ -177,6 +184,17 @@ class _AddTripPageState extends State<AddTripPage> {
                 );
                 if (date != null) setState(() => _selectedDate = date);
               },
+            ),
+            const Divider(),
+            TextField(
+              controller: _descriptionController,
+              maxLines: 4,
+              decoration: const InputDecoration(
+                labelText: "Description",
+                hintText: "Tell us about this trip...",
+                border: InputBorder.none,
+                alignLabelWithHint: true,
+              ),
             ),
           ],
         ),

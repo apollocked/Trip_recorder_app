@@ -2,7 +2,6 @@ import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
 import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:ipsum/ipsum.dart';
 
 class DetailsPage extends StatelessWidget {
   final Trip trip;
@@ -82,7 +81,9 @@ class DetailsPage extends StatelessWidget {
               width: double.infinity,
               child: SingleChildScrollView(
                 child: Text(
-                  Ipsum().paragraphs(1),
+                  trip.description.isNotEmpty
+                      ? trip.description
+                      : 'No description added for this trip yet.',
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.grey[600],

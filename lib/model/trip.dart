@@ -4,6 +4,7 @@ class Trip {
   final String nights;
   final String img;
   final DateTime date;
+  final String description;
   bool isLiked;
 
   Trip({
@@ -12,6 +13,7 @@ class Trip {
     required this.nights,
     required this.img,
     required this.date,
+    this.description = '',
     this.isLiked = false,
   });
 
@@ -22,6 +24,7 @@ class Trip {
     'nights': nights,
     'img': img,
     'date': date.toIso8601String(),
+    'description': description,
     'isLiked': isLiked,
   };
 
@@ -32,6 +35,7 @@ class Trip {
     nights: json['nights'],
     img: json['img'],
     date: DateTime.parse(json['date']),
+    description: json['description'] ?? '',
     isLiked: json['isLiked'] ?? false,
   );
 }
