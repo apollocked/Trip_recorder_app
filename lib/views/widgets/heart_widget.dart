@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class HeartWidget extends StatefulWidget {
   const HeartWidget({super.key});
-
   @override
   State<HeartWidget> createState() => _HeartWidgetState();
 }
@@ -21,7 +20,7 @@ class _HeartWidgetState extends State<HeartWidget>
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 250),
     );
     curveAnimation = CurvedAnimation(
       parent: controller!,

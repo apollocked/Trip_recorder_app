@@ -30,6 +30,7 @@ class DetailsPage extends StatelessWidget {
           ),
           SizedBox(height: 10),
           TweenAnimationBuilder(
+            curve: Curves.easeInOut,
             tween: Tween(begin: 1.0, end: 0.0),
             duration: Duration(milliseconds: 600),
             builder: (context, double op, Widget? child) => Opacity(
@@ -61,6 +62,7 @@ class DetailsPage extends StatelessWidget {
             ),
           ),
           TweenAnimationBuilder(
+            curve: Curves.easeInOut,
             tween: Tween(begin: 1.0, end: 0.0),
             duration: Duration(milliseconds: 600),
             builder: (context, double op, Widget? child) => Padding(
