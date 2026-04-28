@@ -13,6 +13,7 @@ class _HeartWidgetState extends State<HeartWidget>
 
   Animation? colorAnimation;
   Animation? sizeAnimation;
+  Animation<double>? curveAnimation;
   bool isLiked = false;
 
   @override
@@ -22,15 +23,19 @@ class _HeartWidgetState extends State<HeartWidget>
       vsync: this,
       duration: Duration(milliseconds: 400),
     );
+    curveAnimation = CurvedAnimation(
+      parent: controller!,
+      curve: Curves.slowMiddle,
+    );
     colorAnimation = ColorTween(
       begin: Colors.grey[400],
       end: Colors.red,
-    ).animate(controller!);
+    ).animate(curveAnimation!);
 
     sizeAnimation = TweenSequence([
       TweenSequenceItem(tween: Tween<double>(begin: 30, end: 50), weight: 50),
       TweenSequenceItem(tween: Tween<double>(begin: 50, end: 30), weight: 50),
-    ]).animate(controller!);
+    ]).animate(curveAnimation!);
 
     controller?.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -63,6 +68,7 @@ class _HeartWidgetState extends State<HeartWidget>
             color: colorAnimation?.value,
             size: sizeAnimation?.value,
           ),
+          onLongPress: null,
           onPressed: () {
             isLiked ? controller?.reverse() : controller?.forward();
           },
