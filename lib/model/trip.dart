@@ -14,4 +14,24 @@ class Trip {
     required this.date,
     this.isLiked = false,
   });
+
+  // Convert Trip to Map for JSON storage
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'price': price,
+    'nights': nights,
+    'img': img,
+    'date': date.toIso8601String(),
+    'isLiked': isLiked,
+  };
+
+  // Create Trip from JSON
+  factory Trip.fromJson(Map<String, dynamic> json) => Trip(
+    title: json['title'],
+    price: json['price'],
+    nights: json['nights'],
+    img: json['img'],
+    date: DateTime.parse(json['date']),
+    isLiked: json['isLiked'] ?? false,
+  );
 }

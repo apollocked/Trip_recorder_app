@@ -1,7 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/title_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart'; // Ensure this matches your class name
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -75,11 +79,15 @@ class _HomeState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final newTrip = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddTripPage()),
+            MaterialPageRoute(builder: (context) => const AddTripPage()),
           );
+          if (newTrip != null && mounted) {
+            // Use Provider to save it permanently and update the list
+            Provider.of<TripService>(context, listen: false).addTrip(newTrip);
+          }
         },
 
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,

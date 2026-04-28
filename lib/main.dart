@@ -1,8 +1,15 @@
+import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:animations_in_flutter/views/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => TripService(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

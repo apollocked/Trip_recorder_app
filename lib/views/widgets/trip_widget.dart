@@ -1,4 +1,4 @@
-import 'package:animations_in_flutter/data/trip_list.dart';
+
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
 import 'package:animations_in_flutter/views/widgets/image_widget_leading.dart';
@@ -8,8 +8,9 @@ Widget tripWidget(
   Trip trip,
   Animation<double> animation,
   BuildContext context,
-  int index,
-) {
+  int index, {
+  required VoidCallback onRemove,
+}) {
   return SlideTransition(
     position: Tween<Offset>(
       begin: const Offset(1, 0),
@@ -31,9 +32,9 @@ Widget tripWidget(
             color: Theme.of(context).colorScheme.onError,
           ),
         ),
-        key: Key(trips[index].toString()),
+        key: Key('${trip.title}-${trip.date}'),
         onDismissed: (direction) {
-          trips.removeAt(index);
+          onRemove();
         },
         child: Card.outlined(
           shape: Theme.of(context).cardTheme.shape,

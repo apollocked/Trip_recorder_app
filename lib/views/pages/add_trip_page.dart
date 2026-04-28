@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:animations_in_flutter/model/trip.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
 
 class AddTripPage extends StatefulWidget {
   const AddTripPage({super.key});
@@ -18,126 +17,12 @@ class _AddTripPageState extends State<AddTripPage> {
   DateTime _selectedDate = DateTime.now();
   File? _imageFile;
 
-  // --- SOFT ASK DIALOG ---
-  // Explains the "Why" before triggering the system popup
-  Future<void> _showSoftAskDialog() async {
-    return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Icon(Icons.camera_alt, size: 48, color: Colors.blue),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "Share your journey!",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "We need access to your camera and gallery so you can upload beautiful photos of your trips.",
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Not Now"),
-          ),
-          FilledButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await _handlePermission();
-            },
-            child: const Text("Allow Access"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _handlePermission() async {
-    // 1. Request permissions and get the results
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.camera,
-      Permission.photos,
-    ].request();
-
-    print("Camera Status: ${statuses[Permission.camera]}");
-    print("Photos Status: ${statuses[Permission.photos]}");
-
-    // 2. If granted, go to picker
-    if (statuses[Permission.camera]!.isGranted ||
-        statuses[Permission.photos]!.isGranted) {
-      _showImageSourceOptions();
-    }
-    // 3. If the user blocked it, we must send them to settings
-    else if (statuses[Permission.camera]!.isPermanentlyDenied ||
-        statuses[Permission.photos]!.isPermanentlyDenied) {
-      print("User permanently denied. Opening settings...");
-      await openAppSettings();
-    }
-  }
-
-  // --- IMAGE PICKER LOGIC ---
-  Future<void> _pickImage(ImageSource source) async {
-    final picker = ImagePicker();
-    try {
-      final pickedFile = await picker.pickImage(
-        source: source,
-        maxWidth: 1000,
-        imageQuality: 85,
-      );
-
-      if (pickedFile != null) {
-        setState(() {
-          _imageFile = File(pickedFile.path);
-        });
-      }
-    } catch (e) {
-      debugPrint("Error picking image: $e");
-    }
-  }
-
-  // --- SELECTION DIALOG (Gallery or Camera) ---
-  void _showImageSourceOptions() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              "Select Photo Source",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            ListTile(
-              leading: const Icon(Icons.photo_library),
-              title: const Text("Gallery"),
-              onTap: () {
-                Navigator.pop(context);
-                _pickImage(ImageSource.gallery);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.camera_alt),
-              title: const Text("Camera"),
-              onTap: () {
-                Navigator.pop(context);
-                _pickImage(ImageSource.camera);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _priceController.dispose();
+    _nightsController.dispose();
+    super.dispose();
   }
 
   @override
@@ -150,10 +35,14 @@ class _AddTripPageState extends State<AddTripPage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // IMAGE PICKER BOX
             GestureDetector(
-              // Trigger the SOFT ASK first
-              onTap: _showSoftAskDialog,
+              onTap: () {
+                checkExistingPermissions(context, (pickedFile) {
+                  setState(() {
+                    _imageFile = pickedFile;
+                  });
+                });
+              },
               child: Container(
                 height: 220,
                 width: double.infinity,
@@ -198,6 +87,7 @@ class _AddTripPageState extends State<AddTripPage> {
             const SizedBox(height: 24),
             _buildInputSection(colorScheme),
             const SizedBox(height: 32),
+            // SAVE BUTTON
             SizedBox(
               width: double.infinity,
               height: 58,
@@ -205,7 +95,7 @@ class _AddTripPageState extends State<AddTripPage> {
                 onPressed: () {
                   if (_titleController.text.isEmpty || _imageFile == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Missing info!")),
+                      const SnackBar(content: Text("Missing title or photo!")),
                     );
                     return;
                   }
@@ -228,7 +118,6 @@ class _AddTripPageState extends State<AddTripPage> {
     );
   }
 
-  // --- TEXT FIELDS UI ---
   Widget _buildInputSection(ColorScheme colorScheme) {
     return Card(
       elevation: 0,
@@ -253,6 +142,7 @@ class _AddTripPageState extends State<AddTripPage> {
                 Expanded(
                   child: TextField(
                     controller: _priceController,
+                    keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       labelText: "Price",
                       border: InputBorder.none,
@@ -262,6 +152,7 @@ class _AddTripPageState extends State<AddTripPage> {
                 Expanded(
                   child: TextField(
                     controller: _nightsController,
+                    keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       labelText: "Nights",
                       border: InputBorder.none,
