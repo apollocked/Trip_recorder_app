@@ -1,6 +1,5 @@
-import 'package:animations_in_flutter/data/trip_list.dart';
 import 'package:animations_in_flutter/views/widgets/title_widget.dart';
-import 'package:animations_in_flutter/views/widgets/trip_widget.dart';
+import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -31,7 +30,7 @@ class _HomeState extends State<HomePage> {
             children: [
               titleWidget("Flutter Animations"),
               SizedBox(height: 35),
-              Expanded(child: TripWidget(trip: trips)),
+              Expanded(child: TripListPage()),
             ],
           ),
         ),

@@ -5,6 +5,7 @@ Widget titleWidget(String title) {
     height: 80,
     child: TweenAnimationBuilder(
       tween: Tween(begin: 0.0, end: 1.0),
+      curve: Curves.easeInOutQuint,
       duration: Duration(milliseconds: 800),
       builder: (context, double op, Widget? child) => Opacity(
         opacity: op,
