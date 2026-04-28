@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 Widget coverImage(String imgPath) {
-  // Same check: if it has a slash, it's a File path from the gallery
-  final bool isFile = imgPath.contains('/') || imgPath.contains('\\');
+  // Check if it's a file path (from Image Picker) which is typically an absolute path
+  final bool isFile = File(imgPath).isAbsolute;
 
   if (isFile) {
     return Image.file(
@@ -19,8 +19,9 @@ Widget coverImage(String imgPath) {
       ),
     );
   } else {
+    final assetPath = imgPath.startsWith('images/') ? imgPath : 'images/$imgPath';
     return Image.asset(
-      'images/$imgPath',
+      assetPath,
       height: 360,
       fit: BoxFit.cover,
       alignment: Alignment.topCenter,

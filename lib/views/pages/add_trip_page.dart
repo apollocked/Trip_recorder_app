@@ -5,7 +5,8 @@ import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
 
 class AddTripPage extends StatefulWidget {
-  const AddTripPage({super.key});
+  final Trip? trip;
+  const AddTripPage({super.key, this.trip});
 
   @override
   State<AddTripPage> createState() => _AddTripPageState();
@@ -16,8 +17,24 @@ class _AddTripPageState extends State<AddTripPage> {
   final _priceController = TextEditingController();
   final _nightsController = TextEditingController();
   final _descriptionController = TextEditingController();
-  DateTime _selectedDate = DateTime.now();
+  late DateTime _selectedDate;
   File? _imageFile;
+  String? _existingImagePath;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.trip != null) {
+      _titleController.text = widget.trip!.title;
+      _priceController.text = widget.trip!.price;
+      _nightsController.text = widget.trip!.nights;
+      _descriptionController.text = widget.trip!.description;
+      _selectedDate = widget.trip!.date;
+      _existingImagePath = widget.trip!.img;
+    } else {
+      _selectedDate = DateTime.now();
+    }
+  }
 
   @override
   void dispose() {
@@ -33,7 +50,7 @@ class _AddTripPageState extends State<AddTripPage> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Add New Journey")),
+      appBar: AppBar(title: Text(widget.trip == null ? "Add New Journey" : "Edit Journey")),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -52,7 +69,7 @@ class _AddTripPageState extends State<AddTripPage> {
                 decoration: BoxDecoration(
                   color: colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(24),
-                  border: _imageFile == null
+                  border: (_imageFile == null && _existingImagePath == null)
                       ? Border.all(color: colorScheme.outlineVariant)
                       : null,
                   image: _imageFile != null
@@ -60,9 +77,18 @@ class _AddTripPageState extends State<AddTripPage> {
                           image: FileImage(_imageFile!),
                           fit: BoxFit.cover,
                         )
-                      : null,
+                      : (_existingImagePath != null
+                          ? DecorationImage(
+                              image: File(_existingImagePath!).isAbsolute
+                                  ? FileImage(File(_existingImagePath!)) as ImageProvider
+                                  : AssetImage(_existingImagePath!.startsWith('images/') 
+                                      ? _existingImagePath! 
+                                      : 'images/$_existingImagePath'),
+                              fit: BoxFit.cover,
+                            )
+                          : null),
                 ),
-                child: _imageFile == null
+                child: (_imageFile == null && _existingImagePath == null)
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -96,7 +122,7 @@ class _AddTripPageState extends State<AddTripPage> {
               height: 58,
               child: FilledButton.icon(
                 onPressed: () {
-                  if (_titleController.text.isEmpty || _imageFile == null) {
+                  if (_titleController.text.isEmpty || (_imageFile == null && _existingImagePath == null)) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Missing title or photo!")),
                     );
@@ -106,9 +132,10 @@ class _AddTripPageState extends State<AddTripPage> {
                     title: _titleController.text,
                     price: _priceController.text,
                     nights: _nightsController.text,
-                    img: _imageFile!.path,
+                    img: _imageFile?.path ?? _existingImagePath!,
                     date: _selectedDate,
                     description: _descriptionController.text,
+                    isLiked: widget.trip?.isLiked ?? false,
                   );
                   Navigator.pop(context, newTrip);
                 },
