@@ -12,6 +12,7 @@ class _HeartWidgetState extends State<HeartWidget>
   AnimationController? controller;
 
   Animation? colorAnimation;
+  Animation? sizeAnimation;
   bool isLiked = false;
 
   @override
@@ -19,12 +20,17 @@ class _HeartWidgetState extends State<HeartWidget>
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 600),
+      duration: Duration(milliseconds: 400),
     );
     colorAnimation = ColorTween(
       begin: Colors.grey[400],
       end: Colors.red,
     ).animate(controller!);
+
+    sizeAnimation = TweenSequence([
+      TweenSequenceItem(tween: Tween<double>(begin: 30, end: 50), weight: 50),
+      TweenSequenceItem(tween: Tween<double>(begin: 50, end: 30), weight: 50),
+    ]).animate(controller!);
 
     controller?.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -52,7 +58,11 @@ class _HeartWidgetState extends State<HeartWidget>
       animation: controller!,
       builder: (BuildContext context, _) {
         return IconButton(
-          icon: Icon(Icons.favorite, color: colorAnimation?.value, size: 30),
+          icon: Icon(
+            Icons.favorite,
+            color: colorAnimation?.value,
+            size: sizeAnimation?.value,
+          ),
           onPressed: () {
             isLiked ? controller?.reverse() : controller?.forward();
           },
