@@ -16,12 +16,10 @@ class DetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-
     return Consumer<TripService>(
       builder: (context, tripService, _) {
         if (index >= tripService.trips.length) return const Scaffold();
         final currentTrip = tripService.trips[index];
-
         return Scaffold(
           backgroundColor: colorScheme.surface,
           extendBodyBehindAppBar: true,
@@ -105,19 +103,15 @@ class DetailsPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // FLOATING HEART STACK
                         Stack(
-                          clipBehavior: Clip
-                              .none, // Allows heart to grow outside the stack box
+                          clipBehavior: Clip.none,
                           children: [
                             // 1. THE TEXT CONTENT (Title and Chips)
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 60,
-                                  ), // Space for floating heart
+                                  padding: const EdgeInsets.only(right: 60),
                                   child: Text(
                                     currentTrip.title,
                                     style: textTheme.headlineMedium?.copyWith(
@@ -145,8 +139,6 @@ class DetailsPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-
-                            // 2. THE FLOATING HEART (Positioned)
                             Positioned(
                               top: 0,
                               right: 0,
@@ -165,13 +157,11 @@ class DetailsPage extends StatelessWidget {
                             ),
                           ],
                         ),
-
                         const SizedBox(height: 24),
                         Divider(
                           color: colorScheme.outlineVariant.withAlpha(128),
                         ),
                         const SizedBox(height: 16),
-
                         Text(
                           "About this journey",
                           style: textTheme.labelLarge?.copyWith(
@@ -181,7 +171,6 @@ class DetailsPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 12),
-
                         Expanded(
                           child: SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
@@ -222,9 +211,9 @@ class DetailsPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: colorScheme.secondaryContainer.withOpacity(0.4),
+        color: colorScheme.secondaryContainer.withAlpha(102),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outlineVariant.withOpacity(0.5)),
+        border: Border.all(color: colorScheme.outlineVariant.withAlpha(128)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

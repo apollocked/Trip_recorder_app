@@ -63,19 +63,16 @@ class _TripListPageState extends State<TripListPage> {
           : Align(
               alignment: Alignment.topRight,
               child: Padding(
-                padding: const EdgeInsets.only(right: 16, top: 16),
+                padding: const EdgeInsets.only(right: 4, top: 9),
                 child: FloatingActionButton.extended(
                   onPressed: () async {
-                    // Hardware feedback for the MI 9
                     HapticFeedback.lightImpact();
-
                     final newTrip = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const AddTripPage(),
                       ),
                     );
-
                     if (newTrip != null && mounted) {
                       Provider.of<TripService>(
                         context,
@@ -87,13 +84,15 @@ class _TripListPageState extends State<TripListPage> {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   elevation: 6,
-                  // Modernized the icon and text feel
-                  icon: const Icon(Icons.add_road_rounded),
+                  icon: const Icon(
+                    Icons.add_road_rounded,
+                    size: 18, // Updated icon for a more modern feel
+                  ),
                   label: const Text(
                     "NEW JOURNEY",
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
-                      letterSpacing: 1.3,
+                      letterSpacing: 1,
                       fontSize: 12,
                     ),
                   ),

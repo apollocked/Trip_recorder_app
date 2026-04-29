@@ -21,8 +21,8 @@ Widget tripWidget(
     ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
     child: FadeTransition(
       opacity: animation,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 12), // Space between cards
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: Dismissible(
           direction: DismissDirection.endToStart,
           key: Key('${trip.title}-${trip.date}'),
@@ -67,7 +67,6 @@ Widget tripWidget(
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
-                    // --- LEADING IMAGE ---
                     Hero(
                       tag: 'tag-image-${trip.img}',
                       child: Container(
@@ -98,7 +97,6 @@ Widget tripWidget(
                     ),
                     const SizedBox(width: 16),
 
-                    // --- CONTENT AREA ---
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,8 +138,6 @@ Widget tripWidget(
                         ],
                       ),
                     ),
-
-                    // --- TRAILING PRICE ---
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [

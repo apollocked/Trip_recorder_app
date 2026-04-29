@@ -23,39 +23,165 @@ Future<void> _showSoftAskDialog(
   BuildContext context,
   Function(File) onImagePicked,
 ) async {
+  final colorScheme = Theme.of(context).colorScheme;
+  final textTheme = Theme.of(context).textTheme;
+
   return showDialog(
     context: context,
     barrierDismissible: false,
     builder: (context) => AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      title: const Icon(Icons.camera_alt, size: 48, color: Colors.blue),
-      content: const Column(
+      backgroundColor: colorScheme.surface,
+      surfaceTintColor: colorScheme.surfaceTint,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+      title: Icon(
+        Icons.auto_awesome_motion_rounded,
+        size: 48,
+        color: colorScheme.primary,
+      ),
+      content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             "Share your journey!",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSurface,
+            ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 12),
           Text(
             "We need access to your camera and gallery so you can upload beautiful photos of your trips.",
             textAlign: TextAlign.center,
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text("Not Now"),
+          child: Text("Not Now", style: TextStyle(color: colorScheme.primary)),
         ),
         FilledButton(
+          style: FilledButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
           onPressed: () async {
-            Navigator.pop(context); // Close this dialog
+            Navigator.pop(context);
             await _requestSystemPermissions(context, onImagePicked);
           },
           child: const Text("Allow Access"),
         ),
       ],
+    ),
+  );
+}
+
+void _showImageSourceOptions(
+  BuildContext context,
+  Function(File) onImagePicked,
+) {
+  final colorScheme = Theme.of(context).colorScheme;
+  final textTheme = Theme.of(context).textTheme;
+
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: colorScheme.surface,
+
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+    ),
+    builder: (context) => SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle bar for modern look
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                color: colorScheme.outlineVariant,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            Text(
+              "Select Photo Source",
+              style: textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildSourceCard(
+                  context,
+                  icon: Icons.image_search_rounded,
+                  label: "Gallery",
+                  onTap: () {
+                    Navigator.pop(context);
+                    _pickImage(ImageSource.gallery, onImagePicked);
+                  },
+                ),
+                _buildSourceCard(
+                  context,
+                  icon: Icons.camera_rounded,
+                  label: "Camera",
+                  onTap: () {
+                    Navigator.pop(context);
+                    _pickImage(ImageSource.camera, onImagePicked);
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+// Helper widget to match the Chip-style design of the app
+Widget _buildSourceCard(
+  BuildContext context, {
+  required IconData icon,
+  required String label,
+  required VoidCallback onTap,
+}) {
+  final colorScheme = Theme.of(context).colorScheme;
+
+  return InkWell(
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(20),
+    child: Container(
+      width: MediaQuery.of(context).size.width * 0.35,
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      decoration: BoxDecoration(
+        color: colorScheme.secondaryContainer.withAlpha(102),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colorScheme.outlineVariant.withAlpha(128)),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, size: 32, color: colorScheme.primary),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSecondaryContainer,
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -77,47 +203,6 @@ Future<void> _requestSystemPermissions(
   }
 }
 
-void _showImageSourceOptions(
-  BuildContext context,
-  Function(File) onImagePicked,
-) {
-  showModalBottomSheet(
-    context: context,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
-    builder: (context) => Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text(
-            "Select Photo Source",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-          ListTile(
-            leading: const Icon(Icons.photo_library),
-            title: const Text("Gallery"),
-            onTap: () {
-              Navigator.pop(context);
-              _pickImage(ImageSource.gallery, onImagePicked);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.camera_alt),
-            title: const Text("Camera"),
-            onTap: () {
-              Navigator.pop(context);
-              _pickImage(ImageSource.camera, onImagePicked);
-            },
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
 Future<void> _pickImage(
   ImageSource source,
   Function(File) onImagePicked,
@@ -131,7 +216,6 @@ Future<void> _pickImage(
     );
 
     if (pickedFile != null) {
-      // Send the file back to the UI through the callback
       onImagePicked(File(pickedFile.path));
     }
   } catch (e) {
