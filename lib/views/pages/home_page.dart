@@ -18,11 +18,8 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    // iPad/Laptop check
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
       body: SafeArea(
         child: Column(
           children: [
@@ -89,7 +86,6 @@ class _HomeState extends State<HomePage> {
             Provider.of<TripService>(context, listen: false).addTrip(newTrip);
           }
         },
-
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         elevation: 4,

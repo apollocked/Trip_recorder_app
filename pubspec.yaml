@@ -18,6 +18,7 @@ dependencies:
   permission_handler: ^11.3.1
   provider:
   shared_preferences:
+  shimmer: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

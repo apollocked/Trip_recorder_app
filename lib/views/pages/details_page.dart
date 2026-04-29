@@ -21,7 +21,7 @@ class DetailsPage extends StatelessWidget {
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: AppBar(
-            backgroundColor: Colors.transparent, 
+            backgroundColor: Colors.transparent,
             elevation: 0,
             actions: [
               IconButton(
@@ -81,7 +81,10 @@ class DetailsPage extends StatelessWidget {
                       '${currentTrip.nights} night stay for only \$${currentTrip.price}',
                       style: TextStyle(letterSpacing: 1),
                     ),
-                    trailing: HeartWidget(isLiked: currentTrip.isLiked, index: index),
+                    trailing: HeartWidget(
+                      isLiked: currentTrip.isLiked,
+                      index: index,
+                    ),
                   ),
                 ),
               ),
