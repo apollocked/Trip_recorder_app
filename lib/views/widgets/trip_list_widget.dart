@@ -56,7 +56,6 @@ class _TripListPageState extends State<TripListPage> {
       appBar: AppBar(title: const Text('Trips')),
       body: RefreshIndicator(
         onRefresh: () async {
-          // Use vibrate() for a guaranteed heavy buzz to test hardware
           await HapticFeedback.vibrate();
           await tripService.refresh();
         },
@@ -79,7 +78,6 @@ class _TripListPageState extends State<TripListPage> {
                       context,
                       index,
                       onRemove: () {
-                        HapticFeedback.mediumImpact(); // Haptic on delete
                         _displayList.removeAt(index);
                         _listKey.currentState?.removeItem(
                           index,

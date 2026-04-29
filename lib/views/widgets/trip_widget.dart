@@ -1,8 +1,8 @@
-
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
 import 'package:animations_in_flutter/views/widgets/image_widget_leading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 Widget tripWidget(
   Trip trip,
@@ -20,6 +20,7 @@ Widget tripWidget(
       opacity: animation,
       child: Dismissible(
         direction: DismissDirection.endToStart,
+
         background: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.error,
@@ -34,12 +35,14 @@ Widget tripWidget(
         ),
         key: Key('${trip.title}-${trip.date}'),
         onDismissed: (direction) {
+          HapticFeedback.vibrate();
           onRemove();
         },
         child: Card.outlined(
           shape: Theme.of(context).cardTheme.shape,
           child: ListTile(
             onTap: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 MaterialPageRoute(

@@ -1,5 +1,6 @@
 import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class HeartWidget extends StatefulWidget {
@@ -61,6 +62,7 @@ class _HeartWidgetState extends State<HeartWidget>
     } else {
       controller.reverse();
     }
+    HapticFeedback.mediumImpact();
   }
 
   @override
