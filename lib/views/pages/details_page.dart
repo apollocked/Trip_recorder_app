@@ -28,7 +28,6 @@ class DetailsPage extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            // Setting iconTheme ensures buttons are visible over the image
             iconTheme: IconThemeData(color: colorScheme.onSurface),
             actions: [
               IconButton(
@@ -43,7 +42,7 @@ class DetailsPage extends StatelessWidget {
                   );
                   if (updatedTrip != null && context.mounted) {
                     tripService.updateTrip(index, updatedTrip);
-                    HapticFeedback.vibrate(); // Solid feedback for update
+                    HapticFeedback.vibrate();
                   }
                 },
               ),
@@ -53,7 +52,7 @@ class DetailsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // HEADER IMAGE SECTION
+                // HEADER IMAGE SECTION (Untouched)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Container(
@@ -62,7 +61,7 @@ class DetailsPage extends StatelessWidget {
                         color: colorScheme.onSurface.withAlpha(200),
                         width: 1,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(32)),
+                      borderRadius: const BorderRadius.all(Radius.circular(32)),
                       boxShadow: [
                         BoxShadow(
                           color: Theme.of(
@@ -73,7 +72,6 @@ class DetailsPage extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height * 0.4,
                     child: Hero(
@@ -87,9 +85,7 @@ class DetailsPage extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // TRIP INFO SECTION (Animated Entry)
-                Flexible(
+                Expanded(
                   child: TweenAnimationBuilder(
                     curve: Curves.easeOutCubic,
                     tween: Tween(begin: 1.0, end: 0.0),
@@ -98,10 +94,10 @@ class DetailsPage extends StatelessWidget {
                       opacity: 1 - op,
                       child: Padding(
                         padding: EdgeInsets.only(
-                          top: 20,
+                          top: 24,
                           right: 24,
                           left: 24,
-                          bottom: (op * 20), // Slight slide up effect
+                          bottom: (op * 20),
                         ),
                         child: child,
                       ),
@@ -109,53 +105,73 @@ class DetailsPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        // FLOATING HEART STACK
+                        Stack(
+                          clipBehavior: Clip
+                              .none, // Allows heart to grow outside the stack box
                           children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
+                            // 1. THE TEXT CONTENT (Title and Chips)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 60,
+                                  ), // Space for floating heart
+                                  child: Text(
                                     currentTrip.title,
                                     style: textTheme.headlineMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: colorScheme.onSurface,
+                                      height: 1.2,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    '${currentTrip.nights} Nights • \$${currentTrip.price}',
-                                    style: textTheme.titleMedium?.copyWith(
-                                      color: colorScheme.primary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // Premium Heart placement
-                            Container(
-                              decoration: BoxDecoration(
-                                color: colorScheme.primaryContainer.withAlpha(
-                                  200,
                                 ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    _buildInfoChip(
+                                      context,
+                                      icon: Icons.bedtime_rounded,
+                                      label: '${currentTrip.nights} Nights',
+                                    ),
+                                    const SizedBox(width: 12),
+                                    _buildInfoChip(
+                                      context,
+                                      icon: Icons.attach_money_rounded,
+                                      label: currentTrip.price,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
 
-                                shape: BoxShape.circle,
-                              ),
-                              child: HeartWidget(
-                                isLiked: currentTrip.isLiked,
-                                index: index,
+                            // 2. THE FLOATING HEART (Positioned)
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: colorScheme.primaryContainer.withAlpha(
+                                    150,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: HeartWidget(
+                                  isLiked: currentTrip.isLiked,
+                                  index: index,
+                                ),
                               ),
                             ),
                           ],
                         ),
+
                         const SizedBox(height: 24),
                         Divider(
                           color: colorScheme.outlineVariant.withAlpha(128),
                         ),
                         const SizedBox(height: 16),
+
                         Text(
                           "About this journey",
                           style: textTheme.labelLarge?.copyWith(
@@ -165,16 +181,20 @@ class DetailsPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 12),
+
                         Expanded(
                           child: SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
-                            child: Text(
-                              currentTrip.description.isNotEmpty
-                                  ? currentTrip.description
-                                  : 'No description added for this trip yet.',
-                              style: textTheme.bodyLarge?.copyWith(
-                                color: colorScheme.onSurfaceVariant,
-                                height: 1.6,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 24.0),
+                              child: Text(
+                                currentTrip.description.isNotEmpty
+                                    ? currentTrip.description
+                                    : 'No description added for this trip yet.',
+                                style: textTheme.bodyLarge?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                  height: 1.6,
+                                ),
                               ),
                             ),
                           ),
@@ -188,6 +208,38 @@ class DetailsPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildInfoChip(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: colorScheme.secondaryContainer.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colorScheme.outlineVariant.withOpacity(0.5)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 18, color: colorScheme.primary),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: textTheme.titleSmall?.copyWith(
+              color: colorScheme.onSecondaryContainer,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
