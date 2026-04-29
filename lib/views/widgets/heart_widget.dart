@@ -62,7 +62,7 @@ class _HeartWidgetState extends State<HeartWidget>
     } else {
       controller.reverse();
     }
-    HapticFeedback.mediumImpact();
+    HapticFeedback.errorNotification();
   }
 
   @override

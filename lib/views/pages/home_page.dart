@@ -56,10 +56,7 @@ class _HomeState extends State<HomePage> {
                                 left: size.width * 0.03,
                                 top: size.height * 0.04,
                               ),
-                              child: titleWidget(
-                                "Flutter\nAnimations",
-                                context,
-                              ),
+                              child: titleWidget("Trip /nRecorder", context),
                             ),
                           ),
                         ],

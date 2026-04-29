@@ -4,6 +4,7 @@ import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
 import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class DetailsPage extends StatelessWidget {
@@ -27,6 +28,7 @@ class DetailsPage extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: () async {
+                  HapticFeedback.selectionClick();
                   final updatedTrip = await Navigator.push<Trip>(
                     context,
                     MaterialPageRoute(
@@ -35,6 +37,7 @@ class DetailsPage extends StatelessWidget {
                   );
                   if (updatedTrip != null && context.mounted) {
                     tripService.updateTrip(index, updatedTrip);
+                    HapticFeedback.selectionClick();
                   }
                 },
               ),
@@ -53,37 +56,39 @@ class DetailsPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              TweenAnimationBuilder(
-                curve: Curves.easeInOut,
-                tween: Tween(begin: 1.0, end: 0.0),
-                duration: Duration(milliseconds: 600),
-                builder: (context, double op, Widget? child) => Opacity(
-                  opacity: 1 - op,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      right: (1 - op) * 15,
-                      left: (1 - op) * 15,
-                    ),
-                    child: child,
-                  ),
-                ),
-                child: SizedBox(
-                  child: ListTile(
-                    title: Text(
-                      currentTrip.title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Theme.of(context).colorScheme.primary,
+              Flexible(
+                child: TweenAnimationBuilder(
+                  curve: Curves.easeInOut,
+                  tween: Tween(begin: 1.0, end: 0.0),
+                  duration: Duration(milliseconds: 600),
+                  builder: (context, double op, Widget? child) => Opacity(
+                    opacity: 1 - op,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        right: (1 - op) * 15,
+                        left: (1 - op) * 15,
                       ),
+                      child: child,
                     ),
-                    subtitle: Text(
-                      '${currentTrip.nights} night stay for only \$${currentTrip.price}',
-                      style: TextStyle(letterSpacing: 1),
-                    ),
-                    trailing: HeartWidget(
-                      isLiked: currentTrip.isLiked,
-                      index: index,
+                  ),
+                  child: SizedBox(
+                    child: ListTile(
+                      title: Text(
+                        currentTrip.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      subtitle: Text(
+                        '${currentTrip.nights} night stay for only \$${currentTrip.price}',
+                        style: TextStyle(letterSpacing: 1),
+                      ),
+                      trailing: HeartWidget(
+                        isLiked: currentTrip.isLiked,
+                        index: index,
+                      ),
                     ),
                   ),
                 ),

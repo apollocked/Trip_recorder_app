@@ -145,7 +145,7 @@ class _AddTripPageState extends State<AddTripPage> {
                     description: _descriptionController.text,
                     isLiked: widget.trip?.isLiked ?? false,
                   );
-                  HapticFeedback.mediumImpact();
+                  HapticFeedback.selectionClick();
                   Navigator.pop(context, newTrip);
                 },
                 icon: const Icon(Icons.save_rounded),
