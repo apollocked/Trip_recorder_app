@@ -1,4 +1,4 @@
-# Animated Trip App ✈️🌍
+# Trip Recorder App 🛄🚞
 
 A beautiful, interactive Flutter application built primarily to explore and learn **animations in Flutter**. 
 
@@ -18,7 +18,7 @@ To run this project on your local machine:
 1. Make sure you have [Flutter](https://flutter.dev/docs/get-started/install) installed.
 2. Clone this repository:
    ```bash
-   git clone https://github.com/apollocked/animated-triping-app.git
+   git clone https://github.com/apollocked/trip_recorder_app
    ```
 3. Navigate to the project directory:
    ```bash
@@ -36,4 +36,4 @@ To run this project on your local machine:
 ## 👨‍💻 Author
 **Muhammed Jammel**
 - GitHub: [apollocked](https://github.com/apollocked)
-- Repository: [animated-triping-app](https://github.com/apollocked/animated-triping-app)
+- Repository: [Trip-Recorder-app](https://github.com/apollocked/Trip_Recorde_app)
