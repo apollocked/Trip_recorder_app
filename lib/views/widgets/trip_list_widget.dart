@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/services/trip_services.dart';
+import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/shimmer_card_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_widget.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +55,52 @@ class _TripListPageState extends State<TripListPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Trips')),
+      appBar: AppBar(title: const Text('My Trips')),
+
+      // --- PREMIUM FLOATING ACTION BUTTON ---
+      floatingActionButton: latestTrips.isEmpty
+          ? null
+          : Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16, top: 16),
+                child: FloatingActionButton.extended(
+                  onPressed: () async {
+                    // Hardware feedback for the MI 9
+                    HapticFeedback.lightImpact();
+
+                    final newTrip = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddTripPage(),
+                      ),
+                    );
+
+                    if (newTrip != null && mounted) {
+                      Provider.of<TripService>(
+                        context,
+                        listen: false,
+                      ).addTrip(newTrip);
+                      HapticFeedback.vibrate(); // Success vibration
+                    }
+                  },
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  elevation: 6,
+                  // Modernized the icon and text feel
+                  icon: const Icon(Icons.add_road_rounded),
+                  label: const Text(
+                    "NEW JOURNEY",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.3,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
       body: RefreshIndicator(
         onRefresh: () async {
           await HapticFeedback.vibrate();
@@ -97,6 +145,41 @@ class _TripListPageState extends State<TripListPage> {
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  FloatingActionButton.extended(
+                    onPressed: () async {
+                      // Hardware feedback for the MI 9
+                      HapticFeedback.lightImpact();
+
+                      final newTrip = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddTripPage(),
+                        ),
+                      );
+
+                      if (newTrip != null && mounted) {
+                        Provider.of<TripService>(
+                          context,
+                          listen: false,
+                        ).addTrip(newTrip);
+                        HapticFeedback.vibrate(); // Success vibration
+                      }
+                    },
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    elevation: 6,
+                    // Modernized the icon and text feel
+                    icon: const Icon(Icons.add_road_rounded),
+                    label: const Text(
+                      "NEW JOURNEY",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.3,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

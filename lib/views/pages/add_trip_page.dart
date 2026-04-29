@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,9 @@ class AddTripPage extends StatefulWidget {
 }
 
 class _AddTripPageState extends State<AddTripPage> {
+  // Global key for form validation
+  final _formKey = GlobalKey<FormState>();
+
   final _titleController = TextEditingController();
   final _priceController = TextEditingController();
   final _nightsController = TextEditingController();
@@ -20,6 +25,7 @@ class _AddTripPageState extends State<AddTripPage> {
   late DateTime _selectedDate;
   File? _imageFile;
   String? _existingImagePath;
+  bool _imageError = false; // To track image validation manually
 
   @override
   void initState() {
@@ -45,194 +51,326 @@ class _AddTripPageState extends State<AddTripPage> {
     super.dispose();
   }
 
+  void _handleSave() {
+    // Validate Form Fields
+    final isFormValid = _formKey.currentState!.validate();
+
+    // Validate Image manually
+    final isImageValid = _imageFile != null || _existingImagePath != null;
+
+    setState(() {
+      _imageError = !isImageValid;
+    });
+
+    if (isFormValid && isImageValid) {
+      final newTrip = Trip(
+        title: _titleController.text.trim(),
+        price: _priceController.text.trim(),
+        nights: _nightsController.text.trim(),
+        img: _imageFile?.path ?? _existingImagePath!,
+        date: _selectedDate,
+        description: _descriptionController.text.trim(),
+        isLiked: widget.trip?.isLiked ?? false,
+      );
+
+      HapticFeedback.mediumImpact();
+      Navigator.pop(context, newTrip);
+    } else if (!isImageValid) {
+      HapticFeedback.vibrate();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.trip == null ? "Add New Journey" : "Edit Journey"),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                checkExistingPermissions(context, (pickedFile) {
-                  setState(() {
-                    _imageFile = pickedFile;
-                  });
-                });
-              },
-              child: Container(
-                height: 220,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(24),
-                  border: (_imageFile == null && _existingImagePath == null)
-                      ? Border.all(color: colorScheme.outlineVariant)
-                      : null,
-                  image: _imageFile != null
-                      ? DecorationImage(
-                          image: FileImage(_imageFile!),
-                          fit: BoxFit.cover,
-                        )
-                      : (_existingImagePath != null
-                            ? DecorationImage(
-                                image: File(_existingImagePath!).isAbsolute
-                                    ? FileImage(File(_existingImagePath!))
-                                          as ImageProvider
-                                    : AssetImage(
-                                        _existingImagePath!.startsWith(
-                                              'images/',
-                                            )
-                                            ? _existingImagePath!
-                                            : 'images/$_existingImagePath',
-                                      ),
-                                fit: BoxFit.cover,
-                              )
-                            : null),
+    final textTheme = Theme.of(context).textTheme;
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: colorScheme.surface,
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: colorScheme.surface,
+          elevation: 0,
+          title: Text(
+            widget.trip == null ? "Add New Journey" : "Edit Journey",
+            style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: Form(
+          key: _formKey, // Attach the Form key
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Cover Photo",
+                  style: textTheme.labelLarge?.copyWith(
+                    color: _imageError
+                        ? colorScheme.error
+                        : colorScheme.primary,
+                  ),
                 ),
-                child: (_imageFile == null && _existingImagePath == null)
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.camera_enhance_rounded,
-                            size: 48,
+                const SizedBox(height: 12),
+                GestureDetector(
+                  onTap: () {
+                    checkExistingPermissions(context, (pickedFile) {
+                      setState(() {
+                        _imageFile = pickedFile;
+                        _imageError = false;
+                      });
+                    });
+                  },
+                  child: Container(
+                    height: 240,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: _imageError
+                          ? colorScheme.errorContainer.withAlpha(200)
+                          : colorScheme.secondaryContainer.withAlpha(102),
+                      borderRadius: BorderRadius.circular(28),
+                      border: Border.all(
+                        color: _imageError
+                            ? colorScheme.error
+                            : colorScheme.outlineVariant,
+                        width: _imageError ? 2 : 1,
+                      ),
+                      image: _imageFile != null
+                          ? DecorationImage(
+                              image: FileImage(_imageFile!),
+                              fit: BoxFit.cover,
+                            )
+                          : (_existingImagePath != null
+                                ? DecorationImage(
+                                    image:
+                                        _existingImagePath!.startsWith(
+                                          'images/',
+                                        )
+                                        ? AssetImage(_existingImagePath!)
+                                              as ImageProvider
+                                        : FileImage(File(_existingImagePath!)),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null),
+                    ),
+                    child: (_imageFile == null && _existingImagePath == null)
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add_a_photo_rounded,
+                                size: 42,
+                                color: _imageError
+                                    ? colorScheme.error
+                                    : colorScheme.primary,
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                "A photo is required",
+                                style: TextStyle(
+                                  color: _imageError
+                                      ? colorScheme.error
+                                      : colorScheme.onSecondaryContainer,
+                                ),
+                              ),
+                            ],
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+                ),
+                if (_imageError)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 12),
+                    child: Text(
+                      "Please select a trip image",
+                      style: textTheme.bodySmall?.copyWith(
+                        color: colorScheme.error,
+                      ),
+                    ),
+                  ),
+
+                const SizedBox(height: 32),
+                Text(
+                  "Trip Details",
+                  style: textTheme.labelLarge?.copyWith(
+                    color: colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // TEXT FIELDS SECTION
+                _buildTextField(
+                  controller: _titleController,
+                  label: "Destination",
+                  icon: Icons.map_rounded,
+                  colorScheme: colorScheme,
+                  validator: (val) => val == null || val.isEmpty
+                      ? "Destination name is required"
+                      : null,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: _buildTextField(
+                        controller: _priceController,
+                        label: "Budget",
+                        icon: Icons.attach_money_rounded,
+                        colorScheme: colorScheme,
+                        keyboardType: TextInputType.number,
+                        isPrice: true,
+                        validator: (val) =>
+                            val == null || val.isEmpty ? "Required" : null,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildTextField(
+                        controller: _nightsController,
+                        label: "Nights",
+                        icon: Icons.bedtime_rounded,
+                        colorScheme: colorScheme,
+                        keyboardType: TextInputType.number,
+                        validator: (val) =>
+                            val == null || val.isEmpty ? "Required" : null,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                // DATE PICKER
+                InkWell(
+                  onTap: () async {
+                    final date = await showDatePicker(
+                      context: context,
+                      initialDate: _selectedDate,
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime(2100),
+                    );
+                    if (date != null) setState(() => _selectedDate = date);
+                  },
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 18,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: colorScheme.outlineVariant),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_today_rounded,
+                          size: 20,
+                          color: colorScheme.primary,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          "Departure Date",
+                          style: TextStyle(color: colorScheme.onSurfaceVariant),
+                        ),
+                        const Spacer(),
+                        Text(
+                          "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                             color: colorScheme.primary,
                           ),
-                          const SizedBox(height: 12),
-                          const Text("Snap a photo or Pick from Gallery"),
-                        ],
-                      )
-                    : Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: CircleAvatar(
-                            backgroundColor: colorScheme.primary,
-                            child: const Icon(Icons.edit, color: Colors.white),
-                          ),
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+                _buildTextField(
+                  controller: _descriptionController,
+                  label: "About this trip (Optional)",
+                  icon: Icons.notes_rounded,
+                  colorScheme: colorScheme,
+                  maxLines: 4,
+                ),
+
+                const SizedBox(height: 40),
+                SizedBox(
+                  width: double.infinity,
+                  height: 64,
+                  child: FilledButton(
+                    style: FilledButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-              ),
+                    ),
+                    onPressed: _handleSave,
+                    child: Text(
+                      widget.trip == null ? "Create Journey" : "Update Journey",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40),
+              ],
             ),
-            const SizedBox(height: 24),
-            _buildInputSection(colorScheme),
-            const SizedBox(height: 32),
-            // SAVE BUTTON
-            SizedBox(
-              width: double.infinity,
-              height: 58,
-              child: FilledButton.icon(
-                onPressed: () {
-                  if (_titleController.text.isEmpty ||
-                      (_imageFile == null && _existingImagePath == null)) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Missing title or photo!")),
-                    );
-                    return;
-                  }
-                  final newTrip = Trip(
-                    title: _titleController.text,
-                    price: _priceController.text,
-                    nights: _nightsController.text,
-                    img: _imageFile?.path ?? _existingImagePath!,
-                    date: _selectedDate,
-                    description: _descriptionController.text,
-                    isLiked: widget.trip?.isLiked ?? false,
-                  );
-                  HapticFeedback.selectionClick();
-                  Navigator.pop(context, newTrip);
-                },
-                icon: const Icon(Icons.save_rounded),
-                label: const Text("Save Trip"),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildInputSection(ColorScheme colorScheme) {
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: colorScheme.outlineVariant),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: "Where to?",
-                border: InputBorder.none,
-              ),
-            ),
-            const Divider(),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _priceController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: const InputDecoration(
-                      labelText: "Price",
-                      prefixText: "\$ ",
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: _nightsController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: const InputDecoration(
-                      labelText: "Nights",
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const Divider(),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text("Date"),
-              trailing: Text(
-                "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
-              ),
-              onTap: () async {
-                final date = await showDatePicker(
-                  context: context,
-                  initialDate: _selectedDate,
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime(2100),
-                );
-                if (date != null) setState(() => _selectedDate = date);
-              },
-            ),
-            const Divider(),
-            TextField(
-              controller: _descriptionController,
-              maxLines: 4,
-              decoration: const InputDecoration(
-                labelText: "Description",
-                hintText: "Tell us about this trip...",
-                border: InputBorder.none,
-                alignLabelWithHint: true,
-              ),
-            ),
-          ],
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    required ColorScheme colorScheme,
+    String? Function(String?)? validator,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+    bool isPrice = false,
+  }) {
+    return TextFormField(
+      controller: controller,
+      validator: validator, // Validation Logic
+      keyboardType: keyboardType,
+      maxLines: maxLines,
+      inputFormatters: keyboardType == TextInputType.number
+          ? [FilteringTextInputFormatter.digitsOnly]
+          : null,
+      autovalidateMode:
+          AutovalidateMode.onUserInteraction, // Show error as user types
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, size: 20),
+        prefixText: isPrice ? "\$ " : null,
+        filled: true,
+        fillColor: colorScheme.surface,
+        errorStyle: const TextStyle(fontWeight: FontWeight.w600),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: colorScheme.outlineVariant),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: colorScheme.outlineVariant),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: colorScheme.error),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
       ),
     );

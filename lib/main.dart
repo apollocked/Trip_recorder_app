@@ -14,17 +14,30 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
-      darkTheme: ThemeData(
-        colorSchemeSeed: Colors.indigo,
-        useMaterial3: true,
-        brightness: Brightness.dark,
-      ),
-      home: HomePage(),
       debugShowCheckedModeBanner: false,
+      // 1. Light Theme Definition
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          brightness: Brightness.light,
+          seedColor: const Color(0xFF00796B),
+        ),
+      ),
+      // 2. Dark Theme Definition
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          brightness: Brightness.dark,
+          seedColor: const Color(0xFF00796B),
+        ),
+      ),
+      // 3. THE FIX: Force light mode to test it, or keep .system
+      themeMode: ThemeMode.system,
+      home: const HomePage(),
     );
   }
 }

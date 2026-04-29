@@ -1,11 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:animations_in_flutter/services/trip_services.dart';
-import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/title_widget.dart';
-import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart'; // Ensure this matches your class name
+import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,11 +13,16 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      // Uses the theme seed color for a subtle, cohesive background
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
+        bottom: false, // Allows the list to flow to the bottom
         child: Column(
           children: [
+            // --- HEADER SECTION (STACK UNCHANGED AS REQUESTED) ---
             Padding(
               padding: EdgeInsets.symmetric(vertical: size.height * 0.001),
               child: SizedBox(
@@ -56,7 +56,7 @@ class _HomeState extends State<HomePage> {
                                 left: size.width * 0.03,
                                 top: size.height * 0.04,
                               ),
-                              child: titleWidget("Trip /nRecorder", context),
+                              child: titleWidget("Trip \nRecorder", context),
                             ),
                           ),
                         ],
@@ -66,33 +66,13 @@ class _HomeState extends State<HomePage> {
                 ),
               ),
             ),
-            const Expanded(
-              child: TripListPage(), // Your animated list widget
-            ),
+
+            // --- THE LIST "SHEET" SECTION ---
+            Expanded(child: const TripListPage()),
+            SizedBox(height: size.height * 0.08),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          final newTrip = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddTripPage()),
-          );
-          if (newTrip != null && mounted) {
-            // Use Provider to save it permanently and update the list
-            Provider.of<TripService>(context, listen: false).addTrip(newTrip);
-          }
-        },
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-        elevation: 4,
-        icon: const Icon(Icons.add_location_alt_rounded),
-        label: const Text(
-          "New Trip",
-          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.1),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,6 +34,7 @@ class _HeartWidgetState extends State<HeartWidget>
       curve: Curves.slowMiddle,
     );
 
+    // Animation logic remains untouched
     colorAnimation = ColorTween(
       begin: Colors.grey[400],
       end: Colors.red,
@@ -55,6 +57,7 @@ class _HeartWidgetState extends State<HeartWidget>
   }
 
   void onPressed() {
+    // Logic remains untouched
     final tripService = Provider.of<TripService>(context, listen: false);
     tripService.toggleLike(widget.index);
     if (tripService.trips[widget.index].isLiked) {
@@ -62,21 +65,41 @@ class _HeartWidgetState extends State<HeartWidget>
     } else {
       controller.reverse();
     }
-    HapticFeedback.errorNotification();
+    HapticFeedback.errorNotification(); // Keeping your specific haptic choice
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return AnimatedBuilder(
       animation: controller,
       builder: (BuildContext context, _) {
-        return IconButton(
-          icon: Icon(
-            Icons.favorite,
-            color: colorAnimation.value,
-            size: sizeAnimation.value,
+        return ClipOval(
+          child: BackdropFilter(
+            // Adds a subtle blur to the background image underneath
+            filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: colorScheme.surface.withAlpha(153),
+                border: Border.all(
+                  color: colorScheme.outlineVariant.withAlpha(102),
+                  width: 1,
+                ),
+              ),
+              child: IconButton(
+                padding: const EdgeInsets.all(12), // Nice touch target
+                icon: Icon(
+                  Icons
+                      .favorite_rounded, // Slightly softer, more modern icon edge
+                  color: colorAnimation.value,
+                  size: sizeAnimation.value,
+                ),
+                onPressed: () => onPressed(),
+              ),
+            ),
           ),
-          onPressed: () => onPressed(),
         );
       },
     );

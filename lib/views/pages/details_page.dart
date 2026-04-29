@@ -14,19 +14,25 @@ class DetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Consumer<TripService>(
       builder: (context, tripService, _) {
         if (index >= tripService.trips.length) return const Scaffold();
         final currentTrip = tripService.trips[index];
 
         return Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: colorScheme.surface,
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
+            // Setting iconTheme ensures buttons are visible over the image
+            iconTheme: IconThemeData(color: colorScheme.onSurface),
             actions: [
               IconButton(
-                icon: const Icon(Icons.edit),
+                icon: const Icon(Icons.edit_note_rounded, size: 28),
                 onPressed: () async {
                   HapticFeedback.selectionClick();
                   final updatedTrip = await Navigator.push<Trip>(
@@ -37,93 +43,148 @@ class DetailsPage extends StatelessWidget {
                   );
                   if (updatedTrip != null && context.mounted) {
                     tripService.updateTrip(index, updatedTrip);
-                    HapticFeedback.selectionClick();
+                    HapticFeedback.vibrate(); // Solid feedback for update
                   }
                 },
               ),
             ],
           ),
-          extendBodyBehindAppBar: true,
-          body: Column(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: ClipRRect(
-                  child: Hero(
-                    tag: 'tag-image-${currentTrip.img}',
-                    child: coverImage(currentTrip.img),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              Flexible(
-                child: TweenAnimationBuilder(
-                  curve: Curves.easeInOut,
-                  tween: Tween(begin: 1.0, end: 0.0),
-                  duration: Duration(milliseconds: 600),
-                  builder: (context, double op, Widget? child) => Opacity(
-                    opacity: 1 - op,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        right: (1 - op) * 15,
-                        left: (1 - op) * 15,
+          body: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // HEADER IMAGE SECTION
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: colorScheme.onSurface.withAlpha(200),
+                        width: 1,
                       ),
-                      child: child,
-                    ),
-                  ),
-                  child: SizedBox(
-                    child: ListTile(
-                      title: Text(
-                        currentTrip.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.all(Radius.circular(32)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withAlpha(20),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
                         ),
-                      ),
-                      subtitle: Text(
-                        '${currentTrip.nights} night stay for only \$${currentTrip.price}',
-                        style: TextStyle(letterSpacing: 1),
-                      ),
-                      trailing: HeartWidget(
-                        isLiked: currentTrip.isLiked,
-                        index: index,
+                      ],
+                    ),
+
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    child: Hero(
+                      tag: 'tag-image-${currentTrip.img}',
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(32),
+                        ),
+                        child: coverImage(currentTrip.img),
                       ),
                     ),
                   ),
                 ),
-              ),
-              TweenAnimationBuilder(
-                curve: Curves.easeInOut,
-                tween: Tween(begin: 1.0, end: 0.0),
-                duration: Duration(milliseconds: 600),
-                builder: (context, double op, Widget? child) => Padding(
-                  padding: EdgeInsets.only(
-                    top: op * 45,
-                    right: 24,
-                    left: 24,
-                    bottom: 10,
-                  ),
-                  child: child,
-                ),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height / 2.3,
-                  width: double.infinity,
-                  child: SingleChildScrollView(
-                    child: Text(
-                      currentTrip.description.isNotEmpty
-                          ? currentTrip.description
-                          : 'No description added for this trip yet.',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey[600],
-                        height: 1.5,
+
+                // TRIP INFO SECTION (Animated Entry)
+                Flexible(
+                  child: TweenAnimationBuilder(
+                    curve: Curves.easeOutCubic,
+                    tween: Tween(begin: 1.0, end: 0.0),
+                    duration: const Duration(milliseconds: 600),
+                    builder: (context, double op, Widget? child) => Opacity(
+                      opacity: 1 - op,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: 20,
+                          right: 24,
+                          left: 24,
+                          bottom: (op * 20), // Slight slide up effect
+                        ),
+                        child: child,
                       ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    currentTrip.title,
+                                    style: textTheme.headlineMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: colorScheme.onSurface,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '${currentTrip.nights} Nights • \$${currentTrip.price}',
+                                    style: textTheme.titleMedium?.copyWith(
+                                      color: colorScheme.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Premium Heart placement
+                            Container(
+                              decoration: BoxDecoration(
+                                color: colorScheme.primaryContainer.withAlpha(
+                                  200,
+                                ),
+
+                                shape: BoxShape.circle,
+                              ),
+                              child: HeartWidget(
+                                isLiked: currentTrip.isLiked,
+                                index: index,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                        Divider(
+                          color: colorScheme.outlineVariant.withAlpha(128),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          "About this journey",
+                          style: textTheme.labelLarge?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.1,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Text(
+                              currentTrip.description.isNotEmpty
+                                  ? currentTrip.description
+                                  : 'No description added for this trip yet.',
+                              style: textTheme.bodyLarge?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                                height: 1.6,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
