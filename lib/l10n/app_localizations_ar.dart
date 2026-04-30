@@ -9,106 +9,106 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get trip => 'Trip';
+  String get trip => 'رحلة';
 
   @override
-  String get recorder => 'Recorder';
+  String get recorder => 'مسجّل';
 
   @override
-  String get tripsList => 'My Trips';
+  String get tripsList => 'رحلاتي';
 
   @override
-  String get newjourney => 'New Journey';
+  String get newjourney => 'رحلة جديدة';
 
   @override
-  String get aboutjourney => 'About this journey';
+  String get aboutjourney => 'عن هذه الرحلة';
 
   @override
-  String get night => 'Night';
+  String get night => 'ليلة';
 
   @override
-  String get noTripsFound => 'No Trips Found';
+  String get noTripsFound => 'لا توجد رحلات';
 
   @override
   String get emptylistDescription =>
-      'Time to start planning your next adventure! \nPull down to check again.';
+      'حان وقت التخطيط لمغامرتك القادمة!\nاسحب للأسفل للتحقق مجدداً.';
 
   @override
-  String get pullToRefresh => 'Pull down to Refresh the tips';
+  String get pullToRefresh => 'اسحب للأسفل لتحديث الرحلات';
 
   @override
-  String get addtitle => 'Add New Journey';
+  String get addtitle => 'إضافة رحلة جديدة';
 
   @override
-  String get coverphoto => 'Cover Photo';
+  String get coverphoto => 'صورة الغلاف';
 
   @override
-  String get photoreq => 'A photo is required';
+  String get photoreq => 'الصورة مطلوبة';
 
   @override
-  String get photoErrorReq => 'Please select a trip image';
+  String get photoErrorReq => 'يرجى اختيار صورة للرحلة';
 
   @override
-  String get appTitle => 'Trip \nRecorder';
+  String get appTitle => 'مسجّل\nالرحلات';
 
   @override
-  String get editJourney => 'Edit Journey';
+  String get editJourney => 'تعديل الرحلة';
 
   @override
-  String get tripDetails => 'Trip Details';
+  String get tripDetails => 'تفاصيل الرحلة';
 
   @override
-  String get destination => 'Destination';
+  String get destination => 'الوجهة';
 
   @override
-  String get budget => 'Budget';
+  String get budget => 'الميزانية';
 
   @override
-  String get nights => 'Nights';
+  String get nights => 'الليالي';
 
   @override
-  String get departureDate => 'Departure Date';
+  String get departureDate => 'تاريخ المغادرة';
 
   @override
-  String get tripDescription => 'About this trip (Optional)';
+  String get tripDescription => 'عن هذه الرحلة (اختياري)';
 
   @override
-  String get createJourney => 'Create Journey';
+  String get createJourney => 'إنشاء رحلة';
 
   @override
-  String get updateJourney => 'Update Journey';
+  String get updateJourney => 'تحديث الرحلة';
 
   @override
-  String get destinationRequired => 'Destination name is required';
+  String get destinationRequired => 'اسم الوجهة مطلوب';
 
   @override
-  String get required => 'Required';
+  String get required => 'مطلوب';
 
   @override
-  String get noDescriptionAdded => 'No description added for this trip yet.';
+  String get noDescriptionAdded => 'لم يتم إضافة أي وصف لهذه الرحلة بعد.';
 
   @override
-  String get shareJourney => 'Share your journey!';
+  String get shareJourney => 'شارك رحلتك!';
 
   @override
   String get permissionDescription =>
-      'We need access to your camera and gallery so you can upload beautiful photos of your trips.';
+      'نحتاج إلى الوصول إلى الكاميرا والمعرض لتتمكن من رفع صور جميلة لرحلاتك.';
 
   @override
-  String get notNow => 'Not Now';
+  String get notNow => 'ليس الآن';
 
   @override
-  String get allowAccess => 'Allow Access';
+  String get allowAccess => 'السماح بالوصول';
 
   @override
-  String get selectPhotoSource => 'Select Photo Source';
+  String get selectPhotoSource => 'اختر مصدر الصورة';
 
   @override
-  String get gallery => 'Gallery';
+  String get gallery => 'المعرض';
 
   @override
-  String get camera => 'Camera';
+  String get camera => 'الكاميرا';
 
   @override
-  String get nightsLabel => 'nights';
+  String get nightsLabel => 'ليالٍ';
 }

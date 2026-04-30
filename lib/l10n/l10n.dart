@@ -13,7 +13,9 @@ class L10n {
         return 'العربية';
       case 'ku':
         return 'کوردی';
+
       case 'en':
+        return 'English';
       default:
         return 'English';
     }

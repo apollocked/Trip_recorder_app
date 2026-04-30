@@ -9,106 +9,107 @@ class AppLocalizationsKu extends AppLocalizations {
   AppLocalizationsKu([String locale = 'ku']) : super(locale);
 
   @override
-  String get trip => 'Trip';
+  String get trip => 'گەشت';
 
   @override
-  String get recorder => 'Recorder';
+  String get recorder => 'تۆمارکەر';
 
   @override
-  String get tripsList => 'My Trips';
+  String get tripsList => 'گەشتەکانم';
 
   @override
-  String get newjourney => 'New Journey';
+  String get newjourney => 'گەشتێکی نوێ';
 
   @override
-  String get aboutjourney => 'About this journey';
+  String get aboutjourney => 'دەربارەی ئەم گەشتە';
 
   @override
-  String get night => 'Night';
+  String get night => 'شەو';
 
   @override
-  String get noTripsFound => 'No Trips Found';
+  String get noTripsFound => 'هیچ گەشتێک نەدۆزرایەوە';
 
   @override
   String get emptylistDescription =>
-      'Time to start planning your next adventure! \nPull down to check again.';
+      'کاتی ئەوەیە پلانی ئەڤەنتووری داهاتووت بکەیت!\nبکێشەرەوە بۆ دووبارە پشکنین.';
 
   @override
-  String get pullToRefresh => 'Pull down to Refresh the tips';
+  String get pullToRefresh => 'بکێشەرەوە بۆ نوێکردنەوەی گەشتەکان';
 
   @override
-  String get addtitle => 'Add New Journey';
+  String get addtitle => 'گەشتێکی نوێ زیاد بکە';
 
   @override
-  String get coverphoto => 'Cover Photo';
+  String get coverphoto => 'وێنەی مەخمەڵ';
 
   @override
-  String get photoreq => 'A photo is required';
+  String get photoreq => 'وێنەیەک پێویستە';
 
   @override
-  String get photoErrorReq => 'Please select a trip image';
+  String get photoErrorReq => 'تکایە وێنەیەکی گەشت هەڵبژێرە';
 
   @override
-  String get appTitle => 'Trip \nRecorder';
+  String get appTitle => 'تۆمارکەری\nگەشت';
 
   @override
-  String get editJourney => 'Edit Journey';
+  String get editJourney => 'گەشت دەستکاری بکە';
 
   @override
-  String get tripDetails => 'Trip Details';
+  String get tripDetails => 'وردەکاریەکانی گەشت';
 
   @override
-  String get destination => 'Destination';
+  String get destination => 'مەودا';
 
   @override
-  String get budget => 'Budget';
+  String get budget => 'بودجە';
 
   @override
-  String get nights => 'Nights';
+  String get nights => 'شەوەکان';
 
   @override
-  String get departureDate => 'Departure Date';
+  String get departureDate => 'بەرواری ڕووانین';
 
   @override
-  String get tripDescription => 'About this trip (Optional)';
+  String get tripDescription => 'دەربارەی ئەم گەشتە (ئارەزوومەندانە)';
 
   @override
-  String get createJourney => 'Create Journey';
+  String get createJourney => 'گەشت دروست بکە';
 
   @override
-  String get updateJourney => 'Update Journey';
+  String get updateJourney => 'گەشت نوێ بکەرەوە';
 
   @override
-  String get destinationRequired => 'Destination name is required';
+  String get destinationRequired => 'ناوی مەودا پێویستە';
 
   @override
-  String get required => 'Required';
+  String get required => 'پێویستە';
 
   @override
-  String get noDescriptionAdded => 'No description added for this trip yet.';
+  String get noDescriptionAdded =>
+      'هێشتا هیچ وەسفێک بۆ ئەم گەشتە زیاد نەکراوە.';
 
   @override
-  String get shareJourney => 'Share your journey!';
+  String get shareJourney => 'گەشتەکەت هاوبەش بکە!';
 
   @override
   String get permissionDescription =>
-      'We need access to your camera and gallery so you can upload beautiful photos of your trips.';
+      'پێویستمان بە دەستڕاگەیشتن بە کامێرا و گەلەریەکەتە هەیە تا بتوانیت وێنە جوانەکانی گەشتەکانت بارگەزاری بکەیت.';
 
   @override
-  String get notNow => 'Not Now';
+  String get notNow => 'ئێستا نا';
 
   @override
-  String get allowAccess => 'Allow Access';
+  String get allowAccess => 'ڕێگە بدە';
 
   @override
-  String get selectPhotoSource => 'Select Photo Source';
+  String get selectPhotoSource => 'سەرچاوەی وێنە هەڵبژێرە';
 
   @override
-  String get gallery => 'Gallery';
+  String get gallery => 'گەلەری';
 
   @override
-  String get camera => 'Camera';
+  String get camera => 'کامێرا';
 
   @override
-  String get nightsLabel => 'nights';
+  String get nightsLabel => 'شەوەکان';
 }
