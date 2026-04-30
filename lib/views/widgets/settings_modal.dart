@@ -9,61 +9,39 @@ void showSettingsModal(BuildContext context) {
   final textTheme = Theme.of(context).textTheme;
   showModalBottomSheet(
     context: context,
+    isScrollControlled: true,
+    showDragHandle: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
     ),
-    builder: (context) => Container(
-      color: colorScheme.surface,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Handle bar
-            Container(
-              width: 40,
-              height: 4,
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                color: colorScheme.outlineVariant,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-
-            // Title
-            Text(
-              'Settings',
-              style: textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: colorScheme.onSurface,
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Language Section
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: colorScheme.secondaryContainer.withAlpha(102),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: colorScheme.outlineVariant),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Language',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.onSurface,
-                    ),
+    builder: (context) {
+      final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
+      return ColoredBox(
+        color: colorScheme.surface,
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(20, 12, 20, 20 + bottomPadding),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Settings',
+                  style: textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: colorScheme.onSurface,
                   ),
-                  const SizedBox(height: 12),
-                  Consumer<LanguageService>(
+                ),
+                const SizedBox(height: 16),
+                _SectionCard(
+                  icon: Icons.language_rounded,
+                  title: 'Language',
+                  child: Consumer<LanguageService>(
                     builder: (context, languageService, _) {
                       return Wrap(
-                        spacing: 8,
+                        spacing: 10,
+                        runSpacing: 10,
                         children: L10n.all.map((locale) {
                           final isSelected =
                               languageService.locale.languageCode ==
@@ -72,46 +50,26 @@ void showSettingsModal(BuildContext context) {
                             label: Text(L10n.getNativeName(locale.languageCode)),
                             selected: isSelected,
                             onSelected: (selected) {
-                              if (selected) {
-                                languageService.setLocale(locale);
-                              }
+                              if (selected) languageService.setLocale(locale);
                             },
                           );
                         }).toList(),
                       );
                     },
                   ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Theme Section
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: colorScheme.secondaryContainer.withAlpha(102),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: colorScheme.outlineVariant),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Theme',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Consumer<ThemeService>(
+                ),
+                const SizedBox(height: 14),
+                _SectionCard(
+                  icon: Icons.palette_outlined,
+                  title: 'Theme',
+                  child: Consumer<ThemeService>(
                     builder: (context, themeService, _) {
                       return Wrap(
-                        spacing: 8,
+                        spacing: 10,
+                        runSpacing: 10,
                         children: [
                           ChoiceChip(
+                            avatar: const Icon(Icons.light_mode_outlined),
                             label: const Text('Light'),
                             selected: themeService.themeMode == ThemeMode.light,
                             onSelected: (selected) {
@@ -121,6 +79,7 @@ void showSettingsModal(BuildContext context) {
                             },
                           ),
                           ChoiceChip(
+                            avatar: const Icon(Icons.dark_mode_outlined),
                             label: const Text('Dark'),
                             selected: themeService.themeMode == ThemeMode.dark,
                             onSelected: (selected) {
@@ -130,6 +89,7 @@ void showSettingsModal(BuildContext context) {
                             },
                           ),
                           ChoiceChip(
+                            avatar: const Icon(Icons.phone_android_outlined),
                             label: const Text('System'),
                             selected:
                                 themeService.themeMode == ThemeMode.system,
@@ -143,14 +103,60 @@ void showSettingsModal(BuildContext context) {
                       );
                     },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-
-            const SizedBox(height: 20),
-          ],
+          ),
         ),
-      ),
-    ),
+      );
+    },
   );
+}
+
+class _SectionCard extends StatelessWidget {
+  const _SectionCard({
+    required this.icon,
+    required this.title,
+    required this.child,
+  });
+
+  final IconData icon;
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest.withAlpha(90),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: colorScheme.outlineVariant),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 20, color: colorScheme.primary),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          child,
+        ],
+      ),
+    );
+  }
 }

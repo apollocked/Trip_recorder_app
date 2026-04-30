@@ -21,79 +21,79 @@ class AppLocalizationsKu extends AppLocalizations {
   String get newjourney => 'گەشتێکی نوێ';
 
   @override
-  String get aboutjourney => 'دەربارەی ئەم گەشتە';
+  String get aboutjourney => 'دەربارەی گەشتەکە';
 
   @override
-  String get night => 'شەو';
+  String get night => 'Night';
 
   @override
   String get noTripsFound => 'هیچ گەشتێک نەدۆزرایەوە';
 
   @override
   String get emptylistDescription =>
-      'کاتی ئەوەیە پلانی ئەڤەنتووری داهاتووت بکەیت!\nبکێشەرەوە بۆ دووبارە پشکنین.';
+      'کاتی ئەوەیە پلانی گەشتی داهاتووت دابنێیت!\nبۆ نوێکردنەوە پەنجە بۆ خوارەوە ڕابکێشە.';
 
   @override
-  String get pullToRefresh => 'بکێشەرەوە بۆ نوێکردنەوەی گەشتەکان';
+  String get pullToRefresh => 'بۆ نوێکردنەوە بۆ خوار بکێشە';
 
   @override
-  String get addtitle => 'گەشتێکی نوێ زیاد بکە';
+  String get addtitle => 'زیادکردنی گەشتێکی نوێ';
 
   @override
-  String get coverphoto => 'وێنەی مەخمەڵ';
+  String get coverphoto => 'وێنەی گەشت';
 
   @override
   String get photoreq => 'وێنەیەک پێویستە';
 
   @override
-  String get photoErrorReq => 'تکایە وێنەیەکی گەشت هەڵبژێرە';
+  String get photoErrorReq => 'تکایە وێنەیەک بۆ گەشتەکە هەڵبژێرە';
 
   @override
   String get appTitle => 'تۆمارکەری\nگەشت';
 
   @override
-  String get editJourney => 'گەشت دەستکاری بکە';
+  String get editJourney => 'دەستکاریکردنی گەشت';
 
   @override
-  String get tripDetails => 'وردەکاریەکانی گەشت';
+  String get tripDetails => 'وردەکاریی گەشت';
 
   @override
-  String get destination => 'مەودا';
+  String get destination => 'شوێن';
 
   @override
   String get budget => 'بودجە';
 
   @override
-  String get nights => 'شەوەکان';
+  String get nights => 'شەو';
 
   @override
-  String get departureDate => 'بەرواری ڕووانین';
+  String get departureDate => 'بەرواری ڕۆیشتن';
 
   @override
-  String get tripDescription => 'دەربارەی ئەم گەشتە (ئارەزوومەندانە)';
+  String get tripDescription => 'دەربارەی ئەم گەشتەکە (ئارەزوومەندانەیە)';
 
   @override
-  String get createJourney => 'گەشت دروست بکە';
+  String get createJourney => 'دروستکردنی گەشت';
 
   @override
-  String get updateJourney => 'گەشت نوێ بکەرەوە';
+  String get updateJourney => 'نوێکردنەوەی گەشت';
 
   @override
-  String get destinationRequired => 'ناوی مەودا پێویستە';
+  String get destinationRequired => 'ناوی شوێنی مەبەست پێویستە';
 
   @override
   String get required => 'پێویستە';
 
   @override
   String get noDescriptionAdded =>
-      'هێشتا هیچ وەسفێک بۆ ئەم گەشتە زیاد نەکراوە.';
+      'هێشتا هیچ وردەکارییەک بۆ ئەم گەشتەکە زیاد نەکراوە.';
 
   @override
   String get shareJourney => 'گەشتەکەت هاوبەش بکە!';
 
   @override
   String get permissionDescription =>
-      'پێویستمان بە دەستڕاگەیشتن بە کامێرا و گەلەریەکەتە هەیە تا بتوانیت وێنە جوانەکانی گەشتەکانت بارگەزاری بکەیت.';
+      'پێویستمان بە دەستڕاگەیشتن بە کامێرا و گەلەرییەکەت هەیە تاکو بتوانیت وێنەی جوانی گەشتەکانت زیاد بکەیت.';
 
   @override
   String get notNow => 'ئێستا نا';
@@ -105,11 +105,11 @@ class AppLocalizationsKu extends AppLocalizations {
   String get selectPhotoSource => 'سەرچاوەی وێنە هەڵبژێرە';
 
   @override
-  String get gallery => 'گەلەری';
+  String get gallery => 'وێنەکانی گەلەری';
 
   @override
   String get camera => 'کامێرا';
 
   @override
-  String get nightsLabel => 'شەوەکان';
+  String get nightsLabel => 'شەو';
 }

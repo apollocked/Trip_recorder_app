@@ -63,49 +63,40 @@ class _TripListPageState extends State<TripListPage> {
         ),
       ),
 
-      // --- PREMIUM FLOATING ACTION BUTTON ---
       floatingActionButton: latestTrips.isEmpty
           ? null
-          : Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 4, top: 9),
-                child: FloatingActionButton.extended(
-                  onPressed: () async {
-                    HapticFeedback.lightImpact();
-                    final newTrip = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddTripPage(),
-                      ),
-                    );
-                    if (newTrip != null && mounted) {
-                      Provider.of<TripService>(
-                        context,
-                        listen: false,
-                      ).addTrip(newTrip);
-                      HapticFeedback.vibrate(); // Success vibration
-                    }
-                  },
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  elevation: 6,
-                  icon: const Icon(
-                    semanticLabel: "adding a new trip",
-                    Icons.add_road_rounded,
-                    size: 18, // Updated icon for a more modern feel
-                  ),
-                  label: Text(
-                    AppLocalizations.of(context)!.newjourney,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 1,
-                      fontSize: 12,
-                    ),
-                  ),
+          : FloatingActionButton.extended(
+              onPressed: () async {
+                HapticFeedback.lightImpact();
+                final newTrip = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AddTripPage()),
+                );
+                if (newTrip != null && mounted) {
+                  Provider.of<TripService>(context, listen: false).addTrip(
+                    newTrip,
+                  );
+                  HapticFeedback.vibrate();
+                }
+              },
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              elevation: 6,
+              icon: const Icon(
+                semanticLabel: "adding a new trip",
+                Icons.add_road_rounded,
+                size: 18,
+              ),
+              label: Text(
+                AppLocalizations.of(context)!.newjourney,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1,
+                  fontSize: 12,
                 ),
               ),
             ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 
       body: RefreshIndicator(
         semanticsLabel: "Pull to refresh the trip list",
@@ -184,13 +175,12 @@ class _TripListPageState extends State<TripListPage> {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     elevation: 6,
-                    // Modernized the icon and text feel
                     icon: const Icon(
                       Icons.add_road_rounded,
                       semanticLabel: "Add",
                     ),
-                    label: const Text(
-                      "NEW JOURNEY",
+                    label: Text(
+                      AppLocalizations.of(context)!.newjourney,
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.3,

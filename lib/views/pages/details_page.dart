@@ -118,7 +118,9 @@ class DetailsPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 60),
+                                  padding: const EdgeInsetsDirectional.only(
+                                    end: 60,
+                                  ),
                                   child: Text(
                                     semanticsLabel:
                                         'Trip title is ${currentTrip.title}',
@@ -138,7 +140,8 @@ class DetailsPage extends StatelessWidget {
                                       child: _buildInfoChip(
                                         context,
                                         icon: Icons.bedtime_rounded,
-                                        label: '${currentTrip.nights} Nights',
+                                        label:
+                                            '${currentTrip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
                                       ),
                                     ),
                                     const SizedBox(width: 12),
@@ -147,16 +150,17 @@ class DetailsPage extends StatelessWidget {
                                       child: _buildInfoChip(
                                         context,
                                         icon: Icons.attach_money_rounded,
-                                        label: currentTrip.price,
+                                        label:
+                                            '${AppLocalizations.of(context)!.budget}: ${currentTrip.price}',
                                       ),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                            Positioned(
+                            PositionedDirectional(
                               top: 0,
-                              right: 0,
+                              end: 0,
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: colorScheme.primaryContainer.withAlpha(
