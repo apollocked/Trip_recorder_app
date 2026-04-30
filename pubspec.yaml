@@ -15,13 +15,13 @@ dependencies:
 
   flutter_localizations:
     sdk: flutter
-  intl: any
+  intl:
 
   cupertino_icons: ^1.0.8
   image_picker: ^1.2.2
   permission_handler: ^11.3.1
-  provider:
-  shared_preferences:
+  provider: null
+  shared_preferences: null
   shimmer: ^3.0.0
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,15 @@
+{
+  "trip": "Trip",
+  "recorder": "Recorder",
+  "Tripslist": "My Trips ",
+  "newjourney": "New Journey",
+  "aboutjourney": "About this journey",
+  "night": "Night",
+  "NotripFound": "Now Trips Found",
+  "emptylistDiscription": "Time to start record your recent adventure!",
+  "pullTOrefresh": "Pull down to Refresh the tips ",
+  "addtitle": "Add New Journey",
+  "coverphoto": "Cover Photo ",
+  "photoreq": "A photo is required",
+  "photoErrorReq": "Please select a image from the Trip"
+}

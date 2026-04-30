@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
     final l10n = Provider.of<LanguageService>(context);
 
     return MaterialApp(
-      showSemanticsDebugger: true,
       debugShowCheckedModeBanner: false,
       locale: l10n.locale,
       supportedLocales: AppLocalizations.supportedLocales,
