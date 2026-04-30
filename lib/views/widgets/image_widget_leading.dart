@@ -8,6 +8,7 @@ Widget leadingImage(String imgPath) {
 
   if (isFile) {
     return Image.file(
+      semanticLabel: "Cover photo of the trip",
       File(imgPath),
       height: 50.0,
       width: 50.0,
@@ -16,7 +17,9 @@ Widget leadingImage(String imgPath) {
           const Icon(Icons.broken_image, size: 50),
     );
   } else {
-    final assetPath = imgPath.startsWith('images/') ? imgPath : 'images/$imgPath';
+    final assetPath = imgPath.startsWith('images/')
+        ? imgPath
+        : 'images/$imgPath';
     return Image.asset(
       assetPath,
       height: 50.0,

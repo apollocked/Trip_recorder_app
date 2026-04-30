@@ -16,10 +16,9 @@ class _HomeState extends State<HomePage> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      // Uses the theme seed color for a subtle, cohesive background
       backgroundColor: colorScheme.surface,
       body: SafeArea(
-        bottom: false, // Allows the list to flow to the bottom
+        bottom: false,
         child: Column(
           children: [
             // --- HEADER SECTION (STACK UNCHANGED AS REQUESTED) ---
@@ -44,7 +43,10 @@ class _HomeState extends State<HomePage> {
                               duration: const Duration(milliseconds: 400),
                               builder: (context, value, child) =>
                                   Opacity(opacity: value, child: child),
-                              child: Image.asset("images/bg.png"),
+                              child: Image.asset(
+                                "images/bg.png",
+                                semanticLabel: 'Banner of the app',
+                              ),
                             ),
                           ),
                           Positioned(

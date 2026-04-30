@@ -19,7 +19,9 @@ Widget coverImage(String imgPath) {
       ),
     );
   } else {
-    final assetPath = imgPath.startsWith('images/') ? imgPath : 'images/$imgPath';
+    final assetPath = imgPath.startsWith('images/')
+        ? imgPath
+        : 'images/$imgPath';
     return Image.asset(
       assetPath,
       height: 360,

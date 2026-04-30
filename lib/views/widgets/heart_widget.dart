@@ -1,6 +1,10 @@
+// ignore_for_file: strict_top_level_inference, deprecated_member_use
+
 import 'dart:ui';
+import 'package:animations_in_flutter/data/trip_list.dart';
 import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
@@ -56,8 +60,7 @@ class _HeartWidgetState extends State<HeartWidget>
     super.dispose();
   }
 
-  void onPressed() {
-    // Logic remains untouched
+  onPressed() {
     final tripService = Provider.of<TripService>(context, listen: false);
     tripService.toggleLike(widget.index);
     if (tripService.trips[widget.index].isLiked) {
@@ -77,7 +80,6 @@ class _HeartWidgetState extends State<HeartWidget>
       builder: (BuildContext context, _) {
         return ClipOval(
           child: BackdropFilter(
-            // Adds a subtle blur to the background image underneath
             filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
             child: Container(
               decoration: BoxDecoration(
@@ -95,8 +97,22 @@ class _HeartWidgetState extends State<HeartWidget>
                       .favorite_rounded, // Slightly softer, more modern icon edge
                   color: colorAnimation.value,
                   size: sizeAnimation.value,
+                  semanticLabel: 'Add to favorites ',
                 ),
-                onPressed: () => onPressed(),
+                onPressed: () async {
+                  await onPressed();
+                  if (trips[widget.index].isLiked) {
+                    SemanticsService.announce(
+                      'Added to favorites',
+                      TextDirection.ltr,
+                    );
+                  } else {
+                    SemanticsService.announce(
+                      'Removed from favorites',
+                      TextDirection.ltr,
+                    );
+                  }
+                },
               ),
             ),
           ),

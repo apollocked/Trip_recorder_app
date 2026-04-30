@@ -15,6 +15,7 @@ Widget titleWidget(String title, BuildContext context) {
         ),
       ),
       child: Text(
+        semanticsLabel: "Title of the app",
         title,
         style: TextStyle(
           fontSize: 26,

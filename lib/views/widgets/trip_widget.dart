@@ -103,6 +103,8 @@ Widget tripWidget(
                         children: [
                           Text(
                             trip.title,
+                            semanticsLabel:
+                                "the title of the trip is ${trip.title}",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: textTheme.titleMedium?.copyWith(
@@ -121,6 +123,8 @@ Widget tripWidget(
                               const SizedBox(width: 4),
                               Text(
                                 '${trip.nights} nights',
+                                semanticsLabel:
+                                    "the trip is for ${trip.nights} nights",
                                 style: textTheme.bodySmall?.copyWith(
                                   color: colorScheme.primary,
                                   fontWeight: FontWeight.w600,
@@ -131,6 +135,8 @@ Widget tripWidget(
                           const SizedBox(height: 8),
                           Text(
                             '${trip.date.day}/${trip.date.month}/${trip.date.year}',
+                            semanticsLabel:
+                                "the trip date is ${trip.date.day}/${trip.date.month}/${trip.date.year}",
                             style: textTheme.labelSmall?.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
@@ -152,6 +158,8 @@ Widget tripWidget(
                           ),
                           child: Text(
                             '\$${trip.price}',
+                            semanticsLabel:
+                                "the price of the trip is \$${trip.price}",
                             style: textTheme.labelLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.primary,

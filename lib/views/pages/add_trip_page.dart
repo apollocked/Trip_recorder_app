@@ -15,7 +15,6 @@ class AddTripPage extends StatefulWidget {
 }
 
 class _AddTripPageState extends State<AddTripPage> {
-  // Global key for form validation
   final _formKey = GlobalKey<FormState>();
 
   final _titleController = TextEditingController();
@@ -25,7 +24,7 @@ class _AddTripPageState extends State<AddTripPage> {
   late DateTime _selectedDate;
   File? _imageFile;
   String? _existingImagePath;
-  bool _imageError = false; // To track image validation manually
+  bool _imageError = false;
 
   @override
   void initState() {
@@ -52,10 +51,7 @@ class _AddTripPageState extends State<AddTripPage> {
   }
 
   void _handleSave() {
-    // Validate Form Fields
     final isFormValid = _formKey.currentState!.validate();
-
-    // Validate Image manually
     final isImageValid = _imageFile != null || _existingImagePath != null;
 
     setState(() {
@@ -94,6 +90,9 @@ class _AddTripPageState extends State<AddTripPage> {
           elevation: 0,
           title: Text(
             widget.trip == null ? "Add New Journey" : "Edit Journey",
+            semanticsLabel: widget.trip == null
+                ? "Add New Journey form"
+                : "Edit Journey form",
             style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
@@ -106,6 +105,8 @@ class _AddTripPageState extends State<AddTripPage> {
               children: [
                 Text(
                   "Cover Photo",
+                  semanticsLabel:
+                      "Section for adding a cover photo for the trip",
                   style: textTheme.labelLarge?.copyWith(
                     color: _imageError
                         ? colorScheme.error
@@ -168,6 +169,8 @@ class _AddTripPageState extends State<AddTripPage> {
                               const SizedBox(height: 12),
                               Text(
                                 "A photo is required",
+                                semanticsLabel:
+                                    "Image is required for the trip",
                                 style: TextStyle(
                                   color: _imageError
                                       ? colorScheme.error
@@ -184,6 +187,7 @@ class _AddTripPageState extends State<AddTripPage> {
                     padding: const EdgeInsets.only(top: 8, left: 12),
                     child: Text(
                       "Please select a trip image",
+                      semanticsLabel: "Image is required for the trip",
                       style: textTheme.bodySmall?.copyWith(
                         color: colorScheme.error,
                       ),
@@ -193,6 +197,7 @@ class _AddTripPageState extends State<AddTripPage> {
                 const SizedBox(height: 32),
                 Text(
                   "Trip Details",
+                  semanticsLabel: "Section for entering trip details",
                   style: textTheme.labelLarge?.copyWith(
                     color: colorScheme.primary,
                   ),
@@ -200,41 +205,50 @@ class _AddTripPageState extends State<AddTripPage> {
                 const SizedBox(height: 12),
 
                 // TEXT FIELDS SECTION
-                _buildTextField(
-                  controller: _titleController,
-                  label: "Destination",
-                  icon: Icons.map_rounded,
-                  colorScheme: colorScheme,
-                  validator: (val) => val == null || val.isEmpty
-                      ? "Destination name is required"
-                      : null,
+                Semantics(
+                  label: "Destination you are travelled to input field",
+                  child: _buildTextField(
+                    controller: _titleController,
+                    label: "Destination",
+                    icon: Icons.map_rounded,
+                    colorScheme: colorScheme,
+                    validator: (val) => val == null || val.isEmpty
+                        ? "Destination name is required"
+                        : null,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: _buildTextField(
-                        controller: _priceController,
-                        label: "Budget",
-                        icon: Icons.attach_money_rounded,
-                        colorScheme: colorScheme,
-                        keyboardType: TextInputType.number,
-                        isPrice: true,
-                        validator: (val) =>
-                            val == null || val.isEmpty ? "Required" : null,
+                      child: Semantics(
+                        label: "Trip budget input field",
+                        child: _buildTextField(
+                          controller: _priceController,
+                          label: "Budget",
+                          icon: Icons.attach_money_rounded,
+                          colorScheme: colorScheme,
+                          keyboardType: TextInputType.number,
+                          isPrice: true,
+                          validator: (val) =>
+                              val == null || val.isEmpty ? "Required" : null,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: _buildTextField(
-                        controller: _nightsController,
-                        label: "Nights",
-                        icon: Icons.bedtime_rounded,
-                        colorScheme: colorScheme,
-                        keyboardType: TextInputType.number,
-                        validator: (val) =>
-                            val == null || val.isEmpty ? "Required" : null,
+                      child: Semantics(
+                        label: "Number of nights you stayed input field",
+                        child: _buildTextField(
+                          controller: _nightsController,
+                          label: "Nights",
+                          icon: Icons.bedtime_rounded,
+                          colorScheme: colorScheme,
+                          keyboardType: TextInputType.number,
+                          validator: (val) =>
+                              val == null || val.isEmpty ? " Required" : null,
+                        ),
                       ),
                     ),
                   ],
@@ -272,11 +286,14 @@ class _AddTripPageState extends State<AddTripPage> {
                         const SizedBox(width: 12),
                         Text(
                           "Departure Date",
+                          semanticsLabel: "Select the first day of the trip",
                           style: TextStyle(color: colorScheme.onSurfaceVariant),
                         ),
                         const Spacer(),
                         Text(
                           "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
+                          semanticsLabel:
+                              "Selected date is ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: colorScheme.primary,
@@ -288,12 +305,15 @@ class _AddTripPageState extends State<AddTripPage> {
                 ),
 
                 const SizedBox(height: 16),
-                _buildTextField(
-                  controller: _descriptionController,
-                  label: "About this trip (Optional)",
-                  icon: Icons.notes_rounded,
-                  colorScheme: colorScheme,
-                  maxLines: 4,
+                Semantics(
+                  label: "Trip description input field ",
+                  child: _buildTextField(
+                    controller: _descriptionController,
+                    label: "About this trip (Optional)",
+                    icon: Icons.notes_rounded,
+                    colorScheme: colorScheme,
+                    maxLines: 4,
+                  ),
                 ),
 
                 const SizedBox(height: 40),
@@ -309,6 +329,9 @@ class _AddTripPageState extends State<AddTripPage> {
                     onPressed: _handleSave,
                     child: Text(
                       widget.trip == null ? "Create Journey" : "Update Journey",
+                      semanticsLabel: widget.trip == null
+                          ? "Save Journey button"
+                          : "Update Journey button",
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

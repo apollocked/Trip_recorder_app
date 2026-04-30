@@ -55,7 +55,9 @@ class _TripListPageState extends State<TripListPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My Trips')),
+      appBar: AppBar(
+        title: const Text('My Trips', semanticsLabel: 'Title of the trip list'),
+      ),
 
       // --- PREMIUM FLOATING ACTION BUTTON ---
       floatingActionButton: latestTrips.isEmpty
@@ -85,6 +87,7 @@ class _TripListPageState extends State<TripListPage> {
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   elevation: 6,
                   icon: const Icon(
+                    semanticLabel: "adding a new trip",
                     Icons.add_road_rounded,
                     size: 18, // Updated icon for a more modern feel
                   ),
@@ -101,6 +104,7 @@ class _TripListPageState extends State<TripListPage> {
             ),
 
       body: RefreshIndicator(
+        semanticsLabel: "Pull to refresh the trip list",
         onRefresh: () async {
           await HapticFeedback.vibrate();
           await tripService.refresh();
@@ -130,7 +134,12 @@ class _TripListPageState extends State<TripListPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.beach_access, size: 80, color: Colors.grey),
+                  const Icon(
+                    Icons.beach_access,
+                    size: 80,
+                    color: Colors.grey,
+                    semanticLabel: "No trips icon",
+                  ),
                   const SizedBox(height: 16),
                   const Text(
                     "No Trips Found",
@@ -169,7 +178,10 @@ class _TripListPageState extends State<TripListPage> {
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     elevation: 6,
                     // Modernized the icon and text feel
-                    icon: const Icon(Icons.add_road_rounded),
+                    icon: const Icon(
+                      Icons.add_road_rounded,
+                      semanticLabel: "Add",
+                    ),
                     label: const Text(
                       "NEW JOURNEY",
                       style: TextStyle(
@@ -192,21 +204,28 @@ class _TripListPageState extends State<TripListPage> {
       initialItemCount: _displayList.length,
       itemBuilder: (context, index, animation) {
         final trip = _displayList[index];
-        return tripWidget(
-          trip,
-          animation,
-          context,
-          index,
-          onRemove: () {
-            HapticFeedback.vibrate();
-            _displayList.removeAt(index);
-            _listKey.currentState?.removeItem(
-              index,
-              (context, animation) => const SizedBox.shrink(),
-              duration: Duration.zero,
-            );
-            Provider.of<TripService>(context, listen: false).removeTrip(index);
-          },
+        return Semantics(
+          label:
+              "Trip item of ${trip.title}, tap for details ,swape left to delete",
+          child: tripWidget(
+            trip,
+            animation,
+            context,
+            index,
+            onRemove: () {
+              HapticFeedback.vibrate();
+              _displayList.removeAt(index);
+              _listKey.currentState?.removeItem(
+                index,
+                (context, animation) => const SizedBox.shrink(),
+                duration: Duration.zero,
+              );
+              Provider.of<TripService>(
+                context,
+                listen: false,
+              ).removeTrip(index);
+            },
+          ),
         );
       },
     );

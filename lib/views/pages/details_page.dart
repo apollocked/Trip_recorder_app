@@ -29,7 +29,11 @@ class DetailsPage extends StatelessWidget {
             iconTheme: IconThemeData(color: colorScheme.onSurface),
             actions: [
               IconButton(
-                icon: const Icon(Icons.edit_note_rounded, size: 28),
+                icon: const Icon(
+                  Icons.edit_note_rounded,
+                  size: 28,
+                  semanticLabel: 'Edit the trip,',
+                ),
                 onPressed: () async {
                   HapticFeedback.selectionClick();
                   final updatedTrip = await Navigator.push<Trip>(
@@ -50,7 +54,6 @@ class DetailsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // HEADER IMAGE SECTION (Untouched)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Container(
@@ -78,7 +81,10 @@ class DetailsPage extends StatelessWidget {
                         borderRadius: const BorderRadius.all(
                           Radius.circular(32),
                         ),
-                        child: coverImage(currentTrip.img),
+                        child: Semantics(
+                          label: 'Trip cover image',
+                          child: coverImage(currentTrip.img),
+                        ),
                       ),
                     ),
                   ),
@@ -113,6 +119,8 @@ class DetailsPage extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 60),
                                   child: Text(
+                                    semanticsLabel:
+                                        'Trip title is ${currentTrip.title}',
                                     currentTrip.title,
                                     style: textTheme.headlineMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
@@ -124,16 +132,22 @@ class DetailsPage extends StatelessWidget {
                                 const SizedBox(height: 16),
                                 Row(
                                   children: [
-                                    _buildInfoChip(
-                                      context,
-                                      icon: Icons.bedtime_rounded,
-                                      label: '${currentTrip.nights} Nights',
+                                    Semantics(
+                                      label: 'Trip duration is',
+                                      child: _buildInfoChip(
+                                        context,
+                                        icon: Icons.bedtime_rounded,
+                                        label: '${currentTrip.nights} Nights',
+                                      ),
                                     ),
                                     const SizedBox(width: 12),
-                                    _buildInfoChip(
-                                      context,
-                                      icon: Icons.attach_money_rounded,
-                                      label: currentTrip.price,
+                                    Semantics(
+                                      label: 'Trip cost in dollars is ',
+                                      child: _buildInfoChip(
+                                        context,
+                                        icon: Icons.attach_money_rounded,
+                                        label: currentTrip.price,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -184,6 +198,8 @@ class DetailsPage extends StatelessWidget {
                                   color: colorScheme.onSurfaceVariant,
                                   height: 1.6,
                                 ),
+                                semanticsLabel:
+                                    "the description of the trip is ${currentTrip.description.isEmpty ? 'empty' : currentTrip.description}",
                               ),
                             ),
                           ),

@@ -18,8 +18,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      showSemanticsDebugger: true,
       debugShowCheckedModeBanner: false,
-      // 1. Light Theme Definition
+
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
           seedColor: const Color(0xFF00796B),
         ),
       ),
-      // 2. Dark Theme Definition
+
       darkTheme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
           seedColor: const Color(0xFF00796B),
         ),
       ),
-      // 3. THE FIX: Force light mode to test it, or keep .system
+
       themeMode: ThemeMode.system,
       home: const HomePage(),
     );
