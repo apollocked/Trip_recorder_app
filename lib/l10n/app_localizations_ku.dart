@@ -24,7 +24,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get aboutjourney => 'دەربارەی گەشتەکە';
 
   @override
-  String get night => 'Night';
+  String get night => 'شەو';
 
   @override
   String get noTripsFound => 'هیچ گەشتێک نەدۆزرایەوە';
@@ -112,4 +112,22 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get nightsLabel => 'شەو';
+
+  @override
+  String get settingsTitle => 'ڕێکخستنەکان';
+
+  @override
+  String get language => 'زمان';
+
+  @override
+  String get theme => 'ڕووکار';
+
+  @override
+  String get light => 'ڕووناک';
+
+  @override
+  String get dark => 'تاریک';
+
+  @override
+  String get system => 'سیستەم';
 }

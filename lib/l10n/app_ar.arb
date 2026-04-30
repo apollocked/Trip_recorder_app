@@ -32,5 +32,11 @@
   "selectPhotoSource": "اختر مصدر الصورة",
   "gallery": "المعرض",
   "camera": "الكاميرا",
-  "nightsLabel": "ليالٍ"
+  "nightsLabel": "ليالٍ",
+  "settingsTitle": "الإعدادات",
+  "language": "اللغة",
+  "theme": "المظهر",
+  "light": "فاتح",
+  "dark": "داكن",
+  "system": "النظام"
 }

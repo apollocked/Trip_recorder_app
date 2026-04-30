@@ -111,4 +111,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get nightsLabel => 'ليالٍ';
+
+  @override
+  String get settingsTitle => 'الإعدادات';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get theme => 'المظهر';
+
+  @override
+  String get light => 'فاتح';
+
+  @override
+  String get dark => 'داكن';
+
+  @override
+  String get system => 'النظام';
 }

@@ -4,7 +4,7 @@
   "tripsList": "گەشتەکانم",
   "newjourney": "گەشتێکی نوێ",
   "aboutjourney": "دەربارەی گەشتەکە",
-
+  "night": "شەو",
   "noTripsFound": "هیچ گەشتێک نەدۆزرایەوە",
   "emptylistDescription": "کاتی ئەوەیە پلانی گەشتی داهاتووت دابنێیت!\nبۆ نوێکردنەوە پەنجە بۆ خوارەوە ڕابکێشە.",
   "pullToRefresh": "بۆ نوێکردنەوە بۆ خوار بکێشە",
@@ -32,5 +32,11 @@
   "selectPhotoSource": "سەرچاوەی وێنە هەڵبژێرە",
   "gallery": "وێنەکانی گەلەری",
   "camera": "کامێرا",
-  "nightsLabel": "شەو"
+  "nightsLabel": "شەو",
+  "settingsTitle": "ڕێکخستنەکان",
+  "language": "زمان",
+  "theme": "ڕووکار",
+  "light": "ڕووناک",
+  "dark": "تاریک",
+  "system": "سیستەم"
 }

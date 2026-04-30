@@ -32,5 +32,11 @@
   "selectPhotoSource": "Select Photo Source",
   "gallery": "Gallery",
   "camera": "Camera",
-  "nightsLabel": "nights"
+  "nightsLabel": "nights",
+  "settingsTitle": "Settings",
+  "language": "Language",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System"
 }

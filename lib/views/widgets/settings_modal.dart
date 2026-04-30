@@ -1,3 +1,4 @@
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/l10n/l10n.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 void showSettingsModal(BuildContext context) {
   final colorScheme = Theme.of(context).colorScheme;
   final textTheme = Theme.of(context).textTheme;
+  final loc = AppLocalizations.of(context)!;
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -27,7 +29,7 @@ void showSettingsModal(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Settings',
+                  loc.settingsTitle,
                   style: textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: colorScheme.onSurface,
@@ -36,7 +38,7 @@ void showSettingsModal(BuildContext context) {
                 const SizedBox(height: 16),
                 _SectionCard(
                   icon: Icons.language_rounded,
-                  title: 'Language',
+                  title: loc.language,
                   child: Consumer<LanguageService>(
                     builder: (context, languageService, _) {
                       return Wrap(
@@ -61,7 +63,7 @@ void showSettingsModal(BuildContext context) {
                 const SizedBox(height: 14),
                 _SectionCard(
                   icon: Icons.palette_outlined,
-                  title: 'Theme',
+                  title: loc.theme,
                   child: Consumer<ThemeService>(
                     builder: (context, themeService, _) {
                       return Wrap(
@@ -70,7 +72,7 @@ void showSettingsModal(BuildContext context) {
                         children: [
                           ChoiceChip(
                             avatar: const Icon(Icons.light_mode_outlined),
-                            label: const Text('Light'),
+                            label: Text(loc.light),
                             selected: themeService.themeMode == ThemeMode.light,
                             onSelected: (selected) {
                               if (selected) {
@@ -80,7 +82,7 @@ void showSettingsModal(BuildContext context) {
                           ),
                           ChoiceChip(
                             avatar: const Icon(Icons.dark_mode_outlined),
-                            label: const Text('Dark'),
+                            label: Text(loc.dark),
                             selected: themeService.themeMode == ThemeMode.dark,
                             onSelected: (selected) {
                               if (selected) {
@@ -90,7 +92,7 @@ void showSettingsModal(BuildContext context) {
                           ),
                           ChoiceChip(
                             avatar: const Icon(Icons.phone_android_outlined),
-                            label: const Text('System'),
+                            label: Text(loc.system),
                             selected:
                                 themeService.themeMode == ThemeMode.system,
                             onSelected: (selected) {
