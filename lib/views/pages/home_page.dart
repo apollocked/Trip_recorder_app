@@ -1,5 +1,4 @@
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/views/widgets/settings_modal.dart';
 import 'package:animations_in_flutter/views/widgets/title_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -60,20 +59,9 @@ class _HomeState extends State<HomePage> {
                                 left: size.width * 0.03,
                                 top: size.height * 0.04,
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  titleWidget(
-                                    AppLocalizations.of(context)!.appTitle,
-                                    context,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  IconButton(
-                                    icon: const Icon(Icons.settings_rounded),
-                                    onPressed: () => showSettingsModal(context),
-                                    tooltip: 'Settings',
-                                  ),
-                                ],
+                              child: titleWidget(
+                                AppLocalizations.of(context)!.appTitle,
+                                context,
                               ),
                             ),
                           ),

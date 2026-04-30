@@ -4,6 +4,7 @@ import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
+import 'package:animations_in_flutter/views/widgets/settings_modal.dart';
 import 'package:animations_in_flutter/views/widgets/shimmer_card_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_widget.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,14 @@ class _TripListPageState extends State<TripListPage> {
           semanticsLabel: 'Title of the trip list',
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_rounded),
+            onPressed: () => showSettingsModal(context),
+            tooltip: 'Settings',
+          ),
+
+          SizedBox(width: 16),
+
           ?latestTrips.isEmpty
               ? null
               : FloatingActionButton.extended(
