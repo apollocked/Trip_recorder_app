@@ -1,3 +1,4 @@
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
@@ -177,7 +178,7 @@ class DetailsPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          "About this journey",
+                          AppLocalizations.of(context)!.aboutjourney,
                           style: textTheme.labelLarge?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.bold,
@@ -193,7 +194,9 @@ class DetailsPage extends StatelessWidget {
                               child: Text(
                                 currentTrip.description.isNotEmpty
                                     ? currentTrip.description
-                                    : 'No description added for this trip yet.',
+                                    : AppLocalizations.of(
+                                        context,
+                                      )!.noDescriptionAdded,
                                 style: textTheme.bodyLarge?.copyWith(
                                   color: colorScheme.onSurfaceVariant,
                                   height: 1.6,

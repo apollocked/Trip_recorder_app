@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -25,6 +26,7 @@ Future<void> _showSoftAskDialog(
 ) async {
   final colorScheme = Theme.of(context).colorScheme;
   final textTheme = Theme.of(context).textTheme;
+  final l10n = AppLocalizations.of(context)!;
 
   return showDialog(
     context: context,
@@ -42,7 +44,7 @@ Future<void> _showSoftAskDialog(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Share your journey!",
+            l10n.shareJourney,
             style: textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: colorScheme.onSurface,
@@ -50,7 +52,7 @@ Future<void> _showSoftAskDialog(
           ),
           const SizedBox(height: 12),
           Text(
-            "We need access to your camera and gallery so you can upload beautiful photos of your trips.",
+            l10n.permissionDescription,
             textAlign: TextAlign.center,
             style: textTheme.bodyMedium?.copyWith(
               color: colorScheme.onSurfaceVariant,
@@ -61,7 +63,10 @@ Future<void> _showSoftAskDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text("Not Now", style: TextStyle(color: colorScheme.primary)),
+          child: Text(
+            l10n.notNow,
+            style: TextStyle(color: colorScheme.primary),
+          ),
         ),
         FilledButton(
           style: FilledButton.styleFrom(
@@ -73,7 +78,7 @@ Future<void> _showSoftAskDialog(
             Navigator.pop(context);
             await _requestSystemPermissions(context, onImagePicked);
           },
-          child: const Text("Allow Access"),
+          child: Text(l10n.allowAccess),
         ),
       ],
     ),
@@ -86,6 +91,7 @@ void _showImageSourceOptions(
 ) {
   final colorScheme = Theme.of(context).colorScheme;
   final textTheme = Theme.of(context).textTheme;
+  final l10n = AppLocalizations.of(context)!;
 
   showModalBottomSheet(
     context: context,
@@ -111,7 +117,7 @@ void _showImageSourceOptions(
               ),
             ),
             Text(
-              "Select Photo Source",
+              l10n.selectPhotoSource,
               style: textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: colorScheme.onSurface,
@@ -124,7 +130,7 @@ void _showImageSourceOptions(
                 _buildSourceCard(
                   context,
                   icon: Icons.image_search_rounded,
-                  label: "Gallery",
+                  label: l10n.gallery,
                   onTap: () {
                     Navigator.pop(context);
                     _pickImage(ImageSource.gallery, onImagePicked);
@@ -133,7 +139,7 @@ void _showImageSourceOptions(
                 _buildSourceCard(
                   context,
                   icon: Icons.camera_rounded,
-                  label: "Camera",
+                  label: l10n.camera,
                   onTap: () {
                     Navigator.pop(context);
                     _pickImage(ImageSource.camera, onImagePicked);

@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
@@ -56,7 +57,10 @@ class _TripListPageState extends State<TripListPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Trips', semanticsLabel: 'Title of the trip list'),
+        title: Text(
+          AppLocalizations.of(context)!.tripsList,
+          semanticsLabel: 'Title of the trip list',
+        ),
       ),
 
       // --- PREMIUM FLOATING ACTION BUTTON ---
@@ -91,9 +95,9 @@ class _TripListPageState extends State<TripListPage> {
                     Icons.add_road_rounded,
                     size: 18, // Updated icon for a more modern feel
                   ),
-                  label: const Text(
-                    "NEW JOURNEY",
-                    style: TextStyle(
+                  label: Text(
+                    AppLocalizations.of(context)!.newjourney,
+                    style: const TextStyle(
                       fontWeight: FontWeight.w900,
                       letterSpacing: 1,
                       fontSize: 12,
@@ -145,10 +149,13 @@ class _TripListPageState extends State<TripListPage> {
                     "No Trips Found",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 8,
+                    ),
                     child: Text(
-                      "Time to start planning your next adventure! \nPull down to check again.",
+                      AppLocalizations.of(context)!.emptylistDescription,
                       textAlign: TextAlign.center,
                     ),
                   ),

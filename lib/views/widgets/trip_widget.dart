@@ -1,3 +1,4 @@
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
 import 'package:animations_in_flutter/views/widgets/image_widget_leading.dart';
@@ -122,7 +123,7 @@ Widget tripWidget(
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                '${trip.nights} nights',
+                                '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
                                 semanticsLabel:
                                     "the trip is for ${trip.nights} nights",
                                 style: textTheme.bodySmall?.copyWith(

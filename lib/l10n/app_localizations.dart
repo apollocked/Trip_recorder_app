@@ -99,6 +99,210 @@ abstract class AppLocalizations {
     Locale('en'),
     Locale('ku'),
   ];
+
+  /// No description provided for @trip.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip'**
+  String get trip;
+
+  /// No description provided for @recorder.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorder'**
+  String get recorder;
+
+  /// No description provided for @tripsList.
+  ///
+  /// In en, this message translates to:
+  /// **'My Trips'**
+  String get tripsList;
+
+  /// No description provided for @newjourney.
+  ///
+  /// In en, this message translates to:
+  /// **'New Journey'**
+  String get newjourney;
+
+  /// No description provided for @aboutjourney.
+  ///
+  /// In en, this message translates to:
+  /// **'About this journey'**
+  String get aboutjourney;
+
+  /// No description provided for @night.
+  ///
+  /// In en, this message translates to:
+  /// **'Night'**
+  String get night;
+
+  /// No description provided for @noTripsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Trips Found'**
+  String get noTripsFound;
+
+  /// No description provided for @emptylistDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to start planning your next adventure! \nPull down to check again.'**
+  String get emptylistDescription;
+
+  /// No description provided for @pullToRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Pull down to Refresh the tips'**
+  String get pullToRefresh;
+
+  /// No description provided for @addtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Journey'**
+  String get addtitle;
+
+  /// No description provided for @coverphoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover Photo'**
+  String get coverphoto;
+
+  /// No description provided for @photoreq.
+  ///
+  /// In en, this message translates to:
+  /// **'A photo is required'**
+  String get photoreq;
+
+  /// No description provided for @photoErrorReq.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a trip image'**
+  String get photoErrorReq;
+
+  /// No description provided for @appTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip \nRecorder'**
+  String get appTitle;
+
+  /// No description provided for @editJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Journey'**
+  String get editJourney;
+
+  /// No description provided for @tripDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip Details'**
+  String get tripDetails;
+
+  /// No description provided for @destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination'**
+  String get destination;
+
+  /// No description provided for @budget.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget'**
+  String get budget;
+
+  /// No description provided for @nights.
+  ///
+  /// In en, this message translates to:
+  /// **'Nights'**
+  String get nights;
+
+  /// No description provided for @departureDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure Date'**
+  String get departureDate;
+
+  /// No description provided for @tripDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'About this trip (Optional)'**
+  String get tripDescription;
+
+  /// No description provided for @createJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Journey'**
+  String get createJourney;
+
+  /// No description provided for @updateJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Journey'**
+  String get updateJourney;
+
+  /// No description provided for @destinationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination name is required'**
+  String get destinationRequired;
+
+  /// No description provided for @required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get required;
+
+  /// No description provided for @noDescriptionAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'No description added for this trip yet.'**
+  String get noDescriptionAdded;
+
+  /// No description provided for @shareJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your journey!'**
+  String get shareJourney;
+
+  /// No description provided for @permissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'We need access to your camera and gallery so you can upload beautiful photos of your trips.'**
+  String get permissionDescription;
+
+  /// No description provided for @notNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Now'**
+  String get notNow;
+
+  /// No description provided for @allowAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Access'**
+  String get allowAccess;
+
+  /// No description provided for @selectPhotoSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Photo Source'**
+  String get selectPhotoSource;
+
+  /// No description provided for @gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get gallery;
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
+
+  /// No description provided for @nightsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'nights'**
+  String get nightsLabel;
 }
 
 class _AppLocalizationsDelegate

@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
 
@@ -80,6 +81,7 @@ class _AddTripPageState extends State<AddTripPage> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -89,7 +91,7 @@ class _AddTripPageState extends State<AddTripPage> {
           backgroundColor: colorScheme.surface,
           elevation: 0,
           title: Text(
-            widget.trip == null ? "Add New Journey" : "Edit Journey",
+            widget.trip == null ? l10n.addtitle : l10n.editJourney,
             semanticsLabel: widget.trip == null
                 ? "Add New Journey form"
                 : "Edit Journey form",
@@ -104,7 +106,7 @@ class _AddTripPageState extends State<AddTripPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Cover Photo",
+                  l10n.coverphoto,
                   semanticsLabel:
                       "Section for adding a cover photo for the trip",
                   style: textTheme.labelLarge?.copyWith(
@@ -168,7 +170,7 @@ class _AddTripPageState extends State<AddTripPage> {
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                "A photo is required",
+                                l10n.photoreq,
                                 semanticsLabel:
                                     "Image is required for the trip",
                                 style: TextStyle(
@@ -186,7 +188,7 @@ class _AddTripPageState extends State<AddTripPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 12),
                     child: Text(
-                      "Please select a trip image",
+                      l10n.photoErrorReq,
                       semanticsLabel: "Image is required for the trip",
                       style: textTheme.bodySmall?.copyWith(
                         color: colorScheme.error,
@@ -196,7 +198,7 @@ class _AddTripPageState extends State<AddTripPage> {
 
                 const SizedBox(height: 32),
                 Text(
-                  "Trip Details",
+                  l10n.tripDetails,
                   semanticsLabel: "Section for entering trip details",
                   style: textTheme.labelLarge?.copyWith(
                     color: colorScheme.primary,
@@ -209,11 +211,11 @@ class _AddTripPageState extends State<AddTripPage> {
                   label: "Destination you are travelled to input field",
                   child: _buildTextField(
                     controller: _titleController,
-                    label: "Destination",
+                    label: l10n.destination,
                     icon: Icons.map_rounded,
                     colorScheme: colorScheme,
                     validator: (val) => val == null || val.isEmpty
-                        ? "Destination name is required"
+                        ? l10n.destinationRequired
                         : null,
                   ),
                 ),
@@ -226,13 +228,13 @@ class _AddTripPageState extends State<AddTripPage> {
                         label: "Trip budget input field",
                         child: _buildTextField(
                           controller: _priceController,
-                          label: "Budget",
+                          label: l10n.budget,
                           icon: Icons.attach_money_rounded,
                           colorScheme: colorScheme,
                           keyboardType: TextInputType.number,
                           isPrice: true,
                           validator: (val) =>
-                              val == null || val.isEmpty ? "Required" : null,
+                              val == null || val.isEmpty ? l10n.required : null,
                         ),
                       ),
                     ),
@@ -242,12 +244,12 @@ class _AddTripPageState extends State<AddTripPage> {
                         label: "Number of nights you stayed input field",
                         child: _buildTextField(
                           controller: _nightsController,
-                          label: "Nights",
+                          label: l10n.nights,
                           icon: Icons.bedtime_rounded,
                           colorScheme: colorScheme,
                           keyboardType: TextInputType.number,
                           validator: (val) =>
-                              val == null || val.isEmpty ? " Required" : null,
+                              val == null || val.isEmpty ? l10n.required : null,
                         ),
                       ),
                     ),
@@ -285,7 +287,7 @@ class _AddTripPageState extends State<AddTripPage> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          "Departure Date",
+                          l10n.departureDate,
                           semanticsLabel: "Select the first day of the trip",
                           style: TextStyle(color: colorScheme.onSurfaceVariant),
                         ),
@@ -309,7 +311,7 @@ class _AddTripPageState extends State<AddTripPage> {
                   label: "Trip description input field ",
                   child: _buildTextField(
                     controller: _descriptionController,
-                    label: "About this trip (Optional)",
+                    label: l10n.tripDescription,
                     icon: Icons.notes_rounded,
                     colorScheme: colorScheme,
                     maxLines: 4,
@@ -328,7 +330,9 @@ class _AddTripPageState extends State<AddTripPage> {
                     ),
                     onPressed: _handleSave,
                     child: Text(
-                      widget.trip == null ? "Create Journey" : "Update Journey",
+                      widget.trip == null
+                          ? l10n.createJourney
+                          : l10n.updateJourney,
                       semanticsLabel: widget.trip == null
                           ? "Save Journey button"
                           : "Update Journey button",
