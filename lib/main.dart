@@ -1,3 +1,5 @@
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:animations_in_flutter/views/pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +7,11 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => TripService(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TripService()),
+        ChangeNotifierProvider(create: (_) => LanguageService()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -17,10 +22,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = Provider.of<LanguageService>(context);
+
     return MaterialApp(
       showSemanticsDebugger: true,
       debugShowCheckedModeBanner: false,
-
+      locale: l10n.locale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
