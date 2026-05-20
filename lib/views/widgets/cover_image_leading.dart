@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 Widget coverImage(String imgPath) {
-  // Check if it's a file path (from Image Picker) which is typically an absolute path
   final bool isFile = File(imgPath).isAbsolute;
 
   if (isFile) {

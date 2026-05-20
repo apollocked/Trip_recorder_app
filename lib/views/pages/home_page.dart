@@ -45,7 +45,7 @@ class _HomeState extends State<HomePage> {
                               builder: (context, value, child) =>
                                   Opacity(opacity: value, child: child),
                               child: Image.asset(
-                                "images/bg.png",
+                                "assets/images/bg.png",
                                 semanticLabel: 'Banner of the app',
                               ),
                             ),
