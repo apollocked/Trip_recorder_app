@@ -28,39 +28,14 @@ class TripService extends ChangeNotifier {
         final List<dynamic> decoded = jsonDecode(tripsJson);
         _trips = decoded.map((item) => Trip.fromJson(item)).toList();
       } else {
-        _loadDefaultTrips();
         await _saveToPrefs();
       }
     } catch (e) {
       debugPrint('Error loading trips from SharedPreferences: $e');
-      _loadDefaultTrips();
     } finally {
       _isloading = false;
       notifyListeners();
     }
-  }
-
-  void _loadDefaultTrips() {
-    _trips = [
-      Trip(
-        title: 'Beach Paradise',
-        price: '350',
-        nights: '3',
-        img: 'images/beach.png',
-        date: DateTime(2026, 06, 15),
-        description:
-            'Relax on the pristine white sands and enjoy the crystal clear waters.',
-      ),
-      Trip(
-        title: 'City Break',
-        price: '400',
-        nights: '5',
-        img: 'images/city.png',
-        date: DateTime(2026, 06, 20),
-        description:
-            'Explore the bustling city life, visit museums, and enjoy fine dining.',
-      ),
-    ];
   }
 
   Future<void> refresh() async => await loadTrips();
@@ -105,7 +80,6 @@ class TripService extends ChangeNotifier {
 
   Future<void> checkOnboardingStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    // If 'is_first_run' doesn't exist yet, it returns null, meaning it IS their first time.
     _isFirstTime = prefs.getBool('is_first_run') ?? true;
     notifyListeners();
   }
