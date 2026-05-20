@@ -1,7 +1,6 @@
 // ignore_for_file: strict_top_level_inference, deprecated_member_use
-
 import 'dart:ui';
-import 'package:animations_in_flutter/data/trip_list.dart';
+import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -24,6 +23,7 @@ class _HeartWidgetState extends State<HeartWidget>
   late Animation<Color?> colorAnimation;
   late Animation<double> sizeAnimation;
   late Animation<double> curveAnimation;
+  List<Trip> trips = [];
 
   @override
   void initState() {

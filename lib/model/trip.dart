@@ -17,7 +17,6 @@ class Trip {
     this.isLiked = false,
   });
 
-  // Convert Trip to Map for JSON storage
   Map<String, dynamic> toJson() => {
     'title': title,
     'price': price,
