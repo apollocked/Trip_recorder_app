@@ -23,6 +23,7 @@ dependencies:
   provider: null
   shared_preferences: null
   shimmer: ^3.0.0
+  flutter_launcher_icons: ^0.14.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -35,3 +36,11 @@ flutter:
 
   assets:
     - images/
+    - assets/
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/app_icon.png"
+
+  adaptive_icon_background: "#FFFFFF"

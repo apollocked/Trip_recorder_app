@@ -24,9 +24,9 @@
     </queries>
 
     <application
-        android:label="animations_in_flutter"
+        android:label="Trip Recorder"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         
         <activity
             android:name=".MainActivity"
