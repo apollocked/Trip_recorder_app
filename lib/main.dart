@@ -10,8 +10,6 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final tripService = TripService();
-  await tripService.checkOnboardingStatus();
   runApp(
     MultiProvider(
       providers: [
@@ -29,9 +27,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isFirstTime = context.watch<TripService>().isFirstTime;
+    final tripService = context.watch<TripService>();
+    final isFirstTime = tripService.isFirstTime;
     final l10n = context.watch<LanguageService>().locale;
     final themeMode = context.watch<ThemeService>().themeMode;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: l10n,

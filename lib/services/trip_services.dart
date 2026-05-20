@@ -13,6 +13,7 @@ class TripService extends ChangeNotifier {
 
   TripService() {
     loadTrips();
+    checkOnboardingStatus();
   }
 
   Future<void> loadTrips() async {
