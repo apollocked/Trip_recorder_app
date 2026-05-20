@@ -52,7 +52,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get appTitle => 'تۆمارکەری\nگەشت';
 
   @override
-  String get editJourney => 'دەستکاریکردنی گەشت';
+  String get editJourney => 'دەستکاریکردني گەشت';
 
   @override
   String get tripDetails => 'وردەکاریی گەشت';
@@ -86,7 +86,7 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get noDescriptionAdded =>
-      'هێشتا هیچ وردەکارییەک بۆ ئەم گەشتەکە زیاد نەکراوە.';
+      'هێشتا هیچ وردەکاريیەک بۆ ئەم گەشتەکە زیاد نەکراوە.';
 
   @override
   String get shareJourney => 'گەشتەکەت هاوبەش بکە!';
@@ -130,4 +130,28 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get system => 'سیستەم';
+
+  @override
+  String get onboardingTitle1 => 'ساتەکان تۆمار بکە';
+
+  @override
+  String get onboardingDesc1 =>
+      'یادەوەرییە دڵخوازەکانی گەشتەکەت، ڕێگا تایبەتەکان و ساتە جوانەکانت بە ئاسانی تۆمار بکە.';
+
+  @override
+  String get onboardingTitle2 => 'کارلێکی نەرم و شل';
+
+  @override
+  String get onboardingDesc2 =>
+      'بگەڕێ بەدوای ئەنیمەیشنە ناڕاستەوخۆکان، گواستنەوە تایبەتەکان، و وردەکاریی کارلێکەکانی ڕووکارەکە.';
+
+  @override
+  String get onboardingTitle3 => 'تۆمارەکانت، هەمیشە لای خۆت';
+
+  @override
+  String get onboardingDesc3 =>
+      'هەموو تێبینییەکانی گەشتەکەت و وێنەکانت بە پارێزراوی لەسەر ئامێرەکەت دەمێننەوە بەبێ پێویستی ئینتەرنێت.';
+
+  @override
+  String get getStarted => 'دەستپێبکە';
 }

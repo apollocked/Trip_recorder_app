@@ -6,7 +6,8 @@ import 'package:animations_in_flutter/model/trip.dart';
 class TripService extends ChangeNotifier {
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
-
+  bool _isFirstTime = true;
+  bool get isFirstTime => _isFirstTime;
   bool _isloading = false;
   bool get isLoading => _isloading;
 
@@ -100,5 +101,19 @@ class TripService extends ChangeNotifier {
     } catch (e) {
       debugPrint('Error saving trips to SharedPreferences: $e');
     }
+  }
+
+  Future<void> checkOnboardingStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    // If 'is_first_run' doesn't exist yet, it returns null, meaning it IS their first time.
+    _isFirstTime = prefs.getBool('is_first_run') ?? true;
+    notifyListeners();
+  }
+
+  Future<void> completeOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('is_first_run', false);
+    _isFirstTime = false;
+    notifyListeners();
   }
 }

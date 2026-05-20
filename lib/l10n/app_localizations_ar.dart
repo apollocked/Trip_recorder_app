@@ -129,4 +129,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get system => 'النظام';
+
+  @override
+  String get onboardingTitle1 => 'وثّق اللحظة';
+
+  @override
+  String get onboardingDesc1 =>
+      'سجّل ذكريات سفرك المفضلة، مساراتك الديناميكية، ولحظاتك الجميلة بسلاسة تامة.';
+
+  @override
+  String get onboardingTitle2 => 'تفاعلات انسيابية';
+
+  @override
+  String get onboardingDesc2 =>
+      'استكشف الرسوم المتحركة الضمنية عالية الدقة، الانتقالات المخصصة، والتفاعلات الدقيقة للواجهة.';
+
+  @override
+  String get onboardingTitle3 => 'سجلاتك، محلياً أولاً';
+
+  @override
+  String get onboardingDesc3 =>
+      'تُحفظ جميع دفاتر سفرك وصورك بأمان على جهازك بفضل ميزة الحفظ المحلي المستمر.';
+
+  @override
+  String get getStarted => 'ابدأ الآن';
 }

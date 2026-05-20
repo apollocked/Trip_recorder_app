@@ -339,6 +339,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'System'**
   String get system;
+
+  /// No description provided for @onboardingTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture the Moment'**
+  String get onboardingTitle1;
+
+  /// No description provided for @onboardingDesc1.
+  ///
+  /// In en, this message translates to:
+  /// **'Log your favorite travel memories, dynamic routes, and beautiful moments smoothly.'**
+  String get onboardingDesc1;
+
+  /// No description provided for @onboardingTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Fluid Interactions'**
+  String get onboardingTitle2;
+
+  /// No description provided for @onboardingDesc2.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore high-fidelity implicit animations, custom transitions, and interactive UI micro-interactions.'**
+  String get onboardingDesc2;
+
+  /// No description provided for @onboardingTitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Logs, Offline First'**
+  String get onboardingTitle3;
+
+  /// No description provided for @onboardingDesc3.
+  ///
+  /// In en, this message translates to:
+  /// **'All your travel notebooks and photos are stored safely on your device with local persistence.'**
+  String get onboardingDesc3;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
 }
 
 class _AppLocalizationsDelegate

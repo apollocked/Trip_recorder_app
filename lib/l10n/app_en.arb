@@ -38,5 +38,12 @@
   "theme": "Theme",
   "light": "Light",
   "dark": "Dark",
-  "system": "System"
+  "system": "System",
+  "onboardingTitle1": "Capture the Moment",
+  "onboardingDesc1": "Log your favorite travel memories, dynamic routes, and beautiful moments smoothly.",
+  "onboardingTitle2": "Fluid Interactions",
+  "onboardingDesc2": "Explore high-fidelity implicit animations, custom transitions, and interactive UI micro-interactions.",
+  "onboardingTitle3": "Your Logs, Offline First",
+  "onboardingDesc3": "All your travel notebooks and photos are stored safely on your device with local persistence.",
+  "getStarted": "Get Started"
 }

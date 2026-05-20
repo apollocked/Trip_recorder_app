@@ -129,4 +129,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get system => 'System';
+
+  @override
+  String get onboardingTitle1 => 'Capture the Moment';
+
+  @override
+  String get onboardingDesc1 =>
+      'Log your favorite travel memories, dynamic routes, and beautiful moments smoothly.';
+
+  @override
+  String get onboardingTitle2 => 'Fluid Interactions';
+
+  @override
+  String get onboardingDesc2 =>
+      'Explore high-fidelity implicit animations, custom transitions, and interactive UI micro-interactions.';
+
+  @override
+  String get onboardingTitle3 => 'Your Logs, Offline First';
+
+  @override
+  String get onboardingDesc3 =>
+      'All your travel notebooks and photos are stored safely on your device with local persistence.';
+
+  @override
+  String get getStarted => 'Get Started';
 }
