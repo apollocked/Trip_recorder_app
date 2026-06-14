@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 Widget leadingImage(String imgPath) {
-  // Check if it's a file path (from Image Picker) which is typically an absolute path
   final bool isFile = File(imgPath).isAbsolute;
 
   if (isFile) {
@@ -29,4 +28,15 @@ Widget leadingImage(String imgPath) {
           const Icon(Icons.landscape, size: 50),
     );
   }
+}
+
+Widget leadingImageFromList(List<String> paths) {
+  if (paths.isEmpty) {
+    return Container(
+      height: 50, width: 50,
+      color: Colors.grey[300],
+      child: const Icon(Icons.landscape, size: 24),
+    );
+  }
+  return leadingImage(paths.first);
 }

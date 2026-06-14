@@ -154,4 +154,19 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get getStarted => 'دەستپێبکە';
+
+  @override
+  String get searchTrips => 'گەڕان بەدوای گەشتەکان...';
+
+  @override
+  String get rateTrip => 'ئەم گەشتە هەڵبسەنگێنە';
+
+  @override
+  String get tripCategory => 'پۆل';
+
+  @override
+  String get tapToAddPhotos => 'بۆ زیادکردنی وێنە لێرەدا بدە';
+
+  @override
+  String get addMorePhotos => 'وێنەی زیاتر زیاد بکە';
 }

@@ -153,4 +153,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get getStarted => 'ابدأ الآن';
+
+  @override
+  String get searchTrips => 'البحث عن رحلات...';
+
+  @override
+  String get rateTrip => 'قيم هذه الرحلة';
+
+  @override
+  String get tripCategory => 'التصنيف';
+
+  @override
+  String get tapToAddPhotos => 'اضغط لإضافة صور';
+
+  @override
+  String get addMorePhotos => 'إضافة المزيد من الصور';
 }

@@ -2,8 +2,10 @@
 
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
+import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
+import 'package:animations_in_flutter/views/pages/statistics_page.dart';
 import 'package:animations_in_flutter/views/widgets/settings_modal.dart';
 import 'package:animations_in_flutter/views/widgets/shimmer_card_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_widget.dart';
@@ -45,7 +47,6 @@ class _TripListPageState extends State<TripListPage> {
     if (_displayList.length > latestTrips.length) {
       _displayList.clear();
     }
-
     for (int i = _displayList.length; i < latestTrips.length; i++) {
       await Future.delayed(const Duration(milliseconds: 150));
       if (!mounted) return;
@@ -59,6 +60,7 @@ class _TripListPageState extends State<TripListPage> {
     final tripProvider = context.watch<TripProvider>();
     final latestTrips = tripProvider.trips;
     final filteredTrips = tripProvider.filteredTrips;
+    final colorScheme = Theme.of(context).colorScheme;
 
     if (latestTrips.length > _displayList.length) {
       _syncList(latestTrips);
@@ -72,13 +74,19 @@ class _TripListPageState extends State<TripListPage> {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.analytics_rounded),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const StatisticsPage()),
+            ),
+            tooltip: 'Statistics',
+          ),
+          IconButton(
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => showSettingsModal(context),
             tooltip: 'Settings',
           ),
-
-          SizedBox(width: 16),
-
+          const SizedBox(width: 8),
           latestTrips.isEmpty
               ? const SizedBox.shrink()
               : FloatingActionButton.extended(
@@ -86,19 +94,13 @@ class _TripListPageState extends State<TripListPage> {
                     HapticFeedback.lightImpact();
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddTripPage(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const AddTripPage()),
                     );
                   },
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  backgroundColor: colorScheme.primary,
+                  foregroundColor: colorScheme.onPrimary,
                   elevation: 6,
-                  icon: const Icon(
-                    semanticLabel: "adding a new trip",
-                    Icons.add_road_rounded,
-                    size: 18,
-                  ),
+                  icon: const Icon(Icons.add_road_rounded, size: 18),
                   label: Text(
                     AppLocalizations.of(context)!.newjourney,
                     style: const TextStyle(
@@ -108,36 +110,18 @@ class _TripListPageState extends State<TripListPage> {
                     ),
                   ),
                 ),
-
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
         ],
       ),
-
       body: Column(
         children: [
-          if (latestTrips.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-              child: TextField(
-                controller: _searchController,
-                onChanged: (value) => tripProvider.setSearchQuery(value),
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search_rounded, size: 20),
-                  filled: true,
-                  fillColor: Theme.of(
-                    context,
-                  ).colorScheme.surfaceContainerHighest.withAlpha(60),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-              ),
-            ),
+          if (latestTrips.isNotEmpty) ...[
+            _buildSearchBar(colorScheme),
+            _buildCategoryFilter(tripProvider, colorScheme),
+            _buildSortBar(tripProvider, colorScheme),
+          ],
           Expanded(
             child: RefreshIndicator(
-              semanticsLabel: "Pull to refresh the trip list",
               onRefresh: () async {
                 await HapticFeedback.vibrate();
                 await tripProvider.refresh();
@@ -145,9 +129,115 @@ class _TripListPageState extends State<TripListPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 14,
-                  vertical: 8,
+                  vertical: 4,
                 ),
                 child: _buildBody(filteredTrips, tripProvider.isLoading),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar(ColorScheme colorScheme) {
+    final tripProvider = context.read<TripProvider>();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+      child: TextField(
+        controller: _searchController,
+        onChanged: (value) => tripProvider.setSearchQuery(value),
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.search_rounded, size: 20),
+          filled: true,
+          fillColor: colorScheme.surfaceContainerHighest.withAlpha(60),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: const EdgeInsets.symmetric(vertical: 12),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryFilter(
+    TripProvider tripProvider,
+    ColorScheme colorScheme,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            ChoiceChip(
+              label: const Text('All'),
+              selected: tripProvider.categoryFilter == null,
+              onSelected: (_) => tripProvider.setCategoryFilter(null),
+              selectedColor: colorScheme.primaryContainer,
+            ),
+            const SizedBox(width: 6),
+            ...TripCategory.values.map((cat) {
+              final isSelected = tripProvider.categoryFilter == cat;
+              return Padding(
+                padding: const EdgeInsets.only(right: 6),
+                child: ChoiceChip(
+                  label: Text(cat.label),
+                  selected: isSelected,
+                  onSelected: (_) =>
+                      tripProvider.setCategoryFilter(isSelected ? null : cat),
+                  selectedColor: colorScheme.primaryContainer,
+                ),
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSortBar(TripProvider tripProvider, ColorScheme colorScheme) {
+    final sortOptions = [
+      ('date_desc', 'Newest'),
+      ('date_asc', 'Oldest'),
+      ('price_asc', 'Price \$'),
+      ('price_desc', 'Price \$\$'),
+      ('rating_desc', 'Rating'),
+      ('title_asc', 'A-Z'),
+    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+      child: Row(
+        children: [
+          Icon(
+            Icons.sort_rounded,
+            size: 16,
+            color: colorScheme.onSurfaceVariant,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            'Sort:',
+            style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+          ),
+          const SizedBox(width: 6),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: sortOptions.map((opt) {
+                  final isSelected = tripProvider.sortBy == opt.$1;
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: ChoiceChip(
+                      label: Text(opt.$2, style: const TextStyle(fontSize: 11)),
+                      selected: isSelected,
+                      onSelected: (_) => tripProvider.setSortBy(opt.$1),
+                      visualDensity: VisualDensity.compact,
+                      selectedColor: colorScheme.primaryContainer,
+                    ),
+                  );
+                }).toList(),
               ),
             ),
           ),
@@ -173,16 +263,14 @@ class _TripListPageState extends State<TripListPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.beach_access,
-                    size: 80,
-                    color: Colors.grey,
-                    semanticLabel: "No trips icon",
-                  ),
+                  const Icon(Icons.beach_access, size: 80, color: Colors.grey),
                   const SizedBox(height: 16),
                   Text(
                     AppLocalizations.of(context)!.noTripsFound,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -195,27 +283,21 @@ class _TripListPageState extends State<TripListPage> {
                     ),
                   ),
                   const SizedBox(height: 24),
-
                   FloatingActionButton.extended(
                     onPressed: () async {
                       HapticFeedback.lightImpact();
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddTripPage(),
-                        ),
+                        MaterialPageRoute(builder: (_) => const AddTripPage()),
                       );
                     },
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     elevation: 6,
-                    icon: const Icon(
-                      Icons.add_road_rounded,
-                      semanticLabel: "Add",
-                    ),
+                    icon: const Icon(Icons.add_road_rounded),
                     label: Text(
                       AppLocalizations.of(context)!.newjourney,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.3,
                         fontSize: 12,

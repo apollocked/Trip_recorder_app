@@ -2,6 +2,7 @@ import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
 import 'package:animations_in_flutter/views/widgets/image_widget_leading.dart';
+import 'package:animations_in_flutter/views/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -69,7 +70,7 @@ Widget tripWidget(
                 child: Row(
                   children: [
                     Hero(
-                      tag: 'tag-image-${trip.imagePath}',
+                      tag: 'tag-image-${trip.primaryImagePath}',
                       child: Container(
                         height: 80,
                         width: 80,
@@ -82,9 +83,7 @@ Widget tripWidget(
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primary.withAlpha(20),
+                              color: Theme.of(context).colorScheme.primary.withAlpha(20),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),
@@ -92,75 +91,86 @@ Widget tripWidget(
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: leadingImage(trip.imagePath),
+                          child: leadingImage(trip.primaryImagePath),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            trip.title,
-                            semanticsLabel:
-                                "the title of the trip is ${trip.title}",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: colorScheme.onSurface,
-                            ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  trip.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: colorScheme.onSurface,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.primaryContainer.withAlpha(120),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  trip.category.label,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                    color: colorScheme.onPrimaryContainer,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
+                          const SizedBox(height: 4),
+                          if (trip.rating > 0)
+                            StarRating(rating: trip.rating, size: 14),
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              Icon(
-                                Icons.nights_stay_outlined,
-                                size: 14,
-                                color: colorScheme.primary,
-                              ),
+                              Icon(Icons.nights_stay_outlined, size: 14, color: colorScheme.primary),
                               const SizedBox(width: 4),
                               Text(
                                 '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
-                                semanticsLabel:
-                                    "the trip is for ${trip.nights} nights",
                                 style: textTheme.bodySmall?.copyWith(
                                   color: colorScheme.primary,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
+                              const SizedBox(width: 12),
+                              Icon(Icons.calendar_today, size: 12, color: colorScheme.outline),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${trip.date.day}/${trip.date.month}/${trip.date.year}',
+                                style: textTheme.labelSmall?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                              ),
                             ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            '${trip.date.day}/${trip.date.month}/${trip.date.year}',
-                            semanticsLabel:
-                                "the trip date is ${trip.date.day}/${trip.date.month}/${trip.date.year}",
-                            style: textTheme.labelSmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
                           ),
                         ],
                       ),
                     ),
+                    const SizedBox(width: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 6,
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                           decoration: BoxDecoration(
                             color: colorScheme.primaryContainer.withAlpha(102),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
                             '\$${trip.price.toStringAsFixed(0)}',
-                            semanticsLabel:
-                                "the price of the trip is \$${trip.price.toStringAsFixed(0)}",
                             style: textTheme.labelLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.primary,
@@ -168,11 +178,7 @@ Widget tripWidget(
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 14,
-                          color: colorScheme.outline,
-                        ),
+                        Icon(Icons.arrow_forward_ios_rounded, size: 14, color: colorScheme.outline),
                       ],
                     ),
                   ],

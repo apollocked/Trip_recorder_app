@@ -1,8 +1,10 @@
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+﻿import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
 import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
+import 'package:animations_in_flutter/views/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -33,11 +35,12 @@ class DetailsPage extends StatelessWidget {
             iconTheme: IconThemeData(color: colorScheme.onSurface),
             actions: [
               IconButton(
-                icon: const Icon(
-                  Icons.edit_note_rounded,
-                  size: 28,
-                  semanticLabel: 'Edit the trip,',
-                ),
+                icon: const Icon(Icons.share_rounded, size: 24),
+                tooltip: 'Export',
+                onPressed: () => _exportTrip(context, trip),
+              ),
+              IconButton(
+                icon: const Icon(Icons.edit_note_rounded, size: 28),
                 onPressed: () async {
                   HapticFeedback.selectionClick();
                   await Navigator.push(
@@ -54,41 +57,7 @@ class DetailsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: colorScheme.onSurface.withAlpha(200),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(32)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withAlpha(20),
-                          blurRadius: 12,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    child: Hero(
-                      tag: 'tag-image-${trip.imagePath}',
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(32),
-                        ),
-                        child: Semantics(
-                          label: 'Trip cover image',
-                          child: coverImage(trip.imagePath),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                _buildImageCarousel(trip, colorScheme),
                 Expanded(
                   child: TweenAnimationBuilder(
                     curve: Curves.easeOutCubic,
@@ -109,72 +78,10 @@ class DetailsPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.only(
-                                    end: 60,
-                                  ),
-                                  child: Text(
-                                    semanticsLabel:
-                                        'Trip title is ${trip.title}',
-                                    trip.title,
-                                    style: textTheme.headlineMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: colorScheme.onSurface,
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Row(
-                                  children: [
-                                    Semantics(
-                                      label: 'Trip duration is',
-                                      child: _buildInfoChip(
-                                        context,
-                                        icon: Icons.bedtime_rounded,
-                                        label:
-                                            '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Semantics(
-                                      label: 'Trip cost in dollars is ',
-                                      child: _buildInfoChip(
-                                        context,
-                                        icon: Icons.attach_money_rounded,
-                                        label:
-                                            '${AppLocalizations.of(context)!.budget}: \$${trip.price.toStringAsFixed(0)}',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            PositionedDirectional(
-                              top: 0,
-                              end: 0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: colorScheme.primaryContainer.withAlpha(
-                                    150,
-                                  ),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: HeartWidget(
-                                  isLiked: trip.isLiked,
-                                  tripId: trip.id,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
+                        _buildHeaderSection(trip, colorScheme, textTheme),
+                        const SizedBox(height: 16),
+                        _buildInfoChips(trip, colorScheme, context),
+                        const SizedBox(height: 16),
                         Divider(
                           color: colorScheme.outlineVariant.withAlpha(128),
                         ),
@@ -203,8 +110,6 @@ class DetailsPage extends StatelessWidget {
                                   color: colorScheme.onSurfaceVariant,
                                   height: 1.6,
                                 ),
-                                semanticsLabel:
-                                    "the description of the trip is ${trip.description.isEmpty ? 'empty' : trip.description}",
                               ),
                             ),
                           ),
@@ -221,14 +126,163 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoChip(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+  Widget _buildImageCarousel(Trip trip, ColorScheme colorScheme) {
+    if (trip.imagePaths.isEmpty) {
+      return Container(
+        height: 280,
+        margin: const EdgeInsets.symmetric(horizontal: 6),
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(32),
+        ),
+        child: const Center(
+          child: Icon(Icons.landscape, size: 60, color: Colors.grey),
+        ),
+      );
+    }
 
+    return SizedBox(
+      height: 280,
+      child: PageView.builder(
+        itemCount: trip.imagePaths.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: colorScheme.onSurface.withAlpha(200),
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(32),
+                boxShadow: [
+                  BoxShadow(
+                    color: colorScheme.primary.withAlpha(20),
+                    blurRadius: 12,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: Hero(
+                tag: 'tag-image-${trip.imagePaths[index]}',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(32),
+                  child: Semantics(
+                    label: 'Trip cover image ${index + 1}',
+                    child: coverImage(trip.imagePaths[index]),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildHeaderSection(
+    Trip trip,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsetsDirectional.only(end: 60),
+              child: Text(
+                trip.title,
+                style: textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
+                  height: 1.2,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primaryContainer.withAlpha(120),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    trip.category.label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                if (trip.rating > 0) StarRating(rating: trip.rating, size: 18),
+              ],
+            ),
+          ],
+        ),
+        PositionedDirectional(
+          top: 0,
+          end: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer.withAlpha(150),
+              shape: BoxShape.circle,
+            ),
+            child: HeartWidget(isLiked: trip.isLiked, tripId: trip.id),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoChips(
+    Trip trip,
+    ColorScheme colorScheme,
+    BuildContext context,
+  ) {
+    return Row(
+      children: [
+        _buildChip(
+          context,
+          Icons.bedtime_rounded,
+          '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
+          colorScheme,
+        ),
+        const SizedBox(width: 12),
+        _buildChip(
+          context,
+          Icons.attach_money_rounded,
+          '\$${trip.price.toStringAsFixed(0)}',
+          colorScheme,
+        ),
+        ...[
+          const SizedBox(width: 12),
+          _buildChip(
+            context,
+            Icons.calendar_today_rounded,
+            '${trip.date.day}/${trip.date.month}/${trip.date.year}',
+            colorScheme,
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildChip(
+    BuildContext context,
+    IconData icon,
+    String label,
+    ColorScheme colorScheme,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -239,17 +293,45 @@ class DetailsPage extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18, color: colorScheme.primary),
+          Icon(icon, size: 16, color: colorScheme.primary),
           const SizedBox(width: 6),
           Text(
             label,
-            style: textTheme.titleSmall?.copyWith(
-              color: colorScheme.onSecondaryContainer,
+            style: TextStyle(
+              fontSize: 13,
               fontWeight: FontWeight.w600,
+              color: colorScheme.onSecondaryContainer,
             ),
           ),
         ],
       ),
     );
+  }
+
+  void _exportTrip(BuildContext context, Trip trip) {
+    final l10n = AppLocalizations.of(context)!;
+    final buffer = StringBuffer();
+    buffer.writeln('=== ${trip.title} ===\n');
+    buffer.writeln('${l10n.tripCategory}: ${trip.category.label}');
+    buffer.writeln('${l10n.budget}: \$${trip.price.toStringAsFixed(0)}');
+    buffer.writeln('${l10n.nights}: ${trip.nights}');
+    buffer.writeln(
+      '${l10n.departureDate}: ${trip.date.day}/${trip.date.month}/${trip.date.year}',
+    );
+    if (trip.rating > 0) {
+      buffer.writeln('Rating: ${trip.rating.toStringAsFixed(1)} / 5');
+    }
+    if (trip.description.isNotEmpty) {
+      buffer.writeln('\n${l10n.aboutjourney}:');
+      buffer.writeln(trip.description);
+    }
+    buffer.writeln('\n---');
+    buffer.writeln(l10n.appTitle.replaceAll('\n', ' '));
+
+    Clipboard.setData(ClipboardData(text: buffer.toString()));
+    HapticFeedback.mediumImpact();
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Trip copied to clipboard!')));
   }
 }

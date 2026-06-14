@@ -1,5 +1,6 @@
 import 'dart:io';
 import '../../model/trip.dart';
+import '../../model/trip_category.dart';
 import '../database/app_database.dart';
 import 'image_storage_service.dart';
 
@@ -15,30 +16,31 @@ class TripRepository {
     required String title,
     required double price,
     required int nights,
-    required File? imageFile,
-    required String? assetImagePath,
+    required List<File> imageFiles,
+    required List<String> assetImagePaths,
     required DateTime date,
     String description = '',
+    TripCategory category = TripCategory.other,
+    double rating = 0.0,
   }) async {
     final trip = Trip(
       title: title,
       price: price,
       nights: nights,
-      imagePath: assetImagePath ?? '',
       date: date,
       description: description,
+      category: category,
+      rating: rating,
     );
 
-    String imagePath;
-    if (imageFile != null) {
-      imagePath = await _imageService.saveImage(imageFile, trip.id);
-    } else if (assetImagePath != null) {
-      imagePath = assetImagePath;
-    } else {
-      imagePath = '';
+    final savedPaths = <String>[];
+    if (imageFiles.isNotEmpty) {
+      final paths = await _imageService.saveMultipleImages(imageFiles, trip.id);
+      savedPaths.addAll(paths);
     }
+    savedPaths.addAll(assetImagePaths);
 
-    final savedTrip = trip.copyWith(imagePath: imagePath);
+    final savedTrip = trip.copyWith(imagePaths: savedPaths);
     await _database.insertTrip(savedTrip);
     return savedTrip;
   }
@@ -48,28 +50,40 @@ class TripRepository {
     required String title,
     required double price,
     required int nights,
-    File? imageFile,
-    String? existingImagePath,
-    String? assetImagePath,
+    List<File>? imageFiles,
+    List<String>? existingImagePaths,
+    List<String>? assetImagePaths,
     required DateTime date,
     String description = '',
     bool? isLiked,
+    TripCategory? category,
+    double? rating,
   }) async {
     final oldTrip = await _database.getTripById(id);
     if (oldTrip == null) throw Exception('Trip not found');
 
-    String imagePath;
-    if (imageFile != null) {
-      if (!_imageService.isAssetImage(oldTrip.imagePath)) {
-        await _imageService.deleteImage(oldTrip.imagePath);
+    final finalPaths = <String>[];
+
+    if (existingImagePaths != null) {
+      for (final path in existingImagePaths) {
+        if (!_imageService.isAssetImage(path) && !File(path).existsSync()) {
+          continue;
+        }
+        finalPaths.add(path);
       }
-      imagePath = await _imageService.saveImage(imageFile, id);
-    } else if (assetImagePath != null) {
-      imagePath = assetImagePath;
-    } else if (existingImagePath != null) {
-      imagePath = existingImagePath;
-    } else {
-      imagePath = oldTrip.imagePath;
+    }
+
+    if (assetImagePaths != null) {
+      finalPaths.addAll(assetImagePaths);
+    }
+
+    if (imageFiles != null && imageFiles.isNotEmpty) {
+      final newPaths = await _imageService.saveMultipleImages(imageFiles, id);
+      finalPaths.addAll(newPaths);
+    }
+
+    if (finalPaths.isEmpty) {
+      finalPaths.addAll(oldTrip.imagePaths);
     }
 
     final updatedTrip = Trip(
@@ -77,11 +91,13 @@ class TripRepository {
       title: title,
       price: price,
       nights: nights,
-      imagePath: imagePath,
+      imagePaths: finalPaths,
       date: date,
       description: description,
       isLiked: isLiked ?? oldTrip.isLiked,
       createdAt: oldTrip.createdAt,
+      category: category ?? oldTrip.category,
+      rating: rating ?? oldTrip.rating,
     );
 
     await _database.updateTrip(updatedTrip);
@@ -89,11 +105,7 @@ class TripRepository {
   }
 
   Future<void> deleteTrip(String id) async {
-    final trip = await _database.getTripById(id);
-    if (trip == null) return;
-    if (!_imageService.isAssetImage(trip.imagePath)) {
-      await _imageService.deleteImage(trip.imagePath);
-    }
+    await _imageService.deleteAllTripImages(id);
     await _database.deleteTrip(id);
   }
 

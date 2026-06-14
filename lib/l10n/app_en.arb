@@ -1,4 +1,4 @@
-{
+﻿{
   "trip": "Trip",
   "recorder": "Recorder",
   "tripsList": "My Trips",
@@ -45,5 +45,10 @@
   "onboardingDesc2": "Explore high-fidelity implicit animations, custom transitions, and interactive UI micro-interactions.",
   "onboardingTitle3": "Your Logs, Offline First",
   "onboardingDesc3": "All your travel notebooks and photos are stored safely on your device with local persistence.",
-  "getStarted": "Get Started"
+  "getStarted": "Get Started",
+  "searchTrips": "Search trips...",
+  "rateTrip": "Rate this trip",
+  "tripCategory": "Category",
+  "tapToAddPhotos": "Tap to add photos",
+  "addMorePhotos": "Add more photos"
 }

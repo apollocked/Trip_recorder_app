@@ -1,10 +1,12 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
+import 'package:animations_in_flutter/views/widgets/star_rating.dart';
 
 class AddTripPage extends StatefulWidget {
   final String? tripId;
@@ -22,10 +24,12 @@ class _AddTripPageState extends State<AddTripPage> {
   final _nightsController = TextEditingController();
   final _descriptionController = TextEditingController();
   late DateTime _selectedDate;
-  File? _imageFile;
-  String? _existingImagePath;
+  final List<File> _imageFiles = [];
+  List<String> _existingImagePaths = [];
   bool _imageError = false;
   bool _isSaving = false;
+  TripCategory _selectedCategory = TripCategory.other;
+  double _rating = 0.0;
 
   @override
   void initState() {
@@ -38,7 +42,9 @@ class _AddTripPageState extends State<AddTripPage> {
         _nightsController.text = trip.nights.toString();
         _descriptionController.text = trip.description;
         _selectedDate = trip.date;
-        _existingImagePath = trip.imagePath;
+        _existingImagePaths = List.from(trip.imagePaths);
+        _selectedCategory = trip.category;
+        _rating = trip.rating;
       }
     } else {
       _selectedDate = DateTime.now();
@@ -56,14 +62,14 @@ class _AddTripPageState extends State<AddTripPage> {
 
   Future<void> _handleSave() async {
     final isFormValid = _formKey.currentState!.validate();
-    final isImageValid = _imageFile != null || _existingImagePath != null;
+    final hasImages = _imageFiles.isNotEmpty || _existingImagePaths.isNotEmpty;
 
     setState(() {
-      _imageError = !isImageValid;
+      _imageError = !hasImages;
     });
 
-    if (!isFormValid || !isImageValid) {
-      if (!isImageValid) HapticFeedback.vibrate();
+    if (!isFormValid || !hasImages) {
+      if (!hasImages) HapticFeedback.vibrate();
       return;
     }
 
@@ -71,36 +77,45 @@ class _AddTripPageState extends State<AddTripPage> {
     HapticFeedback.mediumImpact();
 
     try {
+      final assetPaths = _existingImagePaths
+          .where((p) => p.startsWith('images/'))
+          .toList();
+
       if (widget.tripId != null) {
         await context.read<TripProvider>().updateTrip(
           widget.tripId!,
           title: _titleController.text.trim(),
           price: double.tryParse(_priceController.text.trim()) ?? 0,
           nights: int.tryParse(_nightsController.text.trim()) ?? 1,
-          imageFile: _imageFile,
-          existingImagePath: _imageFile == null ? _existingImagePath : null,
+          imageFiles: _imageFiles.isNotEmpty ? _imageFiles : null,
+          existingImagePaths: _imageFiles.isEmpty ? _existingImagePaths : null,
+          assetImagePaths: assetPaths.isNotEmpty ? assetPaths : null,
           date: _selectedDate,
           description: _descriptionController.text.trim(),
+          category: _selectedCategory,
+          rating: _rating,
         );
       } else {
         await context.read<TripProvider>().addTrip(
           title: _titleController.text.trim(),
           price: double.tryParse(_priceController.text.trim()) ?? 0,
           nights: int.tryParse(_nightsController.text.trim()) ?? 1,
-          imageFile: _imageFile,
-          assetImagePath: _existingImagePath?.startsWith('images/') == true
-              ? _existingImagePath
-              : null,
+          imageFiles: _imageFiles,
+          assetImagePaths: _existingImagePaths
+              .where((p) => p.startsWith('images/'))
+              .toList(),
           date: _selectedDate,
           description: _descriptionController.text.trim(),
+          category: _selectedCategory,
+          rating: _rating,
         );
       }
       if (mounted) Navigator.pop(context);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving trip: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error saving trip: $e')));
       }
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -138,8 +153,6 @@ class _AddTripPageState extends State<AddTripPage> {
               children: [
                 Text(
                   l10n.coverphoto,
-                  semanticsLabel:
-                      "Section for adding a cover photo for the trip",
                   style: textTheme.labelLarge?.copyWith(
                     color: _imageError
                         ? colorScheme.error
@@ -147,204 +160,118 @@ class _AddTripPageState extends State<AddTripPage> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                GestureDetector(
-                  onTap: () {
-                    checkExistingPermissions(context, (pickedFile) {
-                      setState(() {
-                        _imageFile = pickedFile;
-                        _imageError = false;
-                      });
-                    });
-                  },
-                  child: Container(
-                    height: 240,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: _imageError
-                          ? colorScheme.errorContainer.withAlpha(200)
-                          : colorScheme.secondaryContainer.withAlpha(102),
-                      borderRadius: BorderRadius.circular(28),
-                      border: Border.all(
-                        color: _imageError
-                            ? colorScheme.error
-                            : colorScheme.outlineVariant,
-                        width: _imageError ? 2 : 1,
-                      ),
-                      image: _imageFile != null
-                          ? DecorationImage(
-                              image: FileImage(_imageFile!),
-                              fit: BoxFit.cover,
-                            )
-                          : (_existingImagePath != null
-                                ? DecorationImage(
-                                    image:
-                                        _existingImagePath!.startsWith(
-                                          'images/',
-                                        )
-                                        ? AssetImage(_existingImagePath!)
-                                              as ImageProvider
-                                        : FileImage(File(_existingImagePath!)),
-                                    fit: BoxFit.cover,
-                                  )
-                                : null),
-                    ),
-                    child: (_imageFile == null && _existingImagePath == null)
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add_a_photo_rounded,
-                                size: 42,
-                                color: _imageError
-                                    ? colorScheme.error
-                                    : colorScheme.primary,
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                l10n.photoreq,
-                                semanticsLabel:
-                                    "Image is required for the trip",
-                                style: TextStyle(
-                                  color: _imageError
-                                      ? colorScheme.error
-                                      : colorScheme.onSecondaryContainer,
-                                ),
-                              ),
-                            ],
-                          )
-                        : const SizedBox.shrink(),
-                  ),
-                ),
+                _buildImageSection(colorScheme, textTheme, l10n),
                 if (_imageError)
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 12),
                     child: Text(
                       l10n.photoErrorReq,
-                      semanticsLabel: "Image is required for the trip",
                       style: textTheme.bodySmall?.copyWith(
                         color: colorScheme.error,
                       ),
                     ),
                   ),
 
+                const SizedBox(height: 24),
+                Text(
+                  l10n.rateTrip,
+                  style: textTheme.labelLarge?.copyWith(
+                    color: colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Center(
+                  child: StarRating(
+                    rating: _rating,
+                    size: 36,
+                    interactive: true,
+                    onChanged: (val) => setState(() => _rating = val),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+                Text(
+                  l10n.tripCategory,
+                  style: textTheme.labelLarge?.copyWith(
+                    color: colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: TripCategory.values.map((cat) {
+                    final isSelected = _selectedCategory == cat;
+                    return ChoiceChip(
+                      label: Text(cat.label),
+                      selected: isSelected,
+                      selectedColor: colorScheme.primaryContainer,
+                      onSelected: (selected) {
+                        if (selected) setState(() => _selectedCategory = cat);
+                      },
+                    );
+                  }).toList(),
+                ),
+
                 const SizedBox(height: 32),
                 Text(
                   l10n.tripDetails,
-                  semanticsLabel: "Section for entering trip details",
                   style: textTheme.labelLarge?.copyWith(
                     color: colorScheme.primary,
                   ),
                 ),
                 const SizedBox(height: 12),
 
-                Semantics(
-                  label: "Destination you are travelled to input field",
-                  child: _buildTextField(
-                    controller: _titleController,
-                    label: l10n.destination,
-                    icon: Icons.map_rounded,
-                    colorScheme: colorScheme,
-                    validator: (val) => val == null || val.isEmpty
-                        ? l10n.destinationRequired
-                        : null,
-                  ),
+                _buildTextField(
+                  controller: _titleController,
+                  label: l10n.destination,
+                  icon: Icons.map_rounded,
+                  colorScheme: colorScheme,
+                  validator: (val) => val == null || val.isEmpty
+                      ? l10n.destinationRequired
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Semantics(
-                        label: "Trip budget input field",
-                        child: _buildTextField(
-                          controller: _priceController,
-                          label: l10n.budget,
-                          icon: Icons.attach_money_rounded,
-                          colorScheme: colorScheme,
-                          keyboardType: TextInputType.number,
-                          isPrice: true,
-                          validator: (val) =>
-                              val == null || val.isEmpty ? l10n.required : null,
-                        ),
+                      child: _buildTextField(
+                        controller: _priceController,
+                        label: l10n.budget,
+                        icon: Icons.attach_money_rounded,
+                        colorScheme: colorScheme,
+                        keyboardType: TextInputType.number,
+                        isPrice: true,
+                        validator: (val) =>
+                            val == null || val.isEmpty ? l10n.required : null,
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: Semantics(
-                        label: "Number of nights you stayed input field",
-                        child: _buildTextField(
-                          controller: _nightsController,
-                          label: l10n.nights,
-                          icon: Icons.bedtime_rounded,
-                          colorScheme: colorScheme,
-                          keyboardType: TextInputType.number,
-                          validator: (val) =>
-                              val == null || val.isEmpty ? l10n.required : null,
-                        ),
+                      child: _buildTextField(
+                        controller: _nightsController,
+                        label: l10n.nights,
+                        icon: Icons.bedtime_rounded,
+                        colorScheme: colorScheme,
+                        keyboardType: TextInputType.number,
+                        validator: (val) =>
+                            val == null || val.isEmpty ? l10n.required : null,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
 
-                InkWell(
-                  onTap: () async {
-                    final date = await showDatePicker(
-                      context: context,
-                      initialDate: _selectedDate,
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime(2100),
-                    );
-                    if (date != null) setState(() => _selectedDate = date);
-                  },
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 18,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: colorScheme.outlineVariant),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_today_rounded,
-                          size: 20,
-                          color: colorScheme.primary,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          l10n.departureDate,
-                          semanticsLabel: "Select the first day of the trip",
-                          style: TextStyle(color: colorScheme.onSurfaceVariant),
-                        ),
-                        const Spacer(),
-                        Text(
-                          "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
-                          semanticsLabel:
-                              "Selected date is ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: colorScheme.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
+                _buildDatePicker(colorScheme, l10n),
                 const SizedBox(height: 16),
-                Semantics(
-                  label: "Trip description input field ",
-                  child: _buildTextField(
-                    controller: _descriptionController,
-                    label: l10n.tripDescription,
-                    icon: Icons.notes_rounded,
-                    colorScheme: colorScheme,
-                    maxLines: 4,
-                  ),
+
+                _buildTextField(
+                  controller: _descriptionController,
+                  label: l10n.tripDescription,
+                  icon: Icons.notes_rounded,
+                  colorScheme: colorScheme,
+                  maxLines: 4,
                 ),
 
                 const SizedBox(height: 40),
@@ -366,9 +293,6 @@ class _AddTripPageState extends State<AddTripPage> {
                           )
                         : Text(
                             isEditing ? l10n.updateJourney : l10n.createJourney,
-                            semanticsLabel: isEditing
-                                ? "Update Journey button"
-                                : "Save Journey button",
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -380,6 +304,218 @@ class _AddTripPageState extends State<AddTripPage> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageSection(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+    var l10n,
+  ) {
+    final allPaths = [
+      ..._imageFiles.map((f) => f.path),
+      ..._existingImagePaths,
+    ];
+
+    return Column(
+      children: [
+        if (allPaths.isNotEmpty)
+          SizedBox(
+            height: 120,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: allPaths.length + 1,
+              separatorBuilder: (_, _) => const SizedBox(width: 8),
+              itemBuilder: (context, index) {
+                if (index == allPaths.length) {
+                  return _buildAddImageButton(colorScheme);
+                }
+                final path = allPaths[index];
+                final isAsset = path.startsWith('images/');
+                return Stack(
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: colorScheme.outlineVariant),
+                        image: DecorationImage(
+                          image: isAsset
+                              ? AssetImage(path) as ImageProvider
+                              : FileImage(File(path)),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 4,
+                      right: 4,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (index < _imageFiles.length) {
+                              _imageFiles.removeAt(index);
+                            } else {
+                              _existingImagePaths.removeAt(
+                                index - _imageFiles.length,
+                              );
+                            }
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.close,
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          )
+        else
+          GestureDetector(
+            onTap: () => pickMultipleImages(context, (files) {
+              setState(() {
+                _imageFiles.addAll(files);
+                _imageError = false;
+              });
+            }),
+            child: Container(
+              height: 200,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: _imageError
+                    ? colorScheme.errorContainer.withAlpha(200)
+                    : colorScheme.secondaryContainer.withAlpha(102),
+                borderRadius: BorderRadius.circular(28),
+                border: Border.all(
+                  color: _imageError
+                      ? colorScheme.error
+                      : colorScheme.outlineVariant,
+                  width: _imageError ? 2 : 1,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add_a_photo_rounded,
+                    size: 42,
+                    color: _imageError
+                        ? colorScheme.error
+                        : colorScheme.primary,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    l10n.photoreq,
+                    style: TextStyle(
+                      color: _imageError
+                          ? colorScheme.error
+                          : colorScheme.onSecondaryContainer,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.tapToAddPhotos,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        if (allPaths.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          TextButton.icon(
+            onPressed: () => pickMultipleImages(context, (files) {
+              setState(() {
+                _imageFiles.addAll(files);
+              });
+            }),
+            icon: const Icon(Icons.add_photo_alternate_rounded, size: 18),
+            label: Text(l10n.addMorePhotos),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildAddImageButton(ColorScheme colorScheme) {
+    return GestureDetector(
+      onTap: () => pickMultipleImages(context, (files) {
+        setState(() {
+          _imageFiles.addAll(files);
+        });
+      }),
+      child: Container(
+        width: 120,
+        height: 120,
+        decoration: BoxDecoration(
+          color: colorScheme.secondaryContainer.withAlpha(80),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: colorScheme.outlineVariant.withAlpha(128)),
+        ),
+        child: Icon(
+          Icons.add_photo_alternate_outlined,
+          color: colorScheme.primary,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDatePicker(ColorScheme colorScheme, var l10n) {
+    return InkWell(
+      onTap: () async {
+        final date = await showDatePicker(
+          context: context,
+          initialDate: _selectedDate,
+          firstDate: DateTime(1900),
+          lastDate: DateTime(2100),
+        );
+        if (date != null) setState(() => _selectedDate = date);
+      },
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: colorScheme.outlineVariant),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.calendar_today_rounded,
+              size: 20,
+              color: colorScheme.primary,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              l10n.departureDate,
+              style: TextStyle(color: colorScheme.onSurfaceVariant),
+            ),
+            const Spacer(),
+            Text(
+              "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.primary,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -403,8 +539,7 @@ class _AddTripPageState extends State<AddTripPage> {
       inputFormatters: keyboardType == TextInputType.number
           ? [FilteringTextInputFormatter.digitsOnly]
           : null,
-      autovalidateMode:
-          AutovalidateMode.onUserInteraction,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, size: 20),

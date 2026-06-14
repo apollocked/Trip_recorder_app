@@ -13,14 +13,23 @@ class ImageStorageService {
     return dir;
   }
 
-  Future<String> saveImage(File sourceFile, String tripId) async {
+  Future<String> saveImage(File sourceFile, String tripId, {int index = 0}) async {
     final dir = await _imageDir;
     final extension = p.extension(sourceFile.path).isNotEmpty
         ? p.extension(sourceFile.path)
         : '.jpg';
-    final targetPath = p.join(dir.path, '$tripId$extension');
+    final targetPath = p.join(dir.path, '${tripId}_$index$extension');
     await sourceFile.copy(targetPath);
     return targetPath;
+  }
+
+  Future<List<String>> saveMultipleImages(List<File> sourceFiles, String tripId) async {
+    final paths = <String>[];
+    for (int i = 0; i < sourceFiles.length; i++) {
+      final path = await saveImage(sourceFiles[i], tripId, index: i);
+      paths.add(path);
+    }
+    return paths;
   }
 
   Future<void> deleteImage(String imagePath) async {
@@ -31,13 +40,15 @@ class ImageStorageService {
     }
   }
 
-  Future<List<String>> getAllImagePaths() async {
+  Future<void> deleteAllTripImages(String tripId) async {
     final dir = await _imageDir;
+    if (!await dir.exists()) return;
     final entities = await dir.list().toList();
-    return entities
-        .whereType<File>()
-        .map((f) => f.path)
-        .toList();
+    for (final entity in entities) {
+      if (entity is File && p.basenameWithoutExtension(entity.path) == tripId) {
+        await entity.delete();
+      }
+    }
   }
 
   bool isAssetImage(String imagePath) {

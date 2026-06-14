@@ -153,4 +153,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get getStarted => 'Get Started';
+
+  @override
+  String get searchTrips => 'Search trips...';
+
+  @override
+  String get rateTrip => 'Rate this trip';
+
+  @override
+  String get tripCategory => 'Category';
+
+  @override
+  String get tapToAddPhotos => 'Tap to add photos';
+
+  @override
+  String get addMorePhotos => 'Add more photos';
 }

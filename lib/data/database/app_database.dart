@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -24,6 +25,7 @@ class AppDatabase {
       path,
       version: AppConstants.dbVersion,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
   }
 
@@ -34,13 +36,36 @@ class AppDatabase {
         title TEXT NOT NULL,
         price REAL NOT NULL,
         nights INTEGER NOT NULL,
-        image_path TEXT NOT NULL,
+        image_path TEXT NOT NULL DEFAULT '',
+        image_paths TEXT NOT NULL DEFAULT '[]',
         date TEXT NOT NULL,
         description TEXT NOT NULL DEFAULT '',
         is_liked INTEGER NOT NULL DEFAULT 0,
-        created_at TEXT NOT NULL
+        created_at TEXT NOT NULL,
+        category TEXT NOT NULL DEFAULT 'other',
+        rating REAL NOT NULL DEFAULT 0.0
       )
     ''');
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('ALTER TABLE ${AppConstants.tripsTable} ADD COLUMN image_paths TEXT NOT NULL DEFAULT \'[]\'');
+      await db.execute('ALTER TABLE ${AppConstants.tripsTable} ADD COLUMN category TEXT NOT NULL DEFAULT \'other\'');
+      await db.execute('ALTER TABLE ${AppConstants.tripsTable} ADD COLUMN rating REAL NOT NULL DEFAULT 0.0');
+
+      final rows = await db.query(AppConstants.tripsTable);
+      for (final row in rows) {
+        final oldPath = row['image_path'] as String? ?? '';
+        final paths = oldPath.isNotEmpty ? jsonEncode([oldPath]) : '[]';
+        await db.update(
+          AppConstants.tripsTable,
+          {'image_paths': paths},
+          where: 'id = ?',
+          whereArgs: [row['id']],
+        );
+      }
+    }
   }
 
   Future<int> insertTrip(Trip trip) async {

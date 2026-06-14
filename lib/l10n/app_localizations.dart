@@ -381,6 +381,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get Started'**
   String get getStarted;
+
+  /// No description provided for @searchTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'Search trips...'**
+  String get searchTrips;
+
+  /// No description provided for @rateTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate this trip'**
+  String get rateTrip;
+
+  /// No description provided for @tripCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get tripCategory;
+
+  /// No description provided for @tapToAddPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to add photos'**
+  String get tapToAddPhotos;
+
+  /// No description provided for @addMorePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add more photos'**
+  String get addMorePhotos;
 }
 
 class _AppLocalizationsDelegate

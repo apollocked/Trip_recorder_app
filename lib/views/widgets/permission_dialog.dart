@@ -14,9 +14,42 @@ Future<void> checkExistingPermissions(
   PermissionStatus photoStatus = await Permission.photos.status;
 
   if (cameraStatus.isGranted || photoStatus.isGranted) {
-    _showImageSourceOptions(context, onImagePicked);
+    _showImageSourceOptions(context, onImagePicked, multiPick: false);
   } else {
     _showSoftAskDialog(context, onImagePicked);
+  }
+}
+
+Future<void> pickMultipleImages(
+  BuildContext context,
+  Function(List<File>) onImagesPicked,
+) async {
+  PermissionStatus photoStatus = await Permission.photos.status;
+  if (photoStatus.isGranted) {
+    final picker = ImagePicker();
+    try {
+      final pickedFiles = await picker.pickMultiImage(
+        imageQuality: 85,
+        maxWidth: 1000,
+      );
+      if (pickedFiles.isNotEmpty) {
+        onImagesPicked(pickedFiles.map((f) => File(f.path)).toList());
+      }
+    } catch (e) {
+      debugPrint("Error picking multiple images: $e");
+    }
+  } else {
+    final statuses = await [Permission.photos].request();
+    if (statuses[Permission.photos]!.isGranted) {
+      final picker = ImagePicker();
+      final pickedFiles = await picker.pickMultiImage(
+        imageQuality: 85,
+        maxWidth: 1000,
+      );
+      if (pickedFiles.isNotEmpty) {
+        onImagesPicked(pickedFiles.map((f) => File(f.path)).toList());
+      }
+    }
   }
 }
 
@@ -87,8 +120,9 @@ Future<void> _showSoftAskDialog(
 
 void _showImageSourceOptions(
   BuildContext context,
-  Function(File) onImagePicked,
-) {
+  Function(File) onImagePicked, {
+  bool multiPick = false,
+}) {
   final colorScheme = Theme.of(context).colorScheme;
   final textTheme = Theme.of(context).textTheme;
   final l10n = AppLocalizations.of(context)!;
@@ -96,7 +130,6 @@ void _showImageSourceOptions(
   showModalBottomSheet(
     context: context,
     backgroundColor: colorScheme.surface,
-
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
     ),
@@ -106,7 +139,6 @@ void _showImageSourceOptions(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Handle bar for modern look
             Container(
               width: 40,
               height: 4,
@@ -133,7 +165,19 @@ void _showImageSourceOptions(
                   label: l10n.gallery,
                   onTap: () {
                     Navigator.pop(context);
-                    _pickImage(ImageSource.gallery, onImagePicked);
+                    if (multiPick) {
+                      final picker = ImagePicker();
+                      picker.pickMultiImage(
+                        imageQuality: 85,
+                        maxWidth: 1000,
+                      ).then((files) {
+                        if (files.isNotEmpty) {
+                          onImagePicked(File(files.first.path));
+                        }
+                      });
+                    } else {
+                      _pickImage(ImageSource.gallery, onImagePicked);
+                    }
                   },
                 ),
                 _buildSourceCard(
@@ -155,7 +199,6 @@ void _showImageSourceOptions(
   );
 }
 
-// Helper widget to match the Chip-style design of the app
 Widget _buildSourceCard(
   BuildContext context, {
   required IconData icon,
@@ -202,7 +245,7 @@ Future<void> _requestSystemPermissions(
   ].request();
 
   if (statuses.values.any((status) => status.isGranted)) {
-    _showImageSourceOptions(context, onImagePicked);
+    _showImageSourceOptions(context, onImagePicked, multiPick: false);
   } else if (statuses[Permission.camera]!.isPermanentlyDenied ||
       statuses[Permission.photos]!.isPermanentlyDenied) {
     openAppSettings();
