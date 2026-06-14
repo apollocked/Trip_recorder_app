@@ -69,5 +69,49 @@
   "all": "All",
   "settings": "Settings",
   "exportTrip": "Export",
-  "copiedToClipboard": "Trip exported to clipboard!"
+  "copiedToClipboard": "Trip exported to clipboard!",
+
+  "budgetBreakdown": "Budget Breakdown",
+  "addExpense": "Add Expense",
+  "expenseTitle": "Expense Title",
+  "expenseAmount": "Amount",
+  "expenseCategory": "Category",
+  "addExpenseHint": "e.g. Hotel booking",
+  "totalExpenses": "Total Expenses",
+  "categoryHotel": "Hotel",
+  "categoryFood": "Food",
+  "categoryTransport": "Transport",
+  "categoryActivities": "Activities",
+  "categoryShopping": "Shopping",
+  "categoryOther": "Other",
+
+  "packingList": "Packing List",
+  "addItem": "Add Item",
+  "itemName": "Item Name",
+  "addItemHint": "e.g. Passport",
+  "itemsChecked": "{checked}/{total} items",
+  "@itemsChecked": {
+    "description": "Checked items counter",
+    "placeholders": {
+      "checked": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "noItemsYet": "No items yet",
+  "checklist": "Checklist",
+  "budgetLabel": "Budget",
+
+  "privacyPolicy": "Privacy Policy",
+  "privacyIntro": "Trip Recorder values your privacy. This policy explains how we handle your data.",
+  "privacyDataTitle": "Data We Collect",
+  "privacyDataBody": "Trip Recorder stores all your data locally on your device. We do not collect, transmit, or sell any personal information. Trip details, photos, and preferences remain solely on your device.",
+  "privacyUseTitle": "How We Use Data",
+  "privacyUseBody": "Your trip data is used exclusively to display your travel logs within the app. No data is sent to external servers or shared with third parties.",
+  "privacyStorageTitle": "Data Storage",
+  "privacyStorageBody": "All information is stored locally using on-device databases and file storage. You can delete any or all of your data at any time by removing individual trips or clearing app data.",
+  "privacyThirdPartyTitle": "Third-Party Services",
+  "privacyThirdPartyBody": "This app uses no third-party analytics, advertising, or tracking services. The image picker and share sheet use system-provided APIs that do not transmit your data externally.",
+  "privacyContactTitle": "Contact",
+  "privacyContactBody": "If you have questions about this privacy policy, please contact the developer through the app store listing.",
+  "privacyLastUpdated": "Last updated: June 2026"
 }

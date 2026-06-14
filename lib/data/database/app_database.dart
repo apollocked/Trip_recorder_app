@@ -26,6 +26,9 @@ class AppDatabase {
       version: AppConstants.dbVersion,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
+      onConfigure: (db) async {
+        await db.execute('PRAGMA foreign_keys = ON');
+      },
     );
   }
 
@@ -65,6 +68,27 @@ class AppDatabase {
           whereArgs: [row['id']],
         );
       }
+    }
+    if (oldVersion < 3) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS ${AppConstants.expensesTable} (
+          id TEXT PRIMARY KEY,
+          trip_id TEXT NOT NULL,
+          title TEXT NOT NULL,
+          amount REAL NOT NULL,
+          category TEXT NOT NULL DEFAULT 'other',
+          FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
+        )
+      ''');
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS ${AppConstants.checklistTable} (
+          id TEXT PRIMARY KEY,
+          trip_id TEXT NOT NULL,
+          title TEXT NOT NULL,
+          is_checked INTEGER NOT NULL DEFAULT 0,
+          FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
+        )
+      ''');
     }
   }
 

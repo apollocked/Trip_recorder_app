@@ -2,6 +2,9 @@
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
+import 'package:animations_in_flutter/views/pages/budget_page.dart';
+import 'package:animations_in_flutter/views/pages/image_viewer_page.dart';
+import 'package:animations_in_flutter/views/pages/packing_list_page.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
 import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
 import 'package:animations_in_flutter/views/widgets/star_rating.dart';
@@ -81,6 +84,32 @@ class DetailsPage extends StatelessWidget {
                         const SizedBox(height: 16),
                         _buildInfoChips(trip, colorScheme, context),
                         const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ActionChip(
+                                avatar: const Icon(Icons.account_balance_wallet_rounded, size: 18),
+                                label: Text(AppLocalizations.of(context)!.budgetLabel),
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => BudgetPage(tripId: trip.id)),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: ActionChip(
+                                avatar: const Icon(Icons.checklist_rounded, size: 18),
+                                label: Text(AppLocalizations.of(context)!.checklist),
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => PackingListPage(tripId: trip.id)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
                         Divider(color: colorScheme.outlineVariant.withAlpha(128)),
                         const SizedBox(height: 16),
                         Text(
@@ -141,25 +170,36 @@ class DetailsPage extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: colorScheme.onSurface.withAlpha(200), width: 1),
-                borderRadius: BorderRadius.circular(32),
-                boxShadow: [
-                  BoxShadow(
-                    color: colorScheme.primary.withAlpha(20),
-                    blurRadius: 12,
-                    offset: const Offset(0, 6),
+            child: GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ImageViewerPage(
+                    imagePaths: trip.imagePaths,
+                    initialIndex: index,
                   ),
-                ],
+                ),
               ),
-              child: Hero(
-                tag: 'tag-image-${trip.imagePaths[index]}',
-                child: ClipRRect(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: colorScheme.onSurface.withAlpha(200), width: 1),
                   borderRadius: BorderRadius.circular(32),
-                  child: Semantics(
-                    label: 'Trip cover image ${index + 1}',
-                    child: coverImage(trip.imagePaths[index]),
+                  boxShadow: [
+                    BoxShadow(
+                      color: colorScheme.primary.withAlpha(20),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: Hero(
+                  tag: 'tag-image-${trip.imagePaths[index]}',
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(32),
+                    child: Semantics(
+                      label: 'Trip cover image ${index + 1}',
+                      child: coverImage(trip.imagePaths[index]),
+                    ),
                   ),
                 ),
               ),
@@ -277,6 +317,16 @@ class DetailsPage extends StatelessWidget {
     buffer.writeln('\n---');
     buffer.writeln(l10n.appTitle.replaceAll('\n', ' '));
 
-    await SharePlus.instance.share(ShareParams(text: buffer.toString(), subject: trip.title));
+    final text = buffer.toString();
+    try {
+      await SharePlus.instance.share(ShareParams(text: text, subject: trip.title));
+    } catch (_) {
+      await Clipboard.setData(ClipboardData(text: text));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.copiedToClipboard)),
+        );
+      }
+    }
   }
 }

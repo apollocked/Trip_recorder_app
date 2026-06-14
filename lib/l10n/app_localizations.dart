@@ -525,6 +525,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Trip exported to clipboard!'**
   String get copiedToClipboard;
+
+  /// No description provided for @budgetBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget Breakdown'**
+  String get budgetBreakdown;
+
+  /// No description provided for @addExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Expense'**
+  String get addExpense;
+
+  /// No description provided for @expenseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense Title'**
+  String get expenseTitle;
+
+  /// No description provided for @expenseAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get expenseAmount;
+
+  /// No description provided for @expenseCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get expenseCategory;
+
+  /// No description provided for @addExpenseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Hotel booking'**
+  String get addExpenseHint;
+
+  /// No description provided for @totalExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Expenses'**
+  String get totalExpenses;
+
+  /// No description provided for @categoryHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel'**
+  String get categoryHotel;
+
+  /// No description provided for @categoryFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get categoryFood;
+
+  /// No description provided for @categoryTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get categoryTransport;
+
+  /// No description provided for @categoryActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'Activities'**
+  String get categoryActivities;
+
+  /// No description provided for @categoryShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get categoryShopping;
+
+  /// No description provided for @categoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get categoryOther;
+
+  /// No description provided for @packingList.
+  ///
+  /// In en, this message translates to:
+  /// **'Packing List'**
+  String get packingList;
+
+  /// No description provided for @addItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Item'**
+  String get addItem;
+
+  /// No description provided for @itemName.
+  ///
+  /// In en, this message translates to:
+  /// **'Item Name'**
+  String get itemName;
+
+  /// No description provided for @addItemHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Passport'**
+  String get addItemHint;
+
+  /// Checked items counter
+  ///
+  /// In en, this message translates to:
+  /// **'{checked}/{total} items'**
+  String itemsChecked(int checked, int total);
+
+  /// No description provided for @noItemsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No items yet'**
+  String get noItemsYet;
+
+  /// No description provided for @checklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist'**
+  String get checklist;
+
+  /// No description provided for @budgetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget'**
+  String get budgetLabel;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @privacyIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip Recorder values your privacy. This policy explains how we handle your data.'**
+  String get privacyIntro;
+
+  /// No description provided for @privacyDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data We Collect'**
+  String get privacyDataTitle;
+
+  /// No description provided for @privacyDataBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip Recorder stores all your data locally on your device. We do not collect, transmit, or sell any personal information. Trip details, photos, and preferences remain solely on your device.'**
+  String get privacyDataBody;
+
+  /// No description provided for @privacyUseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How We Use Data'**
+  String get privacyUseTitle;
+
+  /// No description provided for @privacyUseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your trip data is used exclusively to display your travel logs within the app. No data is sent to external servers or shared with third parties.'**
+  String get privacyUseBody;
+
+  /// No description provided for @privacyStorageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Storage'**
+  String get privacyStorageTitle;
+
+  /// No description provided for @privacyStorageBody.
+  ///
+  /// In en, this message translates to:
+  /// **'All information is stored locally using on-device databases and file storage. You can delete any or all of your data at any time by removing individual trips or clearing app data.'**
+  String get privacyStorageBody;
+
+  /// No description provided for @privacyThirdPartyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Third-Party Services'**
+  String get privacyThirdPartyTitle;
+
+  /// No description provided for @privacyThirdPartyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This app uses no third-party analytics, advertising, or tracking services. The image picker and share sheet use system-provided APIs that do not transmit your data externally.'**
+  String get privacyThirdPartyBody;
+
+  /// No description provided for @privacyContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get privacyContactTitle;
+
+  /// No description provided for @privacyContactBody.
+  ///
+  /// In en, this message translates to:
+  /// **'If you have questions about this privacy policy, please contact the developer through the app store listing.'**
+  String get privacyContactBody;
+
+  /// No description provided for @privacyLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: June 2026'**
+  String get privacyLastUpdated;
 }
 
 class _AppLocalizationsDelegate

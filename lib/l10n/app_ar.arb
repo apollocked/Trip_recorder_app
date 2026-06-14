@@ -69,5 +69,49 @@
   "all": "الكل",
   "settings": "الإعدادات",
   "exportTrip": "تصدير",
-  "copiedToClipboard": "تم تصدير الرحلة إلى الحافظة!"
+  "copiedToClipboard": "تم تصدير الرحلة إلى الحافظة!",
+
+  "budgetBreakdown": "تفصيل الميزانية",
+  "addExpense": "إضافة مصروف",
+  "expenseTitle": "عنوان المصروف",
+  "expenseAmount": "المبلغ",
+  "expenseCategory": "التصنيف",
+  "addExpenseHint": "مثال: حجز فندق",
+  "totalExpenses": "إجمالي المصروفات",
+  "categoryHotel": "فندق",
+  "categoryFood": "طعام",
+  "categoryTransport": "مواصلات",
+  "categoryActivities": "أنشطة",
+  "categoryShopping": "تسوق",
+  "categoryOther": "أخرى",
+
+  "packingList": "قائمة الأمتعة",
+  "addItem": "إضافة عنصر",
+  "itemName": "اسم العنصر",
+  "addItemHint": "مثال: جواز السفر",
+  "itemsChecked": "{checked}/{total} عنصر",
+  "@itemsChecked": {
+    "description": "عداد العناصر المحددة",
+    "placeholders": {
+      "checked": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "noItemsYet": "لا توجد عناصر بعد",
+  "checklist": "القائمة",
+  "budgetLabel": "الميزانية",
+
+  "privacyPolicy": "سياسة الخصوصية",
+  "privacyIntro": "يُقدّر تطبيق \"مسجّل الرحلات\" خصوصيتك. توضّح هذه السياسة كيفية تعاملنا مع بياناتك.",
+  "privacyDataTitle": "البيانات التي نجمعها",
+  "privacyDataBody": "يخزّن التطبيق جميع بياناتك محلياً على جهازك. نحن لا نجمع أو ننقل أو نبيع أي معلومات شخصية. تبقى تفاصيل الرحلات والصور والتفضيلات محصورة على جهازك فقط.",
+  "privacyUseTitle": "كيف نستخدم البيانات",
+  "privacyUseBody": "تُستخدم بيانات رحلاتك حصرياً لعرض سجلات سفرك داخل التطبيق. لا يتم إرسال أي بيانات إلى خوادم خارجية أو مشاركتها مع أطراف ثالثة.",
+  "privacyStorageTitle": "تخزين البيانات",
+  "privacyStorageBody": "تُخزّن جميع المعلومات محلياً باستخدام قواعد بيانات وملفات على الجهاز. يمكنك حذف أي من بياناتك أو جميعها في أي وقت عن طريق إزالة الرحلات الفردية أو مسح بيانات التطبيق.",
+  "privacyThirdPartyTitle": "خدمات الطرف الثالث",
+  "privacyThirdPartyBody": "لا يستخدم هذا التطبيق أي خدمات تحليلات أو إعلانات أو تتبع من طرف ثالث. تستخدم أداة اختيار الصور ومشاركتها واجهات برمجة تطبيقات النظام التي لا تنقل بياناتك خارجياً.",
+  "privacyContactTitle": "اتصل بنا",
+  "privacyContactBody": "إذا كانت لديك أسئلة حول سياسة الخصوصية هذه، يُرجى التواصل مع المطور عبر صفحة التطبيق في المتجر.",
+  "privacyLastUpdated": "آخر تحديث: يونيو 2026"
 }

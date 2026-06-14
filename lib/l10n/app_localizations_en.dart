@@ -225,4 +225,114 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get copiedToClipboard => 'Trip exported to clipboard!';
+
+  @override
+  String get budgetBreakdown => 'Budget Breakdown';
+
+  @override
+  String get addExpense => 'Add Expense';
+
+  @override
+  String get expenseTitle => 'Expense Title';
+
+  @override
+  String get expenseAmount => 'Amount';
+
+  @override
+  String get expenseCategory => 'Category';
+
+  @override
+  String get addExpenseHint => 'e.g. Hotel booking';
+
+  @override
+  String get totalExpenses => 'Total Expenses';
+
+  @override
+  String get categoryHotel => 'Hotel';
+
+  @override
+  String get categoryFood => 'Food';
+
+  @override
+  String get categoryTransport => 'Transport';
+
+  @override
+  String get categoryActivities => 'Activities';
+
+  @override
+  String get categoryShopping => 'Shopping';
+
+  @override
+  String get categoryOther => 'Other';
+
+  @override
+  String get packingList => 'Packing List';
+
+  @override
+  String get addItem => 'Add Item';
+
+  @override
+  String get itemName => 'Item Name';
+
+  @override
+  String get addItemHint => 'e.g. Passport';
+
+  @override
+  String itemsChecked(int checked, int total) {
+    return '$checked/$total items';
+  }
+
+  @override
+  String get noItemsYet => 'No items yet';
+
+  @override
+  String get checklist => 'Checklist';
+
+  @override
+  String get budgetLabel => 'Budget';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get privacyIntro =>
+      'Trip Recorder values your privacy. This policy explains how we handle your data.';
+
+  @override
+  String get privacyDataTitle => 'Data We Collect';
+
+  @override
+  String get privacyDataBody =>
+      'Trip Recorder stores all your data locally on your device. We do not collect, transmit, or sell any personal information. Trip details, photos, and preferences remain solely on your device.';
+
+  @override
+  String get privacyUseTitle => 'How We Use Data';
+
+  @override
+  String get privacyUseBody =>
+      'Your trip data is used exclusively to display your travel logs within the app. No data is sent to external servers or shared with third parties.';
+
+  @override
+  String get privacyStorageTitle => 'Data Storage';
+
+  @override
+  String get privacyStorageBody =>
+      'All information is stored locally using on-device databases and file storage. You can delete any or all of your data at any time by removing individual trips or clearing app data.';
+
+  @override
+  String get privacyThirdPartyTitle => 'Third-Party Services';
+
+  @override
+  String get privacyThirdPartyBody =>
+      'This app uses no third-party analytics, advertising, or tracking services. The image picker and share sheet use system-provided APIs that do not transmit your data externally.';
+
+  @override
+  String get privacyContactTitle => 'Contact';
+
+  @override
+  String get privacyContactBody =>
+      'If you have questions about this privacy policy, please contact the developer through the app store listing.';
+
+  @override
+  String get privacyLastUpdated => 'Last updated: June 2026';
 }

@@ -226,4 +226,114 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get copiedToClipboard => 'گەشت هەناردە کرا بۆ کلیپبۆرد!';
+
+  @override
+  String get budgetBreakdown => 'ڕوونکردنەوەی بودجە';
+
+  @override
+  String get addExpense => 'زیادکردنی خەرجی';
+
+  @override
+  String get expenseTitle => 'ناوی خەرجی';
+
+  @override
+  String get expenseAmount => 'بڕ';
+
+  @override
+  String get expenseCategory => 'پۆل';
+
+  @override
+  String get addExpenseHint => 'بۆ نموونە: ژووری هۆتێل';
+
+  @override
+  String get totalExpenses => 'کۆی خەرجییەکان';
+
+  @override
+  String get categoryHotel => 'هۆتێل';
+
+  @override
+  String get categoryFood => 'خواردن';
+
+  @override
+  String get categoryTransport => 'ڕاگوێزتن';
+
+  @override
+  String get categoryActivities => 'چالاکییەکان';
+
+  @override
+  String get categoryShopping => 'کڕین';
+
+  @override
+  String get categoryOther => 'تر';
+
+  @override
+  String get packingList => 'لیستی کەلوپەل';
+
+  @override
+  String get addItem => 'زیادکردنی بابەت';
+
+  @override
+  String get itemName => 'ناوی بابەت';
+
+  @override
+  String get addItemHint => 'بۆ نموونە: پاسپۆرت';
+
+  @override
+  String itemsChecked(int checked, int total) {
+    return '$checked/$total بابەت';
+  }
+
+  @override
+  String get noItemsYet => 'هێشتا هیچ بابەتێک نییە';
+
+  @override
+  String get checklist => 'لیستەکە';
+
+  @override
+  String get budgetLabel => 'بودجە';
+
+  @override
+  String get privacyPolicy => 'سیاسەتی تایبەتی';
+
+  @override
+  String get privacyIntro =>
+      'ئەپی تۆمارکەری گەشت بەهای تایبەتییەکەت دەزانێت. ئەم سیاسەتە ڕوون دەکاتەوە کە چۆن مامەڵە لەگەڵ داتاکانت دەکەین.';
+
+  @override
+  String get privacyDataTitle => 'داتاکانی کۆدەکەینەوە';
+
+  @override
+  String get privacyDataBody =>
+      'تۆمارکەری گەشت هەموو داتاکانت لەسەر ئامێرەکەت بە شێوەی ناوخۆیی هەڵدەگرێت. ئێمە هیچ زانیارییەکی کەسی کۆناکەینەوە، نانێرین، یان نافرۆشین. وردەکاری گەشتەکان، وێنەکان و هەڵبژاردنەکان تەنها لەسەر ئامێرەکەت دەمێننەوە.';
+
+  @override
+  String get privacyUseTitle => 'چۆن داتا بەکاردەهێنین';
+
+  @override
+  String get privacyUseBody =>
+      'داتای گەشتەکانت تەنها بۆ نیشاندانی تۆمارەکانی گەشتەکانت لەناو ئەپەکەدا بەکاردەهێنرێت. هیچ داتایەک نانێردرێت بۆ سێرڤەرە دەرەکییەکان یان لەگەڵ لایەنی سێیەم هاوبەش ناکرێت.';
+
+  @override
+  String get privacyStorageTitle => 'شوێنی هەڵگرتنی داتا';
+
+  @override
+  String get privacyStorageBody =>
+      'هەموو زانیارییەک بە شێوەی ناوخۆیی لەسەر ئامێرەکەت هەڵدەگیرێت بە بەکارهێنانی بنکەدراوە و پەڕگەکانی ئامێرەکە. دەتوانیت هەر کاتێک بیانەوێت هەر یان هەموو داتاکانت بسڕیتەوە بە لابردنی گەشتە تاکەکان یان پاککردنەوەی داتاکانی ئەپەکە.';
+
+  @override
+  String get privacyThirdPartyTitle => 'ڕاژەکانی لایەنی سێیەم';
+
+  @override
+  String get privacyThirdPartyBody =>
+      'ئەم ئەپە هیچ ڕاژەیەکی شیکاری، ڕیکلام، یان شوێنکەوتنی لایەنی سێیەم بەکارناهێنێت. هەڵبژێری وێنە و هاوپێچکردن بە بەکارهێنانی APiەکانی سیستەم کاردەکەن کە داتاکانت بۆ دەرەوە نانێرن.';
+
+  @override
+  String get privacyContactTitle => 'پەیوەندی';
+
+  @override
+  String get privacyContactBody =>
+      'ئەگەر پرسیارت هەیە دەربارەی ئەم سیاسەتی تایبەتییە، تکایە لە ڕێگەی پەڕەی ئەپەکە لە فرۆشگاکەوە پەیوەندی بە پەرەپێدەرەوە بکە.';
+
+  @override
+  String get privacyLastUpdated => 'دوایین نوێکردنەوە: حوزەیرانی 2026';
 }
