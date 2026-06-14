@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/expense.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
@@ -17,6 +18,7 @@ class BudgetPage extends StatefulWidget {
 class _BudgetPageState extends State<BudgetPage> {
   List<Expense> _expenses = [];
   bool _isLoading = true;
+  String _currencySymbol = '\$';
 
   @override
   void initState() {
@@ -25,11 +27,14 @@ class _BudgetPageState extends State<BudgetPage> {
   }
 
   Future<void> _loadExpenses() async {
-    final expenses = await context.read<TripProvider>().getExpenses(widget.tripId);
+    final provider = context.read<TripProvider>();
+    final expenses = await provider.getExpenses(widget.tripId);
+    final trip = provider.getTripById(widget.tripId);
     if (mounted) {
       setState(() {
         _expenses = expenses;
         _isLoading = false;
+        _currencySymbol = trip != null ? CurrencyInfo.symbolFor(trip.currency) : '\$';
       });
     }
   }
@@ -177,7 +182,7 @@ class _BudgetPageState extends State<BudgetPage> {
                         children: [
                           Text(l10n.totalExpenses, style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 14)),
                           const SizedBox(height: 8),
-                          Text('\$${totalAmount.toStringAsFixed(2)}',
+                          Text('$_currencySymbol${totalAmount.toStringAsFixed(2)}',
                               style: textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
                         ],
                       ),
@@ -212,7 +217,7 @@ class _BudgetPageState extends State<BudgetPage> {
                               const SizedBox(width: 8),
                               SizedBox(
                                 width: 70,
-                                child: Text('\$${entry.value.toStringAsFixed(0)}',
+                                child: Text('$_currencySymbol${entry.value.toStringAsFixed(0)}',
                                     textAlign: TextAlign.right,
                                     style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
                               ),
@@ -285,7 +290,7 @@ class _BudgetPageState extends State<BudgetPage> {
                                     ],
                                   ),
                                 ),
-                                Text('\$${expense.amount.toStringAsFixed(0)}',
+                                Text('$_currencySymbol${expense.amount.toStringAsFixed(0)}',
                                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: colorScheme.onSurface)),
                               ],
                             ),

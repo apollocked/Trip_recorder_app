@@ -22,6 +22,7 @@ class TripRepository {
     String description = '',
     TripCategory category = TripCategory.other,
     double rating = 0.0,
+    String currency = 'USD',
   }) async {
     final trip = Trip(
       title: title,
@@ -31,8 +32,8 @@ class TripRepository {
       description: description,
       category: category,
       rating: rating,
+      currency: currency,
     );
-
     final savedPaths = <String>[];
     if (imageFiles.isNotEmpty) {
       final paths = await _imageService.saveMultipleImages(imageFiles, trip.id);
@@ -58,6 +59,7 @@ class TripRepository {
     bool? isLiked,
     TripCategory? category,
     double? rating,
+    String? currency,
   }) async {
     final oldTrip = await _database.getTripById(id);
     if (oldTrip == null) throw Exception('Trip not found');
@@ -98,6 +100,7 @@ class TripRepository {
       createdAt: oldTrip.createdAt,
       category: category ?? oldTrip.category,
       rating: rating ?? oldTrip.rating,
+      currency: currency ?? oldTrip.currency,
     );
 
     await _database.updateTrip(updatedTrip);

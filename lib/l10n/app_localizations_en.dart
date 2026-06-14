@@ -335,4 +335,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacyLastUpdated => 'Last updated: June 2026';
+
+  @override
+  String get currencyLabel => 'Currency';
+
+  @override
+  String get journal => 'Journal';
+
+  @override
+  String get addJournalEntry => 'Add Entry';
+
+  @override
+  String get journalTitle => 'Entry Title';
+
+  @override
+  String get journalTitleHint => 'e.g. First day in Paris';
+
+  @override
+  String get journalText => 'Notes';
+
+  @override
+  String get journalTextHint => 'What happened today?';
+
+  @override
+  String get noJournalEntries => 'No journal entries yet';
 }

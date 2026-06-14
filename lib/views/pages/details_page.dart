@@ -1,9 +1,11 @@
 ﻿import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/pages/budget_page.dart';
 import 'package:animations_in_flutter/views/pages/image_viewer_page.dart';
+import 'package:animations_in_flutter/views/pages/journal_page.dart';
 import 'package:animations_in_flutter/views/pages/packing_list_page.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
 import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
@@ -84,10 +86,11 @@ class DetailsPage extends StatelessWidget {
                         const SizedBox(height: 16),
                         _buildInfoChips(trip, colorScheme, context),
                         const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ActionChip(
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              ActionChip(
                                 avatar: const Icon(Icons.account_balance_wallet_rounded, size: 18),
                                 label: Text(AppLocalizations.of(context)!.budgetLabel),
                                 onPressed: () => Navigator.push(
@@ -95,10 +98,8 @@ class DetailsPage extends StatelessWidget {
                                   MaterialPageRoute(builder: (_) => BudgetPage(tripId: trip.id)),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: ActionChip(
+                              const SizedBox(width: 8),
+                              ActionChip(
                                 avatar: const Icon(Icons.checklist_rounded, size: 18),
                                 label: Text(AppLocalizations.of(context)!.checklist),
                                 onPressed: () => Navigator.push(
@@ -106,8 +107,17 @@ class DetailsPage extends StatelessWidget {
                                   MaterialPageRoute(builder: (_) => PackingListPage(tripId: trip.id)),
                                 ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 8),
+                              ActionChip(
+                                avatar: const Icon(Icons.article_rounded, size: 18),
+                                label: Text(AppLocalizations.of(context)!.journal),
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => JournalPage(tripId: trip.id)),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 16),
                         Divider(color: colorScheme.outlineVariant.withAlpha(128)),
@@ -270,7 +280,7 @@ class DetailsPage extends StatelessWidget {
             '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}', colorScheme),
         const SizedBox(width: 12),
         _buildChip(context, Icons.attach_money_rounded,
-            '\$${trip.price.toStringAsFixed(0)}', colorScheme),
+            '${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}', colorScheme),
         ...[
           const SizedBox(width: 12),
           _buildChip(context, Icons.calendar_today_rounded,

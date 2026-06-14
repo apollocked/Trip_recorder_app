@@ -336,4 +336,28 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get privacyLastUpdated => 'دوایین نوێکردنەوە: حوزەیرانی 2026';
+
+  @override
+  String get currencyLabel => 'دراو';
+
+  @override
+  String get journal => 'ڕۆژنامە';
+
+  @override
+  String get addJournalEntry => 'زیادکردنی تۆمار';
+
+  @override
+  String get journalTitle => 'ناونیشانی تۆمار';
+
+  @override
+  String get journalTitleHint => 'بۆ نموونە: یەکەم ڕۆژ لە پاریس';
+
+  @override
+  String get journalText => 'تێبینییەکان';
+
+  @override
+  String get journalTextHint => 'ئەمڕۆ چی ڕوویدا؟';
+
+  @override
+  String get noJournalEntries => 'هێشتا هیچ تۆمارێکی ڕۆژنامە نییە';
 }

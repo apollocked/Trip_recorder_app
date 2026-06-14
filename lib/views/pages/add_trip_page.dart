@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
@@ -30,6 +31,7 @@ class _AddTripPageState extends State<AddTripPage> {
   bool _isSaving = false;
   TripCategory _selectedCategory = TripCategory.other;
   double _rating = 0.0;
+  String _selectedCurrency = 'USD';
 
   @override
   void initState() {
@@ -45,6 +47,7 @@ class _AddTripPageState extends State<AddTripPage> {
         _existingImagePaths = List.from(trip.imagePaths);
         _selectedCategory = trip.category;
         _rating = trip.rating;
+        _selectedCurrency = trip.currency;
       }
     } else {
       _selectedDate = DateTime.now();
@@ -94,6 +97,7 @@ class _AddTripPageState extends State<AddTripPage> {
           description: _descriptionController.text.trim(),
           category: _selectedCategory,
           rating: _rating,
+          currency: _selectedCurrency,
         );
       } else {
         await context.read<TripProvider>().addTrip(
@@ -108,6 +112,7 @@ class _AddTripPageState extends State<AddTripPage> {
           description: _descriptionController.text.trim(),
           category: _selectedCategory,
           rating: _rating,
+          currency: _selectedCurrency,
         );
       }
       if (mounted) Navigator.pop(context);
@@ -213,6 +218,34 @@ class _AddTripPageState extends State<AddTripPage> {
                   }).toList(),
                 ),
 
+                const SizedBox(height: 24),
+                Text(
+                  l10n.currencyLabel,
+                  style: textTheme.labelLarge?.copyWith(
+                    color: colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<String>(
+                  initialValue: _selectedCurrency,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: colorScheme.surface,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: colorScheme.outlineVariant),
+                    ),
+                  ),
+                  items: CurrencyInfo.all.map((c) {
+                    return DropdownMenuItem(
+                      value: c.code,
+                      child: Text('${c.symbol}  ${c.code} — ${c.name}'),
+                    );
+                  }).toList(),
+                  onChanged: (val) {
+                    if (val != null) setState(() => _selectedCurrency = val);
+                  },
+                ),
                 const SizedBox(height: 32),
                 Text(
                   l10n.tripDetails,

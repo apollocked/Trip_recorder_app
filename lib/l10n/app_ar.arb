@@ -113,5 +113,15 @@
   "privacyThirdPartyBody": "لا يستخدم هذا التطبيق أي خدمات تحليلات أو إعلانات أو تتبع من طرف ثالث. تستخدم أداة اختيار الصور ومشاركتها واجهات برمجة تطبيقات النظام التي لا تنقل بياناتك خارجياً.",
   "privacyContactTitle": "اتصل بنا",
   "privacyContactBody": "إذا كانت لديك أسئلة حول سياسة الخصوصية هذه، يُرجى التواصل مع المطور عبر صفحة التطبيق في المتجر.",
-  "privacyLastUpdated": "آخر تحديث: يونيو 2026"
+  "privacyLastUpdated": "آخر تحديث: يونيو 2026",
+
+  "currencyLabel": "العملة",
+
+  "journal": "اليوميات",
+  "addJournalEntry": "إضافة مدخلة",
+  "journalTitle": "عنوان المدخلة",
+  "journalTitleHint": "مثال: أول يوم في باريس",
+  "journalText": "ملاحظات",
+  "journalTextHint": "ماذا حدث اليوم؟",
+  "noJournalEntries": "لا توجد مدخلات يوميات بعد"
 }

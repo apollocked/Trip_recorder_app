@@ -729,6 +729,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last updated: June 2026'**
   String get privacyLastUpdated;
+
+  /// No description provided for @currencyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get currencyLabel;
+
+  /// No description provided for @journal.
+  ///
+  /// In en, this message translates to:
+  /// **'Journal'**
+  String get journal;
+
+  /// No description provided for @addJournalEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Entry'**
+  String get addJournalEntry;
+
+  /// No description provided for @journalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry Title'**
+  String get journalTitle;
+
+  /// No description provided for @journalTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. First day in Paris'**
+  String get journalTitleHint;
+
+  /// No description provided for @journalText.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get journalText;
+
+  /// No description provided for @journalTextHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened today?'**
+  String get journalTextHint;
+
+  /// No description provided for @noJournalEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'No journal entries yet'**
+  String get noJournalEntries;
 }
 
 class _AppLocalizationsDelegate

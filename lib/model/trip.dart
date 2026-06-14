@@ -14,6 +14,7 @@ class Trip {
   final DateTime createdAt;
   final TripCategory category;
   final double rating;
+  final String currency;
 
   Trip({
     String? id,
@@ -27,6 +28,7 @@ class Trip {
     DateTime? createdAt,
     this.category = TripCategory.other,
     this.rating = 0.0,
+    this.currency = 'USD',
   })  : id = id ?? const Uuid().v4(),
         imagePaths = imagePaths ?? [],
         createdAt = createdAt ?? DateTime.now();
@@ -46,6 +48,7 @@ class Trip {
     DateTime? createdAt,
     TripCategory? category,
     double? rating,
+    String? currency,
   }) {
     return Trip(
       id: id ?? this.id,
@@ -59,6 +62,7 @@ class Trip {
       createdAt: createdAt ?? this.createdAt,
       category: category ?? this.category,
       rating: rating ?? this.rating,
+      currency: currency ?? this.currency,
     );
   }
 
@@ -74,6 +78,7 @@ class Trip {
         'created_at': createdAt.toIso8601String(),
         'category': category.name,
         'rating': rating,
+        'currency': currency,
       };
 
   factory Trip.fromMap(Map<String, dynamic> map) {
@@ -105,6 +110,7 @@ class Trip {
       createdAt: DateTime.parse(map['created_at'] as String),
       category: TripCategory.fromString((map['category'] as String?) ?? 'other'),
       rating: (map['rating'] as num?)?.toDouble() ?? 0.0,
+      currency: (map['currency'] as String?) ?? 'USD',
     );
   }
 

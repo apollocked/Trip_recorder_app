@@ -113,5 +113,15 @@
   "privacyThirdPartyBody": "This app uses no third-party analytics, advertising, or tracking services. The image picker and share sheet use system-provided APIs that do not transmit your data externally.",
   "privacyContactTitle": "Contact",
   "privacyContactBody": "If you have questions about this privacy policy, please contact the developer through the app store listing.",
-  "privacyLastUpdated": "Last updated: June 2026"
+  "privacyLastUpdated": "Last updated: June 2026",
+
+  "currencyLabel": "Currency",
+
+  "journal": "Journal",
+  "addJournalEntry": "Add Entry",
+  "journalTitle": "Entry Title",
+  "journalTitleHint": "e.g. First day in Paris",
+  "journalText": "Notes",
+  "journalTextHint": "What happened today?",
+  "noJournalEntries": "No journal entries yet"
 }

@@ -335,4 +335,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get privacyLastUpdated => 'آخر تحديث: يونيو 2026';
+
+  @override
+  String get currencyLabel => 'العملة';
+
+  @override
+  String get journal => 'اليوميات';
+
+  @override
+  String get addJournalEntry => 'إضافة مدخلة';
+
+  @override
+  String get journalTitle => 'عنوان المدخلة';
+
+  @override
+  String get journalTitleHint => 'مثال: أول يوم في باريس';
+
+  @override
+  String get journalText => 'ملاحظات';
+
+  @override
+  String get journalTextHint => 'ماذا حدث اليوم؟';
+
+  @override
+  String get noJournalEntries => 'لا توجد مدخلات يوميات بعد';
 }

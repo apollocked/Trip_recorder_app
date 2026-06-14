@@ -46,7 +46,8 @@ class AppDatabase {
         is_liked INTEGER NOT NULL DEFAULT 0,
         created_at TEXT NOT NULL,
         category TEXT NOT NULL DEFAULT 'other',
-        rating REAL NOT NULL DEFAULT 0.0
+        rating REAL NOT NULL DEFAULT 0.0,
+        currency TEXT NOT NULL DEFAULT 'USD'
       )
     ''');
   }
@@ -86,6 +87,22 @@ class AppDatabase {
           trip_id TEXT NOT NULL,
           title TEXT NOT NULL,
           is_checked INTEGER NOT NULL DEFAULT 0,
+          FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
+        )
+      ''');
+    }
+    if (oldVersion < 4) {
+      await db.execute('ALTER TABLE ${AppConstants.tripsTable} ADD COLUMN currency TEXT NOT NULL DEFAULT \'USD\'');
+    }
+    if (oldVersion < 5) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS ${AppConstants.journalTable} (
+          id TEXT PRIMARY KEY,
+          trip_id TEXT NOT NULL,
+          date TEXT NOT NULL,
+          title TEXT NOT NULL,
+          text TEXT NOT NULL DEFAULT '',
+          image_paths TEXT NOT NULL DEFAULT '[]',
           FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
         )
       ''');

@@ -5,9 +5,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../core/constants.dart';
 import '../data/repositories/checklist_repository.dart';
 import '../data/repositories/expense_repository.dart';
+import '../data/repositories/journal_repository.dart';
 import '../data/repositories/trip_repository.dart';
 import '../model/checklist_item.dart';
 import '../model/expense.dart';
+import '../model/journal_entry.dart';
 import '../model/trip.dart';
 import '../model/trip_category.dart';
 
@@ -15,12 +17,14 @@ class TripProvider extends ChangeNotifier {
   final TripRepository _repository = TripRepository();
   final ExpenseRepository _expenseRepository = ExpenseRepository();
   final ChecklistRepository _checklistRepository = ChecklistRepository();
+  final JournalRepository _journalRepository = JournalRepository();
 
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
 
   Map<String, List<Expense>> _expensesCache = {};
-  final Map<String, List<ChecklistItem>> _checklistCache = {}; 
+  final Map<String, List<ChecklistItem>> _checklistCache = {};
+  final Map<String, List<JournalEntry>> _journalCache = {};
   set expensesCache(Map<String, List<Expense>> v) => _expensesCache = v;
 
   bool _isLoading = false;
@@ -119,6 +123,7 @@ class TripProvider extends ChangeNotifier {
     String description = '',
     TripCategory category = TripCategory.other,
     double rating = 0.0,
+    String currency = 'USD',
   }) async {
     final trip = await _repository.addTrip(
       title: title,
@@ -130,6 +135,7 @@ class TripProvider extends ChangeNotifier {
       description: description,
       category: category,
       rating: rating,
+      currency: currency,
     );
     _trips.insert(0, trip);
     notifyListeners();
@@ -149,6 +155,7 @@ class TripProvider extends ChangeNotifier {
     bool? isLiked,
     TripCategory? category,
     double? rating,
+    String? currency,
   }) async {
     final trip = await _repository.updateTrip(
       id,
@@ -163,6 +170,7 @@ class TripProvider extends ChangeNotifier {
       isLiked: isLiked,
       category: category,
       rating: rating,
+      currency: currency,
     );
     final index = _trips.indexWhere((t) => t.id == id);
     if (index != -1) {
@@ -177,6 +185,7 @@ class TripProvider extends ChangeNotifier {
     _trips.removeWhere((t) => t.id == id);
     _expensesCache.remove(id);
     _checklistCache.remove(id);
+    _journalCache.remove(id);
     notifyListeners();
   }
 
@@ -337,6 +346,61 @@ class TripProvider extends ChangeNotifier {
   Future<void> deleteAllTripChecklistItems(String tripId) async {
     await _checklistRepository.deleteAllTripItems(tripId);
     _checklistCache.remove(tripId);
+    notifyListeners();
+  }
+
+  // --- Journal CRUD ---
+
+  Future<List<JournalEntry>> getJournalEntries(String tripId) async {
+    if (_journalCache.containsKey(tripId)) return _journalCache[tripId]!;
+    final entries = await _journalRepository.getEntries(tripId);
+    _journalCache[tripId] = entries;
+    return entries;
+  }
+
+  Future<JournalEntry> addJournalEntry({
+    required String tripId,
+    required DateTime date,
+    required String title,
+    String text = '',
+    List<String>? imagePaths,
+  }) async {
+    final entry = await _journalRepository.addEntry(
+      tripId: tripId,
+      date: date,
+      title: title,
+      text: text,
+      imagePaths: imagePaths,
+    );
+    _journalCache[tripId] = [...(_journalCache[tripId] ?? []), entry];
+    notifyListeners();
+    return entry;
+  }
+
+  Future<void> updateJournalEntry(JournalEntry entry) async {
+    await _journalRepository.updateEntry(entry);
+    final list = _journalCache[entry.tripId];
+    if (list != null) {
+      final idx = list.indexWhere((e) => e.id == entry.id);
+      if (idx != -1) {
+        list[idx] = entry;
+        notifyListeners();
+      }
+    }
+  }
+
+  Future<void> deleteJournalEntry(String tripId, String entryId) async {
+    await _journalRepository.deleteEntry(entryId);
+    final list = _journalCache[tripId];
+    if (list != null) {
+      list.removeWhere((e) => e.id == entryId);
+      notifyListeners();
+    }
+  }
+
+  Future<void> deleteAllTripJournalEntries(String tripId) async {
+    await _journalRepository.deleteAllTripEntries(tripId);
+    _journalCache.remove(tripId);
     notifyListeners();
   }
 
