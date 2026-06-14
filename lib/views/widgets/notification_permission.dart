@@ -16,6 +16,7 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
       await Permission.notification.status.then((s) => s.isGranted);
 
   if (notifGranted) return true;
+  if (!context.mounted) return false;
 
   final result = await showDialog<bool>(
     context: context,

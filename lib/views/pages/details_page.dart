@@ -4,12 +4,11 @@ import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/pages/budget_page.dart';
-import 'package:animations_in_flutter/views/pages/image_viewer_page.dart';
 import 'package:animations_in_flutter/views/pages/journal_page.dart';
 import 'package:animations_in_flutter/views/pages/packing_list_page.dart';
-import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
-import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
-import 'package:animations_in_flutter/views/widgets/star_rating.dart';
+import 'package:animations_in_flutter/views/widgets/trip_header_section.dart';
+import 'package:animations_in_flutter/views/widgets/trip_image_carousel.dart';
+import 'package:animations_in_flutter/views/widgets/trip_info_chips.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -53,9 +52,7 @@ class DetailsPage extends StatelessWidget {
                   HapticFeedback.selectionClick();
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => AddTripPage(tripId: trip.id),
-                    ),
+                    MaterialPageRoute(builder: (context) => AddTripPage(tripId: trip.id)),
                   );
                 },
               ),
@@ -65,76 +62,21 @@ class DetailsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildImageCarousel(trip, colorScheme, l10n),
+                TripImageCarousel(trip: trip, colorScheme: colorScheme, l10n: l10n),
                 Expanded(
-                  child: TweenAnimationBuilder(
-                    curve: Curves.easeOutCubic,
-                    tween: Tween(begin: 1.0, end: 0.0),
-                    duration: const Duration(milliseconds: 600),
-                    builder: (context, double op, Widget? child) => Opacity(
-                      opacity: 1 - op,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: 24, right: 24, left: 24, bottom: (op * 20),
-                        ),
-                        child: child,
-                      ),
-                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 24, right: 24, left: 24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildHeaderSection(trip, colorScheme, textTheme),
+                        TripHeaderSection(trip: trip, colorScheme: colorScheme, textTheme: textTheme),
                         const SizedBox(height: 16),
-                        _buildInfoChips(trip, colorScheme, context),
+                        TripInfoChips(trip: trip, colorScheme: colorScheme),
                         const SizedBox(height: 16),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              ActionChip(
-                                avatar: const Icon(Icons.account_balance_wallet_rounded, size: 18),
-                                label: Text(AppLocalizations.of(context)!.budgetLabel),
-                                onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (_) => BudgetPage(tripId: trip.id)),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              ActionChip(
-                                avatar: const Icon(Icons.checklist_rounded, size: 18),
-                                label: Text(AppLocalizations.of(context)!.checklist),
-                                onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (_) => PackingListPage(tripId: trip.id)),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              ActionChip(
-                                avatar: const Icon(Icons.article_rounded, size: 18),
-                                label: Text(AppLocalizations.of(context)!.journal),
-                                onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (_) => JournalPage(tripId: trip.id)),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        _buildActionChips(context),
                         const SizedBox(height: 16),
                         if (trip.reminderDate != null)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: Row(
-                              children: [
-                                Icon(Icons.notifications_active_rounded, size: 18, color: colorScheme.primary),
-                                const SizedBox(width: 8),
-                                Text(
-                                  '${l10n.reminder}: ${trip.reminderDate!.day}/${trip.reminderDate!.month}/${trip.reminderDate!.year} ${trip.reminderDate!.hour.toString().padLeft(2, '0')}:${trip.reminderDate!.minute.toString().padLeft(2, '0')}',
-                                  style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13),
-                                ),
-                              ],
-                            ),
-                          ),
+                          _buildReminderBanner(trip, colorScheme, l10n),
                         Divider(color: colorScheme.outlineVariant.withAlpha(128)),
                         const SizedBox(height: 16),
                         Text(
@@ -150,11 +92,9 @@ class DetailsPage extends StatelessWidget {
                           child: SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
                             child: Padding(
-                              padding: const EdgeInsets.only(bottom: 24.0),
+                              padding: const EdgeInsets.only(bottom: 24),
                               child: Text(
-                                trip.description.isNotEmpty
-                                    ? trip.description
-                                    : l10n.noDescriptionAdded,
+                                trip.description.isNotEmpty ? trip.description : l10n.noDescriptionAdded,
                                 style: textTheme.bodyLarge?.copyWith(
                                   color: colorScheme.onSurfaceVariant,
                                   height: 1.6,
@@ -175,150 +115,53 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildImageCarousel(Trip trip, ColorScheme colorScheme, var l10n) {
-    if (trip.imagePaths.isEmpty) {
-      return Container(
-        height: 280,
-        margin: const EdgeInsets.symmetric(horizontal: 6),
-        decoration: BoxDecoration(
-          color: colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(32),
-        ),
-        child: const Center(child: Icon(Icons.landscape, size: 60, color: Colors.grey)),
-      );
-    }
-
-    return SizedBox(
-      height: 280,
-      child: PageView.builder(
-        itemCount: trip.imagePaths.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: GestureDetector(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => ImageViewerPage(
-                    imagePaths: trip.imagePaths,
-                    initialIndex: index,
-                  ),
-                ),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: colorScheme.onSurface.withAlpha(200), width: 1),
-                  borderRadius: BorderRadius.circular(32),
-                  boxShadow: [
-                    BoxShadow(
-                      color: colorScheme.primary.withAlpha(20),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Hero(
-                  tag: 'tag-image-${trip.imagePaths[index]}',
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(32),
-                    child: Semantics(
-                      label: l10n.imageCoverSemantics(index + 1),
-                      child: coverImage(trip.imagePaths[index]),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildHeaderSection(Trip trip, ColorScheme colorScheme, TextTheme textTheme) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.only(end: 60),
-              child: Text(
-                trip.title,
-                style: textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold, color: colorScheme.onSurface, height: 1.2,
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: colorScheme.primaryContainer.withAlpha(120),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    trip.category.label,
-                    style: TextStyle(
-                      fontSize: 12, fontWeight: FontWeight.w600,
-                      color: colorScheme.onPrimaryContainer,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                if (trip.rating > 0) StarRating(rating: trip.rating, size: 18),
-              ],
-            ),
-          ],
-        ),
-        PositionedDirectional(
-          top: 0, end: 0,
-          child: Container(
-            decoration: BoxDecoration(
-              color: colorScheme.primaryContainer.withAlpha(150),
-              shape: BoxShape.circle,
-            ),
-            child: HeartWidget(isLiked: trip.isLiked, tripId: trip.id),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInfoChips(Trip trip, ColorScheme colorScheme, BuildContext context) {
-    return Row(
-      children: [
-        _buildChip(context, Icons.bedtime_rounded,
-            '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}', colorScheme),
-        const SizedBox(width: 12),
-        _buildChip(context, Icons.attach_money_rounded,
-            '${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}', colorScheme),
-        ...[
-          const SizedBox(width: 12),
-          _buildChip(context, Icons.calendar_today_rounded,
-              '${trip.date.day}/${trip.date.month}/${trip.date.year}', colorScheme),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildChip(BuildContext context, IconData icon, String label, ColorScheme colorScheme) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: colorScheme.secondaryContainer.withAlpha(102),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outlineVariant.withAlpha(128)),
-      ),
+  Widget _buildActionChips(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final tripId = this.tripId;
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: colorScheme.primary),
-          const SizedBox(width: 6),
-          Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: colorScheme.onSecondaryContainer)),
+          ActionChip(
+            avatar: const Icon(Icons.account_balance_wallet_rounded, size: 18),
+            label: Text(l10n.budgetLabel),
+            onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (_) => BudgetPage(tripId: tripId)),
+            ),
+          ),
+          const SizedBox(width: 8),
+          ActionChip(
+            avatar: const Icon(Icons.checklist_rounded, size: 18),
+            label: Text(l10n.checklist),
+            onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (_) => PackingListPage(tripId: tripId)),
+            ),
+          ),
+          const SizedBox(width: 8),
+          ActionChip(
+            avatar: const Icon(Icons.article_rounded, size: 18),
+            label: Text(l10n.journal),
+            onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (_) => JournalPage(tripId: tripId)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReminderBanner(Trip trip, ColorScheme colorScheme, var l10n) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        children: [
+          Icon(Icons.notifications_active_rounded, size: 18, color: colorScheme.primary),
+          const SizedBox(width: 8),
+          Text(
+            '${l10n.reminder}: ${trip.reminderDate!.day}/${trip.reminderDate!.month}/${trip.reminderDate!.year} '
+            '${trip.reminderDate!.hour.toString().padLeft(2, '0')}:${trip.reminderDate!.minute.toString().padLeft(2, '0')}',
+            style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13),
+          ),
         ],
       ),
     );
@@ -349,9 +192,7 @@ class DetailsPage extends StatelessWidget {
     } catch (_) {
       await Clipboard.setData(ClipboardData(text: text));
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.copiedToClipboard)),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.copiedToClipboard)));
       }
     }
   }
