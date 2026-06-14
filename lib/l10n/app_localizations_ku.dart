@@ -169,4 +169,61 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get addMorePhotos => 'وێنەی زیاتر زیاد بکە';
+
+  @override
+  String get statistics => 'ئامارەکان';
+
+  @override
+  String get totalTrips => 'کۆی گەشتەکان';
+
+  @override
+  String get totalSpent => 'کۆی خەرجی';
+
+  @override
+  String get totalNights => 'کۆی شەوەکان';
+
+  @override
+  String get avgRating => 'تێکڕای هەڵسەنگاندن';
+
+  @override
+  String get favorites => 'دڵخوازەکان';
+
+  @override
+  String get topCategory => 'باشترین پۆل';
+
+  @override
+  String get mostVisited => 'زۆرترین سەردان';
+
+  @override
+  String get sortLabel => 'ڕیزکردن';
+
+  @override
+  String get newest => 'نوێترین';
+
+  @override
+  String get oldest => 'کۆنترین';
+
+  @override
+  String get priceAsc => 'نرخ \$';
+
+  @override
+  String get priceDesc => 'نرخ \$\$';
+
+  @override
+  String get ratingLabel => 'هەڵسەنگاندن';
+
+  @override
+  String get az => 'ئ-ی';
+
+  @override
+  String get all => 'هەموو';
+
+  @override
+  String get settings => 'ڕێکخستنەکان';
+
+  @override
+  String get exportTrip => 'هەناردەکردن';
+
+  @override
+  String get copiedToClipboard => 'گەشت هەناردە کرا بۆ کلیپبۆرد!';
 }

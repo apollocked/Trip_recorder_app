@@ -168,4 +168,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addMorePhotos => 'Add more photos';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get totalTrips => 'Total Trips';
+
+  @override
+  String get totalSpent => 'Total Spent';
+
+  @override
+  String get totalNights => 'Total Nights';
+
+  @override
+  String get avgRating => 'Avg Rating';
+
+  @override
+  String get favorites => 'Favorites';
+
+  @override
+  String get topCategory => 'Top Category';
+
+  @override
+  String get mostVisited => 'Most Visited';
+
+  @override
+  String get sortLabel => 'Sort';
+
+  @override
+  String get newest => 'Newest';
+
+  @override
+  String get oldest => 'Oldest';
+
+  @override
+  String get priceAsc => 'Price \$';
+
+  @override
+  String get priceDesc => 'Price \$\$';
+
+  @override
+  String get ratingLabel => 'Rating';
+
+  @override
+  String get az => 'A-Z';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get exportTrip => 'Export';
+
+  @override
+  String get copiedToClipboard => 'Trip exported to clipboard!';
 }

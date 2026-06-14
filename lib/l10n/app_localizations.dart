@@ -411,6 +411,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add more photos'**
   String get addMorePhotos;
+
+  /// No description provided for @statistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statistics;
+
+  /// No description provided for @totalTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Trips'**
+  String get totalTrips;
+
+  /// No description provided for @totalSpent.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Spent'**
+  String get totalSpent;
+
+  /// No description provided for @totalNights.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Nights'**
+  String get totalNights;
+
+  /// No description provided for @avgRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Rating'**
+  String get avgRating;
+
+  /// No description provided for @favorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get favorites;
+
+  /// No description provided for @topCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Category'**
+  String get topCategory;
+
+  /// No description provided for @mostVisited.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Visited'**
+  String get mostVisited;
+
+  /// No description provided for @sortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get sortLabel;
+
+  /// No description provided for @newest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get newest;
+
+  /// No description provided for @oldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest'**
+  String get oldest;
+
+  /// No description provided for @priceAsc.
+  ///
+  /// In en, this message translates to:
+  /// **'Price \$'**
+  String get priceAsc;
+
+  /// No description provided for @priceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Price \$\$'**
+  String get priceDesc;
+
+  /// No description provided for @ratingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get ratingLabel;
+
+  /// No description provided for @az.
+  ///
+  /// In en, this message translates to:
+  /// **'A-Z'**
+  String get az;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @exportTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get exportTrip;
+
+  /// No description provided for @copiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip exported to clipboard!'**
+  String get copiedToClipboard;
 }
 
 class _AppLocalizationsDelegate

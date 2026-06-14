@@ -8,6 +8,7 @@ import 'package:animations_in_flutter/views/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DetailsPage extends StatelessWidget {
   final String tripId;
@@ -17,6 +18,7 @@ class DetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<TripProvider>(
       builder: (context, tripProvider, _) {
         final trip = tripProvider.getTripById(tripId);
@@ -36,7 +38,7 @@ class DetailsPage extends StatelessWidget {
             actions: [
               IconButton(
                 icon: const Icon(Icons.share_rounded, size: 24),
-                tooltip: 'Export',
+                tooltip: l10n.exportTrip,
                 onPressed: () => _exportTrip(context, trip),
               ),
               IconButton(
@@ -67,10 +69,7 @@ class DetailsPage extends StatelessWidget {
                       opacity: 1 - op,
                       child: Padding(
                         padding: EdgeInsets.only(
-                          top: 24,
-                          right: 24,
-                          left: 24,
-                          bottom: (op * 20),
+                          top: 24, right: 24, left: 24, bottom: (op * 20),
                         ),
                         child: child,
                       ),
@@ -82,12 +81,10 @@ class DetailsPage extends StatelessWidget {
                         const SizedBox(height: 16),
                         _buildInfoChips(trip, colorScheme, context),
                         const SizedBox(height: 16),
-                        Divider(
-                          color: colorScheme.outlineVariant.withAlpha(128),
-                        ),
+                        Divider(color: colorScheme.outlineVariant.withAlpha(128)),
                         const SizedBox(height: 16),
                         Text(
-                          AppLocalizations.of(context)!.aboutjourney,
+                          l10n.aboutjourney,
                           style: textTheme.labelLarge?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.bold,
@@ -103,9 +100,7 @@ class DetailsPage extends StatelessWidget {
                               child: Text(
                                 trip.description.isNotEmpty
                                     ? trip.description
-                                    : AppLocalizations.of(
-                                        context,
-                                      )!.noDescriptionAdded,
+                                    : l10n.noDescriptionAdded,
                                 style: textTheme.bodyLarge?.copyWith(
                                   color: colorScheme.onSurfaceVariant,
                                   height: 1.6,
@@ -135,9 +130,7 @@ class DetailsPage extends StatelessWidget {
           color: colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(32),
         ),
-        child: const Center(
-          child: Icon(Icons.landscape, size: 60, color: Colors.grey),
-        ),
+        child: const Center(child: Icon(Icons.landscape, size: 60, color: Colors.grey)),
       );
     }
 
@@ -150,10 +143,7 @@ class DetailsPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: colorScheme.onSurface.withAlpha(200),
-                  width: 1,
-                ),
+                border: Border.all(color: colorScheme.onSurface.withAlpha(200), width: 1),
                 borderRadius: BorderRadius.circular(32),
                 boxShadow: [
                   BoxShadow(
@@ -180,11 +170,7 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderSection(
-    Trip trip,
-    ColorScheme colorScheme,
-    TextTheme textTheme,
-  ) {
+  Widget _buildHeaderSection(Trip trip, ColorScheme colorScheme, TextTheme textTheme) {
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -196,9 +182,7 @@ class DetailsPage extends StatelessWidget {
               child: Text(
                 trip.title,
                 style: textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurface,
-                  height: 1.2,
+                  fontWeight: FontWeight.bold, color: colorScheme.onSurface, height: 1.2,
                 ),
               ),
             ),
@@ -206,10 +190,7 @@ class DetailsPage extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 3,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
                     color: colorScheme.primaryContainer.withAlpha(120),
                     borderRadius: BorderRadius.circular(6),
@@ -217,8 +198,7 @@ class DetailsPage extends StatelessWidget {
                   child: Text(
                     trip.category.label,
                     style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 12, fontWeight: FontWeight.w600,
                       color: colorScheme.onPrimaryContainer,
                     ),
                   ),
@@ -230,8 +210,7 @@ class DetailsPage extends StatelessWidget {
           ],
         ),
         PositionedDirectional(
-          top: 0,
-          end: 0,
+          top: 0, end: 0,
           child: Container(
             decoration: BoxDecoration(
               color: colorScheme.primaryContainer.withAlpha(150),
@@ -244,45 +223,24 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoChips(
-    Trip trip,
-    ColorScheme colorScheme,
-    BuildContext context,
-  ) {
+  Widget _buildInfoChips(Trip trip, ColorScheme colorScheme, BuildContext context) {
     return Row(
       children: [
-        _buildChip(
-          context,
-          Icons.bedtime_rounded,
-          '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
-          colorScheme,
-        ),
+        _buildChip(context, Icons.bedtime_rounded,
+            '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}', colorScheme),
         const SizedBox(width: 12),
-        _buildChip(
-          context,
-          Icons.attach_money_rounded,
-          '\$${trip.price.toStringAsFixed(0)}',
-          colorScheme,
-        ),
+        _buildChip(context, Icons.attach_money_rounded,
+            '\$${trip.price.toStringAsFixed(0)}', colorScheme),
         ...[
           const SizedBox(width: 12),
-          _buildChip(
-            context,
-            Icons.calendar_today_rounded,
-            '${trip.date.day}/${trip.date.month}/${trip.date.year}',
-            colorScheme,
-          ),
+          _buildChip(context, Icons.calendar_today_rounded,
+              '${trip.date.day}/${trip.date.month}/${trip.date.year}', colorScheme),
         ],
       ],
     );
   }
 
-  Widget _buildChip(
-    BuildContext context,
-    IconData icon,
-    String label,
-    ColorScheme colorScheme,
-  ) {
+  Widget _buildChip(BuildContext context, IconData icon, String label, ColorScheme colorScheme) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -295,29 +253,20 @@ class DetailsPage extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: colorScheme.primary),
           const SizedBox(width: 6),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: colorScheme.onSecondaryContainer,
-            ),
-          ),
+          Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: colorScheme.onSecondaryContainer)),
         ],
       ),
     );
   }
 
-  void _exportTrip(BuildContext context, Trip trip) {
+  Future<void> _exportTrip(BuildContext context, Trip trip) async {
     final l10n = AppLocalizations.of(context)!;
     final buffer = StringBuffer();
     buffer.writeln('=== ${trip.title} ===\n');
     buffer.writeln('${l10n.tripCategory}: ${trip.category.label}');
     buffer.writeln('${l10n.budget}: \$${trip.price.toStringAsFixed(0)}');
     buffer.writeln('${l10n.nights}: ${trip.nights}');
-    buffer.writeln(
-      '${l10n.departureDate}: ${trip.date.day}/${trip.date.month}/${trip.date.year}',
-    );
+    buffer.writeln('${l10n.departureDate}: ${trip.date.day}/${trip.date.month}/${trip.date.year}');
     if (trip.rating > 0) {
       buffer.writeln('Rating: ${trip.rating.toStringAsFixed(1)} / 5');
     }
@@ -328,10 +277,6 @@ class DetailsPage extends StatelessWidget {
     buffer.writeln('\n---');
     buffer.writeln(l10n.appTitle.replaceAll('\n', ' '));
 
-    Clipboard.setData(ClipboardData(text: buffer.toString()));
-    HapticFeedback.mediumImpact();
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Trip copied to clipboard!')));
+    await SharePlus.instance.share(ShareParams(text: buffer.toString(), subject: trip.title));
   }
 }

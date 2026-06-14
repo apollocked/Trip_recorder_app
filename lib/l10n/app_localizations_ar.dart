@@ -168,4 +168,61 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get addMorePhotos => 'إضافة المزيد من الصور';
+
+  @override
+  String get statistics => 'إحصائيات';
+
+  @override
+  String get totalTrips => 'إجمالي الرحلات';
+
+  @override
+  String get totalSpent => 'المبلغ الإجمالي';
+
+  @override
+  String get totalNights => 'إجمالي الليالي';
+
+  @override
+  String get avgRating => 'متوسط التقييم';
+
+  @override
+  String get favorites => 'المفضلة';
+
+  @override
+  String get topCategory => 'أفضل تصنيف';
+
+  @override
+  String get mostVisited => 'الأكثر زيارة';
+
+  @override
+  String get sortLabel => 'ترتيب';
+
+  @override
+  String get newest => 'الأحدث';
+
+  @override
+  String get oldest => 'الأقدم';
+
+  @override
+  String get priceAsc => 'السعر \$';
+
+  @override
+  String get priceDesc => 'السعر \$\$';
+
+  @override
+  String get ratingLabel => 'التقييم';
+
+  @override
+  String get az => 'أ-ي';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get settings => 'الإعدادات';
+
+  @override
+  String get exportTrip => 'تصدير';
+
+  @override
+  String get copiedToClipboard => 'تم تصدير الرحلة إلى الحافظة!';
 }

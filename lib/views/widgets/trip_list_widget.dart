@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+﻿// ignore_for_file: use_build_context_synchronously
 
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
@@ -79,12 +79,12 @@ class _TripListPageState extends State<TripListPage> {
               context,
               MaterialPageRoute(builder: (_) => const StatisticsPage()),
             ),
-            tooltip: 'Statistics',
+            tooltip: AppLocalizations.of(context)!.statistics,
           ),
           IconButton(
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => showSettingsModal(context),
-            tooltip: 'Settings',
+            tooltip: AppLocalizations.of(context)!.settings,
           ),
           const SizedBox(width: 8),
           latestTrips.isEmpty
@@ -148,6 +148,7 @@ class _TripListPageState extends State<TripListPage> {
         controller: _searchController,
         onChanged: (value) => tripProvider.setSearchQuery(value),
         decoration: InputDecoration(
+          hintText: AppLocalizations.of(context)!.searchTrips,
           prefixIcon: const Icon(Icons.search_rounded, size: 20),
           filled: true,
           fillColor: colorScheme.surfaceContainerHighest.withAlpha(60),
@@ -172,7 +173,7 @@ class _TripListPageState extends State<TripListPage> {
         child: Row(
           children: [
             ChoiceChip(
-              label: const Text('All'),
+              label: Text(AppLocalizations.of(context)!.all),
               selected: tripProvider.categoryFilter == null,
               onSelected: (_) => tripProvider.setCategoryFilter(null),
               selectedColor: colorScheme.primaryContainer,
@@ -199,12 +200,12 @@ class _TripListPageState extends State<TripListPage> {
 
   Widget _buildSortBar(TripProvider tripProvider, ColorScheme colorScheme) {
     final sortOptions = [
-      ('date_desc', 'Newest'),
-      ('date_asc', 'Oldest'),
-      ('price_asc', 'Price \$'),
-      ('price_desc', 'Price \$\$'),
-      ('rating_desc', 'Rating'),
-      ('title_asc', 'A-Z'),
+      ('date_desc', AppLocalizations.of(context)!.newest),
+      ('date_asc', AppLocalizations.of(context)!.oldest),
+      ('price_asc', AppLocalizations.of(context)!.priceAsc),
+      ('price_desc', AppLocalizations.of(context)!.priceDesc),
+      ('rating_desc', AppLocalizations.of(context)!.ratingLabel),
+      ('title_asc', AppLocalizations.of(context)!.az),
     ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
@@ -217,7 +218,7 @@ class _TripListPageState extends State<TripListPage> {
           ),
           const SizedBox(width: 6),
           Text(
-            'Sort:',
+            AppLocalizations.of(context)!.sortLabel,
             style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
           ),
           const SizedBox(width: 6),
