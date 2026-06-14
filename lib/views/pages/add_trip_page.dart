@@ -6,6 +6,9 @@ import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
+import 'package:animations_in_flutter/views/widgets/app_text_field.dart';
+import 'package:animations_in_flutter/views/widgets/category_selector.dart';
+import 'package:animations_in_flutter/views/widgets/currency_dropdown.dart';
 import 'package:animations_in_flutter/views/widgets/date_picker_field.dart';
 import 'package:animations_in_flutter/views/widgets/notification_permission.dart';
 import 'package:animations_in_flutter/views/widgets/star_rating.dart';
@@ -194,41 +197,31 @@ class _AddTripPageState extends State<AddTripPage> {
                 const SizedBox(height: 24),
                 Text(l10n.tripCategory, style: textTheme.labelLarge?.copyWith(color: colorScheme.primary)),
                 const SizedBox(height: 8),
-                Wrap(spacing: 8, runSpacing: 8,
-                  children: TripCategory.values.map((cat) {
-                    final isSelected = _selectedCategory == cat;
-                    return ChoiceChip(
-                      label: Text(cat.label),
-                      selected: isSelected,
-                      selectedColor: colorScheme.primaryContainer,
-                      onSelected: (selected) { if (selected) setState(() => _selectedCategory = cat); },
-                    );
-                  }).toList(),
+                CategorySelector(
+                  selectedCategory: _selectedCategory,
+                  onChanged: (cat) => setState(() => _selectedCategory = cat),
+                  colorScheme: colorScheme,
                 ),
                 const SizedBox(height: 24),
                 Text(l10n.currencyLabel, style: textTheme.labelLarge?.copyWith(color: colorScheme.primary)),
                 const SizedBox(height: 8),
-                DropdownButtonFormField<String>(
-                  initialValue: _selectedCurrency,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: colorScheme.surface,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: colorScheme.outlineVariant)),
-                  ),
-                  items: CurrencyInfo.all.map((c) => DropdownMenuItem(value: c.code, child: Text('${c.symbol}  ${c.code} — ${c.name}'))).toList(),
-                  onChanged: (val) { if (val != null) setState(() => _selectedCurrency = val); },
+                CurrencyDropdown(
+                  selectedCurrency: _selectedCurrency,
+                  onChanged: (val) => setState(() => _selectedCurrency = val),
+                  colorScheme: colorScheme,
                 ),
                 const SizedBox(height: 32),
                 Text(l10n.tripDetails, style: textTheme.labelLarge?.copyWith(color: colorScheme.primary)),
                 const SizedBox(height: 12),
-                _buildTextField(controller: _titleController, label: l10n.destination, icon: Icons.map_rounded, colorScheme: colorScheme,
+                AppTextField(controller: _titleController, label: l10n.destination, icon: Icons.map_rounded, colorScheme: colorScheme,
                     validator: (val) => val == null || val.isEmpty ? l10n.destinationRequired : null),
                 const SizedBox(height: 16),
                 Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Expanded(child: _buildTextField(controller: _priceController, label: l10n.budget, icon: Icons.attach_money_rounded, colorScheme: colorScheme,
-                      keyboardType: TextInputType.number, isPrice: true, validator: (val) => val == null || val.isEmpty ? l10n.required : null)),
+                  Expanded(child: AppTextField(controller: _priceController, label: l10n.budget, icon: Icons.attach_money_rounded, colorScheme: colorScheme,
+                      keyboardType: TextInputType.number, prefixText: '${CurrencyInfo.symbolFor(_selectedCurrency)} ',
+                      validator: (val) => val == null || val.isEmpty ? l10n.required : null)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildTextField(controller: _nightsController, label: l10n.nights, icon: Icons.bedtime_rounded, colorScheme: colorScheme,
+                  Expanded(child: AppTextField(controller: _nightsController, label: l10n.nights, icon: Icons.bedtime_rounded, colorScheme: colorScheme,
                       keyboardType: TextInputType.number, validator: (val) => val == null || val.isEmpty ? l10n.required : null)),
                 ]),
                 const SizedBox(height: 16),
@@ -238,7 +231,7 @@ class _AddTripPageState extends State<AddTripPage> {
                 DatePickerField(icon: Icons.notifications_active_rounded, label: l10n.setReminder, currentDate: _reminderDate,
                     onDateChanged: (d) => setState(() => _reminderDate = d), isOptional: true, colorScheme: colorScheme, l10n: l10n),
                 const SizedBox(height: 16),
-                _buildTextField(controller: _descriptionController, label: l10n.tripDescription, icon: Icons.notes_rounded, colorScheme: colorScheme, maxLines: 4),
+                AppTextField(controller: _descriptionController, label: l10n.tripDescription, icon: Icons.notes_rounded, colorScheme: colorScheme, maxLines: 4),
                 const SizedBox(height: 40),
                 SizedBox(
                   width: double.infinity, height: 64,
@@ -255,39 +248,6 @@ class _AddTripPageState extends State<AddTripPage> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    required ColorScheme colorScheme,
-    String? Function(String?)? validator,
-    TextInputType keyboardType = TextInputType.text,
-    int maxLines = 1,
-    bool isPrice = false,
-  }) {
-    return TextFormField(
-      controller: controller,
-      validator: validator,
-      keyboardType: keyboardType,
-      maxLines: maxLines,
-      inputFormatters: keyboardType == TextInputType.number ? [FilteringTextInputFormatter.digitsOnly] : null,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, size: 20),
-        prefixText: isPrice ? '${CurrencyInfo.symbolFor(_selectedCurrency)} ' : null,
-        filled: true,
-        fillColor: colorScheme.surface,
-        errorStyle: const TextStyle(fontWeight: FontWeight.w600),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: colorScheme.outlineVariant)),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: colorScheme.outlineVariant)),
-        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: colorScheme.error)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: colorScheme.primary, width: 2)),
       ),
     );
   }

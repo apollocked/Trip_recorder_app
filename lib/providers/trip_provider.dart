@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,10 +5,12 @@ import '../core/constants.dart';
 import '../data/repositories/trip_repository.dart';
 import '../model/trip.dart';
 import '../model/trip_category.dart';
+import '../services/data_migration_service.dart';
 import '../services/notification_service.dart';
 import 'mixins/checklist_provider_mixin.dart';
 import 'mixins/expense_provider_mixin.dart';
 import 'mixins/journal_provider_mixin.dart';
+import 'mixins/trip_statistics.dart';
 
 class TripProvider extends ChangeNotifier
     with ExpenseProviderMixin, ChecklistProviderMixin, JournalProviderMixin {
@@ -39,56 +40,8 @@ class TripProvider extends ChangeNotifier
 
   Future<void> _initialize() async {
     await _checkOnboardingStatus();
-    await _migrateOldDataIfNeeded();
+    await DataMigrationService(_repository).migrateIfNeeded();
     await loadTrips();
-  }
-
-  Future<void> _migrateOldDataIfNeeded() async {
-    final prefs = await SharedPreferences.getInstance();
-    final alreadyMigrated = prefs.getBool(AppConstants.prefDataMigrated) ?? false;
-    if (alreadyMigrated) return;
-
-    final String? tripsJson = prefs.getString('user_trips');
-    if (tripsJson == null) {
-      await prefs.setBool(AppConstants.prefDataMigrated, true);
-      return;
-    }
-
-    try {
-      final List<dynamic> decoded = jsonDecode(tripsJson);
-      final oldTrips = decoded.map((item) => Trip.fromJson(item)).toList();
-      for (final trip in oldTrips) {
-        final files = <File>[];
-        final assets = <String>[];
-        for (final path in trip.imagePaths) {
-          final file = File(path);
-          if (file.isAbsolute && await file.exists()) {
-            files.add(file);
-          } else if (path.startsWith('images/')) {
-            assets.add(path);
-          }
-        }
-        final saved = await _repository.addTrip(
-          title: trip.title,
-          price: trip.price,
-          nights: trip.nights,
-          imageFiles: files,
-          assetImagePaths: assets,
-          date: trip.date,
-          description: trip.description,
-          category: trip.category,
-          rating: trip.rating,
-        );
-        if (trip.isLiked) {
-          await _repository.toggleLike(saved.id);
-        }
-      }
-      await prefs.remove('user_trips');
-    } catch (e) {
-      debugPrint('Migration error: $e');
-    }
-
-    await prefs.setBool(AppConstants.prefDataMigrated, true);
   }
 
   Future<void> loadTrips() async {
@@ -118,26 +71,14 @@ class TripProvider extends ChangeNotifier
     DateTime? reminderDate,
   }) async {
     final trip = await _repository.addTrip(
-      title: title,
-      price: price,
-      nights: nights,
-      imageFiles: imageFiles,
-      assetImagePaths: assetImagePaths,
-      date: date,
-      description: description,
-      category: category,
-      rating: rating,
-      currency: currency,
-      reminderDate: reminderDate,
+      title: title, price: price, nights: nights,
+      imageFiles: imageFiles, assetImagePaths: assetImagePaths,
+      date: date, description: description,
+      category: category, rating: rating,
+      currency: currency, reminderDate: reminderDate,
     );
     _trips.insert(0, trip);
-    if (trip.reminderDate != null) {
-      NotificationService().scheduleTripReminder(
-        tripId: trip.id,
-        tripTitle: trip.title,
-        remindAt: trip.reminderDate!,
-      );
-    }
+    _scheduleReminder(trip);
     notifyListeners();
     return trip;
   }
@@ -159,32 +100,17 @@ class TripProvider extends ChangeNotifier
     DateTime? reminderDate,
   }) async {
     await NotificationService().cancelTripReminder(id);
-    final trip = await _repository.updateTrip(
-      id,
-      title: title,
-      price: price,
-      nights: nights,
-      imageFiles: imageFiles,
-      existingImagePaths: existingImagePaths,
-      assetImagePaths: assetImagePaths,
-      date: date,
-      description: description,
-      isLiked: isLiked,
-      category: category,
-      rating: rating,
-      currency: currency,
-      reminderDate: reminderDate,
+    final trip = await _repository.updateTrip(id,
+      title: title, price: price, nights: nights,
+      imageFiles: imageFiles, existingImagePaths: existingImagePaths,
+      assetImagePaths: assetImagePaths, date: date, description: description,
+      isLiked: isLiked, category: category, rating: rating,
+      currency: currency, reminderDate: reminderDate,
     );
     final index = _trips.indexWhere((t) => t.id == id);
     if (index != -1) {
       _trips[index] = trip;
-      if (trip.reminderDate != null) {
-        NotificationService().scheduleTripReminder(
-          tripId: trip.id,
-          tripTitle: trip.title,
-          remindAt: trip.reminderDate!,
-        );
-      }
+      _scheduleReminder(trip);
       notifyListeners();
     }
     return trip;
@@ -209,31 +135,18 @@ class TripProvider extends ChangeNotifier
     }
   }
 
-  void setSearchQuery(String query) {
-    _searchQuery = query;
-    notifyListeners();
-  }
-
-  void setCategoryFilter(TripCategory? category) {
-    _categoryFilter = category;
-    notifyListeners();
-  }
-
-  void setSortBy(String sort) {
-    _sortBy = sort;
-    notifyListeners();
-  }
+  void setSearchQuery(String query) { _searchQuery = query; notifyListeners(); }
+  void setCategoryFilter(TripCategory? category) { _categoryFilter = category; notifyListeners(); }
+  void setSortBy(String sort) { _sortBy = sort; notifyListeners(); }
 
   List<Trip> get filteredTrips {
     var result = List<Trip>.from(_trips);
 
     if (_searchQuery.isNotEmpty) {
       final lower = _searchQuery.toLowerCase();
-      result = result
-          .where((t) =>
-              t.title.toLowerCase().contains(lower) ||
-              t.description.toLowerCase().contains(lower))
-          .toList();
+      result = result.where((t) =>
+          t.title.toLowerCase().contains(lower) ||
+          t.description.toLowerCase().contains(lower)).toList();
     }
 
     if (_categoryFilter != null) {
@@ -241,73 +154,22 @@ class TripProvider extends ChangeNotifier
     }
 
     switch (_sortBy) {
-      case 'date_asc':
-        result.sort((a, b) => a.date.compareTo(b.date));
-        break;
-      case 'date_desc':
-        result.sort((a, b) => b.date.compareTo(a.date));
-        break;
-      case 'price_asc':
-        result.sort((a, b) => a.price.compareTo(b.price));
-        break;
-      case 'price_desc':
-        result.sort((a, b) => b.price.compareTo(a.price));
-        break;
-      case 'rating_desc':
-        result.sort((a, b) => b.rating.compareTo(a.rating));
-        break;
-      case 'title_asc':
-        result.sort((a, b) => a.title.compareTo(b.title));
-        break;
+      case 'date_asc': result.sort((a, b) => a.date.compareTo(b.date)); break;
+      case 'date_desc': result.sort((a, b) => b.date.compareTo(a.date)); break;
+      case 'price_asc': result.sort((a, b) => a.price.compareTo(b.price)); break;
+      case 'price_desc': result.sort((a, b) => b.price.compareTo(a.price)); break;
+      case 'rating_desc': result.sort((a, b) => b.rating.compareTo(a.rating)); break;
+      case 'title_asc': result.sort((a, b) => a.title.compareTo(b.title)); break;
     }
 
     return result;
   }
 
   Trip? getTripById(String id) {
-    try {
-      return _trips.firstWhere((t) => t.id == id);
-    } catch (_) {
-      return null;
-    }
+    try { return _trips.firstWhere((t) => t.id == id); } catch (_) { return null; }
   }
 
-  Map<String, dynamic> get statistics {
-    final totalTrips = _trips.length;
-    final totalSpent = _trips.fold<double>(0, (sum, t) => sum + t.price);
-    final totalNights = _trips.fold<int>(0, (sum, t) => sum + t.nights);
-    final avgRating = totalTrips > 0
-        ? _trips.fold<double>(0, (sum, t) => sum + t.rating) / totalTrips
-        : 0.0;
-    final likedCount = _trips.where((t) => t.isLiked).length;
-
-    final categoryCounts = <TripCategory, int>{};
-    for (final t in _trips) {
-      categoryCounts[t.category] = (categoryCounts[t.category] ?? 0) + 1;
-    }
-    final topCategory = categoryCounts.entries.isNotEmpty
-        ? categoryCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key
-        : null;
-
-    final destinationCounts = <String, int>{};
-    for (final t in _trips) {
-      destinationCounts[t.title] = (destinationCounts[t.title] ?? 0) + 1;
-    }
-    final topDestination = destinationCounts.entries.isNotEmpty
-        ? destinationCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key
-        : null;
-
-    return {
-      'totalTrips': totalTrips,
-      'totalSpent': totalSpent,
-      'totalNights': totalNights,
-      'avgRating': double.parse(avgRating.toStringAsFixed(1)),
-      'likedCount': likedCount,
-      'topCategory': topCategory,
-      'topDestination': topDestination,
-      'categoryCounts': categoryCounts,
-    };
-  }
+  Map<String, dynamic> get statistics => TripStatistics.fromTrips(_trips).toMap();
 
   Future<void> _checkOnboardingStatus() async {
     final prefs = await SharedPreferences.getInstance();
@@ -319,5 +181,15 @@ class TripProvider extends ChangeNotifier
     await prefs.setBool(AppConstants.prefOnboardingDone, true);
     _isFirstTime = false;
     notifyListeners();
+  }
+
+  void _scheduleReminder(Trip trip) {
+    if (trip.reminderDate != null) {
+      NotificationService().scheduleTripReminder(
+        tripId: trip.id,
+        tripTitle: trip.title,
+        remindAt: trip.reminderDate!,
+      );
+    }
   }
 }

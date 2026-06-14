@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/views/widgets/image_source_sheet.dart';

@@ -40,7 +40,6 @@ void showImageSourceSheet(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ImageSourceCard(
-                  context: context,
                   icon: Icons.image_search_rounded,
                   label: l10n.gallery,
                   colorScheme: colorScheme,
@@ -57,7 +56,6 @@ void showImageSourceSheet(
                   },
                 ),
                 ImageSourceCard(
-                  context: context,
                   icon: Icons.camera_rounded,
                   label: l10n.camera,
                   colorScheme: colorScheme,
