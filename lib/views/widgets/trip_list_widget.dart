@@ -1,347 +1,111 @@
-﻿// ignore_for_file: use_build_context_synchronously
-
+﻿import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
-import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
-import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
-import 'package:animations_in_flutter/views/pages/statistics_page.dart';
-import 'package:animations_in_flutter/views/widgets/settings_modal.dart';
+import 'package:animations_in_flutter/views/widgets/search_sort_bar.dart';
 import 'package:animations_in_flutter/views/widgets/shimmer_card_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
-class TripListPage extends StatefulWidget {
-  const TripListPage({super.key});
-
-  @override
-  State<TripListPage> createState() => _TripListPageState();
-}
-
-class _TripListPageState extends State<TripListPage> {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  final List<Trip> _displayList = [];
-  final TextEditingController _searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final initialTrips = Provider.of<TripProvider>(
-        context,
-        listen: false,
-      ).trips;
-      _syncList(initialTrips);
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _syncList(List<Trip> latestTrips) async {
-    if (_displayList.length > latestTrips.length) {
-      _displayList.clear();
-    }
-    for (int i = _displayList.length; i < latestTrips.length; i++) {
-      await Future.delayed(const Duration(milliseconds: 150));
-      if (!mounted) return;
-      _displayList.add(latestTrips[i]);
-      _listKey.currentState?.insertItem(i);
-    }
-  }
+class TripListWidget extends StatelessWidget {
+  const TripListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final tripProvider = context.watch<TripProvider>();
-    final latestTrips = tripProvider.trips;
-    final filteredTrips = tripProvider.filteredTrips;
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
-    if (latestTrips.length > _displayList.length) {
-      _syncList(latestTrips);
-    }
+    return Consumer<TripProvider>(
+      builder: (context, provider, _) {
+        if (provider.isLoading) {
+          return const _ShimmerList();
+        }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)!.tripsList,
-           semanticsLabel: AppLocalizations.of(context)!.tripListTitle,
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.analytics_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const StatisticsPage()),
-            ),
-            tooltip: AppLocalizations.of(context)!.statistics,
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => showSettingsModal(context),
-            tooltip: AppLocalizations.of(context)!.settings,
-          ),
-          const SizedBox(width: 8),
-          latestTrips.isEmpty
-              ? const SizedBox.shrink()
-              : FloatingActionButton.extended(
-                  onPressed: () async {
-                    HapticFeedback.lightImpact();
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const AddTripPage()),
-                    );
-                  },
-                  backgroundColor: colorScheme.primary,
-                  foregroundColor: colorScheme.onPrimary,
-                  elevation: 6,
-                  icon: const Icon(Icons.add_road_rounded, size: 18),
-                  label: Text(
-                    AppLocalizations.of(context)!.newjourney,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 1,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-          const SizedBox(width: 16),
-        ],
-      ),
-      body: Column(
-        children: [
-          if (latestTrips.isNotEmpty) ...[
-            _buildSearchBar(colorScheme),
-            _buildCategoryFilter(tripProvider, colorScheme),
-            _buildSortBar(tripProvider, colorScheme),
-          ],
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await HapticFeedback.vibrate();
-                await tripProvider.refresh();
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 4,
-                ),
-                child: _buildBody(filteredTrips, tripProvider.isLoading),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+        final trips = provider.filteredTrips;
 
-  Widget _buildSearchBar(ColorScheme colorScheme) {
-    final tripProvider = context.read<TripProvider>();
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-      child: TextField(
-        controller: _searchController,
-        onChanged: (value) => tripProvider.setSearchQuery(value),
-        decoration: InputDecoration(
-          hintText: AppLocalizations.of(context)!.searchTrips,
-          prefixIcon: const Icon(Icons.search_rounded, size: 20),
-          filled: true,
-          fillColor: colorScheme.surfaceContainerHighest.withAlpha(60),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 12),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCategoryFilter(
-    TripProvider tripProvider,
-    ColorScheme colorScheme,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
+        return Column(
           children: [
-            ChoiceChip(
-              label: Text(AppLocalizations.of(context)!.all),
-              selected: tripProvider.categoryFilter == null,
-              onSelected: (_) => tripProvider.setCategoryFilter(null),
-              selectedColor: colorScheme.primaryContainer,
-            ),
-            const SizedBox(width: 6),
-            ...TripCategory.values.map((cat) {
-              final isSelected = tripProvider.categoryFilter == cat;
-              return Padding(
-                padding: const EdgeInsets.only(right: 6),
-                child: ChoiceChip(
-                  label: Text(cat.label),
-                  selected: isSelected,
-                  onSelected: (_) =>
-                      tripProvider.setCategoryFilter(isSelected ? null : cat),
-                  selectedColor: colorScheme.primaryContainer,
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSortBar(TripProvider tripProvider, ColorScheme colorScheme) {
-    final sortOptions = [
-      ('date_desc', AppLocalizations.of(context)!.newest),
-      ('date_asc', AppLocalizations.of(context)!.oldest),
-      ('price_asc', AppLocalizations.of(context)!.priceAsc),
-      ('price_desc', AppLocalizations.of(context)!.priceDesc),
-      ('rating_desc', AppLocalizations.of(context)!.ratingLabel),
-      ('title_asc', AppLocalizations.of(context)!.az),
-    ];
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-      child: Row(
-        children: [
-          Icon(
-            Icons.sort_rounded,
-            size: 16,
-            color: colorScheme.onSurfaceVariant,
-          ),
-          const SizedBox(width: 6),
-          Text(
-            AppLocalizations.of(context)!.sortLabel,
-            style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
-          ),
-          const SizedBox(width: 6),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: sortOptions.map((opt) {
-                  final isSelected = tripProvider.sortBy == opt.$1;
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: ChoiceChip(
-                      label: Text(opt.$2, style: const TextStyle(fontSize: 11)),
-                      selected: isSelected,
-                      onSelected: (_) => tripProvider.setSortBy(opt.$1),
-                      visualDensity: VisualDensity.compact,
-                      selectedColor: colorScheme.primaryContainer,
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBody(List<Trip> latestTrips, bool serviceLoading) {
-    if (serviceLoading) {
-      return ListView.builder(
-        itemCount: _displayList.isEmpty ? 6 : _displayList.length,
-        itemBuilder: (context, index) => shimmerCard(context),
-      );
-    }
-    if (latestTrips.isEmpty) {
-      return LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraints.maxHeight),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.beach_access, size: 80, color: Colors.grey),
-                  const SizedBox(height: 16),
-                  Text(
-                    AppLocalizations.of(context)!.noTripsFound,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 8,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.emptylistDescription,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  FloatingActionButton.extended(
-                    onPressed: () async {
-                      HapticFeedback.lightImpact();
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const AddTripPage()),
-                      );
-                    },
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    elevation: 6,
-                    icon: const Icon(Icons.add_road_rounded),
-                    label: Text(
-                      AppLocalizations.of(context)!.newjourney,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.3,
-                        fontSize: 12,
+            const SearchSortBar(),
+            Expanded(
+              child: trips.isEmpty
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.explore_outlined, size: 72, color: colorScheme.onSurfaceVariant.withAlpha(80)),
+                            const SizedBox(height: 16),
+                            Text(l10n.noTripsFound, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+                            const SizedBox(height: 8),
+                            Text(
+                              l10n.emptylistDescription,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: colorScheme.onSurfaceVariant, height: 1.5),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : RefreshIndicator(
+                      onRefresh: provider.refresh,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: trips.length,
+                        itemBuilder: (context, index) {
+                          final trip = trips[index];
+                          return _TripListItem(trip: trip, index: index);
+                        },
                       ),
                     ),
-                  ),
-                ],
-              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _TripListItem extends StatelessWidget {
+  final Trip trip;
+  final int index;
+  const _TripListItem({required this.trip, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    return tripWidget(trip, kAlwaysCompleteAnimation, context, index, onRemove: () {
+      context.read<TripProvider>().deleteTrip(trip.id);
+    });
+  }
+}
+
+class _ShimmerList extends StatelessWidget {
+  const _ShimmerList();
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Container(
+            height: 48,
+            decoration: BoxDecoration(
+              color: colorScheme.surfaceContainerHighest.withAlpha(80),
+              borderRadius: BorderRadius.circular(30),
             ),
           ),
         ),
-      );
-    }
-
-    return AnimatedList(
-      key: _listKey,
-      initialItemCount: _displayList.length,
-      itemBuilder: (context, index, animation) {
-        final trip = _displayList[index];
-        return Semantics(
-          label:
-              AppLocalizations.of(context)!.tripCardSemantics(trip.title),
-          child: tripWidget(
-            trip,
-            animation,
-            context,
-            index,
-            onRemove: () {
-              HapticFeedback.vibrate();
-              final removedTrip = _displayList.removeAt(index);
-              _listKey.currentState?.removeItem(
-                index,
-                (context, animation) => const SizedBox.shrink(),
-                duration: Duration.zero,
-              );
-              Provider.of<TripProvider>(
-                context,
-                listen: false,
-              ).deleteTrip(removedTrip.id);
-            },
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
+            itemCount: 4,
+            itemBuilder: (_, _) => shimmerCard(context),
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 }

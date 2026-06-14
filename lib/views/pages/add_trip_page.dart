@@ -7,6 +7,7 @@ import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
+import 'package:animations_in_flutter/views/widgets/notification_permission.dart';
 import 'package:animations_in_flutter/views/widgets/star_rating.dart';
 
 class AddTripPage extends StatefulWidget {
@@ -90,9 +91,10 @@ class _AddTripPageState extends State<AddTripPage> {
       if (_reminderDate != null) {
         final granted = await requestNotificationPermission(context);
         if (!granted) {
-          setState(() => _isSaving = false);
+          if (mounted) setState(() => _isSaving = false);
           return;
         }
+        if (!mounted) return;
       }
 
       if (widget.tripId != null) {
@@ -131,9 +133,9 @@ class _AddTripPageState extends State<AddTripPage> {
       if (mounted) Navigator.pop(context);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.errorSavingTrip(e.toString()))));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.errorSavingTrip(e.toString()))),
+        );
       }
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -309,9 +311,24 @@ class _AddTripPageState extends State<AddTripPage> {
                 ),
                 const SizedBox(height: 16),
 
-                _buildDatePicker(colorScheme, l10n, Icons.calendar_today_rounded, l10n.departureDate, _selectedDate, (d) => setState(() => _selectedDate = d)),
+                _buildDatePicker(
+                  colorScheme,
+                  l10n,
+                  Icons.calendar_today_rounded,
+                  l10n.departureDate,
+                  _selectedDate,
+                  (d) => setState(() => _selectedDate = d),
+                ),
                 const SizedBox(height: 16),
-                _buildDatePicker(colorScheme, l10n, Icons.notifications_active_rounded, l10n.setReminder, _reminderDate, (d) => setState(() => _reminderDate = d), isOptional: true),
+                _buildDatePicker(
+                  colorScheme,
+                  l10n,
+                  Icons.notifications_active_rounded,
+                  l10n.setReminder,
+                  _reminderDate,
+                  (d) => setState(() => _reminderDate = d),
+                  isOptional: true,
+                ),
                 const SizedBox(height: 16),
 
                 _buildTextField(
@@ -525,12 +542,21 @@ class _AddTripPageState extends State<AddTripPage> {
     );
   }
 
-  Widget _buildDatePicker(ColorScheme colorScheme, var l10n, IconData icon, String label, DateTime? currentDate, ValueChanged<DateTime> onDateChanged, {bool isOptional = false}) {
+  Widget _buildDatePicker(
+    ColorScheme colorScheme,
+    var l10n,
+    IconData icon,
+    String label,
+    DateTime? currentDate,
+    ValueChanged<DateTime> onDateChanged, {
+    bool isOptional = false,
+  }) {
     return InkWell(
       onTap: () async {
         final date = await showDatePicker(
           context: context,
-          initialDate: currentDate ?? DateTime.now().add(const Duration(days: 1)),
+          initialDate:
+              currentDate ?? DateTime.now().add(const Duration(days: 1)),
           firstDate: isOptional ? DateTime.now() : DateTime(1900),
           lastDate: DateTime(2100),
         );
@@ -543,7 +569,9 @@ class _AddTripPageState extends State<AddTripPage> {
           );
           if (time == null) return;
           if (!mounted) return;
-          onDateChanged(DateTime(date.year, date.month, date.day, time.hour, time.minute));
+          onDateChanged(
+            DateTime(date.year, date.month, date.day, time.hour, time.minute),
+          );
         } else {
           onDateChanged(date);
         }
@@ -559,7 +587,14 @@ class _AddTripPageState extends State<AddTripPage> {
           children: [
             Icon(icon, size: 20, color: colorScheme.primary),
             const SizedBox(width: 12),
-            Text(label, style: TextStyle(color: currentDate != null ? colorScheme.onSurface : colorScheme.onSurfaceVariant)),
+            Text(
+              label,
+              style: TextStyle(
+                color: currentDate != null
+                    ? colorScheme.onSurface
+                    : colorScheme.onSurfaceVariant,
+              ),
+            ),
             const Spacer(),
             if (currentDate != null)
               Row(
@@ -567,17 +602,26 @@ class _AddTripPageState extends State<AddTripPage> {
                 children: [
                   Text(
                     "${currentDate.hour.toString().padLeft(2, '0')}:${currentDate.minute.toString().padLeft(2, '0')}",
-                    style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
                   const SizedBox(width: 6),
                   Text(
                     "${currentDate.day}/${currentDate.month}/${currentDate.year}",
-                    style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.primary),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.primary,
+                    ),
                   ),
                 ],
               )
             else
-              Text(l10n.notSet, style: TextStyle(color: colorScheme.onSurfaceVariant)),
+              Text(
+                l10n.notSet,
+                style: TextStyle(color: colorScheme.onSurfaceVariant),
+              ),
           ],
         ),
       ),
@@ -606,7 +650,9 @@ class _AddTripPageState extends State<AddTripPage> {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, size: 20),
-        prefixText: isPrice ? '${CurrencyInfo.symbolFor(_selectedCurrency)} ' : null,
+        prefixText: isPrice
+            ? '${CurrencyInfo.symbolFor(_selectedCurrency)} '
+            : null,
         filled: true,
         fillColor: colorScheme.surface,
         errorStyle: const TextStyle(fontWeight: FontWeight.w600),

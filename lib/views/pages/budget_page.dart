@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/currency.dart';
@@ -7,6 +6,7 @@ import 'package:animations_in_flutter/model/expense.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
+import 'package:animations_in_flutter/views/widgets/expense_dialog.dart';
 
 class BudgetPage extends StatefulWidget {
   final String tripId;
@@ -42,80 +42,21 @@ class _BudgetPageState extends State<BudgetPage> {
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorSavingTrip(e.toString()))));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!.errorSavingTrip(e.toString())),
+        ));
       }
     }
   }
 
   Future<void> _showAddExpenseDialog() async {
-    final l10n = AppLocalizations.of(context)!;
-    final titleController = TextEditingController();
-    final amountController = TextEditingController();
-    ExpenseCategory selectedCategory = ExpenseCategory.other;
-
-    final result = await showDialog<Map<String, dynamic>>(
-      context: context,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setDialogState) => AlertDialog(
-          title: Text(l10n.addExpense),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: InputDecoration(
-                  labelText: l10n.expenseTitle,
-                  hintText: l10n.addExpenseHint,
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: amountController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
-                decoration: InputDecoration(labelText: l10n.expenseAmount),
-              ),
-              const SizedBox(height: 12),
-              DropdownButtonFormField<ExpenseCategory>(
-                initialValue: selectedCategory,
-                decoration: InputDecoration(labelText: l10n.expenseCategory),
-                items: ExpenseCategory.values.map((cat) {
-                  return DropdownMenuItem(
-                    value: cat,
-                    child: Text(_categoryLabel(l10n, cat)),
-                  );
-                }).toList(),
-                onChanged: (val) {
-                  if (val != null) setDialogState(() => selectedCategory = val);
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx), child: Text(AppLocalizations.of(ctx)!.notNow)),
-            FilledButton(
-              onPressed: () {
-                if (titleController.text.trim().isEmpty) return;
-                final amount = double.tryParse(amountController.text.trim()) ?? 0;
-                Navigator.pop(ctx, {
-                  'title': titleController.text.trim(),
-                  'amount': amount,
-                  'category': selectedCategory.name,
-                });
-              },
-              child: Text(l10n.addExpense),
-            ),
-          ],
-        ),
-      ),
-    );
-
+    final result = await showExpenseDialog(context);
     if (result != null && mounted) {
       await context.read<TripProvider>().addExpense(
         tripId: widget.tripId,
-        title: result['title'],
-        amount: result['amount'],
-        category: result['category'],
+        title: result.title,
+        amount: result.amount,
+        category: result.category.name,
       );
       _loadExpenses();
     }
@@ -140,6 +81,17 @@ class _BudgetPageState extends State<BudgetPage> {
       case ExpenseCategory.activities: return Colors.green;
       case ExpenseCategory.shopping: return Colors.pink;
       case ExpenseCategory.other: return Colors.grey;
+    }
+  }
+
+  IconData _categoryIcon(ExpenseCategory cat) {
+    switch (cat) {
+      case ExpenseCategory.hotel: return Icons.hotel_rounded;
+      case ExpenseCategory.food: return Icons.restaurant_rounded;
+      case ExpenseCategory.transport: return Icons.directions_car_rounded;
+      case ExpenseCategory.activities: return Icons.sports_esports_rounded;
+      case ExpenseCategory.shopping: return Icons.shopping_bag_rounded;
+      case ExpenseCategory.other: return Icons.receipt_rounded;
     }
   }
 
@@ -179,64 +131,10 @@ class _BudgetPageState extends State<BudgetPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: colorScheme.primaryContainer.withAlpha(80),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(l10n.totalExpenses, style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 14)),
-                          const SizedBox(height: 8),
-                          Text('$_currencySymbol${totalAmount.toStringAsFixed(2)}',
-                              style: textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ),
+                    _buildTotalCard(colorScheme, textTheme, l10n, totalAmount),
                     const SizedBox(height: 24),
-                    if (categoryTotals.isNotEmpty) ...[
-                      Text(l10n.expenseCategory, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 12),
-                      ...categoryTotals.entries.map((entry) {
-                        final fraction = maxCatAmount > 0 ? entry.value / maxCatAmount : 0.0;
-                        final color = _categoryColor(entry.key, colorScheme);
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 80,
-                                child: Text(_categoryLabel(l10n, entry.key),
-                                    style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13)),
-                              ),
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6),
-                                  child: LinearProgressIndicator(
-                                    value: fraction,
-                                    minHeight: 10,
-                                    backgroundColor: colorScheme.surfaceContainerHighest,
-                                    color: color,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              SizedBox(
-                                width: 70,
-                                child: Text('$_currencySymbol${entry.value.toStringAsFixed(0)}',
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                      const SizedBox(height: 16),
-                      Divider(color: colorScheme.outlineVariant.withAlpha(128)),
-                      const SizedBox(height: 8),
-                    ],
+                    if (categoryTotals.isNotEmpty)
+                      _buildCategoryBars(colorScheme, textTheme, l10n, categoryTotals, maxCatAmount),
                     Text(l10n.expenseTitle, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     if (_expenses.isEmpty)
@@ -247,70 +145,7 @@ class _BudgetPageState extends State<BudgetPage> {
                         ),
                       )
                     else
-                      ...List.generate(_expenses.length, (index) {
-                        final expense = _expenses[index];
-                        return Dismissible(
-                          key: ValueKey(expense.id),
-                          direction: DismissDirection.endToStart,
-                          confirmDismiss: (direction) => showConfirmationDialog(
-                            context: context,
-                            title: l10n.confirmDeleteTitle(expense.title),
-                            message: l10n.confirmDeleteMessage,
-                            icon: Icons.delete_rounded,
-                          ),
-                          background: Container(
-                            alignment: Alignment.centerRight,
-                            padding: const EdgeInsets.only(right: 20),
-                            decoration: BoxDecoration(
-                              color: colorScheme.error,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Icon(Icons.delete_rounded, color: colorScheme.onError),
-                          ),
-                          onDismissed: (_) async {
-                            await context.read<TripProvider>().deleteExpense(widget.tripId, expense.id);
-                            _loadExpenses();
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(bottom: 8),
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                            decoration: BoxDecoration(
-                              color: colorScheme.surfaceContainerHighest.withAlpha(60),
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: colorScheme.outlineVariant.withAlpha(128)),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: _categoryColor(expense.category, colorScheme).withAlpha(30),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    _categoryIcon(expense.category),
-                                    size: 18,
-                                    color: _categoryColor(expense.category, colorScheme),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(expense.title, style: TextStyle(fontWeight: FontWeight.w600, color: colorScheme.onSurface)),
-                                      Text(_categoryLabel(l10n, expense.category),
-                                          style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant)),
-                                    ],
-                                  ),
-                                ),
-                                Text('$_currencySymbol${expense.amount.toStringAsFixed(0)}',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: colorScheme.onSurface)),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
+                      ..._expenses.map((expense) => _buildExpenseTile(expense, colorScheme, textTheme, l10n)),
                   ],
                 ),
               ),
@@ -318,14 +153,134 @@ class _BudgetPageState extends State<BudgetPage> {
     );
   }
 
-  IconData _categoryIcon(ExpenseCategory cat) {
-    switch (cat) {
-      case ExpenseCategory.hotel: return Icons.hotel_rounded;
-      case ExpenseCategory.food: return Icons.restaurant_rounded;
-      case ExpenseCategory.transport: return Icons.directions_car_rounded;
-      case ExpenseCategory.activities: return Icons.sports_esports_rounded;
-      case ExpenseCategory.shopping: return Icons.shopping_bag_rounded;
-      case ExpenseCategory.other: return Icons.receipt_rounded;
-    }
+  Widget _buildTotalCard(ColorScheme colorScheme, TextTheme textTheme, AppLocalizations l10n, double totalAmount) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: colorScheme.primaryContainer.withAlpha(80),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: [
+          Text(l10n.totalExpenses, style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 14)),
+          const SizedBox(height: 8),
+          Text('$_currencySymbol${totalAmount.toStringAsFixed(2)}',
+              style: textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryBars(ColorScheme colorScheme, TextTheme textTheme, AppLocalizations l10n,
+      Map<ExpenseCategory, double> categoryTotals, double maxCatAmount) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l10n.expenseCategory, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 12),
+        ...categoryTotals.entries.map((entry) {
+          final fraction = maxCatAmount > 0 ? entry.value / maxCatAmount : 0.0;
+          final color = _categoryColor(entry.key, colorScheme);
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 80,
+                  child: Text(_categoryLabel(l10n, entry.key),
+                      style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13)),
+                ),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: LinearProgressIndicator(
+                      value: fraction,
+                      minHeight: 10,
+                      backgroundColor: colorScheme.surfaceContainerHighest,
+                      color: color,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                SizedBox(
+                  width: 70,
+                  child: Text('$_currencySymbol${entry.value.toStringAsFixed(0)}',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+                ),
+              ],
+            ),
+          );
+        }),
+        const SizedBox(height: 16),
+        Divider(color: colorScheme.outlineVariant.withAlpha(128)),
+        const SizedBox(height: 8),
+      ],
+    );
+  }
+
+  Widget _buildExpenseTile(Expense expense, ColorScheme colorScheme, TextTheme textTheme, AppLocalizations l10n) {
+    return Dismissible(
+      key: ValueKey(expense.id),
+      direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) => showConfirmationDialog(
+        context: context,
+        title: l10n.confirmDeleteTitle(expense.title),
+        message: l10n.confirmDeleteMessage,
+        icon: Icons.delete_rounded,
+      ),
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20),
+        decoration: BoxDecoration(
+          color: colorScheme.error,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Icon(Icons.delete_rounded, color: colorScheme.onError),
+      ),
+      onDismissed: (_) async {
+        await context.read<TripProvider>().deleteExpense(widget.tripId, expense.id);
+        _loadExpenses();
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerHighest.withAlpha(60),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: colorScheme.outlineVariant.withAlpha(128)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: _categoryColor(expense.category, colorScheme).withAlpha(30),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                _categoryIcon(expense.category),
+                size: 18,
+                color: _categoryColor(expense.category, colorScheme),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(expense.title, style: TextStyle(fontWeight: FontWeight.w600, color: colorScheme.onSurface)),
+                  Text(_categoryLabel(l10n, expense.category),
+                      style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant)),
+                ],
+              ),
+            ),
+            Text('$_currencySymbol${expense.amount.toStringAsFixed(0)}',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: colorScheme.onSurface)),
+          ],
+        ),
+      ),
+    );
   }
 }

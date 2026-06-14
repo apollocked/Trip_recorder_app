@@ -75,7 +75,7 @@ class _HomeState extends State<HomePage> {
             ),
 
             // --- THE LIST "SHEET" SECTION ---
-            Expanded(child: const TripListPage()),
+            Expanded(child: const TripListWidget()),
             SizedBox(height: size.height * 0.08),
           ],
         ),

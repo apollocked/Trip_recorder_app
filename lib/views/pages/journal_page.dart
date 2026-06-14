@@ -6,7 +6,7 @@ import 'package:animations_in_flutter/model/journal_entry.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
-import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
+import 'package:animations_in_flutter/views/widgets/journal_entry_dialog.dart';
 
 class JournalPage extends StatefulWidget {
   final String tripId;
@@ -45,111 +45,7 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   Future<void> _showAddEntryDialog() async {
-    final l10n = AppLocalizations.of(context)!;
-    final titleController = TextEditingController();
-    final textController = TextEditingController();
-    DateTime selectedDate = DateTime.now();
-    List<File> selectedImages = [];
-
-    final result = await showDialog<Map<String, dynamic>>(
-      context: context,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setDialogState) => AlertDialog(
-          title: Text(l10n.addJournalEntry),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: titleController,
-                  decoration: InputDecoration(labelText: l10n.journalTitle, hintText: l10n.journalTitleHint),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: textController,
-                  maxLines: 4,
-                  decoration: InputDecoration(labelText: l10n.journalText, hintText: l10n.journalTextHint),
-                ),
-                const SizedBox(height: 12),
-                InkWell(
-                  onTap: () async {
-                    final date = await showDatePicker(
-                      context: ctx,
-                      initialDate: selectedDate,
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                    );
-                    if (date != null) setDialogState(() => selectedDate = date);
-                  },
-                  child: InputDecorator(
-                    decoration: InputDecoration(labelText: l10n.departureDate, prefixIcon: const Icon(Icons.calendar_today_rounded)),
-                    child: Text('${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Text(l10n.coverphoto, style: Theme.of(ctx).textTheme.bodySmall),
-                    const Spacer(),
-                    TextButton.icon(
-                      onPressed: () => pickMultipleImages(ctx, (files) {
-                        setDialogState(() => selectedImages.addAll(files));
-                      }),
-                      icon: const Icon(Icons.add_photo_alternate_rounded, size: 18),
-                      label: Text(l10n.addMorePhotos),
-                    ),
-                  ],
-                ),
-                if (selectedImages.isNotEmpty)
-                  SizedBox(
-                    height: 80,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: selectedImages.length,
-                      separatorBuilder: (_, _) => const SizedBox(width: 8),
-                      itemBuilder: (_, i) => Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(selectedImages[i], width: 80, height: 80, fit: BoxFit.cover),
-                          ),
-                          Positioned(
-                            top: 0, right: 0,
-                            child: GestureDetector(
-                              onTap: () => setDialogState(() => selectedImages.removeAt(i)),
-                              child: Container(
-                                padding: const EdgeInsets.all(2),
-                                decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
-                                child: const Icon(Icons.close, size: 14, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.notNow)),
-            FilledButton(
-              onPressed: () {
-                if (titleController.text.trim().isEmpty) return;
-                Navigator.pop(ctx, {
-                  'title': titleController.text.trim(),
-                  'text': textController.text.trim(),
-                  'date': selectedDate,
-                  'images': selectedImages,
-                });
-              },
-              child: Text(l10n.addJournalEntry),
-            ),
-          ],
-        ),
-      ),
-    );
-
+    final result = await showJournalEntryDialog(context);
     if (result != null && mounted) {
       final imagePaths = (result['images'] as List<File>).map((f) => f.path).toList();
       await context.read<TripProvider>().addJournalEntry(
