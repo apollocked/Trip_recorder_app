@@ -365,4 +365,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spendingByDestination => 'Spending by Destination';
+
+  @override
+  String get setReminder => 'Set Reminder';
+
+  @override
+  String get reminder => 'Reminder';
+
+  @override
+  String get notSet => 'Not set';
 }

@@ -120,6 +120,20 @@ class DetailsPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
+                        if (trip.reminderDate != null)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Row(
+                              children: [
+                                Icon(Icons.notifications_active_rounded, size: 18, color: colorScheme.primary),
+                                const SizedBox(width: 8),
+                                Text(
+                                  '${l10n.reminder}: ${trip.reminderDate!.day}/${trip.reminderDate!.month}/${trip.reminderDate!.year} ${trip.reminderDate!.hour.toString().padLeft(2, '0')}:${trip.reminderDate!.minute.toString().padLeft(2, '0')}',
+                                  style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ),
                         Divider(color: colorScheme.outlineVariant.withAlpha(128)),
                         const SizedBox(height: 16),
                         Text(

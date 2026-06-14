@@ -201,6 +201,7 @@ class TripProvider extends ChangeNotifier {
   }
 
   Future<void> deleteTrip(String id) async {
+    await NotificationService().cancelTripReminder(id);
     await _repository.deleteTrip(id);
     _trips.removeWhere((t) => t.id == id);
     _expensesCache.remove(id);

@@ -32,6 +32,7 @@ class _AddTripPageState extends State<AddTripPage> {
   TripCategory _selectedCategory = TripCategory.other;
   double _rating = 0.0;
   String _selectedCurrency = 'USD';
+  DateTime? _reminderDate;
 
   @override
   void initState() {
@@ -48,6 +49,7 @@ class _AddTripPageState extends State<AddTripPage> {
         _selectedCategory = trip.category;
         _rating = trip.rating;
         _selectedCurrency = trip.currency;
+        _reminderDate = trip.reminderDate;
       }
     } else {
       _selectedDate = DateTime.now();
@@ -98,6 +100,7 @@ class _AddTripPageState extends State<AddTripPage> {
           category: _selectedCategory,
           rating: _rating,
           currency: _selectedCurrency,
+          reminderDate: _reminderDate,
         );
       } else {
         await context.read<TripProvider>().addTrip(
@@ -113,6 +116,7 @@ class _AddTripPageState extends State<AddTripPage> {
           category: _selectedCategory,
           rating: _rating,
           currency: _selectedCurrency,
+          reminderDate: _reminderDate,
         );
       }
       if (mounted) Navigator.pop(context);
@@ -296,7 +300,9 @@ class _AddTripPageState extends State<AddTripPage> {
                 ),
                 const SizedBox(height: 16),
 
-                _buildDatePicker(colorScheme, l10n),
+                _buildDatePicker(colorScheme, l10n, Icons.calendar_today_rounded, l10n.departureDate, _selectedDate, (d) => setState(() => _selectedDate = d)),
+                const SizedBox(height: 16),
+                _buildDatePicker(colorScheme, l10n, Icons.notifications_active_rounded, l10n.setReminder, _reminderDate, (d) => setState(() => _reminderDate = d), isOptional: true),
                 const SizedBox(height: 16),
 
                 _buildTextField(
@@ -510,16 +516,28 @@ class _AddTripPageState extends State<AddTripPage> {
     );
   }
 
-  Widget _buildDatePicker(ColorScheme colorScheme, var l10n) {
+  Widget _buildDatePicker(ColorScheme colorScheme, var l10n, IconData icon, String label, DateTime? currentDate, ValueChanged<DateTime> onDateChanged, {bool isOptional = false}) {
     return InkWell(
       onTap: () async {
         final date = await showDatePicker(
           context: context,
-          initialDate: _selectedDate,
-          firstDate: DateTime(1900),
+          initialDate: currentDate ?? DateTime.now().add(const Duration(days: 1)),
+          firstDate: isOptional ? DateTime.now() : DateTime(1900),
           lastDate: DateTime(2100),
         );
-        if (date != null) setState(() => _selectedDate = date);
+        if (date == null) return;
+        if (!mounted) return;
+        if (isOptional) {
+          final time = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.fromDateTime(currentDate ?? DateTime.now()),
+          );
+          if (time == null) return;
+          if (!mounted) return;
+          onDateChanged(DateTime(date.year, date.month, date.day, time.hour, time.minute));
+        } else {
+          onDateChanged(date);
+        }
       },
       borderRadius: BorderRadius.circular(20),
       child: Container(
@@ -530,24 +548,27 @@ class _AddTripPageState extends State<AddTripPage> {
         ),
         child: Row(
           children: [
-            Icon(
-              Icons.calendar_today_rounded,
-              size: 20,
-              color: colorScheme.primary,
-            ),
+            Icon(icon, size: 20, color: colorScheme.primary),
             const SizedBox(width: 12),
-            Text(
-              l10n.departureDate,
-              style: TextStyle(color: colorScheme.onSurfaceVariant),
-            ),
+            Text(label, style: TextStyle(color: currentDate != null ? colorScheme.onSurface : colorScheme.onSurfaceVariant)),
             const Spacer(),
-            Text(
-              "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: colorScheme.primary,
-              ),
-            ),
+            if (currentDate != null)
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "${currentDate.hour.toString().padLeft(2, '0')}:${currentDate.minute.toString().padLeft(2, '0')}",
+                    style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    "${currentDate.day}/${currentDate.month}/${currentDate.year}",
+                    style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.primary),
+                  ),
+                ],
+              )
+            else
+              Text(l10n.notSet, style: TextStyle(color: colorScheme.onSurfaceVariant)),
           ],
         ),
       ),

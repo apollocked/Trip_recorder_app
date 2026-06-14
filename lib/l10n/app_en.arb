@@ -126,5 +126,9 @@
   "noJournalEntries": "No journal entries yet",
 
   "tripsByCategory": "Trips by Category",
-  "spendingByDestination": "Spending by Destination"
+  "spendingByDestination": "Spending by Destination",
+
+  "setReminder": "Set Reminder",
+  "reminder": "Reminder",
+  "notSet": "Not set"
 }

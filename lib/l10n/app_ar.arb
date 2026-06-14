@@ -126,5 +126,9 @@
   "noJournalEntries": "لا توجد مدخلات يوميات بعد",
 
   "tripsByCategory": "الرحلات حسب الفئة",
-  "spendingByDestination": "الإنفاق حسب الوجهة"
+  "spendingByDestination": "الإنفاق حسب الوجهة",
+
+  "setReminder": "تعيين تذكير",
+  "reminder": "تذكير",
+  "notSet": "غير مضبوط"
 }

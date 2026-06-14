@@ -126,5 +126,9 @@
   "noJournalEntries": "هێشتا هیچ تۆمارێکی ڕۆژنامە نییە",
 
   "tripsByCategory": "گەشتەکان بەپێی پۆل",
-  "spendingByDestination": "خەرجی بەپێی شوێن"
+  "spendingByDestination": "خەرجی بەپێی شوێن",
+
+  "setReminder": "دانانی بیریار",
+  "reminder": "بیریار",
+  "notSet": "دانەنراوە"
 }

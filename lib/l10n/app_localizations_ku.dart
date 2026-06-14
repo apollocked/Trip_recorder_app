@@ -366,4 +366,13 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get spendingByDestination => 'خەرجی بەپێی شوێن';
+
+  @override
+  String get setReminder => 'دانانی بیریار';
+
+  @override
+  String get reminder => 'بیریار';
+
+  @override
+  String get notSet => 'دانەنراوە';
 }

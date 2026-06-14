@@ -365,4 +365,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get spendingByDestination => 'الإنفاق حسب الوجهة';
+
+  @override
+  String get setReminder => 'تعيين تذكير';
+
+  @override
+  String get reminder => 'تذكير';
+
+  @override
+  String get notSet => 'غير مضبوط';
 }

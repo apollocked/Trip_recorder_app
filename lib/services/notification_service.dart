@@ -15,7 +15,7 @@ class NotificationService {
     tz_data.initializeTimeZones();
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const settings = InitializationSettings(android: android);
-    await _plugin.initialize(settings);
+    await _plugin.initialize(settings: settings);
     _initialized = true;
   }
 
@@ -31,23 +31,23 @@ class NotificationService {
       importance: Importance.high,
       priority: Priority.high,
     );
-    const details = NotificationDetails(android: androidDetails);
+    final details = NotificationDetails(android: androidDetails);
 
     final scheduledDate = tz.TZDateTime.from(remindAt, tz.local);
     if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) return;
 
     await _plugin.zonedSchedule(
-      tripId.hashCode,
-      'Upcoming Trip',
-      '$tripTitle is coming up!',
-      scheduledDate,
-      details,
+      id: tripId.hashCode,
+      title: 'Upcoming Trip',
+      body: '$tripTitle is coming up!',
+      scheduledDate: scheduledDate,
+      notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
     );
   }
 
   Future<void> cancelTripReminder(String tripId) async {
     if (!_initialized) await init();
-    await _plugin.cancel(tripId.hashCode);
+    await _plugin.cancel(id: tripId.hashCode);
   }
 }

@@ -23,6 +23,7 @@ class TripRepository {
     TripCategory category = TripCategory.other,
     double rating = 0.0,
     String currency = 'USD',
+    DateTime? reminderDate,
   }) async {
     final trip = Trip(
       title: title,
@@ -33,6 +34,7 @@ class TripRepository {
       category: category,
       rating: rating,
       currency: currency,
+      reminderDate: reminderDate,
     );
     final savedPaths = <String>[];
     if (imageFiles.isNotEmpty) {
@@ -60,6 +62,7 @@ class TripRepository {
     TripCategory? category,
     double? rating,
     String? currency,
+    DateTime? reminderDate,
   }) async {
     final oldTrip = await _database.getTripById(id);
     if (oldTrip == null) throw Exception('Trip not found');
@@ -101,6 +104,7 @@ class TripRepository {
       category: category ?? oldTrip.category,
       rating: rating ?? oldTrip.rating,
       currency: currency ?? oldTrip.currency,
+      reminderDate: reminderDate ?? oldTrip.reminderDate,
     );
 
     await _database.updateTrip(updatedTrip);
