@@ -15,6 +15,7 @@ class Trip {
   final TripCategory category;
   final double rating;
   final String currency;
+  final DateTime? reminderDate;
 
   Trip({
     String? id,
@@ -29,6 +30,7 @@ class Trip {
     this.category = TripCategory.other,
     this.rating = 0.0,
     this.currency = 'USD',
+    this.reminderDate,
   })  : id = id ?? const Uuid().v4(),
         imagePaths = imagePaths ?? [],
         createdAt = createdAt ?? DateTime.now();
@@ -49,6 +51,7 @@ class Trip {
     TripCategory? category,
     double? rating,
     String? currency,
+    DateTime? reminderDate,
   }) {
     return Trip(
       id: id ?? this.id,
@@ -63,6 +66,7 @@ class Trip {
       category: category ?? this.category,
       rating: rating ?? this.rating,
       currency: currency ?? this.currency,
+      reminderDate: reminderDate ?? this.reminderDate,
     );
   }
 
@@ -79,6 +83,7 @@ class Trip {
         'category': category.name,
         'rating': rating,
         'currency': currency,
+        'reminder_date': reminderDate?.toIso8601String(),
       };
 
   factory Trip.fromMap(Map<String, dynamic> map) {
@@ -111,6 +116,7 @@ class Trip {
       category: TripCategory.fromString((map['category'] as String?) ?? 'other'),
       rating: (map['rating'] as num?)?.toDouble() ?? 0.0,
       currency: (map['currency'] as String?) ?? 'USD',
+      reminderDate: map['reminder_date'] != null ? DateTime.parse(map['reminder_date'] as String) : null,
     );
   }
 
@@ -126,6 +132,7 @@ class Trip {
         'createdAt': createdAt.toIso8601String(),
         'category': category.name,
         'rating': rating,
+        'reminderDate': reminderDate?.toIso8601String(),
       };
 
   factory Trip.fromJson(Map<String, dynamic> json) {
@@ -150,6 +157,7 @@ class Trip {
           : null,
       category: TripCategory.fromString((json['category'] as String?) ?? 'other'),
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      reminderDate: json['reminderDate'] != null ? DateTime.parse(json['reminderDate'] as String) : null,
     );
   }
 }

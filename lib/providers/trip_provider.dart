@@ -12,6 +12,7 @@ import '../model/expense.dart';
 import '../model/journal_entry.dart';
 import '../model/trip.dart';
 import '../model/trip_category.dart';
+import '../services/notification_service.dart';
 
 class TripProvider extends ChangeNotifier {
   final TripRepository _repository = TripRepository();
@@ -124,6 +125,7 @@ class TripProvider extends ChangeNotifier {
     TripCategory category = TripCategory.other,
     double rating = 0.0,
     String currency = 'USD',
+    DateTime? reminderDate,
   }) async {
     final trip = await _repository.addTrip(
       title: title,
@@ -136,8 +138,16 @@ class TripProvider extends ChangeNotifier {
       category: category,
       rating: rating,
       currency: currency,
+      reminderDate: reminderDate,
     );
     _trips.insert(0, trip);
+    if (trip.reminderDate != null) {
+      NotificationService().scheduleTripReminder(
+        tripId: trip.id,
+        tripTitle: trip.title,
+        remindAt: trip.reminderDate!,
+      );
+    }
     notifyListeners();
     return trip;
   }
@@ -156,7 +166,9 @@ class TripProvider extends ChangeNotifier {
     TripCategory? category,
     double? rating,
     String? currency,
+    DateTime? reminderDate,
   }) async {
+    await NotificationService().cancelTripReminder(id);
     final trip = await _repository.updateTrip(
       id,
       title: title,
@@ -171,10 +183,18 @@ class TripProvider extends ChangeNotifier {
       category: category,
       rating: rating,
       currency: currency,
+      reminderDate: reminderDate,
     );
     final index = _trips.indexWhere((t) => t.id == id);
     if (index != -1) {
       _trips[index] = trip;
+      if (trip.reminderDate != null) {
+        NotificationService().scheduleTripReminder(
+          tripId: trip.id,
+          tripTitle: trip.title,
+          remindAt: trip.reminderDate!,
+        );
+      }
       notifyListeners();
     }
     return trip;

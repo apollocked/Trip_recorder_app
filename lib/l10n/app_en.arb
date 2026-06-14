@@ -123,5 +123,8 @@
   "journalTitleHint": "e.g. First day in Paris",
   "journalText": "Notes",
   "journalTextHint": "What happened today?",
-  "noJournalEntries": "No journal entries yet"
+  "noJournalEntries": "No journal entries yet",
+
+  "tripsByCategory": "Trips by Category",
+  "spendingByDestination": "Spending by Destination"
 }

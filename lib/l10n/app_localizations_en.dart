@@ -359,4 +359,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noJournalEntries => 'No journal entries yet';
+
+  @override
+  String get tripsByCategory => 'Trips by Category';
+
+  @override
+  String get spendingByDestination => 'Spending by Destination';
 }

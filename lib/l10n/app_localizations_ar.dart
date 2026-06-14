@@ -359,4 +359,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noJournalEntries => 'لا توجد مدخلات يوميات بعد';
+
+  @override
+  String get tripsByCategory => 'الرحلات حسب الفئة';
+
+  @override
+  String get spendingByDestination => 'الإنفاق حسب الوجهة';
 }

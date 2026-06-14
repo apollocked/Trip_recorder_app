@@ -777,6 +777,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No journal entries yet'**
   String get noJournalEntries;
+
+  /// No description provided for @tripsByCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Trips by Category'**
+  String get tripsByCategory;
+
+  /// No description provided for @spendingByDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Spending by Destination'**
+  String get spendingByDestination;
 }
 
 class _AppLocalizationsDelegate

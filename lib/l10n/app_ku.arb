@@ -123,5 +123,8 @@
   "journalTitleHint": "بۆ نموونە: یەکەم ڕۆژ لە پاریس",
   "journalText": "تێبینییەکان",
   "journalTextHint": "ئەمڕۆ چی ڕوویدا؟",
-  "noJournalEntries": "هێشتا هیچ تۆمارێکی ڕۆژنامە نییە"
+  "noJournalEntries": "هێشتا هیچ تۆمارێکی ڕۆژنامە نییە",
+
+  "tripsByCategory": "گەشتەکان بەپێی پۆل",
+  "spendingByDestination": "خەرجی بەپێی شوێن"
 }

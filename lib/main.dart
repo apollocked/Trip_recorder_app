@@ -2,6 +2,7 @@ import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/l10n/localization_config.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
+import 'package:animations_in_flutter/services/notification_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
 import 'package:animations_in_flutter/views/pages/home_page.dart';
 import 'package:animations_in_flutter/views/pages/on_boarding_page.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().init();
   runApp(
     MultiProvider(
       providers: [

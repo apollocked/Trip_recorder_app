@@ -360,4 +360,10 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get noJournalEntries => 'هێشتا هیچ تۆمارێکی ڕۆژنامە نییە';
+
+  @override
+  String get tripsByCategory => 'گەشتەکان بەپێی پۆل';
+
+  @override
+  String get spendingByDestination => 'خەرجی بەپێی شوێن';
 }

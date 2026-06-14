@@ -107,6 +107,9 @@ class AppDatabase {
         )
       ''');
     }
+    if (oldVersion < 6) {
+      await db.execute('ALTER TABLE ${AppConstants.tripsTable} ADD COLUMN reminder_date TEXT');
+    }
   }
 
   Future<int> insertTrip(Trip trip) async {

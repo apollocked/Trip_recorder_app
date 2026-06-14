@@ -123,5 +123,8 @@
   "journalTitleHint": "مثال: أول يوم في باريس",
   "journalText": "ملاحظات",
   "journalTextHint": "ماذا حدث اليوم؟",
-  "noJournalEntries": "لا توجد مدخلات يوميات بعد"
+  "noJournalEntries": "لا توجد مدخلات يوميات بعد",
+
+  "tripsByCategory": "الرحلات حسب الفئة",
+  "spendingByDestination": "الإنفاق حسب الوجهة"
 }
