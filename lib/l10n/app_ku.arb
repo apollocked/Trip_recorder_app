@@ -130,5 +130,45 @@
 
   "setReminder": "دانانی بیریار",
   "reminder": "بیریار",
-  "notSet": "دانەنراوە"
+  "notSet": "دانەنراوە",
+
+  "cancel": "ڕەتکردنەوە",
+  "delete": "سڕینەوە",
+  "confirmDeleteTitle": "سڕینەوەی {item}؟",
+  "confirmDeleteMessage": "ئەم کارە ناگەڕێتەوە.",
+  "errorSavingTrip": "هەڵە لە پاشەکەوتکردنی گەشت: {error}",
+  "tripNotFound": "گەشت نەدۆزرایەوە",
+  "totalLabel": "کۆی گشتی",
+  "notRated": "--",
+  "exportHeader": "=== {title} ===",
+  "exportRating": "هەڵسەنگاندن: {rating} / 5",
+  "notificationChannelName": "بیریارەکانی گەشت",
+  "notificationTitle": "گەشتی داهاتوو",
+  "notificationBody": "{tripTitle} بەم زووانە دێت!",
+  "notificationPermissionTitle": "به‌رده‌وام به‌",
+  "notificationPermissionDescription": "دەمانەوێت بیریاری گەشتەکانی داهاتووت بۆ بنێرین بۆ ئەوەی هیچ گەشتێک لەدەست نەدەیت.",
+  "goToSettings": "کردنەوەی ڕێکخستنەکان",
+  "editFormSemantics": "فۆرمی دەستکاریکردنی گەشت",
+  "addFormSemantics": "فۆرمی زیادکردنی گەشتی نوێ",
+  "appBannerSemantics": "بانەری ئەپەکە",
+  "appTitleSemantics": "ناونیشانی ئەپەکە",
+  "tripListTitle": "گەشتەکانم",
+  "tripCardSemantics": "بەندی گەشتی {title}، بۆ وردەکارییەکان لێی بدە، بۆ سڕینەوە بۆ چەپ ڕابکێشە",
+  "shimmerSemantics": "بارکردنی وردەکاری گەشت",
+  "addToFavorites": "زیادکردن بۆ دڵخوازەکان",
+  "addedToFavorites": "زیاد کرا بۆ دڵخوازەکان",
+  "removedFromFavorites": "لا برا لە دڵخوازەکان",
+  "coverPhotoSemantics": "وێنەی سەری گەشت",
+  "morePhotosCount": "+{count}",
+  "@morePhotosCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "imageCoverSemantics": "وێنەی سەری گەشتی {index}",
+  "@imageCoverSemantics": {
+    "placeholders": {
+      "index": {"type": "int"}
+    }
+  }
 }

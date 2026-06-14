@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:ui';
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -96,18 +97,19 @@ class _HeartWidgetState extends State<HeartWidget>
                   Icons.favorite_rounded,
                   color: colorAnimation.value,
                   size: sizeAnimation.value,
-                  semanticLabel: 'Add to favorites ',
+                  semanticLabel: AppLocalizations.of(context)!.addToFavorites,
                 ),
                 onPressed: () async {
+                  final l10n = AppLocalizations.of(context)!;
                   onPressed();
                   if (controller.value > 0.5) {
                     SemanticsService.announce(
-                      'Added to favorites',
+                      l10n.addedToFavorites,
                       TextDirection.ltr,
                     );
                   } else {
                     SemanticsService.announce(
-                      'Removed from favorites',
+                      l10n.removedFromFavorites,
                       TextDirection.ltr,
                     );
                   }

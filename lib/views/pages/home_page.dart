@@ -15,6 +15,7 @@ class _HomeState extends State<HomePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -46,7 +47,7 @@ class _HomeState extends State<HomePage> {
                                   Opacity(opacity: value, child: child),
                               child: Image.asset(
                                 "assets/images/bg.png",
-                                semanticLabel: 'Banner of the app',
+                                  semanticLabel: l10n.appBannerSemantics,
                               ),
                             ),
                           ),

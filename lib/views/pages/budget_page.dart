@@ -6,6 +6,7 @@ import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/expense.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
+import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
 
 class BudgetPage extends StatefulWidget {
   final String tripId;
@@ -27,15 +28,22 @@ class _BudgetPageState extends State<BudgetPage> {
   }
 
   Future<void> _loadExpenses() async {
-    final provider = context.read<TripProvider>();
-    final expenses = await provider.getExpenses(widget.tripId);
-    final trip = provider.getTripById(widget.tripId);
-    if (mounted) {
-      setState(() {
-        _expenses = expenses;
-        _isLoading = false;
-        _currencySymbol = trip != null ? CurrencyInfo.symbolFor(trip.currency) : '\$';
-      });
+    try {
+      final provider = context.read<TripProvider>();
+      final expenses = await provider.getExpenses(widget.tripId);
+      final trip = provider.getTripById(widget.tripId);
+      if (mounted) {
+        setState(() {
+          _expenses = expenses;
+          _isLoading = false;
+          _currencySymbol = trip != null ? CurrencyInfo.symbolFor(trip.currency) : '\$';
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorSavingTrip(e.toString()))));
+      }
     }
   }
 
@@ -244,6 +252,12 @@ class _BudgetPageState extends State<BudgetPage> {
                         return Dismissible(
                           key: ValueKey(expense.id),
                           direction: DismissDirection.endToStart,
+                          confirmDismiss: (direction) => showConfirmationDialog(
+                            context: context,
+                            title: l10n.confirmDeleteTitle(expense.title),
+                            message: l10n.confirmDeleteMessage,
+                            icon: Icons.delete_rounded,
+                          ),
                           background: Container(
                             alignment: Alignment.centerRight,
                             padding: const EdgeInsets.only(right: 20),

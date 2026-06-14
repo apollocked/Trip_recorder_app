@@ -130,5 +130,75 @@
 
   "setReminder": "Set Reminder",
   "reminder": "Reminder",
-  "notSet": "Not set"
+  "notSet": "Not set",
+
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "confirmDeleteTitle": "Delete {item}?",
+  "@confirmDeleteTitle": {
+    "placeholders": {
+      "item": {"type": "String"}
+    }
+  },
+  "confirmDeleteMessage": "This action cannot be undone.",
+  "errorSavingTrip": "Error saving trip: {error}",
+  "@errorSavingTrip": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "tripNotFound": "Trip not found",
+  "totalLabel": "total",
+  "notRated": "--",
+  "exportHeader": "=== {title} ===",
+  "@exportHeader": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "exportRating": "Rating: {rating} / 5",
+  "@exportRating": {
+    "placeholders": {
+      "rating": {"type": "String"}
+    }
+  },
+  "notificationChannelName": "Trip Reminders",
+  "notificationTitle": "Upcoming Trip",
+  "notificationBody": "{tripTitle} is coming up!",
+  "notificationPermissionTitle": "Stay Updated",
+  "notificationPermissionDescription": "We'd like to send you reminders about your upcoming trips so you never miss a journey.",
+  "goToSettings": "Open Settings",
+  "@notificationBody": {
+    "placeholders": {
+      "tripTitle": {"type": "String"}
+    }
+  },
+  "editFormSemantics": "Edit Journey form",
+  "addFormSemantics": "Add New Journey form",
+  "appBannerSemantics": "Banner of the app",
+  "appTitleSemantics": "Title of the app",
+  "tripListTitle": "My Trips",
+  "tripCardSemantics": "Trip item of {title}, tap for details, swipe left to delete",
+  "@tripCardSemantics": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "shimmerSemantics": "Loading for trip details",
+  "addToFavorites": "Add to favorites",
+  "addedToFavorites": "Added to favorites",
+  "removedFromFavorites": "Removed from favorites",
+  "coverPhotoSemantics": "Cover photo of the trip",
+  "morePhotosCount": "+{count}",
+  "@morePhotosCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "imageCoverSemantics": "Trip cover image {index}",
+  "@imageCoverSemantics": {
+    "placeholders": {
+      "index": {"type": "int"}
+    }
+  }
 }

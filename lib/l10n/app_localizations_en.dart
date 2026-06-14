@@ -374,4 +374,108 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notSet => 'Not set';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String confirmDeleteTitle(String item) {
+    return 'Delete $item?';
+  }
+
+  @override
+  String get confirmDeleteMessage => 'This action cannot be undone.';
+
+  @override
+  String errorSavingTrip(String error) {
+    return 'Error saving trip: $error';
+  }
+
+  @override
+  String get tripNotFound => 'Trip not found';
+
+  @override
+  String get totalLabel => 'total';
+
+  @override
+  String get notRated => '--';
+
+  @override
+  String exportHeader(String title) {
+    return '=== $title ===';
+  }
+
+  @override
+  String exportRating(String rating) {
+    return 'Rating: $rating / 5';
+  }
+
+  @override
+  String get notificationChannelName => 'Trip Reminders';
+
+  @override
+  String get notificationTitle => 'Upcoming Trip';
+
+  @override
+  String notificationBody(String tripTitle) {
+    return '$tripTitle is coming up!';
+  }
+
+  @override
+  String get notificationPermissionTitle => 'Stay Updated';
+
+  @override
+  String get notificationPermissionDescription =>
+      'We\'d like to send you reminders about your upcoming trips so you never miss a journey.';
+
+  @override
+  String get goToSettings => 'Open Settings';
+
+  @override
+  String get editFormSemantics => 'Edit Journey form';
+
+  @override
+  String get addFormSemantics => 'Add New Journey form';
+
+  @override
+  String get appBannerSemantics => 'Banner of the app';
+
+  @override
+  String get appTitleSemantics => 'Title of the app';
+
+  @override
+  String get tripListTitle => 'My Trips';
+
+  @override
+  String tripCardSemantics(String title) {
+    return 'Trip item of $title, tap for details, swipe left to delete';
+  }
+
+  @override
+  String get shimmerSemantics => 'Loading for trip details';
+
+  @override
+  String get addToFavorites => 'Add to favorites';
+
+  @override
+  String get addedToFavorites => 'Added to favorites';
+
+  @override
+  String get removedFromFavorites => 'Removed from favorites';
+
+  @override
+  String get coverPhotoSemantics => 'Cover photo of the trip';
+
+  @override
+  String morePhotosCount(int count) {
+    return '+$count';
+  }
+
+  @override
+  String imageCoverSemantics(int index) {
+    return 'Trip cover image $index';
+  }
 }

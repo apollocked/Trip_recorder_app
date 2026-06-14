@@ -30,7 +30,7 @@ class DetailsPage extends StatelessWidget {
         if (trip == null) {
           return Scaffold(
             appBar: AppBar(),
-            body: const Center(child: Text('Trip not found')),
+            body: Center(child: Text(l10n.tripNotFound)),
           );
         }
         return Scaffold(
@@ -48,6 +48,7 @@ class DetailsPage extends StatelessWidget {
               ),
               IconButton(
                 icon: const Icon(Icons.edit_note_rounded, size: 28),
+                tooltip: l10n.editJourney,
                 onPressed: () async {
                   HapticFeedback.selectionClick();
                   await Navigator.push(
@@ -64,7 +65,7 @@ class DetailsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildImageCarousel(trip, colorScheme),
+                _buildImageCarousel(trip, colorScheme, l10n),
                 Expanded(
                   child: TweenAnimationBuilder(
                     curve: Curves.easeOutCubic,
@@ -174,7 +175,7 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildImageCarousel(Trip trip, ColorScheme colorScheme) {
+  Widget _buildImageCarousel(Trip trip, ColorScheme colorScheme, var l10n) {
     if (trip.imagePaths.isEmpty) {
       return Container(
         height: 280,
@@ -221,7 +222,7 @@ class DetailsPage extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(32),
                     child: Semantics(
-                      label: 'Trip cover image ${index + 1}',
+                      label: l10n.imageCoverSemantics(index + 1),
                       child: coverImage(trip.imagePaths[index]),
                     ),
                   ),
@@ -326,19 +327,20 @@ class DetailsPage extends StatelessWidget {
   Future<void> _exportTrip(BuildContext context, Trip trip) async {
     final l10n = AppLocalizations.of(context)!;
     final buffer = StringBuffer();
-    buffer.writeln('=== ${trip.title} ===\n');
+    buffer.writeln(l10n.exportHeader(trip.title));
     buffer.writeln('${l10n.tripCategory}: ${trip.category.label}');
-    buffer.writeln('${l10n.budget}: \$${trip.price.toStringAsFixed(0)}');
+    buffer.writeln('${l10n.budget}: ${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}');
     buffer.writeln('${l10n.nights}: ${trip.nights}');
     buffer.writeln('${l10n.departureDate}: ${trip.date.day}/${trip.date.month}/${trip.date.year}');
     if (trip.rating > 0) {
-      buffer.writeln('Rating: ${trip.rating.toStringAsFixed(1)} / 5');
+      buffer.writeln(l10n.exportRating(trip.rating.toStringAsFixed(1)));
     }
     if (trip.description.isNotEmpty) {
       buffer.writeln('\n${l10n.aboutjourney}:');
       buffer.writeln(trip.description);
     }
-    buffer.writeln('\n---');
+    buffer.writeln();
+    buffer.writeln('---');
     buffer.writeln(l10n.appTitle.replaceAll('\n', ' '));
 
     final text = buffer.toString();

@@ -130,5 +130,45 @@
 
   "setReminder": "تعيين تذكير",
   "reminder": "تذكير",
-  "notSet": "غير مضبوط"
+  "notSet": "غير مضبوط",
+
+  "cancel": "إلغاء",
+  "delete": "حذف",
+  "confirmDeleteTitle": "حذف {item}؟",
+  "confirmDeleteMessage": "لا يمكن التراجع عن هذا الإجراء.",
+  "errorSavingTrip": "خطأ في حفظ الرحلة: {error}",
+  "tripNotFound": "الرحلة غير موجودة",
+  "totalLabel": "المجموع",
+  "notRated": "--",
+  "exportHeader": "=== {title} ===",
+  "exportRating": "التقييم: {rating} / 5",
+  "notificationChannelName": "تذكيرات الرحلات",
+  "notificationTitle": "رحلة قادمة",
+  "notificationBody": "{tripTitle} قادمة قريباً!",
+  "notificationPermissionTitle": "ابق على اطلاع",
+  "notificationPermissionDescription": "نود إرسال تذكيرات لك حول رحلاتك القادمة حتى لا تفوّت أي رحلة.",
+  "goToSettings": "فتح الإعدادات",
+  "editFormSemantics": "نموذج تعديل الرحلة",
+  "addFormSemantics": "نموذج إضافة رحلة جديدة",
+  "appBannerSemantics": "لافتة التطبيق",
+  "appTitleSemantics": "عنوان التطبيق",
+  "tripListTitle": "رحلاتي",
+  "tripCardSemantics": "عنصر الرحلة {title}، اضغط للتفاصيل، اسحب لليسار للحذف",
+  "shimmerSemantics": "جارٍ تحميل تفاصيل الرحلة",
+  "addToFavorites": "إضافة إلى المفضلة",
+  "addedToFavorites": "تمت الإضافة إلى المفضلة",
+  "removedFromFavorites": "تمت الإزالة من المفضلة",
+  "coverPhotoSemantics": "صورة غلاف الرحلة",
+  "morePhotosCount": "+{count}",
+  "@morePhotosCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "imageCoverSemantics": "صورة غلاف الرحلة {index}",
+  "@imageCoverSemantics": {
+    "placeholders": {
+      "index": {"type": "int"}
+    }
+  }
 }

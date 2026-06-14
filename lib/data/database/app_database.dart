@@ -47,16 +47,17 @@ class AppDatabase {
         created_at TEXT NOT NULL,
         category TEXT NOT NULL DEFAULT 'other',
         rating REAL NOT NULL DEFAULT 0.0,
-        currency TEXT NOT NULL DEFAULT 'USD'
+        currency TEXT NOT NULL DEFAULT 'USD',
+        reminder_date TEXT
       )
     ''');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      await db.execute('ALTER TABLE ${AppConstants.tripsTable} ADD COLUMN image_paths TEXT NOT NULL DEFAULT \'[]\'');
-      await db.execute('ALTER TABLE ${AppConstants.tripsTable} ADD COLUMN category TEXT NOT NULL DEFAULT \'other\'');
-      await db.execute('ALTER TABLE ${AppConstants.tripsTable} ADD COLUMN rating REAL NOT NULL DEFAULT 0.0');
+      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'image_paths', "TEXT NOT NULL DEFAULT '[]'");
+      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'category', "TEXT NOT NULL DEFAULT 'other'");
+      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'rating', 'REAL NOT NULL DEFAULT 0.0');
 
       final rows = await db.query(AppConstants.tripsTable);
       for (final row in rows) {
@@ -92,7 +93,7 @@ class AppDatabase {
       ''');
     }
     if (oldVersion < 4) {
-      await db.execute('ALTER TABLE ${AppConstants.tripsTable} ADD COLUMN currency TEXT NOT NULL DEFAULT \'USD\'');
+      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'currency', "TEXT NOT NULL DEFAULT 'USD'");
     }
     if (oldVersion < 5) {
       await db.execute('''
@@ -108,7 +109,18 @@ class AppDatabase {
       ''');
     }
     if (oldVersion < 6) {
-      await db.execute('ALTER TABLE ${AppConstants.tripsTable} ADD COLUMN reminder_date TEXT');
+      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'reminder_date', 'TEXT');
+    }
+    if (oldVersion < 7) {
+      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'reminder_date', 'TEXT');
+    }
+  }
+
+  Future<void> _addColumnIfNotExists(Database db, String table, String column, String type) async {
+    try {
+      await db.execute('ALTER TABLE $table ADD COLUMN $column $type');
+    } catch (_) {
+      // Column already exists — safe to ignore
     }
   }
 

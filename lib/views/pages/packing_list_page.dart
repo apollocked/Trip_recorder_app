@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/checklist_item.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
+import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
 
 class PackingListPage extends StatefulWidget {
   final String tripId;
@@ -23,12 +24,20 @@ class _PackingListPageState extends State<PackingListPage> {
   }
 
   Future<void> _loadItems() async {
-    final items = await context.read<TripProvider>().getChecklistItems(widget.tripId);
-    if (mounted) {
-      setState(() {
-        _items = items;
-        _isLoading = false;
-      });
+    try {
+      final items = await context.read<TripProvider>().getChecklistItems(widget.tripId);
+      if (mounted) {
+        setState(() {
+          _items = items;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.errorSavingTrip(e.toString()))));
+      }
     }
   }
 
@@ -143,6 +152,12 @@ class _PackingListPageState extends State<PackingListPage> {
                               return Dismissible(
                                 key: ValueKey(item.id),
                                 direction: DismissDirection.endToStart,
+                                confirmDismiss: (direction) => showConfirmationDialog(
+                                  context: context,
+                                  title: l10n.confirmDeleteTitle(item.title),
+                                  message: l10n.confirmDeleteMessage,
+                                  icon: Icons.delete_rounded,
+                                ),
                                 background: Container(
                                   alignment: Alignment.centerRight,
                                   padding: const EdgeInsets.only(right: 20),

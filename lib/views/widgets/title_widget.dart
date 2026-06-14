@@ -1,3 +1,4 @@
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 Widget titleWidget(String title, BuildContext context) {
@@ -15,7 +16,7 @@ Widget titleWidget(String title, BuildContext context) {
         ),
       ),
       child: Text(
-        semanticsLabel: "Title of the app",
+        semanticsLabel: AppLocalizations.of(context)!.appTitleSemantics,
         title,
         style: TextStyle(
           fontSize: 26,

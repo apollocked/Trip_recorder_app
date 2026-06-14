@@ -1,6 +1,8 @@
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
+
 import 'package:animations_in_flutter/views/pages/details_page.dart';
+import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
 import 'package:animations_in_flutter/views/widgets/image_widget_leading.dart';
 import 'package:animations_in_flutter/views/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ Widget tripWidget(
   Animation<double> animation,
   BuildContext context,
   int index, {
+
   required VoidCallback onRemove,
 }) {
   final colorScheme = Theme.of(context).colorScheme;
@@ -28,6 +31,15 @@ Widget tripWidget(
         child: Dismissible(
           direction: DismissDirection.endToStart,
           key: ValueKey(trip.id),
+          confirmDismiss: (direction) async {
+            final l10n = AppLocalizations.of(context)!;
+            return showConfirmationDialog(
+              context: context,
+              title: l10n.confirmDeleteTitle(trip.title),
+              message: l10n.confirmDeleteMessage,
+              icon: Icons.delete_rounded,
+            );
+          },
           onDismissed: (direction) {
             HapticFeedback.vibrate();
             onRemove();
@@ -83,7 +95,9 @@ Widget tripWidget(
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(context).colorScheme.primary.withAlpha(20),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary.withAlpha(20),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),
@@ -91,7 +105,10 @@ Widget tripWidget(
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: leadingImage(trip.primaryImagePath),
+                          child: leadingImage(
+                            trip.primaryImagePath,
+                            context: context,
+                          ),
                         ),
                       ),
                     ),
@@ -114,9 +131,14 @@ Widget tripWidget(
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: colorScheme.primaryContainer.withAlpha(120),
+                                  color: colorScheme.primaryContainer.withAlpha(
+                                    120,
+                                  ),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
@@ -136,7 +158,11 @@ Widget tripWidget(
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              Icon(Icons.nights_stay_outlined, size: 14, color: colorScheme.primary),
+                              Icon(
+                                Icons.nights_stay_outlined,
+                                size: 14,
+                                color: colorScheme.primary,
+                              ),
                               const SizedBox(width: 4),
                               Text(
                                 '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
@@ -146,7 +172,11 @@ Widget tripWidget(
                                 ),
                               ),
                               const SizedBox(width: 12),
-                              Icon(Icons.calendar_today, size: 12, color: colorScheme.outline),
+                              Icon(
+                                Icons.calendar_today,
+                                size: 12,
+                                color: colorScheme.outline,
+                              ),
                               const SizedBox(width: 4),
                               Text(
                                 '${trip.date.day}/${trip.date.month}/${trip.date.year}',
@@ -164,7 +194,10 @@ Widget tripWidget(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
                             color: colorScheme.primaryContainer.withAlpha(102),
                             borderRadius: BorderRadius.circular(12),
@@ -178,7 +211,11 @@ Widget tripWidget(
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Icon(Icons.arrow_forward_ios_rounded, size: 14, color: colorScheme.outline),
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 14,
+                          color: colorScheme.outline,
+                        ),
                       ],
                     ),
                   ],

@@ -1,9 +1,10 @@
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 
 Widget shimmerCard(BuildContext context) {
   return Semantics(
-    label: "Loading for trip details",
+    label: AppLocalizations.of(context)!.shimmerSemantics,
     child: Shimmer.fromColors(
       period: const Duration(milliseconds: 1000),
       baseColor: Colors.grey[300]!,

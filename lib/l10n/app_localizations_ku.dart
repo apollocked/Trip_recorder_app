@@ -375,4 +375,108 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get notSet => 'دانەنراوە';
+
+  @override
+  String get cancel => 'ڕەتکردنەوە';
+
+  @override
+  String get delete => 'سڕینەوە';
+
+  @override
+  String confirmDeleteTitle(String item) {
+    return 'سڕینەوەی $item؟';
+  }
+
+  @override
+  String get confirmDeleteMessage => 'ئەم کارە ناگەڕێتەوە.';
+
+  @override
+  String errorSavingTrip(String error) {
+    return 'هەڵە لە پاشەکەوتکردنی گەشت: $error';
+  }
+
+  @override
+  String get tripNotFound => 'گەشت نەدۆزرایەوە';
+
+  @override
+  String get totalLabel => 'کۆی گشتی';
+
+  @override
+  String get notRated => '--';
+
+  @override
+  String exportHeader(String title) {
+    return '=== $title ===';
+  }
+
+  @override
+  String exportRating(String rating) {
+    return 'هەڵسەنگاندن: $rating / 5';
+  }
+
+  @override
+  String get notificationChannelName => 'بیریارەکانی گەشت';
+
+  @override
+  String get notificationTitle => 'گەشتی داهاتوو';
+
+  @override
+  String notificationBody(String tripTitle) {
+    return '$tripTitle بەم زووانە دێت!';
+  }
+
+  @override
+  String get notificationPermissionTitle => 'به‌رده‌وام به‌';
+
+  @override
+  String get notificationPermissionDescription =>
+      'دەمانەوێت بیریاری گەشتەکانی داهاتووت بۆ بنێرین بۆ ئەوەی هیچ گەشتێک لەدەست نەدەیت.';
+
+  @override
+  String get goToSettings => 'کردنەوەی ڕێکخستنەکان';
+
+  @override
+  String get editFormSemantics => 'فۆرمی دەستکاریکردنی گەشت';
+
+  @override
+  String get addFormSemantics => 'فۆرمی زیادکردنی گەشتی نوێ';
+
+  @override
+  String get appBannerSemantics => 'بانەری ئەپەکە';
+
+  @override
+  String get appTitleSemantics => 'ناونیشانی ئەپەکە';
+
+  @override
+  String get tripListTitle => 'گەشتەکانم';
+
+  @override
+  String tripCardSemantics(String title) {
+    return 'بەندی گەشتی $title، بۆ وردەکارییەکان لێی بدە، بۆ سڕینەوە بۆ چەپ ڕابکێشە';
+  }
+
+  @override
+  String get shimmerSemantics => 'بارکردنی وردەکاری گەشت';
+
+  @override
+  String get addToFavorites => 'زیادکردن بۆ دڵخوازەکان';
+
+  @override
+  String get addedToFavorites => 'زیاد کرا بۆ دڵخوازەکان';
+
+  @override
+  String get removedFromFavorites => 'لا برا لە دڵخوازەکان';
+
+  @override
+  String get coverPhotoSemantics => 'وێنەی سەری گەشت';
+
+  @override
+  String morePhotosCount(int count) {
+    return '+$count';
+  }
+
+  @override
+  String imageCoverSemantics(int index) {
+    return 'وێنەی سەری گەشتی $index';
+  }
 }

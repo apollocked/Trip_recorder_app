@@ -374,4 +374,108 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notSet => 'غير مضبوط';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get delete => 'حذف';
+
+  @override
+  String confirmDeleteTitle(String item) {
+    return 'حذف $item؟';
+  }
+
+  @override
+  String get confirmDeleteMessage => 'لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String errorSavingTrip(String error) {
+    return 'خطأ في حفظ الرحلة: $error';
+  }
+
+  @override
+  String get tripNotFound => 'الرحلة غير موجودة';
+
+  @override
+  String get totalLabel => 'المجموع';
+
+  @override
+  String get notRated => '--';
+
+  @override
+  String exportHeader(String title) {
+    return '=== $title ===';
+  }
+
+  @override
+  String exportRating(String rating) {
+    return 'التقييم: $rating / 5';
+  }
+
+  @override
+  String get notificationChannelName => 'تذكيرات الرحلات';
+
+  @override
+  String get notificationTitle => 'رحلة قادمة';
+
+  @override
+  String notificationBody(String tripTitle) {
+    return '$tripTitle قادمة قريباً!';
+  }
+
+  @override
+  String get notificationPermissionTitle => 'ابق على اطلاع';
+
+  @override
+  String get notificationPermissionDescription =>
+      'نود إرسال تذكيرات لك حول رحلاتك القادمة حتى لا تفوّت أي رحلة.';
+
+  @override
+  String get goToSettings => 'فتح الإعدادات';
+
+  @override
+  String get editFormSemantics => 'نموذج تعديل الرحلة';
+
+  @override
+  String get addFormSemantics => 'نموذج إضافة رحلة جديدة';
+
+  @override
+  String get appBannerSemantics => 'لافتة التطبيق';
+
+  @override
+  String get appTitleSemantics => 'عنوان التطبيق';
+
+  @override
+  String get tripListTitle => 'رحلاتي';
+
+  @override
+  String tripCardSemantics(String title) {
+    return 'عنصر الرحلة $title، اضغط للتفاصيل، اسحب لليسار للحذف';
+  }
+
+  @override
+  String get shimmerSemantics => 'جارٍ تحميل تفاصيل الرحلة';
+
+  @override
+  String get addToFavorites => 'إضافة إلى المفضلة';
+
+  @override
+  String get addedToFavorites => 'تمت الإضافة إلى المفضلة';
+
+  @override
+  String get removedFromFavorites => 'تمت الإزالة من المفضلة';
+
+  @override
+  String get coverPhotoSemantics => 'صورة غلاف الرحلة';
+
+  @override
+  String morePhotosCount(int count) {
+    return '+$count';
+  }
+
+  @override
+  String imageCoverSemantics(int index) {
+    return 'صورة غلاف الرحلة $index';
+  }
 }

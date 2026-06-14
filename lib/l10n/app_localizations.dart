@@ -807,6 +807,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not set'**
   String get notSet;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @confirmDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {item}?'**
+  String confirmDeleteTitle(String item);
+
+  /// No description provided for @confirmDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get confirmDeleteMessage;
+
+  /// No description provided for @errorSavingTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving trip: {error}'**
+  String errorSavingTrip(String error);
+
+  /// No description provided for @tripNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip not found'**
+  String get tripNotFound;
+
+  /// No description provided for @totalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'total'**
+  String get totalLabel;
+
+  /// No description provided for @notRated.
+  ///
+  /// In en, this message translates to:
+  /// **'--'**
+  String get notRated;
+
+  /// No description provided for @exportHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'=== {title} ==='**
+  String exportHeader(String title);
+
+  /// No description provided for @exportRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating: {rating} / 5'**
+  String exportRating(String rating);
+
+  /// No description provided for @notificationChannelName.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip Reminders'**
+  String get notificationChannelName;
+
+  /// No description provided for @notificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Trip'**
+  String get notificationTitle;
+
+  /// No description provided for @notificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{tripTitle} is coming up!'**
+  String notificationBody(String tripTitle);
+
+  /// No description provided for @notificationPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Updated'**
+  String get notificationPermissionTitle;
+
+  /// No description provided for @notificationPermissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'d like to send you reminders about your upcoming trips so you never miss a journey.'**
+  String get notificationPermissionDescription;
+
+  /// No description provided for @goToSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get goToSettings;
+
+  /// No description provided for @editFormSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Journey form'**
+  String get editFormSemantics;
+
+  /// No description provided for @addFormSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Journey form'**
+  String get addFormSemantics;
+
+  /// No description provided for @appBannerSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Banner of the app'**
+  String get appBannerSemantics;
+
+  /// No description provided for @appTitleSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Title of the app'**
+  String get appTitleSemantics;
+
+  /// No description provided for @tripListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Trips'**
+  String get tripListTitle;
+
+  /// No description provided for @tripCardSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip item of {title}, tap for details, swipe left to delete'**
+  String tripCardSemantics(String title);
+
+  /// No description provided for @shimmerSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading for trip details'**
+  String get shimmerSemantics;
+
+  /// No description provided for @addToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favorites'**
+  String get addToFavorites;
+
+  /// No description provided for @addedToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to favorites'**
+  String get addedToFavorites;
+
+  /// No description provided for @removedFromFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from favorites'**
+  String get removedFromFavorites;
+
+  /// No description provided for @coverPhotoSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover photo of the trip'**
+  String get coverPhotoSemantics;
+
+  /// No description provided for @morePhotosCount.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count}'**
+  String morePhotosCount(int count);
+
+  /// No description provided for @imageCoverSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip cover image {index}'**
+  String imageCoverSemantics(int index);
 }
 
 class _AppLocalizationsDelegate

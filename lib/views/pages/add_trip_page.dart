@@ -66,6 +66,7 @@ class _AddTripPageState extends State<AddTripPage> {
   }
 
   Future<void> _handleSave() async {
+    final l10n = AppLocalizations.of(context)!;
     final isFormValid = _formKey.currentState!.validate();
     final hasImages = _imageFiles.isNotEmpty || _existingImagePaths.isNotEmpty;
 
@@ -85,6 +86,14 @@ class _AddTripPageState extends State<AddTripPage> {
       final assetPaths = _existingImagePaths
           .where((p) => p.startsWith('images/'))
           .toList();
+
+      if (_reminderDate != null) {
+        final granted = await requestNotificationPermission(context);
+        if (!granted) {
+          setState(() => _isSaving = false);
+          return;
+        }
+      }
 
       if (widget.tripId != null) {
         await context.read<TripProvider>().updateTrip(
@@ -124,7 +133,7 @@ class _AddTripPageState extends State<AddTripPage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error saving trip: $e')));
+        ).showSnackBar(SnackBar(content: Text(l10n.errorSavingTrip(e.toString()))));
       }
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -148,8 +157,8 @@ class _AddTripPageState extends State<AddTripPage> {
           title: Text(
             isEditing ? l10n.editJourney : l10n.addtitle,
             semanticsLabel: isEditing
-                ? "Edit Journey form"
-                : "Add New Journey form",
+                ? l10n.editFormSemantics
+                : l10n.addFormSemantics,
             style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
@@ -597,7 +606,7 @@ class _AddTripPageState extends State<AddTripPage> {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, size: 20),
-        prefixText: isPrice ? "\$ " : null,
+        prefixText: isPrice ? '${CurrencyInfo.symbolFor(_selectedCurrency)} ' : null,
         filled: true,
         fillColor: colorScheme.surface,
         errorStyle: const TextStyle(fontWeight: FontWeight.w600),

@@ -70,7 +70,7 @@ class _TripListPageState extends State<TripListPage> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.tripsList,
-          semanticsLabel: 'Title of the trip list',
+           semanticsLabel: AppLocalizations.of(context)!.tripListTitle,
         ),
         actions: [
           IconButton(
@@ -320,7 +320,7 @@ class _TripListPageState extends State<TripListPage> {
         final trip = _displayList[index];
         return Semantics(
           label:
-              "Trip item of ${trip.title}, tap for details ,swape left to delete",
+              AppLocalizations.of(context)!.tripCardSemantics(trip.title),
           child: tripWidget(
             trip,
             animation,

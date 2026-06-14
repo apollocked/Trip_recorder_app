@@ -23,11 +23,13 @@ class NotificationService {
     required String tripId,
     required String tripTitle,
     required DateTime remindAt,
+    String? body,
+    String? channelName,
   }) async {
     await init();
     final androidDetails = AndroidNotificationDetails(
       'trip_reminders',
-      'Trip Reminders',
+      channelName ?? 'Trip Reminders',
       importance: Importance.high,
       priority: Priority.high,
     );
@@ -39,7 +41,7 @@ class NotificationService {
     await _plugin.zonedSchedule(
       id: tripId.hashCode,
       title: 'Upcoming Trip',
-      body: '$tripTitle is coming up!',
+      body: body ?? '$tripTitle is coming up!',
       scheduledDate: scheduledDate,
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
