@@ -1,0 +1,118 @@
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import '../../core/constants.dart';
+import '../../model/trip.dart';
+
+class AppDatabase {
+  static final AppDatabase _instance = AppDatabase._internal();
+  factory AppDatabase() => _instance;
+  AppDatabase._internal();
+
+  Database? _database;
+
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
+  }
+
+  Future<Database> _initDatabase() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final path = p.join(dir.path, AppConstants.dbName);
+    return await openDatabase(
+      path,
+      version: AppConstants.dbVersion,
+      onCreate: _onCreate,
+    );
+  }
+
+  Future<void> _onCreate(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE ${AppConstants.tripsTable} (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        price REAL NOT NULL,
+        nights INTEGER NOT NULL,
+        image_path TEXT NOT NULL,
+        date TEXT NOT NULL,
+        description TEXT NOT NULL DEFAULT '',
+        is_liked INTEGER NOT NULL DEFAULT 0,
+        created_at TEXT NOT NULL
+      )
+    ''');
+  }
+
+  Future<int> insertTrip(Trip trip) async {
+    final db = await database;
+    return await db.insert(AppConstants.tripsTable, trip.toMap());
+  }
+
+  Future<int> updateTrip(Trip trip) async {
+    final db = await database;
+    return await db.update(
+      AppConstants.tripsTable,
+      trip.toMap(),
+      where: 'id = ?',
+      whereArgs: [trip.id],
+    );
+  }
+
+  Future<int> deleteTrip(String id) async {
+    final db = await database;
+    return await db.delete(
+      AppConstants.tripsTable,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<List<Trip>> getAllTrips() async {
+    final db = await database;
+    final maps = await db.query(
+      AppConstants.tripsTable,
+      orderBy: 'created_at DESC',
+    );
+    return maps.map((map) => Trip.fromMap(map)).toList();
+  }
+
+  Future<Trip?> getTripById(String id) async {
+    final db = await database;
+    final maps = await db.query(
+      AppConstants.tripsTable,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    if (maps.isEmpty) return null;
+    return Trip.fromMap(maps.first);
+  }
+
+  Future<void> toggleLike(String id) async {
+    final db = await database;
+    final trip = await getTripById(id);
+    if (trip == null) return;
+    final newValue = trip.isLiked ? 0 : 1;
+    await db.update(
+      AppConstants.tripsTable,
+      {'is_liked': newValue},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> getTripsCount() async {
+    final db = await database;
+    final result =
+        await db.rawQuery('SELECT COUNT(*) as count FROM ${AppConstants.tripsTable}');
+    return Sqflite.firstIntValue(result) ?? 0;
+  }
+
+  Future<void> insertTripsBatch(List<Trip> trips) async {
+    final db = await database;
+    final batch = db.batch();
+    for (final trip in trips) {
+      batch.insert(AppConstants.tripsTable, trip.toMap());
+    }
+    await batch.commit(noResult: true);
+  }
+}

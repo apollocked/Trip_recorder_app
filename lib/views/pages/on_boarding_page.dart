@@ -1,4 +1,4 @@
-import 'package:animations_in_flutter/services/trip_services.dart';
+import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/on_boardig/on_boarding_card.dart';
 import 'package:animations_in_flutter/views/widgets/on_boardig/on_boarding_footer.dart';
 import 'package:animations_in_flutter/views/widgets/on_boardig/onboarding_header.dart';
@@ -31,7 +31,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         curve: Curves.easeInOutCubic,
       );
     } else {
-      await context.read<TripService>().completeOnboarding();
+      await context.read<TripProvider>().completeOnboarding();
     }
   }
 

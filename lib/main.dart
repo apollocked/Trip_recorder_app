@@ -1,8 +1,8 @@
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/l10n/localization_config.dart';
+import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
-import 'package:animations_in_flutter/services/trip_services.dart';
 import 'package:animations_in_flutter/views/pages/home_page.dart';
 import 'package:animations_in_flutter/views/pages/on_boarding_page.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => TripService()),
+        ChangeNotifierProvider(create: (_) => TripProvider()),
         ChangeNotifierProvider(create: (_) => LanguageService()),
         ChangeNotifierProvider(create: (_) => ThemeService()),
       ],
@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tripService = context.watch<TripService>();
-    final isFirstTime = tripService.isFirstTime;
+    final tripProvider = context.watch<TripProvider>();
+    final isFirstTime = tripProvider.isFirstTime;
     final l10n = context.watch<LanguageService>().locale;
     final themeMode = context.watch<ThemeService>().themeMode;
 
@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
           child: child ?? const SizedBox.shrink(),
         );
       },
+
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(

@@ -1,17 +1,17 @@
-// ignore_for_file: strict_top_level_inference, deprecated_member_use
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
-import 'package:animations_in_flutter/model/trip.dart';
-import 'package:animations_in_flutter/services/trip_services.dart';
+import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class HeartWidget extends StatefulWidget {
-  final int index;
+  final String tripId;
   final bool isLiked;
 
-  const HeartWidget({super.key, required this.isLiked, required this.index});
+  const HeartWidget({super.key, required this.isLiked, required this.tripId});
 
   @override
   State<HeartWidget> createState() => _HeartWidgetState();
@@ -23,7 +23,6 @@ class _HeartWidgetState extends State<HeartWidget>
   late Animation<Color?> colorAnimation;
   late Animation<double> sizeAnimation;
   late Animation<double> curveAnimation;
-  List<Trip> trips = [];
 
   @override
   void initState() {
@@ -38,7 +37,6 @@ class _HeartWidgetState extends State<HeartWidget>
       curve: Curves.slowMiddle,
     );
 
-    // Animation logic remains untouched
     colorAnimation = ColorTween(
       begin: Colors.grey[400],
       end: Colors.red,
@@ -60,15 +58,17 @@ class _HeartWidgetState extends State<HeartWidget>
     super.dispose();
   }
 
-  onPressed() {
-    final tripService = Provider.of<TripService>(context, listen: false);
-    tripService.toggleLike(widget.index);
-    if (tripService.trips[widget.index].isLiked) {
+  void onPressed() {
+    final tripProvider = Provider.of<TripProvider>(context, listen: false);
+    final trip = tripProvider.getTripById(widget.tripId);
+    if (trip == null) return;
+    tripProvider.toggleLike(widget.tripId);
+    if (!trip.isLiked) {
       controller.forward();
     } else {
       controller.reverse();
     }
-    HapticFeedback.errorNotification(); // Keeping your specific haptic choice
+    HapticFeedback.errorNotification();
   }
 
   @override
@@ -91,17 +91,16 @@ class _HeartWidgetState extends State<HeartWidget>
                 ),
               ),
               child: IconButton(
-                padding: const EdgeInsets.all(12), // Nice touch target
+                padding: const EdgeInsets.all(12),
                 icon: Icon(
-                  Icons
-                      .favorite_rounded, // Slightly softer, more modern icon edge
+                  Icons.favorite_rounded,
                   color: colorAnimation.value,
                   size: sizeAnimation.value,
                   semanticLabel: 'Add to favorites ',
                 ),
                 onPressed: () async {
-                  await onPressed();
-                  if (trips[widget.index].isLiked) {
+                  onPressed();
+                  if (controller.value > 0.5) {
                     SemanticsService.announce(
                       'Added to favorites',
                       TextDirection.ltr,

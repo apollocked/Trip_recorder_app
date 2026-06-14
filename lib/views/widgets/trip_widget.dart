@@ -26,7 +26,7 @@ Widget tripWidget(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: Dismissible(
           direction: DismissDirection.endToStart,
-          key: Key('${trip.title}-${trip.date}'),
+          key: ValueKey(trip.id),
           onDismissed: (direction) {
             HapticFeedback.vibrate();
             onRemove();
@@ -60,7 +60,7 @@ Widget tripWidget(
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailsPage(trip: trip, index: index),
+                    builder: (context) => DetailsPage(tripId: trip.id),
                   ),
                 );
               },
@@ -69,7 +69,7 @@ Widget tripWidget(
                 child: Row(
                   children: [
                     Hero(
-                      tag: 'tag-image-${trip.img}',
+                      tag: 'tag-image-${trip.imagePath}',
                       child: Container(
                         height: 80,
                         width: 80,
@@ -92,7 +92,7 @@ Widget tripWidget(
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: leadingImage(trip.img),
+                          child: leadingImage(trip.imagePath),
                         ),
                       ),
                     ),
@@ -158,9 +158,9 @@ Widget tripWidget(
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            '\$${trip.price}',
+                            '\$${trip.price.toStringAsFixed(0)}',
                             semanticsLabel:
-                                "the price of the trip is \$${trip.price}",
+                                "the price of the trip is \$${trip.price.toStringAsFixed(0)}",
                             style: textTheme.labelLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.primary,

@@ -1,15 +1,14 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/model/trip.dart';
+import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
 
 class AddTripPage extends StatefulWidget {
-  final Trip? trip;
-  const AddTripPage({super.key, this.trip});
+  final String? tripId;
+  const AddTripPage({super.key, this.tripId});
 
   @override
   State<AddTripPage> createState() => _AddTripPageState();
@@ -26,17 +25,21 @@ class _AddTripPageState extends State<AddTripPage> {
   File? _imageFile;
   String? _existingImagePath;
   bool _imageError = false;
+  bool _isSaving = false;
 
   @override
   void initState() {
     super.initState();
-    if (widget.trip != null) {
-      _titleController.text = widget.trip!.title;
-      _priceController.text = widget.trip!.price;
-      _nightsController.text = widget.trip!.nights;
-      _descriptionController.text = widget.trip!.description;
-      _selectedDate = widget.trip!.date;
-      _existingImagePath = widget.trip!.img;
+    if (widget.tripId != null) {
+      final trip = context.read<TripProvider>().getTripById(widget.tripId!);
+      if (trip != null) {
+        _titleController.text = trip.title;
+        _priceController.text = trip.price.toStringAsFixed(0);
+        _nightsController.text = trip.nights.toString();
+        _descriptionController.text = trip.description;
+        _selectedDate = trip.date;
+        _existingImagePath = trip.imagePath;
+      }
     } else {
       _selectedDate = DateTime.now();
     }
@@ -51,7 +54,7 @@ class _AddTripPageState extends State<AddTripPage> {
     super.dispose();
   }
 
-  void _handleSave() {
+  Future<void> _handleSave() async {
     final isFormValid = _formKey.currentState!.validate();
     final isImageValid = _imageFile != null || _existingImagePath != null;
 
@@ -59,21 +62,48 @@ class _AddTripPageState extends State<AddTripPage> {
       _imageError = !isImageValid;
     });
 
-    if (isFormValid && isImageValid) {
-      final newTrip = Trip(
-        title: _titleController.text.trim(),
-        price: _priceController.text.trim(),
-        nights: _nightsController.text.trim(),
-        img: _imageFile?.path ?? _existingImagePath!,
-        date: _selectedDate,
-        description: _descriptionController.text.trim(),
-        isLiked: widget.trip?.isLiked ?? false,
-      );
+    if (!isFormValid || !isImageValid) {
+      if (!isImageValid) HapticFeedback.vibrate();
+      return;
+    }
 
-      HapticFeedback.mediumImpact();
-      Navigator.pop(context, newTrip);
-    } else if (!isImageValid) {
-      HapticFeedback.vibrate();
+    setState(() => _isSaving = true);
+    HapticFeedback.mediumImpact();
+
+    try {
+      if (widget.tripId != null) {
+        await context.read<TripProvider>().updateTrip(
+          widget.tripId!,
+          title: _titleController.text.trim(),
+          price: double.tryParse(_priceController.text.trim()) ?? 0,
+          nights: int.tryParse(_nightsController.text.trim()) ?? 1,
+          imageFile: _imageFile,
+          existingImagePath: _imageFile == null ? _existingImagePath : null,
+          date: _selectedDate,
+          description: _descriptionController.text.trim(),
+        );
+      } else {
+        await context.read<TripProvider>().addTrip(
+          title: _titleController.text.trim(),
+          price: double.tryParse(_priceController.text.trim()) ?? 0,
+          nights: int.tryParse(_nightsController.text.trim()) ?? 1,
+          imageFile: _imageFile,
+          assetImagePath: _existingImagePath?.startsWith('images/') == true
+              ? _existingImagePath
+              : null,
+          date: _selectedDate,
+          description: _descriptionController.text.trim(),
+        );
+      }
+      if (mounted) Navigator.pop(context);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving trip: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
     }
   }
 
@@ -82,6 +112,7 @@ class _AddTripPageState extends State<AddTripPage> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context)!;
+    final isEditing = widget.tripId != null;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -91,15 +122,15 @@ class _AddTripPageState extends State<AddTripPage> {
           backgroundColor: colorScheme.surface,
           elevation: 0,
           title: Text(
-            widget.trip == null ? l10n.addtitle : l10n.editJourney,
-            semanticsLabel: widget.trip == null
-                ? "Add New Journey form"
-                : "Edit Journey form",
+            isEditing ? l10n.editJourney : l10n.addtitle,
+            semanticsLabel: isEditing
+                ? "Edit Journey form"
+                : "Add New Journey form",
             style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
         body: Form(
-          key: _formKey, // Attach the Form key
+          key: _formKey,
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: Column(
@@ -206,7 +237,6 @@ class _AddTripPageState extends State<AddTripPage> {
                 ),
                 const SizedBox(height: 12),
 
-                // TEXT FIELDS SECTION
                 Semantics(
                   label: "Destination you are travelled to input field",
                   child: _buildTextField(
@@ -257,7 +287,6 @@ class _AddTripPageState extends State<AddTripPage> {
                 ),
                 const SizedBox(height: 16),
 
-                // DATE PICKER
                 InkWell(
                   onTap: () async {
                     final date = await showDatePicker(
@@ -328,19 +357,23 @@ class _AddTripPageState extends State<AddTripPage> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    onPressed: _handleSave,
-                    child: Text(
-                      widget.trip == null
-                          ? l10n.createJourney
-                          : l10n.updateJourney,
-                      semanticsLabel: widget.trip == null
-                          ? "Save Journey button"
-                          : "Update Journey button",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    onPressed: _isSaving ? null : _handleSave,
+                    child: _isSaving
+                        ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            isEditing ? l10n.updateJourney : l10n.createJourney,
+                            semanticsLabel: isEditing
+                                ? "Update Journey button"
+                                : "Save Journey button",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -364,14 +397,14 @@ class _AddTripPageState extends State<AddTripPage> {
   }) {
     return TextFormField(
       controller: controller,
-      validator: validator, // Validation Logic
+      validator: validator,
       keyboardType: keyboardType,
       maxLines: maxLines,
       inputFormatters: keyboardType == TextInputType.number
           ? [FilteringTextInputFormatter.digitsOnly]
           : null,
       autovalidateMode:
-          AutovalidateMode.onUserInteraction, // Show error as user types
+          AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, size: 20),

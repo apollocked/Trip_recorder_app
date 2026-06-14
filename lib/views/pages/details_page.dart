@@ -1,6 +1,5 @@
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/model/trip.dart';
-import 'package:animations_in_flutter/services/trip_services.dart';
+import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
 import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
@@ -9,18 +8,22 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class DetailsPage extends StatelessWidget {
-  final Trip trip;
-  final int index;
-  const DetailsPage({super.key, required this.trip, required this.index});
+  final String tripId;
+  const DetailsPage({super.key, required this.tripId});
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    return Consumer<TripService>(
-      builder: (context, tripService, _) {
-        if (index >= tripService.trips.length) return const Scaffold();
-        final currentTrip = tripService.trips[index];
+    return Consumer<TripProvider>(
+      builder: (context, tripProvider, _) {
+        final trip = tripProvider.getTripById(tripId);
+        if (trip == null) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: const Center(child: Text('Trip not found')),
+          );
+        }
         return Scaffold(
           backgroundColor: colorScheme.surface,
           extendBodyBehindAppBar: true,
@@ -37,16 +40,12 @@ class DetailsPage extends StatelessWidget {
                 ),
                 onPressed: () async {
                   HapticFeedback.selectionClick();
-                  final updatedTrip = await Navigator.push<Trip>(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddTripPage(trip: currentTrip),
+                      builder: (context) => AddTripPage(tripId: trip.id),
                     ),
                   );
-                  if (updatedTrip != null && context.mounted) {
-                    tripService.updateTrip(index, updatedTrip);
-                    HapticFeedback.vibrate();
-                  }
                 },
               ),
             ],
@@ -77,14 +76,14 @@ class DetailsPage extends StatelessWidget {
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height * 0.4,
                     child: Hero(
-                      tag: 'tag-image-${currentTrip.img}',
+                      tag: 'tag-image-${trip.imagePath}',
                       child: ClipRRect(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(32),
                         ),
                         child: Semantics(
                           label: 'Trip cover image',
-                          child: coverImage(currentTrip.img),
+                          child: coverImage(trip.imagePath),
                         ),
                       ),
                     ),
@@ -113,7 +112,6 @@ class DetailsPage extends StatelessWidget {
                         Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            // 1. THE TEXT CONTENT (Title and Chips)
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -123,8 +121,8 @@ class DetailsPage extends StatelessWidget {
                                   ),
                                   child: Text(
                                     semanticsLabel:
-                                        'Trip title is ${currentTrip.title}',
-                                    currentTrip.title,
+                                        'Trip title is ${trip.title}',
+                                    trip.title,
                                     style: textTheme.headlineMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: colorScheme.onSurface,
@@ -141,7 +139,7 @@ class DetailsPage extends StatelessWidget {
                                         context,
                                         icon: Icons.bedtime_rounded,
                                         label:
-                                            '${currentTrip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
+                                            '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
                                       ),
                                     ),
                                     const SizedBox(width: 12),
@@ -151,7 +149,7 @@ class DetailsPage extends StatelessWidget {
                                         context,
                                         icon: Icons.attach_money_rounded,
                                         label:
-                                            '${AppLocalizations.of(context)!.budget}: ${currentTrip.price}',
+                                            '${AppLocalizations.of(context)!.budget}: \$${trip.price.toStringAsFixed(0)}',
                                       ),
                                     ),
                                   ],
@@ -169,8 +167,8 @@ class DetailsPage extends StatelessWidget {
                                   shape: BoxShape.circle,
                                 ),
                                 child: HeartWidget(
-                                  isLiked: currentTrip.isLiked,
-                                  index: index,
+                                  isLiked: trip.isLiked,
+                                  tripId: trip.id,
                                 ),
                               ),
                             ),
@@ -196,8 +194,8 @@ class DetailsPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 24.0),
                               child: Text(
-                                currentTrip.description.isNotEmpty
-                                    ? currentTrip.description
+                                trip.description.isNotEmpty
+                                    ? trip.description
                                     : AppLocalizations.of(
                                         context,
                                       )!.noDescriptionAdded,
@@ -206,7 +204,7 @@ class DetailsPage extends StatelessWidget {
                                   height: 1.6,
                                 ),
                                 semanticsLabel:
-                                    "the description of the trip is ${currentTrip.description.isEmpty ? 'empty' : currentTrip.description}",
+                                    "the description of the trip is ${trip.description.isEmpty ? 'empty' : trip.description}",
                               ),
                             ),
                           ),

@@ -2,13 +2,13 @@
 
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
-import 'package:animations_in_flutter/services/trip_services.dart';
+import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/settings_modal.dart';
 import 'package:animations_in_flutter/views/widgets/shimmer_card_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Added for Haptics
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class TripListPage extends StatefulWidget {
@@ -21,17 +21,24 @@ class TripListPage extends StatefulWidget {
 class _TripListPageState extends State<TripListPage> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<Trip> _displayList = [];
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final initialTrips = Provider.of<TripService>(
+      final initialTrips = Provider.of<TripProvider>(
         context,
         listen: false,
       ).trips;
       _syncList(initialTrips);
     });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   void _syncList(List<Trip> latestTrips) async {
@@ -49,8 +56,9 @@ class _TripListPageState extends State<TripListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final tripService = context.watch<TripService>();
-    final latestTrips = tripService.trips;
+    final tripProvider = context.watch<TripProvider>();
+    final latestTrips = tripProvider.trips;
+    final filteredTrips = tripProvider.filteredTrips;
 
     if (latestTrips.length > _displayList.length) {
       _syncList(latestTrips);
@@ -71,24 +79,17 @@ class _TripListPageState extends State<TripListPage> {
 
           SizedBox(width: 16),
 
-          ?latestTrips.isEmpty
-              ? null
+          latestTrips.isEmpty
+              ? const SizedBox.shrink()
               : FloatingActionButton.extended(
                   onPressed: () async {
                     HapticFeedback.lightImpact();
-                    final newTrip = await Navigator.push(
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const AddTripPage(),
                       ),
                     );
-                    if (newTrip != null && mounted) {
-                      Provider.of<TripService>(
-                        context,
-                        listen: false,
-                      ).addTrip(newTrip);
-                      HapticFeedback.vibrate();
-                    }
                   },
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -112,16 +113,45 @@ class _TripListPageState extends State<TripListPage> {
         ],
       ),
 
-      body: RefreshIndicator(
-        semanticsLabel: "Pull to refresh the trip list",
-        onRefresh: () async {
-          await HapticFeedback.vibrate();
-          await tripService.refresh();
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          child: _buildBody(latestTrips, tripService.isLoading),
-        ),
+      body: Column(
+        children: [
+          if (latestTrips.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+              child: TextField(
+                controller: _searchController,
+                onChanged: (value) => tripProvider.setSearchQuery(value),
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search_rounded, size: 20),
+                  filled: true,
+                  fillColor: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerHighest.withAlpha(60),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          Expanded(
+            child: RefreshIndicator(
+              semanticsLabel: "Pull to refresh the trip list",
+              onRefresh: () async {
+                await HapticFeedback.vibrate();
+                await tripProvider.refresh();
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 8,
+                ),
+                child: _buildBody(filteredTrips, tripProvider.isLoading),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -168,23 +198,13 @@ class _TripListPageState extends State<TripListPage> {
 
                   FloatingActionButton.extended(
                     onPressed: () async {
-                      // Hardware feedback for the MI 9
                       HapticFeedback.lightImpact();
-
-                      final newTrip = await Navigator.push(
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AddTripPage(),
                         ),
                       );
-
-                      if (newTrip != null && mounted) {
-                        Provider.of<TripService>(
-                          context,
-                          listen: false,
-                        ).addTrip(newTrip);
-                        HapticFeedback.vibrate(); // Success vibration
-                      }
                     },
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -225,16 +245,16 @@ class _TripListPageState extends State<TripListPage> {
             index,
             onRemove: () {
               HapticFeedback.vibrate();
-              _displayList.removeAt(index);
+              final removedTrip = _displayList.removeAt(index);
               _listKey.currentState?.removeItem(
                 index,
                 (context, animation) => const SizedBox.shrink(),
                 duration: Duration.zero,
               );
-              Provider.of<TripService>(
+              Provider.of<TripProvider>(
                 context,
                 listen: false,
-              ).removeTrip(index);
+              ).deleteTrip(removedTrip.id);
             },
           ),
         );
