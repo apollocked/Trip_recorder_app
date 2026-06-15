@@ -142,6 +142,12 @@ abstract class AppLocalizations {
   /// **'No Trips Found'**
   String get noTripsFound;
 
+  /// No description provided for @tryAdjustingSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting your search or filters'**
+  String get tryAdjustingSearch;
+
   /// No description provided for @emptylistDescription.
   ///
   /// In en, this message translates to:
@@ -991,7 +997,7 @@ abstract class AppLocalizations {
   /// No description provided for @todo.
   ///
   /// In en, this message translates to:
-  /// **'To-Do'**
+  /// **'Travel Prep'**
   String get todo;
 }
 

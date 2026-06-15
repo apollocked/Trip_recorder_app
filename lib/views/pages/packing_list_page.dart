@@ -4,6 +4,7 @@ import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/checklist_item.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
+import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 
 class PackingListPage extends StatefulWidget {
   final String tripId;
@@ -128,20 +129,13 @@ class _PackingListPageState extends State<PackingListPage> {
                     ),
                   Expanded(
                     child: _items.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.checklist_rounded, size: 64, color: colorScheme.onSurfaceVariant.withAlpha(80)),
-                                const SizedBox(height: 16),
-                                Text(l10n.noItemsYet, style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 16)),
-                                const SizedBox(height: 24),
-                                FilledButton.tonalIcon(
-                                  onPressed: _showAddItemDialog,
-                                  icon: const Icon(Icons.add_rounded, size: 18),
-                                  label: Text(l10n.addItem),
-                                ),
-                              ],
+                        ? EmptyState(
+                            icon: Icons.checklist_rounded,
+                            title: l10n.noItemsYet,
+                            action: FilledButton.tonalIcon(
+                              onPressed: _showAddItemDialog,
+                              icon: const Icon(Icons.add_rounded, size: 18),
+                              label: Text(l10n.addItem),
                             ),
                           )
                         : ListView.builder(

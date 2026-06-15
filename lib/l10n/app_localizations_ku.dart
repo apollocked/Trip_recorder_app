@@ -30,8 +30,11 @@ class AppLocalizationsKu extends AppLocalizations {
   String get noTripsFound => 'هیچ گەشتێک نەدۆزرایەوە';
 
   @override
+  String get tryAdjustingSearch => 'هەوڵی ڕێکخستنی گەڕان یان فلتەرەکان بدە';
+
+  @override
   String get emptylistDescription =>
-      'کاتی ئەوەیە پلانی گەشتی داهاتووت دابنێیت!\nبۆ نوێکردنەوە پەنجە بۆ خوارەوە ڕابکێشە.';
+      'کاتی ئەوەیە پلانی گەشتی داهاتووت دابنێیت!';
 
   @override
   String get pullToRefresh => 'بۆ نوێکردنەوە بۆ خوار بکێشە';
@@ -484,5 +487,5 @@ class AppLocalizationsKu extends AppLocalizations {
   String get home => 'سەرەکی';
 
   @override
-  String get todo => 'ئەرکەکان';
+  String get todo => 'ئامادەکاری گەشت';
 }

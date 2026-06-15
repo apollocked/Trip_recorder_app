@@ -30,8 +30,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noTripsFound => 'لا توجد رحلات';
 
   @override
-  String get emptylistDescription =>
-      'حان وقت التخطيط لمغامرتك القادمة!\nاسحب للأسفل للتحقق مجدداً.';
+  String get tryAdjustingSearch => 'حاول تعديل البحث أو الفلاتر';
+
+  @override
+  String get emptylistDescription => 'حان وقت التخطيط لمغامرتك القادمة!';
 
   @override
   String get pullToRefresh => 'اسحب للأسفل لتحديث الرحلات';
@@ -483,5 +485,5 @@ class AppLocalizationsAr extends AppLocalizations {
   String get home => 'الرئيسية';
 
   @override
-  String get todo => 'مهام';
+  String get todo => 'الاستعداد للسفر';
 }

@@ -6,6 +6,7 @@ import 'package:animations_in_flutter/model/journal_entry.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
+import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/journal_entry_dialog.dart';
 
 class JournalPage extends StatefulWidget {
@@ -90,20 +91,14 @@ class _JournalPageState extends State<JournalPage> {
               child: _entries.isEmpty
                   ? ListView(
                       children: [
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-                        Center(
-                          child: Column(
-                            children: [
-                              Icon(Icons.article_rounded, size: 64, color: colorScheme.onSurfaceVariant.withAlpha(80)),
-                              const SizedBox(height: 16),
-                              Text(l10n.noJournalEntries, style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 16)),
-                              const SizedBox(height: 24),
-                              FilledButton.tonalIcon(
-                                onPressed: _showAddEntryDialog,
-                                icon: const Icon(Icons.add_rounded, size: 18),
-                                label: Text(l10n.addJournalEntry),
-                              ),
-                            ],
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                        EmptyState(
+                          icon: Icons.article_rounded,
+                          title: l10n.noJournalEntries,
+                          action: FilledButton.tonalIcon(
+                            onPressed: _showAddEntryDialog,
+                            icon: const Icon(Icons.add_rounded, size: 18),
+                            label: Text(l10n.addJournalEntry),
                           ),
                         ),
                       ],

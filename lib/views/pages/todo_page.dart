@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
@@ -12,83 +13,98 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
-  static const _storageKey = 'todo_items';
-  List<_TodoItem> _items = [];
-  final _controller = TextEditingController();
-  bool _loaded = false;
+  static const _key = 'todo_prep';
+  List<_PrepItem> _items = [];
+  final _c = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _loadItems();
+    _load();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _c.dispose();
     super.dispose();
   }
 
-  Future<void> _loadItems() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_storageKey);
-    if (raw != null) {
-      final list = jsonDecode(raw) as List;
-      _items = list.map((e) => _TodoItem.fromJson(e as Map<String, dynamic>)).toList();
-    }
-    if (mounted) setState(() => _loaded = true);
+  Future<void> _load() async {
+    try {
+      final p = await SharedPreferences.getInstance();
+      final r = p.getString(_key);
+      if (r != null && r.isNotEmpty) {
+        final list = jsonDecode(r) as List;
+        _items = list.map((e) => _PrepItem.fromJson(e as Map<String, dynamic>)).toList();
+        if (mounted) setState(() {});
+      }
+    } catch (_) {}
   }
 
-  Future<void> _saveItems() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = jsonEncode(_items.map((e) => e.toJson()).toList());
-    await prefs.setString(_storageKey, raw);
+  Future<void> _save() async {
+    try {
+      final p = await SharedPreferences.getInstance();
+      await p.setString(_key, jsonEncode(_items.map((e) => e.toJson()).toList()));
+    } catch (_) {}
   }
 
-  void _addItem() {
-    final text = _controller.text.trim();
-    if (text.isEmpty) return;
-    setState(() {
-      _items.insert(0, _TodoItem(title: text));
-    });
-    _saveItems();
-    _controller.clear();
+  void _add() {
+    final t = _c.text.trim();
+    if (t.isEmpty) return;
+    _c.clear();
+    setState(() => _items = [_PrepItem(title: t), ..._items]);
+    _save();
   }
 
-  void _toggleItem(int index) {
+  void _toggle(int i) {
     HapticFeedback.selectionClick();
-    setState(() => _items[index].isDone = !_items[index].isDone);
-    _saveItems();
+    setState(() {
+      _items = [
+        for (int j = 0; j < _items.length; j++)
+          j == i ? _items[j].copyWith(done: !_items[j].done) : _items[j],
+      ];
+    });
+    _save();
   }
 
-  void _removeItem(int index) {
+  void _delete(int i) {
     final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(l10n.confirmDeleteTitle(_items[index].title)),
+        title: Text(l10n.confirmDeleteTitle(_items[i].title)),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel)),
-          FilledButton(onPressed: () {
-            Navigator.pop(ctx);
-            setState(() => _items.removeAt(index));
-            _saveItems();
-          }, child: Text(l10n.delete)),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              setState(() => _items = [..._items.take(i), ..._items.skip(i + 1)]);
+              _save();
+            },
+            child: Text(l10n.delete),
+          ),
         ],
       ),
     );
   }
 
+  void _clearDone() {
+    final before = _items.length;
+    setState(() => _items = _items.where((e) => !e.done).toList());
+    if (_items.length < before) _save();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    final c = Theme.of(context).colorScheme;
+    final t = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context)!;
+    final hasDone = _items.any((e) => e.done);
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: c.surface,
       appBar: AppBar(
-        title: Text(l10n.todo, style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text(l10n.todo, style: t.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
         centerTitle: true,
       ),
       body: Column(
@@ -99,23 +115,23 @@ class _TodoPageState extends State<TodoPage> {
               children: [
                 Expanded(
                   child: TextField(
-                    controller: _controller,
+                    controller: _c,
                     decoration: InputDecoration(
                       hintText: l10n.addItemHint,
                       filled: true,
-                      fillColor: colorScheme.surfaceContainerHighest.withAlpha(80),
+                      fillColor: c.surfaceContainerHighest.withAlpha(80),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
                         borderSide: BorderSide.none,
                       ),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                     ),
-                    onSubmitted: (_) => _addItem(),
+                    onSubmitted: (_) => _add(),
                   ),
                 ),
                 const SizedBox(width: 8),
                 FilledButton(
-                  onPressed: _addItem,
+                  onPressed: _add,
                   style: FilledButton.styleFrom(
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(16),
@@ -125,39 +141,52 @@ class _TodoPageState extends State<TodoPage> {
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          if (hasDone)
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                onPressed: _clearDone,
+                icon: const Icon(Icons.clear_all_rounded, size: 18),
+                label: Text(l10n.delete),
+              ),
+            ),
           Expanded(
-            child: !_loaded
-                ? const Center(child: CircularProgressIndicator())
-                : _items.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.checklist_rounded, size: 72, color: colorScheme.onSurfaceVariant.withAlpha(80)),
-                            const SizedBox(height: 16),
-                            Text(l10n.noItemsYet, style: TextStyle(fontSize: 16, color: colorScheme.onSurfaceVariant)),
-                          ],
+            child: _items.isEmpty
+                ? EmptyState(icon: Icons.assignment_rounded, title: l10n.noItemsYet)
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    itemCount: _items.length,
+                    itemBuilder: (_, i) {
+                      final item = _items[i];
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          side: BorderSide(color: c.outlineVariant.withAlpha(80)),
                         ),
-                      )
-                    : AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        child: ListView.builder(
-                          key: ValueKey(_items.length),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          itemCount: _items.length,
-                          itemBuilder: (context, index) {
-                            final item = _items[index];
-                            return _TodoTile(
-                              item: item,
-                              onToggle: () => _toggleItem(index),
-                              onDelete: () => _removeItem(index),
-                              colorScheme: colorScheme,
-                              textTheme: textTheme,
-                            );
-                          },
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.only(left: 4, right: 8),
+                          leading: Checkbox(
+                            value: item.done,
+                            onChanged: (_) => _toggle(i),
+                            shape: const CircleBorder(),
+                          ),
+                          title: Text(
+                            item.title,
+                            style: t.bodyLarge?.copyWith(
+                              decoration: item.done ? TextDecoration.lineThrough : null,
+                              color: item.done ? c.onSurfaceVariant : c.onSurface,
+                            ),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete_outline_rounded, color: c.error, size: 20),
+                            onPressed: () => _delete(i),
+                          ),
                         ),
-                      ),
+                      );
+                    },
+                  ),
           ),
         ],
       ),
@@ -165,63 +194,18 @@ class _TodoPageState extends State<TodoPage> {
   }
 }
 
-class _TodoTile extends StatelessWidget {
-  final _TodoItem item;
-  final VoidCallback onToggle;
-  final VoidCallback onDelete;
-  final ColorScheme colorScheme;
-  final TextTheme textTheme;
-
-  const _TodoTile({
-    required this.item,
-    required this.onToggle,
-    required this.onDelete,
-    required this.colorScheme,
-    required this.textTheme,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: colorScheme.outlineVariant.withAlpha(80)),
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.only(left: 4, right: 8),
-        leading: Checkbox(
-          value: item.isDone,
-          onChanged: (_) => onToggle(),
-          shape: const CircleBorder(),
-        ),
-        title: Text(
-          item.title,
-          style: textTheme.bodyLarge?.copyWith(
-            decoration: item.isDone ? TextDecoration.lineThrough : null,
-            color: item.isDone ? colorScheme.onSurfaceVariant : colorScheme.onSurface,
-          ),
-        ),
-        trailing: IconButton(
-          icon: Icon(Icons.delete_outline_rounded, color: colorScheme.error, size: 20),
-          onPressed: onDelete,
-        ),
-      ),
-    );
-  }
-}
-
-class _TodoItem {
+class _PrepItem {
   final String title;
-  bool isDone;
+  final bool done;
 
-  _TodoItem({required this.title, this.isDone = false});
+  const _PrepItem({required this.title, this.done = false});
 
-  factory _TodoItem.fromJson(Map<String, dynamic> json) => _TodoItem(
+  _PrepItem copyWith({bool? done}) => _PrepItem(title: title, done: done ?? this.done);
+
+  factory _PrepItem.fromJson(Map<String, dynamic> json) => _PrepItem(
     title: json['title'] as String,
-    isDone: json['isDone'] as bool? ?? false,
+    done: json['done'] as bool? ?? false,
   );
 
-  Map<String, dynamic> toJson() => {'title': title, 'isDone': isDone};
+  Map<String, dynamic> toJson() => {'title': title, 'done': done};
 }

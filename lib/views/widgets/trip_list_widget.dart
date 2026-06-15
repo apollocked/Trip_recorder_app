@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
+import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/search_sort_bar.dart';
 import 'package:animations_in_flutter/views/widgets/shimmer_card_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_widget.dart';
@@ -12,7 +13,6 @@ class TripListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
     return Consumer<TripProvider>(
@@ -28,24 +28,10 @@ class TripListWidget extends StatelessWidget {
             const SearchSortBar(),
             Expanded(
               child: trips.isEmpty
-                  ? Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.explore_outlined, size: 72, color: colorScheme.onSurfaceVariant.withAlpha(80)),
-                            const SizedBox(height: 16),
-                            Text(l10n.noTripsFound, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
-                            const SizedBox(height: 8),
-                            Text(
-                              l10n.emptylistDescription,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: colorScheme.onSurfaceVariant, height: 1.5),
-                            ),
-                          ],
-                        ),
-                      ),
+                  ? EmptyState(
+                      icon: provider.trips.isEmpty ? Icons.explore_outlined : Icons.search_off_rounded,
+                      title: provider.trips.isEmpty ? l10n.emptylistDescription : l10n.noTripsFound,
+                      subtitle: provider.trips.isEmpty ? null : l10n.tryAdjustingSearch,
                     )
                   : RefreshIndicator(
                       onRefresh: provider.refresh,

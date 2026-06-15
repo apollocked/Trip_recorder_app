@@ -1,5 +1,4 @@
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/title_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +18,6 @@ class _HomeState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AddTripPage())),
-        tooltip: AppLocalizations.of(context)!.addItemHint,
-        child: const Icon(Icons.add_rounded),
-      ),
       body: SafeArea(
         bottom: false,
         child: Column(

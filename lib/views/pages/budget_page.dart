@@ -6,6 +6,7 @@ import 'package:animations_in_flutter/model/expense.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/category_budget_bars.dart';
+import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/expense_dialog.dart';
 import 'package:animations_in_flutter/views/widgets/expense_tile.dart';
 import 'package:animations_in_flutter/views/widgets/total_expense_card.dart';
@@ -122,10 +123,11 @@ class _BudgetPageState extends State<BudgetPage> {
                     Text(l10n.expenseTitle, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     if (_expenses.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 40),
-                        child: Center(
-                          child: Text(l10n.noItemsYet, style: TextStyle(color: colorScheme.onSurfaceVariant)),
+                      SizedBox(
+                        height: 160,
+                        child: EmptyState(
+                          icon: Icons.receipt_long_rounded,
+                          title: l10n.noItemsYet,
                         ),
                       )
                     else

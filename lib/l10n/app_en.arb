@@ -6,6 +6,7 @@
   "aboutjourney": "About this journey",
   "night": "Night",
   "noTripsFound": "No Trips Found",
+  "tryAdjustingSearch": "Try adjusting your search or filters",
   "emptylistDescription": "Time to start planning your next adventure! \nPull down to check again.",
   "pullToRefresh": "Pull down to Refresh the tips",
   "addtitle": "Add New Journey",
@@ -202,5 +203,5 @@
     }
   },
   "home": "Home",
-  "todo": "To-Do"
+  "todo": "Travel Prep"
 }

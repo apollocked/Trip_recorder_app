@@ -30,6 +30,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noTripsFound => 'No Trips Found';
 
   @override
+  String get tryAdjustingSearch => 'Try adjusting your search or filters';
+
+  @override
   String get emptylistDescription =>
       'Time to start planning your next adventure! \nPull down to check again.';
 
@@ -483,5 +486,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
-  String get todo => 'To-Do';
+  String get todo => 'Travel Prep';
 }
