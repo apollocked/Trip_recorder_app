@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
+import 'package:animations_in_flutter/views/widgets/settings_modal.dart';
 
 class SearchSortBar extends StatefulWidget {
   const SearchSortBar({super.key});
@@ -93,6 +94,11 @@ class _SearchSortBarState extends State<SearchSortBar> {
                       _sortItem(l10n.ratingLabel, 'rating_desc', provider.sortBy),
                       _sortItem(l10n.az, 'title_asc', provider.sortBy),
                     ],
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.settings_rounded, size: 22),
+                    tooltip: l10n.settingsTitle,
+                    onPressed: () => showSettingsModal(context),
                   ),
                 ],
               ),

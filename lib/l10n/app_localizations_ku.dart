@@ -479,4 +479,10 @@ class AppLocalizationsKu extends AppLocalizations {
   String imageCoverSemantics(int index) {
     return 'وێنەی سەری گەشتی $index';
   }
+
+  @override
+  String get home => 'سەرەکی';
+
+  @override
+  String get todo => 'ئەرکەکان';
 }

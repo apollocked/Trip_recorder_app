@@ -6,8 +6,54 @@ import 'package:animations_in_flutter/services/notification_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
 import 'package:animations_in_flutter/views/pages/home_page.dart';
 import 'package:animations_in_flutter/views/pages/on_boarding_page.dart';
+import 'package:animations_in_flutter/views/pages/settings_page.dart';
+import 'package:animations_in_flutter/views/pages/statistics_page.dart';
+import 'package:animations_in_flutter/views/pages/todo_page.dart';
+import 'package:animations_in_flutter/views/widgets/main_shell.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
+GoRouter _createRouter(TripProvider tripProvider) {
+  return GoRouter(
+    navigatorKey: _rootNavigatorKey,
+    initialLocation: '/home',
+    redirect: (context, state) {
+      if (tripProvider.isFirstTime && state.matchedLocation != '/onboarding') {
+        return '/onboarding';
+      }
+      if (!tripProvider.isFirstTime && state.matchedLocation == '/onboarding') {
+        return '/home';
+      }
+      return null;
+    },
+    routes: [
+      GoRoute(
+        path: '/onboarding',
+        builder: (_, _) => const OnboardingPage(),
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (_, _, navigationShell) => MainShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(path: '/home', builder: (_, _) => const HomePage()),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(path: '/statistics', builder: (_, _) => const StatisticsPage()),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(path: '/settings', builder: (_, _) => const SettingsPage()),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(path: '/todo', builder: (_, _) => const TodoPage()),
+          ]),
+        ],
+      ),
+    ],
+  );
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,17 +70,21 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
   Widget build(BuildContext context) {
     final tripProvider = context.watch<TripProvider>();
-    final isFirstTime = tripProvider.isFirstTime;
     final l10n = context.watch<LanguageService>().locale;
     final themeMode = context.watch<ThemeService>().themeMode;
 
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       locale: l10n,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -46,7 +96,7 @@ class MyApp extends StatelessWidget {
           child: child ?? const SizedBox.shrink(),
         );
       },
-
+      routerConfig: _createRouter(tripProvider),
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
@@ -62,7 +112,6 @@ class MyApp extends StatelessWidget {
         ),
       ),
       themeMode: themeMode,
-      home: isFirstTime ? const OnboardingPage() : const HomePage(),
     );
   }
 }

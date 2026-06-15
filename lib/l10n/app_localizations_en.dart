@@ -478,4 +478,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String imageCoverSemantics(int index) {
     return 'Trip cover image $index';
   }
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get todo => 'To-Do';
 }

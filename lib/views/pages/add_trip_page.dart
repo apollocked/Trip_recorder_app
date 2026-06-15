@@ -11,6 +11,7 @@ import 'package:animations_in_flutter/views/widgets/category_selector.dart';
 import 'package:animations_in_flutter/views/widgets/currency_dropdown.dart';
 import 'package:animations_in_flutter/views/widgets/date_picker_field.dart';
 import 'package:animations_in_flutter/views/widgets/notification_permission.dart';
+import 'package:animations_in_flutter/views/widgets/save_button.dart';
 import 'package:animations_in_flutter/views/widgets/star_rating.dart';
 import 'package:animations_in_flutter/views/widgets/trip_image_picker.dart';
 
@@ -72,58 +73,42 @@ class _AddTripPageState extends State<AddTripPage> {
   Future<void> _handleSave() async {
     final isFormValid = _formKey.currentState!.validate();
     final hasImages = _imageFiles.isNotEmpty || _existingImagePaths.isNotEmpty;
-
     setState(() => _imageError = !hasImages);
-
     if (!isFormValid || !hasImages) {
       if (!hasImages) HapticFeedback.vibrate();
       return;
     }
-
     setState(() => _isSaving = true);
     HapticFeedback.mediumImpact();
-
     try {
       final assetPaths = _existingImagePaths.where((p) => p.startsWith('images/')).toList();
-
       if (_reminderDate != null) {
         final granted = await requestNotificationPermission(context);
-        if (!granted) {
-          if (mounted) setState(() => _isSaving = false);
-          return;
-        }
+        if (!granted) { if (mounted) setState(() => _isSaving = false); return; }
         if (!mounted) return;
       }
-
+      final String title = _titleController.text.trim();
+      final double price = double.tryParse(_priceController.text.trim()) ?? 0;
+      final int nights = int.tryParse(_nightsController.text.trim()) ?? 1;
+      final String desc = _descriptionController.text.trim();
       if (widget.tripId != null) {
-        await context.read<TripProvider>().updateTrip(
-          widget.tripId!,
-          title: _titleController.text.trim(),
-          price: double.tryParse(_priceController.text.trim()) ?? 0,
-          nights: int.tryParse(_nightsController.text.trim()) ?? 1,
+        await context.read<TripProvider>().updateTrip(widget.tripId!,
+          title: title, price: price, nights: nights,
           imageFiles: _imageFiles.isNotEmpty ? _imageFiles : null,
           existingImagePaths: _imageFiles.isEmpty ? _existingImagePaths : null,
           assetImagePaths: assetPaths.isNotEmpty ? assetPaths : null,
-          date: _selectedDate,
-          description: _descriptionController.text.trim(),
-          category: _selectedCategory,
-          rating: _rating,
-          currency: _selectedCurrency,
-          reminderDate: _reminderDate,
+          date: _selectedDate, description: desc,
+          category: _selectedCategory, rating: _rating,
+          currency: _selectedCurrency, reminderDate: _reminderDate,
         );
       } else {
         await context.read<TripProvider>().addTrip(
-          title: _titleController.text.trim(),
-          price: double.tryParse(_priceController.text.trim()) ?? 0,
-          nights: int.tryParse(_nightsController.text.trim()) ?? 1,
+          title: title, price: price, nights: nights,
           imageFiles: _imageFiles,
           assetImagePaths: _existingImagePaths.where((p) => p.startsWith('images/')).toList(),
-          date: _selectedDate,
-          description: _descriptionController.text.trim(),
-          category: _selectedCategory,
-          rating: _rating,
-          currency: _selectedCurrency,
-          reminderDate: _reminderDate,
+          date: _selectedDate, description: desc,
+          category: _selectedCategory, rating: _rating,
+          currency: _selectedCurrency, reminderDate: _reminderDate,
         );
       }
       if (mounted) Navigator.pop(context);
@@ -144,6 +129,15 @@ class _AddTripPageState extends State<AddTripPage> {
     final textTheme = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context)!;
     final isEditing = widget.tripId != null;
+
+    Widget labeled(String label, Widget child) => Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: textTheme.labelLarge?.copyWith(color: colorScheme.primary)),
+        const SizedBox(height: 8),
+        child,
+      ],
+    );
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -190,26 +184,20 @@ class _AddTripPageState extends State<AddTripPage> {
                   child: Text(l10n.photoErrorReq, style: textTheme.bodySmall?.copyWith(color: colorScheme.error)),
                 ),
                 const SizedBox(height: 24),
-                Text(l10n.rateTrip, style: textTheme.labelLarge?.copyWith(color: colorScheme.primary)),
-                const SizedBox(height: 8),
-                Center(child: StarRating(rating: _rating, size: 36, interactive: true,
-                    onChanged: (val) => setState(() => _rating = val))),
+                labeled(l10n.rateTrip, Center(child: StarRating(rating: _rating, size: 36, interactive: true,
+                    onChanged: (val) => setState(() => _rating = val)))),
                 const SizedBox(height: 24),
-                Text(l10n.tripCategory, style: textTheme.labelLarge?.copyWith(color: colorScheme.primary)),
-                const SizedBox(height: 8),
-                CategorySelector(
+                labeled(l10n.tripCategory, CategorySelector(
                   selectedCategory: _selectedCategory,
                   onChanged: (cat) => setState(() => _selectedCategory = cat),
                   colorScheme: colorScheme,
-                ),
+                )),
                 const SizedBox(height: 24),
-                Text(l10n.currencyLabel, style: textTheme.labelLarge?.copyWith(color: colorScheme.primary)),
-                const SizedBox(height: 8),
-                CurrencyDropdown(
+                labeled(l10n.currencyLabel, CurrencyDropdown(
                   selectedCurrency: _selectedCurrency,
                   onChanged: (val) => setState(() => _selectedCurrency = val),
                   colorScheme: colorScheme,
-                ),
+                )),
                 const SizedBox(height: 32),
                 Text(l10n.tripDetails, style: textTheme.labelLarge?.copyWith(color: colorScheme.primary)),
                 const SizedBox(height: 12),
@@ -233,15 +221,12 @@ class _AddTripPageState extends State<AddTripPage> {
                 const SizedBox(height: 16),
                 AppTextField(controller: _descriptionController, label: l10n.tripDescription, icon: Icons.notes_rounded, colorScheme: colorScheme, maxLines: 4),
                 const SizedBox(height: 40),
-                SizedBox(
-                  width: double.infinity, height: 64,
-                  child: FilledButton(
-                    style: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-                    onPressed: _isSaving ? null : _handleSave,
-                    child: _isSaving
-                        ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(strokeWidth: 2))
-                        : Text(isEditing ? l10n.updateJourney : l10n.createJourney, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  ),
+                SaveButton(
+                  isSaving: _isSaving,
+                  isEditing: isEditing,
+                  onPressed: _handleSave,
+                  updateText: l10n.updateJourney,
+                  createText: l10n.createJourney,
                 ),
                 const SizedBox(height: 40),
               ],

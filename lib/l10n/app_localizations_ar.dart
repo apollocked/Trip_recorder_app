@@ -478,4 +478,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String imageCoverSemantics(int index) {
     return 'صورة غلاف الرحلة $index';
   }
+
+  @override
+  String get home => 'الرئيسية';
+
+  @override
+  String get todo => 'مهام';
 }

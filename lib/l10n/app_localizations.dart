@@ -981,6 +981,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Trip cover image {index}'**
   String imageCoverSemantics(int index);
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @todo.
+  ///
+  /// In en, this message translates to:
+  /// **'To-Do'**
+  String get todo;
 }
 
 class _AppLocalizationsDelegate

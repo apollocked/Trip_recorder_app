@@ -170,5 +170,7 @@
     "placeholders": {
       "index": {"type": "int"}
     }
-  }
+  },
+  "home": "الرئيسية",
+  "todo": "مهام"
 }

@@ -200,5 +200,7 @@
     "placeholders": {
       "index": {"type": "int"}
     }
-  }
+  },
+  "home": "Home",
+  "todo": "To-Do"
 }
