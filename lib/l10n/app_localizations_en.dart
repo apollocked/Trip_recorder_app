@@ -34,7 +34,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emptylistDescription =>
-      'Time to start planning your next adventure! \nPull down to check again.';
+      'Time to start planning your next adventure!\nPull down to check again.';
+
+  @override
+  String get emptyTripTitle => 'No trips yet';
+
+  @override
+  String get emptyTripAction => 'Create Trip';
+
+  @override
+  String get emptyBudgetSubtitle =>
+      'No expenses recorded yet. Start tracking your spending.';
+
+  @override
+  String get emptyStatsTitle => 'No trips yet';
+
+  @override
+  String get emptyStatsSubtitle =>
+      'Your statistics will appear once you add trips.';
 
   @override
   String get pullToRefresh => 'Pull down to Refresh the tips';
@@ -134,25 +151,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get system => 'System';
 
   @override
-  String get onboardingTitle1 => 'Capture the Moment';
+  String get onboardingTitle1 => 'Plan Your Trips';
 
   @override
   String get onboardingDesc1 =>
-      'Log your favorite travel memories, dynamic routes, and beautiful moments smoothly.';
+      'Create trips with destinations, photos, and budgets. Track every detail of your journey in one place.';
 
   @override
-  String get onboardingTitle2 => 'Fluid Interactions';
+  String get onboardingTitle2 => 'Stay Organized';
 
   @override
   String get onboardingDesc2 =>
-      'Explore high-fidelity implicit animations, custom transitions, and interactive UI micro-interactions.';
+      'Manage packing lists, track expenses, and keep a travel journal. Everything you need for stress-free travel.';
 
   @override
-  String get onboardingTitle3 => 'Your Logs, Offline First';
+  String get onboardingTitle3 => 'Private & Offline';
 
   @override
   String get onboardingDesc3 =>
-      'All your travel notebooks and photos are stored safely on your device with local persistence.';
+      'No account needed. All your data stays safely on your device. Your privacy is built in.';
 
   @override
   String get getStarted => 'Get Started';

@@ -128,6 +128,12 @@ class _BudgetPageState extends State<BudgetPage> {
                         child: EmptyState(
                           icon: Icons.receipt_long_rounded,
                           title: l10n.noItemsYet,
+                          subtitle: l10n.emptyBudgetSubtitle,
+                          action: FilledButton.tonalIcon(
+                            onPressed: _showAddExpenseDialog,
+                            icon: const Icon(Icons.add_rounded, size: 18),
+                            label: Text(l10n.addExpense),
+                          ),
                         ),
                       )
                     else

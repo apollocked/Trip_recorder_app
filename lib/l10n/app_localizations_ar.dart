@@ -36,6 +36,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get emptylistDescription => 'حان وقت التخطيط لمغامرتك القادمة!';
 
   @override
+  String get emptyTripTitle => 'لا توجد رحلات بعد';
+
+  @override
+  String get emptyTripAction => 'إنشاء رحلة';
+
+  @override
+  String get emptyBudgetSubtitle => 'لا توجد نفقات بعد. ابدأ بتتبع مصروفاتك.';
+
+  @override
+  String get emptyStatsTitle => 'لا توجد رحلات بعد';
+
+  @override
+  String get emptyStatsSubtitle => 'ستظهر إحصائياتك بمجرد إضافة رحلات.';
+
+  @override
   String get pullToRefresh => 'اسحب للأسفل لتحديث الرحلات';
 
   @override
@@ -133,25 +148,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get system => 'النظام';
 
   @override
-  String get onboardingTitle1 => 'وثّق اللحظة';
+  String get onboardingTitle1 => 'خطط لرحلاتك';
 
   @override
   String get onboardingDesc1 =>
-      'سجّل ذكريات سفرك المفضلة، مساراتك الديناميكية، ولحظاتك الجميلة بسلاسة تامة.';
+      'أنشئ رحلات مع الوجهات والصور والميزانيات. تابع كل تفاصيل رحلتك في مكان واحد.';
 
   @override
-  String get onboardingTitle2 => 'تفاعلات انسيابية';
+  String get onboardingTitle2 => 'نظّم رحلتك';
 
   @override
   String get onboardingDesc2 =>
-      'استكشف الرسوم المتحركة الضمنية عالية الدقة، الانتقالات المخصصة، والتفاعلات الدقيقة للواجهة.';
+      'أعد قوائم التجهيز، تابع النفقات، وسجّل يوميات السفر. كل ما تحتاج لرحلة خالية من المتاعب.';
 
   @override
-  String get onboardingTitle3 => 'سجلاتك، محلياً أولاً';
+  String get onboardingTitle3 => 'خصوصية تامة بدون إنترنت';
 
   @override
   String get onboardingDesc3 =>
-      'تُحفظ جميع دفاتر سفرك وصورك بأمان على جهازك بفضل ميزة الحفظ المحلي المستمر.';
+      'لا حاجة لحساب. جميع بياناتك تبقى بأمان على جهازك. الخصوصية جزء من تصميم التطبيق.';
 
   @override
   String get getStarted => 'ابدأ الآن';

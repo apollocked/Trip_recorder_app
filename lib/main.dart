@@ -33,25 +33,37 @@ GoRouter _createRouter(TripProvider tripProvider) {
       return null;
     },
     routes: [
-      GoRoute(
-        path: '/onboarding',
-        builder: (_, _) => const OnboardingPage(),
-      ),
+      GoRoute(path: '/onboarding', builder: (_, _) => const OnboardingPage()),
       StatefulShellRoute.indexedStack(
-        builder: (_, _, navigationShell) => MainShell(navigationShell: navigationShell),
+        builder: (_, _, navigationShell) =>
+            MainShell(navigationShell: navigationShell),
         branches: [
-          StatefulShellBranch(routes: [
-            GoRoute(path: '/home', builder: (_, _) => const HomePage()),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(path: '/statistics', builder: (_, _) => const StatisticsPage()),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(path: '/settings', builder: (_, _) => const SettingsPage()),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(path: '/todo', builder: (_, _) => const TodoPage()),
-          ]),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(path: '/home', builder: (_, _) => const HomePage()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/statistics',
+                builder: (_, _) => const StatisticsPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/settings',
+                builder: (_, _) => const SettingsPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(path: '/todo', builder: (_, _) => const TodoPage()),
+            ],
+          ),
         ],
       ),
     ],
@@ -66,7 +78,9 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => TripProvider(isFirstTime: isFirstTime)),
+        ChangeNotifierProvider(
+          create: (_) => TripProvider(isFirstTime: isFirstTime),
+        ),
         ChangeNotifierProvider(create: (_) => LanguageService()),
         ChangeNotifierProvider(create: (_) => ThemeService()),
       ],

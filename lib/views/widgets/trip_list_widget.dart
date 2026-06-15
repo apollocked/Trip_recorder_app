@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
+import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/search_sort_bar.dart';
 import 'package:animations_in_flutter/views/widgets/shimmer_card_widget.dart';
@@ -30,8 +31,16 @@ class TripListWidget extends StatelessWidget {
               child: trips.isEmpty
                   ? EmptyState(
                       icon: provider.trips.isEmpty ? Icons.explore_outlined : Icons.search_off_rounded,
-                      title: provider.trips.isEmpty ? l10n.emptylistDescription : l10n.noTripsFound,
-                      subtitle: provider.trips.isEmpty ? null : l10n.tryAdjustingSearch,
+                      title: provider.trips.isEmpty ? l10n.emptyTripTitle : l10n.noTripsFound,
+                      subtitle: provider.trips.isEmpty ? l10n.emptylistDescription : l10n.tryAdjustingSearch,
+                      action: provider.trips.isEmpty
+                          ? FilledButton.tonalIcon(
+                              onPressed: () => Navigator.push(context,
+                                MaterialPageRoute(builder: (_) => const AddTripPage())),
+                              icon: const Icon(Icons.add_rounded, size: 18),
+                              label: Text(l10n.emptyTripAction),
+                            )
+                          : null,
                     )
                   : RefreshIndicator(
                       onRefresh: provider.refresh,

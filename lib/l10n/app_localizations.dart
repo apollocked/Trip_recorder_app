@@ -151,8 +151,38 @@ abstract class AppLocalizations {
   /// No description provided for @emptylistDescription.
   ///
   /// In en, this message translates to:
-  /// **'Time to start planning your next adventure! \nPull down to check again.'**
+  /// **'Time to start planning your next adventure!\nPull down to check again.'**
   String get emptylistDescription;
+
+  /// No description provided for @emptyTripTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No trips yet'**
+  String get emptyTripTitle;
+
+  /// No description provided for @emptyTripAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Trip'**
+  String get emptyTripAction;
+
+  /// No description provided for @emptyBudgetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses recorded yet. Start tracking your spending.'**
+  String get emptyBudgetSubtitle;
+
+  /// No description provided for @emptyStatsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No trips yet'**
+  String get emptyStatsTitle;
+
+  /// No description provided for @emptyStatsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your statistics will appear once you add trips.'**
+  String get emptyStatsSubtitle;
 
   /// No description provided for @pullToRefresh.
   ///
@@ -349,37 +379,37 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingTitle1.
   ///
   /// In en, this message translates to:
-  /// **'Capture the Moment'**
+  /// **'Plan Your Trips'**
   String get onboardingTitle1;
 
   /// No description provided for @onboardingDesc1.
   ///
   /// In en, this message translates to:
-  /// **'Log your favorite travel memories, dynamic routes, and beautiful moments smoothly.'**
+  /// **'Create trips with destinations, photos, and budgets. Track every detail of your journey in one place.'**
   String get onboardingDesc1;
 
   /// No description provided for @onboardingTitle2.
   ///
   /// In en, this message translates to:
-  /// **'Fluid Interactions'**
+  /// **'Stay Organized'**
   String get onboardingTitle2;
 
   /// No description provided for @onboardingDesc2.
   ///
   /// In en, this message translates to:
-  /// **'Explore high-fidelity implicit animations, custom transitions, and interactive UI micro-interactions.'**
+  /// **'Manage packing lists, track expenses, and keep a travel journal. Everything you need for stress-free travel.'**
   String get onboardingDesc2;
 
   /// No description provided for @onboardingTitle3.
   ///
   /// In en, this message translates to:
-  /// **'Your Logs, Offline First'**
+  /// **'Private & Offline'**
   String get onboardingTitle3;
 
   /// No description provided for @onboardingDesc3.
   ///
   /// In en, this message translates to:
-  /// **'All your travel notebooks and photos are stored safely on your device with local persistence.'**
+  /// **'No account needed. All your data stays safely on your device. Your privacy is built in.'**
   String get onboardingDesc3;
 
   /// No description provided for @getStarted.

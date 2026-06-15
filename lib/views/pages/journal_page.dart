@@ -95,6 +95,7 @@ class _JournalPageState extends State<JournalPage> {
                         EmptyState(
                           icon: Icons.article_rounded,
                           title: l10n.noJournalEntries,
+                          subtitle: l10n.journalTextHint,
                           action: FilledButton.tonalIcon(
                             onPressed: _showAddEntryDialog,
                             icon: const Icon(Icons.add_rounded, size: 18),
