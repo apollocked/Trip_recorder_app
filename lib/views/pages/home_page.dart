@@ -16,19 +16,18 @@ class _HomeState extends State<HomePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final colorScheme = Theme.of(context).colorScheme;
-    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AddTripPage())),
+        tooltip: AppLocalizations.of(context)!.addItemHint,
         child: const Icon(Icons.add_rounded),
       ),
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            // --- HEADER SECTION (STACK UNCHANGED AS REQUESTED) ---
             Padding(
               padding: EdgeInsets.symmetric(vertical: size.height * 0.001),
               child: SizedBox(
@@ -52,7 +51,7 @@ class _HomeState extends State<HomePage> {
                                   Opacity(opacity: value, child: child),
                               child: Image.asset(
                                 "assets/images/bg.png",
-                                  semanticLabel: l10n.appBannerSemantics,
+                                semanticLabel: AppLocalizations.of(context)!.appBannerSemantics,
                               ),
                             ),
                           ),
@@ -78,8 +77,6 @@ class _HomeState extends State<HomePage> {
                 ),
               ),
             ),
-
-            // --- THE LIST "SHEET" SECTION ---
             Expanded(child: const TripListWidget()),
             SizedBox(height: size.height * 0.08),
           ],

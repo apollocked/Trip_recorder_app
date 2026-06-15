@@ -34,12 +34,11 @@ class TripProvider extends ChangeNotifier
   String _sortBy = 'date_desc';
   String get sortBy => _sortBy;
 
-  TripProvider() {
-    _initialize();
+  TripProvider({bool isFirstTime = true}) : _isFirstTime = isFirstTime {
+    _load();
   }
 
-  Future<void> _initialize() async {
-    await _checkOnboardingStatus();
+  Future<void> _load() async {
     await DataMigrationService(_repository).migrateIfNeeded();
     await loadTrips();
   }
@@ -54,7 +53,7 @@ class TripProvider extends ChangeNotifier
   }
 
   Future<void> refresh() async {
-    await _initialize();
+    await _load();
   }
 
   Future<Trip> addTrip({
@@ -170,11 +169,6 @@ class TripProvider extends ChangeNotifier
   }
 
   Map<String, dynamic> get statistics => TripStatistics.fromTrips(_trips).toMap();
-
-  Future<void> _checkOnboardingStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    _isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
-  }
 
   Future<void> completeOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
