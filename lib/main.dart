@@ -19,6 +19,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter _createRouter(TripProvider tripProvider) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
+    refreshListenable: tripProvider,
     initialLocation: '/home',
     redirect: (context, state) {
       if (tripProvider.isFirstTime && state.matchedLocation != '/onboarding') {
@@ -55,63 +56,4 @@ GoRouter _createRouter(TripProvider tripProvider) {
   );
 }
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService().init();
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => TripProvider()),
-        ChangeNotifierProvider(create: (_) => LanguageService()),
-        ChangeNotifierProvider(create: (_) => ThemeService()),
-      ],
-      child: const MyApp(),
-    ),
-  );
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    final tripProvider = context.watch<TripProvider>();
-    final l10n = context.watch<LanguageService>().locale;
-    final themeMode = context.watch<ThemeService>().themeMode;
-
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      locale: l10n,
-      supportedLocales: AppLocalizations.supportedLocales,
-      localizationsDelegates: appLocalizationsDelegates,
-      localeResolutionCallback: appLocaleResolutionCallback,
-      builder: (context, child) {
-        return Directionality(
-          textDirection: appTextDirectionForLocale(l10n),
-          child: child ?? const SizedBox.shrink(),
-        );
-      },
-      routerConfig: _createRouter(tripProvider),
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.light,
-          seedColor: const Color(0xFF00796B),
-        ),
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.dark,
-          seedColor: const Color(0xFF00796B),
-        ),
-      ),
-      themeMode: themeMode,
-    );
-  }
-}
+GoRouter _createRouter(TripProvider tripProvider) {
