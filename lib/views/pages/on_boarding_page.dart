@@ -11,8 +11,9 @@ class OnboardingItem {
   final IconData icon;
   final String title;
   final String description;
+  final String tip;
 
-  const OnboardingItem({required this.icon, required this.title, required this.description});
+  const OnboardingItem({required this.icon, required this.title, required this.description, required this.tip});
 }
 
 class OnboardingPage extends StatefulWidget {
@@ -41,9 +42,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
     final t = Theme.of(context);
     final l = AppLocalizations.of(context)!;
     final items = [
-      OnboardingItem(icon: Icons.auto_awesome_rounded, title: l.onboardingTitle1, description: l.onboardingDesc1),
-      OnboardingItem(icon: Icons.map_rounded, title: l.onboardingTitle2, description: l.onboardingDesc2),
-      OnboardingItem(icon: Icons.phonelink_setup_rounded, title: l.onboardingTitle3, description: l.onboardingDesc3),
+      OnboardingItem(icon: Icons.auto_awesome_rounded, title: l.onboardingTitle1, description: l.onboardingDesc1, tip: l.onboardingTip1),
+      OnboardingItem(icon: Icons.map_rounded, title: l.onboardingTitle2, description: l.onboardingDesc2, tip: l.onboardingTip2),
+      OnboardingItem(icon: Icons.phonelink_setup_rounded, title: l.onboardingTitle3, description: l.onboardingDesc3, tip: l.onboardingTip3),
     ];
 
     return PopScope(

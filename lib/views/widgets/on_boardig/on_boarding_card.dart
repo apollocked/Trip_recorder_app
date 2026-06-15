@@ -49,13 +49,18 @@ class OnboardingCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Text(
-            item.description,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              height: 1.5,
-            ),
+          Text(item.description, textAlign: TextAlign.center,
+            style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurfaceVariant, height: 1.5)),
+          const SizedBox(height: 32),
+          Container(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(color: colorScheme.primaryContainer.withAlpha(100),
+              borderRadius: BorderRadius.circular(12)),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              Icon(Icons.lightbulb_outline, size: 18, color: colorScheme.primary),
+              const SizedBox(width: 8),
+              Flexible(child: Text(item.tip, style: theme.textTheme.labelMedium?.copyWith(
+                color: colorScheme.onPrimaryContainer, fontWeight: FontWeight.w500))),
+            ]),
           ),
         ],
       ),

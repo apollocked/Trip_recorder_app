@@ -156,21 +156,37 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get onboardingDesc1 =>
-      'گەشت دروست بکە بە شوێن، وێنە و بودجەوە. هەموو وردەکارییەکانی گەشتەکەت لە یەک شوێندا ببینە.';
+      'گەشت دروست بکە بە وێنە، بودجە و پۆلێنکردنەوە. هەموو وردەکارییەکان لە یەک شوێندا ببینە.';
+
+  @override
+  String get onboardingTip1 =>
+      'ڕێنمایی: کلیک لە + بکە بۆ دروستکردنی یەکەم گەشت';
 
   @override
   String get onboardingTitle2 => 'ڕێکخراو بە';
 
   @override
   String get onboardingDesc2 =>
-      'لیستی ئامادەکاری، بەدواداچوونی خەرجی، و ڕۆژنامەی گەشت. هەرچییەکی پێویست بۆ گەشتێکی بێ نیگەرانی.';
+      'لیستی ئامادەکاری ئامادە بکە، بەدوای خەرجییەکان بەپێی پۆل بکەوە، و ڕۆژنامەی گەشتت بنووسە.';
+
+  @override
+  String get onboardingTip2 => 'ڕێنمایی: بۆ سڕینەوە، بەرەو چەپ بخزێنە';
 
   @override
   String get onboardingTitle3 => 'تایبەت و بێ ئینتەرنێت';
 
   @override
   String get onboardingDesc3 =>
-      'پێویستی بە هەژمار نییە. هەموو داتاکانت بە سەلامەتی لەسەر ئامێرەکەت دەمێننەوە. تایبەتی کراوە بەشێکە لە دیزاینی ئەپەکە.';
+      'پێویستی بە هەژمار نییە. هەموو داتاکانت بە سەلامەتی لەسەر ئامێرەکەت دەمێننەوە.';
+
+  @override
+  String get onboardingTip3 => 'ڕێنمایی: بۆ بینینی گەشتەکانت، ئامارەکان ببینە';
+
+  @override
+  String get fabTooltip => 'دروستکردنی گەشتێکی نوێ';
+
+  @override
+  String get firstLaunchHint => 'کلیک لە + بکە بۆ دەستپێکردنی یەکەم گەشت!';
 
   @override
   String get getStarted => 'دەستپێبکە';

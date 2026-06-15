@@ -152,14 +152,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingDesc1 =>
-      'أنشئ رحلات مع الوجهات والصور والميزانيات. تابع كل تفاصيل رحلتك في مكان واحد.';
+      'أنشئ رحلات بالصور والميزانيات والتصنيفات. تابع كل تفاصيل رحلتك في مكان واحد.';
+
+  @override
+  String get onboardingTip1 => 'نصيحة: اضغط + لإنشاء رحلتك الأولى';
 
   @override
   String get onboardingTitle2 => 'نظّم رحلتك';
 
   @override
   String get onboardingDesc2 =>
-      'أعد قوائم التجهيز، تابع النفقات، وسجّل يوميات السفر. كل ما تحتاج لرحلة خالية من المتاعب.';
+      'أعد قوائم التجهيز، تابع النفقات حسب التصنيف، وسجّل يوميات السفر بالصور.';
+
+  @override
+  String get onboardingTip2 => 'نصيحة: اسحب العناصر لليسار لحذفها';
 
   @override
   String get onboardingTitle3 => 'خصوصية تامة بدون إنترنت';
@@ -167,6 +173,15 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get onboardingDesc3 =>
       'لا حاجة لحساب. جميع بياناتك تبقى بأمان على جهازك. الخصوصية جزء من تصميم التطبيق.';
+
+  @override
+  String get onboardingTip3 => 'نصيحة: تصفح الإحصائيات لمعرفة رحلاتك';
+
+  @override
+  String get fabTooltip => 'إنشاء رحلة جديدة';
+
+  @override
+  String get firstLaunchHint => 'اضغط + لبدء التخطيط لأول رحلة لك!';
 
   @override
   String get getStarted => 'ابدأ الآن';

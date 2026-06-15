@@ -36,12 +36,12 @@ class MainShell extends StatelessWidget {
             top: -28, left: 0, right: 0,
             child: Center(
               child: SizedBox(height: 56, width: 56,
-                child: FloatingActionButton(
+                child: Tooltip(message: l10n.fabTooltip, child: FloatingActionButton(
                   heroTag: 'nav_add',
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AddTripPage())),
                   shape: const CircleBorder(),
                   child: const Icon(Icons.add_rounded),
-                ),
+                )),
               ),
             ),
           ),

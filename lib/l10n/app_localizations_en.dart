@@ -155,14 +155,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingDesc1 =>
-      'Create trips with destinations, photos, and budgets. Track every detail of your journey in one place.';
+      'Create trips with photos, budgets, and categories. Track every detail of your journey in one place.';
+
+  @override
+  String get onboardingTip1 => 'Tip: Tap + to create your first trip';
 
   @override
   String get onboardingTitle2 => 'Stay Organized';
 
   @override
   String get onboardingDesc2 =>
-      'Manage packing lists, track expenses, and keep a travel journal. Everything you need for stress-free travel.';
+      'Manage packing checklists, track expenses by category, and keep a travel journal with photos.';
+
+  @override
+  String get onboardingTip2 => 'Tip: Swipe left on items to delete them';
 
   @override
   String get onboardingTitle3 => 'Private & Offline';
@@ -170,6 +176,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingDesc3 =>
       'No account needed. All your data stays safely on your device. Your privacy is built in.';
+
+  @override
+  String get onboardingTip3 => 'Tip: View Statistics for travel insights';
+
+  @override
+  String get fabTooltip => 'Create a new trip';
+
+  @override
+  String get firstLaunchHint => 'Tap + to start planning your first trip!';
 
   @override
   String get getStarted => 'Get Started';

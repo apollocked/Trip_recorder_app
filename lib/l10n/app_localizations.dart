@@ -385,8 +385,14 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingDesc1.
   ///
   /// In en, this message translates to:
-  /// **'Create trips with destinations, photos, and budgets. Track every detail of your journey in one place.'**
+  /// **'Create trips with photos, budgets, and categories. Track every detail of your journey in one place.'**
   String get onboardingDesc1;
+
+  /// No description provided for @onboardingTip1.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: Tap + to create your first trip'**
+  String get onboardingTip1;
 
   /// No description provided for @onboardingTitle2.
   ///
@@ -397,8 +403,14 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingDesc2.
   ///
   /// In en, this message translates to:
-  /// **'Manage packing lists, track expenses, and keep a travel journal. Everything you need for stress-free travel.'**
+  /// **'Manage packing checklists, track expenses by category, and keep a travel journal with photos.'**
   String get onboardingDesc2;
+
+  /// No description provided for @onboardingTip2.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: Swipe left on items to delete them'**
+  String get onboardingTip2;
 
   /// No description provided for @onboardingTitle3.
   ///
@@ -411,6 +423,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No account needed. All your data stays safely on your device. Your privacy is built in.'**
   String get onboardingDesc3;
+
+  /// No description provided for @onboardingTip3.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: View Statistics for travel insights'**
+  String get onboardingTip3;
+
+  /// No description provided for @fabTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new trip'**
+  String get fabTooltip;
+
+  /// No description provided for @firstLaunchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to start planning your first trip!'**
+  String get firstLaunchHint;
 
   /// No description provided for @getStarted.
   ///
