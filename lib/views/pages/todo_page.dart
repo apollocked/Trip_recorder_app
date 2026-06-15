@@ -7,15 +7,22 @@ import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 
 enum _Cat {
-  docs(Icons.folder_rounded, 'Documents'),
-  clothes(Icons.checkroom_rounded, 'Clothing'),
-  elec(Icons.phone_android_rounded, 'Electronics'),
-  toilet(Icons.clean_hands_rounded, 'Toiletries'),
-  other(Icons.more_horiz_rounded, 'Other');
+  docs(Icons.folder_rounded),
+  clothes(Icons.checkroom_rounded),
+  elec(Icons.phone_android_rounded),
+  toilet(Icons.clean_hands_rounded),
+  other(Icons.more_horiz_rounded);
 
   final IconData icon;
-  final String label;
-  const _Cat(this.icon, this.label);
+  const _Cat(this.icon);
+
+  String label(AppLocalizations l10n) => switch (this) {
+    _Cat.docs => l10n.prepCatDocuments,
+    _Cat.clothes => l10n.prepCatClothing,
+    _Cat.elec => l10n.prepCatElectronics,
+    _Cat.toilet => l10n.prepCatToiletries,
+    _Cat.other => l10n.categoryOther,
+  };
 }
 
 class TodoPage extends StatefulWidget {
@@ -44,7 +51,6 @@ class _TodoPageState extends State<TodoPage> {
       }
     } catch (_) {}
   }
-
   Future<void> _save() async {
     try {
       final p = await SharedPreferences.getInstance();
@@ -66,7 +72,6 @@ class _TodoPageState extends State<TodoPage> {
     ]);
     _save();
   }
-
   void _removeAt(int i) {
     setState(() => _items = [..._items.take(i), ..._items.skip(i + 1)]);
     _save();
@@ -93,14 +98,14 @@ class _TodoPageState extends State<TodoPage> {
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none)),
               onSubmitted: (v) { if (v.trim().isNotEmpty) { _add(v); Navigator.pop(ctx); } }),
             const SizedBox(height: 16),
-            Text('Category', style: Theme.of(ctx).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
+            Text(l10n.tripCategory, style: Theme.of(ctx).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             Wrap(spacing: 6, runSpacing: 6, children: _Cat.values.map((cat) {
               final sel = cat == _cat;
               return ChoiceChip(selected: sel,
                 label: Row(mainAxisSize: MainAxisSize.min, children: [
                   Icon(cat.icon, size: 16, color: sel ? Theme.of(ctx).colorScheme.onPrimaryContainer : null),
-                  const SizedBox(width: 4), Text(cat.label),
+                  const SizedBox(width: 4), Text(cat.label(l10n)),
                 ]),
                 onSelected: (_) => setDlg(() => _cat = cat));
             }).toList()),
@@ -114,7 +119,6 @@ class _TodoPageState extends State<TodoPage> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final c = Theme.of(context).colorScheme;
@@ -125,17 +129,17 @@ class _TodoPageState extends State<TodoPage> {
     final map = <_Cat, List<_PrepItem>>{};
     for (final cat in _Cat.values) { map[cat] = []; }
     for (final i in _items) { map[i.category]!.add(i); }
-
     return Scaffold(
       backgroundColor: c.surface,
       appBar: AppBar(
         title: Text(l10n.todo, style: t.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
         centerTitle: true,
-        actions: [if (hasDone) IconButton(onPressed: _clearDone,
-          icon: const Icon(Icons.clear_all_rounded), tooltip: l10n.delete)],
+        actions: [
+          TextButton(onPressed: _showAddDialog, child: Text(l10n.addItem)),
+          if (hasDone) IconButton(onPressed: _clearDone,
+            icon: const Icon(Icons.clear_all_rounded), tooltip: l10n.delete),
+        ],
       ),
-      floatingActionButton: FloatingActionButton.extended(onPressed: _showAddDialog,
-        icon: const Icon(Icons.add_rounded), label: Text(l10n.addItem)),
       body: _items.isEmpty
           ? ListView(children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.12),
@@ -172,7 +176,7 @@ class _TodoPageState extends State<TodoPage> {
           Row(children: [
             Icon(cat.icon, size: 18, color: c.primary),
             const SizedBox(width: 8),
-            Expanded(child: Text(cat.label, style: t.titleSmall?.copyWith(fontWeight: FontWeight.w600))),
+            Expanded(child: Text(cat.label(l10n), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w600))),
             Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
               decoration: BoxDecoration(color: c.primaryContainer.withAlpha(120), borderRadius: BorderRadius.circular(12)),
               child: Text('$ck/${items.length}',
@@ -191,7 +195,7 @@ class _TodoPageState extends State<TodoPage> {
         final i = idx++;
         r.add(Padding(padding: const EdgeInsets.only(bottom: 6),
           child: Dismissible(
-            key: ValueKey('${item.title}_${item.hashCode}_$i'),
+            key: ValueKey('prep_${item._seq}'),
             direction: DismissDirection.endToStart,
             confirmDismiss: (_) => showConfirmationDialog(context: context,
               title: l10n.confirmDeleteTitle(item.title),
@@ -205,13 +209,15 @@ class _TodoPageState extends State<TodoPage> {
                 color: item.done ? c.primaryContainer.withAlpha(50) : c.surfaceContainerHighest.withAlpha(60),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: item.done ? c.primary.withAlpha(80) : c.outlineVariant.withAlpha(128))),
-              child: CheckboxListTile(value: item.done, onChanged: (_) => _toggle(i),
-                title: Text(item.title, style: t.bodyLarge?.copyWith(
-                  decoration: item.done ? TextDecoration.lineThrough : null,
-                  color: item.done ? c.onSurfaceVariant : c.onSurface)),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                controlAffinity: ListTileControlAffinity.leading,
-                contentPadding: const EdgeInsets.only(left: 4, right: 8)),
+              child: Material(type: MaterialType.transparency,
+                child: CheckboxListTile(value: item.done, onChanged: (_) => _toggle(i),
+                  title: Text(item.title, style: t.bodyLarge?.copyWith(
+                    decoration: item.done ? TextDecoration.lineThrough : null,
+                    color: item.done ? c.onSurfaceVariant : c.onSurface)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: const EdgeInsets.only(left: 4, right: 8)),
+              ),
             ),
           ),
         ));
@@ -220,13 +226,11 @@ class _TodoPageState extends State<TodoPage> {
     return r;
   }
 }
-
 class _PrepItem {
   final String title;
   final bool done;
   final _Cat category;
   final int _seq;
-
   _PrepItem({required this.title, this.done = false, this.category = _Cat.other}) : _seq = _seqCounter++;
   static int _seqCounter = 0;
 

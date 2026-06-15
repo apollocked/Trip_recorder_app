@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
 import 'package:animations_in_flutter/views/widgets/star_rating.dart';
@@ -17,6 +18,7 @@ class TripHeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -44,7 +46,7 @@ class TripHeaderSection extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    trip.category.label,
+                    trip.category.label(l10n),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,

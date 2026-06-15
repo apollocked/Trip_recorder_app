@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/model/expense_category.dart';
+
+String _catLabel(AppLocalizations l10n, ExpenseCategory cat) => switch (cat) {
+  ExpenseCategory.hotel => l10n.categoryHotel,
+  ExpenseCategory.food => l10n.categoryFood,
+  ExpenseCategory.transport => l10n.categoryTransport,
+  ExpenseCategory.activities => l10n.categoryActivities,
+  ExpenseCategory.shopping => l10n.categoryShopping,
+  ExpenseCategory.other => l10n.categoryOther,
+};
 
 class CategoryBreakdown extends StatelessWidget {
-  final Map categoryCounts;
+  final Map<ExpenseCategory, int> categoryCounts;
   final ColorScheme colorScheme;
+  final AppLocalizations l10n;
 
   const CategoryBreakdown({
     super.key,
     required this.categoryCounts,
     required this.colorScheme,
+    required this.l10n,
   });
 
   @override
   Widget build(BuildContext context) {
-    final total = categoryCounts.values.cast<int>().fold(0, (a, b) => a + b);
+    final total = categoryCounts.values.fold(0, (a, b) => a + b);
     if (total == 0) return const SizedBox.shrink();
 
     return Container(
@@ -24,7 +37,7 @@ class CategoryBreakdown extends StatelessWidget {
       ),
       child: Column(
         children: categoryCounts.entries.map<Widget>((entry) {
-          final count = entry.value as int;
+          final count = entry.value;
           final fraction = count / total;
           return Padding(
             padding: const EdgeInsets.only(bottom: 8),
@@ -32,7 +45,7 @@ class CategoryBreakdown extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 80,
-                  child: Text(entry.key.label,
+                  child: Text(_catLabel(l10n, entry.key),
                       style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13)),
                 ),
                 Expanded(

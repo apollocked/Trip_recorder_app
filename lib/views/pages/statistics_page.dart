@@ -1,4 +1,5 @@
 ﻿import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/model/expense_category.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/category_breakdown.dart';
@@ -60,7 +61,7 @@ class StatisticsPage extends StatelessWidget {
               const SizedBox(height: 24),
               Text(loc.topCategory, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              CategoryBreakdown(categoryCounts: stats['categoryCounts'] as Map, colorScheme: colorScheme),
+              CategoryBreakdown(categoryCounts: stats['categoryCounts'] as Map<ExpenseCategory, int>, colorScheme: colorScheme, l10n: loc),
             ],
             if (stats['topDestination'] != null) ...[
               const SizedBox(height: 24),

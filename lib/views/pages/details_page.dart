@@ -171,7 +171,7 @@ class DetailsPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final buffer = StringBuffer();
     buffer.writeln(l10n.exportHeader(trip.title));
-    buffer.writeln('${l10n.tripCategory}: ${trip.category.label}');
+    buffer.writeln('${l10n.tripCategory}: ${trip.category.label(l10n)}');
     buffer.writeln('${l10n.budget}: ${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}');
     buffer.writeln('${l10n.nights}: ${trip.nights}');
     buffer.writeln('${l10n.departureDate}: ${trip.date.day}/${trip.date.month}/${trip.date.year}');

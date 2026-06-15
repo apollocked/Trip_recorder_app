@@ -108,7 +108,7 @@ class _SearchSortBarState extends State<SearchSortBar> {
     return Padding(
       padding: const EdgeInsets.only(right: 6),
       child: FilterChip(
-        label: Text(cat == null ? l10n.all : cat.label, style: TextStyle(fontSize: 12)),
+        label: Text(cat == null ? l10n.all : cat.label(l10n), style: TextStyle(fontSize: 12)),
         selected: selected,
         onSelected: (_) => onTap(),
         selectedColor: colorScheme.primaryContainer,

@@ -168,6 +168,24 @@ class AppLocalizationsKu extends AppLocalizations {
   String get tripCategory => 'پۆل';
 
   @override
+  String get tripCatBeach => 'که‌نار';
+
+  @override
+  String get tripCatAdventure => 'سەرکێشی';
+
+  @override
+  String get tripCatCity => 'شار';
+
+  @override
+  String get tripCatNature => 'سروشت';
+
+  @override
+  String get tripCatCultural => 'کەلتووری';
+
+  @override
+  String get tripCatOther => 'تر';
+
+  @override
   String get tapToAddPhotos => 'بۆ زیادکردنی وێنە لێرەدا بدە';
 
   @override
@@ -291,6 +309,18 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get checklist => 'لیستەکە';
+
+  @override
+  String get prepCatDocuments => 'بەڵگەکان';
+
+  @override
+  String get prepCatClothing => 'جلوبەرگ';
+
+  @override
+  String get prepCatElectronics => 'ئەلەکترۆنیات';
+
+  @override
+  String get prepCatToiletries => 'پێداویستی تایبەت';
 
   @override
   String get budgetLabel => 'بودجە';

@@ -406,6 +406,42 @@ abstract class AppLocalizations {
   /// **'Category'**
   String get tripCategory;
 
+  /// No description provided for @tripCatBeach.
+  ///
+  /// In en, this message translates to:
+  /// **'Beach'**
+  String get tripCatBeach;
+
+  /// No description provided for @tripCatAdventure.
+  ///
+  /// In en, this message translates to:
+  /// **'Adventure'**
+  String get tripCatAdventure;
+
+  /// No description provided for @tripCatCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get tripCatCity;
+
+  /// No description provided for @tripCatNature.
+  ///
+  /// In en, this message translates to:
+  /// **'Nature'**
+  String get tripCatNature;
+
+  /// No description provided for @tripCatCultural.
+  ///
+  /// In en, this message translates to:
+  /// **'Cultural'**
+  String get tripCatCultural;
+
+  /// No description provided for @tripCatOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get tripCatOther;
+
   /// No description provided for @tapToAddPhotos.
   ///
   /// In en, this message translates to:
@@ -651,6 +687,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Checklist'**
   String get checklist;
+
+  /// No description provided for @prepCatDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get prepCatDocuments;
+
+  /// No description provided for @prepCatClothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Clothing'**
+  String get prepCatClothing;
+
+  /// No description provided for @prepCatElectronics.
+  ///
+  /// In en, this message translates to:
+  /// **'Electronics'**
+  String get prepCatElectronics;
+
+  /// No description provided for @prepCatToiletries.
+  ///
+  /// In en, this message translates to:
+  /// **'Toiletries'**
+  String get prepCatToiletries;
 
   /// No description provided for @budgetLabel.
   ///

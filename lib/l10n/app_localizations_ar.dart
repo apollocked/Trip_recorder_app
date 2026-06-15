@@ -166,6 +166,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tripCategory => 'التصنيف';
 
   @override
+  String get tripCatBeach => 'شاطئ';
+
+  @override
+  String get tripCatAdventure => 'مغامرة';
+
+  @override
+  String get tripCatCity => 'مدينة';
+
+  @override
+  String get tripCatNature => 'طبيعة';
+
+  @override
+  String get tripCatCultural => 'ثقافة';
+
+  @override
+  String get tripCatOther => 'أخرى';
+
+  @override
   String get tapToAddPhotos => 'اضغط لإضافة صور';
 
   @override
@@ -289,6 +307,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get checklist => 'القائمة';
+
+  @override
+  String get prepCatDocuments => 'مستندات';
+
+  @override
+  String get prepCatClothing => 'ملابس';
+
+  @override
+  String get prepCatElectronics => 'إلكترونيات';
+
+  @override
+  String get prepCatToiletries => 'مستلزمات شخصية';
 
   @override
   String get budgetLabel => 'الميزانية';

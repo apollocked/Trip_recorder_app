@@ -1,3 +1,5 @@
+import 'package:animations_in_flutter/l10n/app_localizations.dart';
+
 enum TripCategory {
   beach,
   adventure,
@@ -6,22 +8,14 @@ enum TripCategory {
   cultural,
   other;
 
-  String get label {
-    switch (this) {
-      case TripCategory.beach:
-        return 'Beach';
-      case TripCategory.adventure:
-        return 'Adventure';
-      case TripCategory.city:
-        return 'City';
-      case TripCategory.nature:
-        return 'Nature';
-      case TripCategory.cultural:
-        return 'Cultural';
-      case TripCategory.other:
-        return 'Other';
-    }
-  }
+  String label(AppLocalizations l10n) => switch (this) {
+    TripCategory.beach => l10n.tripCatBeach,
+    TripCategory.adventure => l10n.tripCatAdventure,
+    TripCategory.city => l10n.tripCatCity,
+    TripCategory.nature => l10n.tripCatNature,
+    TripCategory.cultural => l10n.tripCatCultural,
+    TripCategory.other => l10n.tripCatOther,
+  };
 
   static TripCategory fromString(String value) {
     return TripCategory.values.firstWhere(

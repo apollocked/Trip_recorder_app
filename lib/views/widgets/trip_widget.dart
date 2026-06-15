@@ -17,6 +17,7 @@ Widget tripWidget(
 }) {
   final colorScheme = Theme.of(context).colorScheme;
   final textTheme = Theme.of(context).textTheme;
+  final l10n = AppLocalizations.of(context)!;
 
   return SlideTransition(
     position: Tween<Offset>(
@@ -137,7 +138,7 @@ Widget tripWidget(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                trip.category.label,
+                                trip.category.label(l10n),
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,

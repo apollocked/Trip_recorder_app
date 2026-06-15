@@ -167,6 +167,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tripCategory => 'Category';
 
   @override
+  String get tripCatBeach => 'Beach';
+
+  @override
+  String get tripCatAdventure => 'Adventure';
+
+  @override
+  String get tripCatCity => 'City';
+
+  @override
+  String get tripCatNature => 'Nature';
+
+  @override
+  String get tripCatCultural => 'Cultural';
+
+  @override
+  String get tripCatOther => 'Other';
+
+  @override
   String get tapToAddPhotos => 'Tap to add photos';
 
   @override
@@ -290,6 +308,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checklist => 'Checklist';
+
+  @override
+  String get prepCatDocuments => 'Documents';
+
+  @override
+  String get prepCatClothing => 'Clothing';
+
+  @override
+  String get prepCatElectronics => 'Electronics';
+
+  @override
+  String get prepCatToiletries => 'Toiletries';
 
   @override
   String get budgetLabel => 'Budget';
