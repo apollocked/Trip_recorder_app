@@ -138,6 +138,14 @@
 
   "currencyLabel": "Currency",
 
+  "currencyConverter": "Currency Converter",
+  "from": "From",
+  "to": "To",
+  "convert": "Convert",
+  "convertedAmount": "Converted Amount",
+  "swap": "Swap",
+  "amount": "Amount",
+
   "journal": "Journal",
   "addJournalEntry": "Add Entry",
   "journalTitle": "Entry Title",

@@ -138,6 +138,14 @@
 
   "currencyLabel": "دراو",
 
+  "currencyConverter": "گۆڕینی دراو",
+  "from": "لە",
+  "to": "بۆ",
+  "convert": "گۆڕین",
+  "convertedAmount": "بڕی گۆڕاو",
+  "swap": "گۆڕینەوە",
+  "amount": "بڕ",
+
   "journal": "ڕۆژنامە",
   "addJournalEntry": "زیادکردنی تۆمار",
   "journalTitle": "ناونیشانی تۆمار",

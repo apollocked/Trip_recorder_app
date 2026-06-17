@@ -402,6 +402,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get currencyLabel => 'العملة';
 
   @override
+  String get currencyConverter => 'محوّل العملات';
+
+  @override
+  String get from => 'من';
+
+  @override
+  String get to => 'إلى';
+
+  @override
+  String get convert => 'تحويل';
+
+  @override
+  String get convertedAmount => 'المبلغ المحوّل';
+
+  @override
+  String get swap => 'تبديل';
+
+  @override
+  String get amount => 'المبلغ';
+
+  @override
   String get journal => 'اليوميات';
 
   @override

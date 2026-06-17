@@ -138,6 +138,14 @@
 
   "currencyLabel": "العملة",
 
+  "currencyConverter": "محوّل العملات",
+  "from": "من",
+  "to": "إلى",
+  "convert": "تحويل",
+  "convertedAmount": "المبلغ المحوّل",
+  "swap": "تبديل",
+  "amount": "المبلغ",
+
   "journal": "اليوميات",
   "addJournalEntry": "إضافة مدخلة",
   "journalTitle": "عنوان المدخلة",

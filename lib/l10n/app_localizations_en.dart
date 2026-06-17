@@ -405,6 +405,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get currencyLabel => 'Currency';
 
   @override
+  String get currencyConverter => 'Currency Converter';
+
+  @override
+  String get from => 'From';
+
+  @override
+  String get to => 'To';
+
+  @override
+  String get convert => 'Convert';
+
+  @override
+  String get convertedAmount => 'Converted Amount';
+
+  @override
+  String get swap => 'Swap';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
   String get journal => 'Journal';
 
   @override

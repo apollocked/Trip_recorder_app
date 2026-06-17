@@ -1,4 +1,5 @@
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
 import 'package:animations_in_flutter/views/widgets/title_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,16 @@ class _HomeState extends State<HomePage> {
                 child: Padding(
                   padding: EdgeInsets.only(top: size.height * 0.04),
                   child: titleWidget(l10n.appTitle, context),
+                ),
+              ),
+              Positioned(top: 0, right: size.width * 0.04,
+                child: Padding(
+                  padding: EdgeInsets.only(top: size.height * 0.04),
+                  child: IconButton(
+                    icon: Icon(Icons.swap_horiz_rounded, color: c.primary),
+                    tooltip: l10n.currencyConverter,
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CurrencyConverterPage())),
+                  ),
                 ),
               ),
             ]),

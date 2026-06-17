@@ -407,6 +407,27 @@ class AppLocalizationsKu extends AppLocalizations {
   String get currencyLabel => 'دراو';
 
   @override
+  String get currencyConverter => 'گۆڕینی دراو';
+
+  @override
+  String get from => 'لە';
+
+  @override
+  String get to => 'بۆ';
+
+  @override
+  String get convert => 'گۆڕین';
+
+  @override
+  String get convertedAmount => 'بڕی گۆڕاو';
+
+  @override
+  String get swap => 'گۆڕینەوە';
+
+  @override
+  String get amount => 'بڕ';
+
+  @override
   String get journal => 'ڕۆژنامە';
 
   @override

@@ -4,6 +4,7 @@ import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/l10n/l10n.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
+import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
 import 'package:animations_in_flutter/views/pages/privacy_policy_page.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -77,6 +78,21 @@ class SettingsPage extends StatelessWidget {
                   ],
                 );
               },
+            ),
+          ),
+          const SizedBox(height: 14),
+          _SectionCard(
+            icon: Icons.swap_horiz_rounded,
+            title: loc.currencyConverter,
+            colorScheme: colorScheme,
+            textTheme: textTheme,
+            child: SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CurrencyConverterPage())),
+                icon: const Icon(Icons.open_in_new_rounded, size: 18),
+                label: Text(loc.currencyConverter),
+              ),
             ),
           ),
           const SizedBox(height: 14),
