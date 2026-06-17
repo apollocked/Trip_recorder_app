@@ -24,6 +24,7 @@ Future<void> main() async {
           create: (_) => TripProvider(isFirstTime: isFirstTime),
         ),
         ChangeNotifierProvider(create: (_) => LanguageService()),
+
         ChangeNotifierProvider(create: (_) => ThemeService()),
       ],
       child: const MyApp(),

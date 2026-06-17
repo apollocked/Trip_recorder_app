@@ -51,6 +51,36 @@ class AppDatabase {
         reminder_date TEXT
       )
     ''');
+    await db.execute('''
+      CREATE TABLE ${AppConstants.expensesTable} (
+        id TEXT PRIMARY KEY,
+        trip_id TEXT NOT NULL,
+        title TEXT NOT NULL,
+        amount REAL NOT NULL,
+        category TEXT NOT NULL DEFAULT 'other',
+        FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE ${AppConstants.checklistTable} (
+        id TEXT PRIMARY KEY,
+        trip_id TEXT NOT NULL,
+        title TEXT NOT NULL,
+        is_checked INTEGER NOT NULL DEFAULT 0,
+        FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE ${AppConstants.journalTable} (
+        id TEXT PRIMARY KEY,
+        trip_id TEXT NOT NULL,
+        date TEXT NOT NULL,
+        title TEXT NOT NULL,
+        text TEXT NOT NULL DEFAULT '',
+        image_paths TEXT NOT NULL DEFAULT '[]',
+        FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
+      )
+    ''');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -113,6 +143,38 @@ class AppDatabase {
     }
     if (oldVersion < 7) {
       await _addColumnIfNotExists(db, AppConstants.tripsTable, 'reminder_date', 'TEXT');
+    }
+    if (oldVersion < 8) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS ${AppConstants.expensesTable} (
+          id TEXT PRIMARY KEY,
+          trip_id TEXT NOT NULL,
+          title TEXT NOT NULL,
+          amount REAL NOT NULL,
+          category TEXT NOT NULL DEFAULT 'other',
+          FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
+        )
+      ''');
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS ${AppConstants.checklistTable} (
+          id TEXT PRIMARY KEY,
+          trip_id TEXT NOT NULL,
+          title TEXT NOT NULL,
+          is_checked INTEGER NOT NULL DEFAULT 0,
+          FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
+        )
+      ''');
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS ${AppConstants.journalTable} (
+          id TEXT PRIMARY KEY,
+          trip_id TEXT NOT NULL,
+          date TEXT NOT NULL,
+          title TEXT NOT NULL,
+          text TEXT NOT NULL DEFAULT '',
+          image_paths TEXT NOT NULL DEFAULT '[]',
+          FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
+        )
+      ''');
     }
   }
 

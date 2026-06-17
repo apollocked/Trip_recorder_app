@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/model/expense_category.dart';
 
-String _catLabel(AppLocalizations l10n, ExpenseCategory cat) => switch (cat) {
-  ExpenseCategory.hotel => l10n.categoryHotel,
-  ExpenseCategory.food => l10n.categoryFood,
-  ExpenseCategory.transport => l10n.categoryTransport,
-  ExpenseCategory.activities => l10n.categoryActivities,
-  ExpenseCategory.shopping => l10n.categoryShopping,
-  ExpenseCategory.other => l10n.categoryOther,
-};
+typedef CategoryLabeler<T> = String Function(AppLocalizations l10n, T category);
 
-class CategoryBreakdown extends StatelessWidget {
-  final Map<ExpenseCategory, int> categoryCounts;
+class CategoryBreakdown<T> extends StatelessWidget {
+  final Map<T, int> categoryCounts;
   final ColorScheme colorScheme;
   final AppLocalizations l10n;
+  final CategoryLabeler<T> labeler;
 
   const CategoryBreakdown({
     super.key,
     required this.categoryCounts,
     required this.colorScheme,
     required this.l10n,
+    required this.labeler,
   });
 
   @override
@@ -45,7 +39,7 @@ class CategoryBreakdown extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 80,
-                  child: Text(_catLabel(l10n, entry.key),
+                  child: Text(labeler(l10n, entry.key),
                       style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13)),
                 ),
                 Expanded(

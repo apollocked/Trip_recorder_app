@@ -1,6 +1,6 @@
 class AppConstants {
   static const String dbName = 'animations_in_flutter.db';
-  static const int dbVersion = 7;
+  static const int dbVersion = 8;
   static const String tripsTable = 'trips';
   static const String expensesTable = 'expenses';
   static const String checklistTable = 'checklist_items';
