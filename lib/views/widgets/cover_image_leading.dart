@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 Widget coverImage(String imgPath) {
@@ -13,7 +14,7 @@ Widget coverImage(String imgPath) {
       alignment: Alignment.topCenter,
       errorBuilder: (context, error, stackTrace) => Container(
         height: 360,
-        color: Colors.grey[300],
+        color: AppColors.placeholderBg,
         child: const Icon(Icons.broken_image, size: 50),
       ),
     );
@@ -28,7 +29,7 @@ Widget coverImage(String imgPath) {
       alignment: Alignment.topCenter,
       errorBuilder: (context, error, stackTrace) => Container(
         height: 360,
-        color: Colors.grey[300],
+        color: AppColors.placeholderBg,
         child: const Icon(Icons.landscape, size: 50),
       ),
     );
@@ -39,7 +40,7 @@ Widget coverImageFromList(List<String> paths) {
   if (paths.isEmpty) {
     return Container(
       height: 360,
-      color: Colors.grey[300],
+      color: AppColors.placeholderBg,
       child: const Icon(Icons.landscape, size: 50),
     );
   }
@@ -54,12 +55,12 @@ Widget coverImageFromList(List<String> paths) {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.black54,
+              color: AppColors.imageOverlay,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
               '+${paths.length - 1}',
-              style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+              style: const TextStyle(color: AppColors.white, fontSize: 13, fontWeight: FontWeight.bold),
             ),
           ),
         ),

@@ -1,4 +1,5 @@
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
 import 'package:animations_in_flutter/views/pages/favorites_page.dart';
 import 'package:animations_in_flutter/views/pages/memory_page.dart';
@@ -85,7 +86,7 @@ class _HomeState extends State<HomePage> {
                   Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.red.withAlpha(20),
+                      color: AppColors.favoriteActive20,
                     ),
                     child: IconButton(
                       onPressed: () => Navigator.push(
@@ -95,7 +96,7 @@ class _HomeState extends State<HomePage> {
                         ),
                       ),
                       icon: const Icon(Icons.favorite_rounded),
-                      color: Colors.red.shade400,
+                      color: AppColors.favoriteActive,
                       tooltip: l10n.favorites,
                     ),
                   ),

@@ -1,4 +1,5 @@
 ﻿import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
@@ -64,7 +65,7 @@ class StatisticsPage extends StatelessWidget {
                             title: loc.totalNights,
                             value: '${stats['totalNights']}',
                             icon: Icons.bedtime_rounded,
-                            iconColor: Colors.indigo,
+                            iconColor: AppColors.statNights,
                             colorScheme: colorScheme,
                           ),
                         ),
@@ -77,7 +78,7 @@ class StatisticsPage extends StatelessWidget {
                                       .toStringAsFixed(1)
                                 : loc.notRated,
                             icon: Icons.star_rounded,
-                            iconColor: Colors.amber,
+                            iconColor: AppColors.statRating,
                             colorScheme: colorScheme,
                           ),
                         ),
@@ -88,7 +89,7 @@ class StatisticsPage extends StatelessWidget {
                       title: loc.favorites,
                       value: '${stats['likedCount']}',
                       icon: Icons.favorite_rounded,
-                      iconColor: Colors.red,
+                      iconColor: AppColors.statFavorites,
                       colorScheme: colorScheme,
                       onTap: () => Navigator.push(
                         context,
@@ -108,7 +109,7 @@ class StatisticsPage extends StatelessWidget {
                                 value:
                                     '${(stats['totalSpent'] as double).toStringAsFixed(0)} ${spentByCurrency.keys.first}',
                                 icon: Icons.attach_money_rounded,
-                                iconColor: Colors.green,
+                                iconColor: AppColors.statSpending,
                                 colorScheme: colorScheme,
                               ),
                             ),
@@ -118,7 +119,7 @@ class StatisticsPage extends StatelessWidget {
                                 title: loc.totalNights,
                                 value: '${stats['totalNights']}',
                                 icon: Icons.bedtime_rounded,
-                                iconColor: Colors.indigo,
+                                iconColor: AppColors.statNights,
                                 colorScheme: colorScheme,
                               ),
                             ),
@@ -135,7 +136,7 @@ class StatisticsPage extends StatelessWidget {
                                           .toStringAsFixed(1)
                                     : loc.notRated,
                                 icon: Icons.star_rounded,
-                                iconColor: Colors.amber,
+                                iconColor: AppColors.statRating,
                                 colorScheme: colorScheme,
                               ),
                             ),
@@ -145,7 +146,7 @@ class StatisticsPage extends StatelessWidget {
                                 title: loc.favorites,
                                 value: '${stats['likedCount']}',
                                 icon: Icons.favorite_rounded,
-                                iconColor: Colors.red,
+                                iconColor: AppColors.statFavorites,
                                 colorScheme: colorScheme,
                                 onTap: () => Navigator.push(
                                   context,
@@ -232,7 +233,7 @@ class StatisticsPage extends StatelessWidget {
               title: '${loc.totalSpent} (${e.key})',
               value: e.value.toStringAsFixed(0),
               icon: Icons.attach_money_rounded,
-              iconColor: Colors.green,
+              iconColor: AppColors.statSpending,
               colorScheme: colorScheme,
             ),
           ),

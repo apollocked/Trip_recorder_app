@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -56,11 +57,11 @@ class _MainShellState extends State<MainShell>
             onDestinationSelected: (i) => widget.navigationShell.goBranch(i),
             animationDuration: const Duration(milliseconds: 500),
             elevation: 0,
-            shadowColor: Colors.transparent,
+            shadowColor: AppColors.transparent,
             backgroundColor: colorScheme.surfaceContainerHighest.withValues(
               alpha: 0.85,
             ),
-            surfaceTintColor: Colors.transparent,
+            surfaceTintColor: AppColors.transparent,
             labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
             indicatorShape: const StadiumBorder(),
             height: 72,

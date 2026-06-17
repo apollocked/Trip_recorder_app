@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
@@ -393,7 +394,7 @@ class _ExpandedTripCard extends StatelessWidget {
                 icon: Icons.nightlight_round,
                 value: '${trip.nights}',
                 label: loc.nightsLabel,
-                color: Colors.indigo.shade300,
+                color: AppColors.statNights,
                 colorScheme: colorScheme,
               ),
               const SizedBox(width: 8),
@@ -401,7 +402,7 @@ class _ExpandedTripCard extends StatelessWidget {
                 icon: Icons.star_rounded,
                 value: trip.rating > 0 ? trip.rating.toStringAsFixed(1) : '--',
                 label: loc.ratingLabel,
-                color: Colors.amber.shade400,
+                color: AppColors.ratingActive,
                 colorScheme: colorScheme,
               ),
               const SizedBox(width: 8),
@@ -409,7 +410,7 @@ class _ExpandedTripCard extends StatelessWidget {
                 icon: Icons.favorite_rounded,
                 value: trip.isLiked ? 'Yes' : 'No',
                 label: loc.favorites,
-                color: Colors.red.shade300,
+                color: AppColors.favoriteActive,
                 colorScheme: colorScheme,
               ),
             ],

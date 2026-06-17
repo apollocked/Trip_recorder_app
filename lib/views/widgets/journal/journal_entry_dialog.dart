@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
 
 Future<Map<String, dynamic>?> showJournalEntryDialog(
@@ -106,13 +107,13 @@ Future<Map<String, dynamic>?> showJournalEntryDialog(
                             child: Container(
                               padding: const EdgeInsets.all(2),
                               decoration: const BoxDecoration(
-                                color: Colors.black54,
+                                color: AppColors.imageOverlay,
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
                                 Icons.close,
                                 size: 14,
-                                color: Colors.white,
+                                color: AppColors.white,
                               ),
                             ),
                           ),

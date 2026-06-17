@@ -2,6 +2,7 @@ import 'package:animations_in_flutter/core/constants/constants.dart';
 import 'package:animations_in_flutter/core/routes/routes.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/core/l10n/localization_config.dart';
+import 'package:animations_in_flutter/core/theme/app_theme.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/notification_service.dart';
@@ -68,20 +69,8 @@ class _MyAppState extends State<MyApp> {
         );
       },
       routerConfig: _router,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.light,
-          seedColor: const Color(0xFF00796B),
-        ),
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.dark,
-          seedColor: const Color(0xFF00796B),
-        ),
-      ),
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
       themeMode: themeMode,
     );
   }

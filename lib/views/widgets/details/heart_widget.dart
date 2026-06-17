@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -39,8 +40,8 @@ class _HeartWidgetState extends State<HeartWidget>
     );
 
     colorAnimation = ColorTween(
-      begin: Colors.grey[400],
-      end: Colors.red,
+      begin: AppColors.favoriteInactive,
+      end: AppColors.favoriteActive,
     ).animate(curveAnimation);
 
     sizeAnimation = TweenSequence([

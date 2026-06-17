@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 Widget leadingImage(String imgPath, {BuildContext? context}) {
@@ -39,7 +40,7 @@ Widget leadingImageFromList(List<String> paths, {BuildContext? context}) {
     return Container(
       height: 50,
       width: 50,
-      color: Colors.grey[300],
+      color: AppColors.placeholderBg,
       child: const Icon(Icons.landscape, size: 24),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/expense.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
@@ -174,22 +175,8 @@ class _BudgetPageState extends State<BudgetPage> {
     );
   }
 
-  static Color _categoryColor(ExpenseCategory cat, ColorScheme cs) {
-    switch (cat) {
-      case ExpenseCategory.hotel:
-        return Colors.blue;
-      case ExpenseCategory.food:
-        return Colors.orange;
-      case ExpenseCategory.transport:
-        return Colors.purple;
-      case ExpenseCategory.activities:
-        return Colors.green;
-      case ExpenseCategory.shopping:
-        return Colors.pink;
-      case ExpenseCategory.other:
-        return Colors.grey;
-    }
-  }
+  static Color _categoryColor(ExpenseCategory cat, ColorScheme cs) =>
+      AppColors.budgetCategoryColor(cat);
 
   static String _categoryLabel(AppLocalizations l10n, ExpenseCategory cat) {
     switch (cat) {

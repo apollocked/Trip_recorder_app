@@ -1,3 +1,4 @@
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
 
@@ -14,10 +15,10 @@ class ImageViewerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: AppColors.black,
+        iconTheme: const IconThemeData(color: AppColors.white),
         elevation: 0,
       ),
       body: PageView.builder(

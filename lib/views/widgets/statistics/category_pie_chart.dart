@@ -1,4 +1,5 @@
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -14,14 +15,7 @@ class CategoryPieChart extends StatelessWidget {
     required this.l10n,
   });
 
-  static const _categoryColors = [
-    Color(0xFF4FC3F7),
-    Color(0xFFFF8A65),
-    Color(0xFF81C784),
-    Color(0xFF9575CD),
-    Color(0xFFFFD54F),
-    Color(0xFFA1887F),
-  ];
+  static const _categoryColors = AppColors.chartPalette;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +32,7 @@ class CategoryPieChart extends StatelessWidget {
         titleStyle: const TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: AppColors.white,
         ),
       );
     }).toList();

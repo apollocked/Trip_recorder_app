@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
@@ -135,7 +136,7 @@ class _FavoriteTripCard extends StatelessWidget {
                         style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
                       ),
                       const SizedBox(width: 12),
-                      Icon(Icons.star_rounded, size: 14, color: Colors.amber.shade400),
+                      Icon(Icons.star_rounded, size: 14, color: AppColors.ratingActive),
                       const SizedBox(width: 4),
                       Text(
                         trip.rating > 0 ? trip.rating.toStringAsFixed(1) : '--',
@@ -148,7 +149,7 @@ class _FavoriteTripCard extends StatelessWidget {
             ),
             Icon(
               Icons.favorite_rounded,
-              color: Colors.red.shade400,
+              color: AppColors.favoriteIconColor,
               size: 22,
             ),
           ],

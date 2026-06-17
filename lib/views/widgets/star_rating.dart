@@ -1,3 +1,4 @@
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class StarRating extends StatelessWidget {
@@ -36,7 +37,7 @@ class StarRating extends StatelessWidget {
                       : Icons.star_border_rounded,
               size: size,
               color: isFilled || isHalf
-                  ? Colors.amber
+                  ? AppColors.ratingActive
                   : colorScheme.outlineVariant,
             ),
           ),

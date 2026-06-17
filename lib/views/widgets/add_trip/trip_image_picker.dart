@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
 
 class TripImagePicker extends StatelessWidget {
@@ -157,10 +158,10 @@ class TripImagePicker extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: const BoxDecoration(
-                color: Colors.black54,
+                color: AppColors.imageOverlay,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.close, size: 16, color: Colors.white),
+              child: const Icon(Icons.close, size: 16, color: AppColors.white),
             ),
           ),
         ),

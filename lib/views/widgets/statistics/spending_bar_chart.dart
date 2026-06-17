@@ -63,7 +63,31 @@ class _CurrencyChart extends StatelessWidget {
               BarChartData(
                 alignment: BarChartAlignment.spaceAround,
                 maxY: maxVal * 1.2,
-                barTouchData: BarTouchData(enabled: true),
+                barTouchData: BarTouchData(
+                  enabled: true,
+                  touchTooltipData: BarTouchTooltipData(
+                    tooltipBgColor: colorScheme.inverseSurface,
+                    getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                      return BarTooltipItem(
+                        '${sorted[group.x.toInt()].key}\n',
+                        TextStyle(
+                          color: colorScheme.onInverseSurface,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '${rod.toY.toStringAsFixed(0)} ${currency}',
+                            style: TextStyle(
+                              color: colorScheme.onInverseSurface.withAlpha(200),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
                 titlesData: FlTitlesData(
                   leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),

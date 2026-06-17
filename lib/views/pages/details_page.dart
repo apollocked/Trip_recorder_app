@@ -1,4 +1,5 @@
 ﻿import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
@@ -36,7 +37,7 @@ class DetailsPage extends StatelessWidget {
           backgroundColor: colorScheme.surface,
           extendBodyBehindAppBar: true,
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
+            backgroundColor: AppColors.transparent,
             elevation: 0,
             iconTheme: IconThemeData(color: colorScheme.onSurface),
             actions: [
