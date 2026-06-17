@@ -6,6 +6,7 @@ class StatCard extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final ColorScheme colorScheme;
+  final VoidCallback? onTap;
 
   const StatCard({
     super.key,
@@ -14,6 +15,7 @@ class StatCard extends StatelessWidget {
     required this.icon,
     required this.iconColor,
     required this.colorScheme,
+    this.onTap,
   });
 
   @override
@@ -26,7 +28,10 @@ class StatCard extends StatelessWidget {
         side: BorderSide(color: colorScheme.outlineVariant.withAlpha(100)),
       ),
       color: colorScheme.surfaceContainerLow,
-      child: Padding(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
@@ -53,6 +58,7 @@ class StatCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

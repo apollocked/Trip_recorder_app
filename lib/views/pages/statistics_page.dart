@@ -2,6 +2,7 @@
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
+import 'package:animations_in_flutter/views/pages/favorites_page.dart';
 import 'package:animations_in_flutter/views/widgets/statistics/category_breakdown.dart';
 import 'package:animations_in_flutter/views/widgets/statistics/category_pie_chart.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
@@ -89,6 +90,12 @@ class StatisticsPage extends StatelessWidget {
                       icon: Icons.favorite_rounded,
                       iconColor: Colors.red,
                       colorScheme: colorScheme,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const FavoritesPage(),
+                        ),
+                      ),
                     ),
                   ] else
                     Column(
@@ -140,6 +147,12 @@ class StatisticsPage extends StatelessWidget {
                                 icon: Icons.favorite_rounded,
                                 iconColor: Colors.red,
                                 colorScheme: colorScheme,
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const FavoritesPage(),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
