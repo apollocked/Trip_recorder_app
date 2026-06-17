@@ -423,6 +423,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get amount => 'المبلغ';
 
   @override
+  String get memories => 'الذكريات';
+
+  @override
   String get journal => 'اليوميات';
 
   @override

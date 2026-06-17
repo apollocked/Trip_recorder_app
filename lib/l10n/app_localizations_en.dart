@@ -426,6 +426,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get amount => 'Amount';
 
   @override
+  String get memories => 'Memories';
+
+  @override
   String get journal => 'Journal';
 
   @override

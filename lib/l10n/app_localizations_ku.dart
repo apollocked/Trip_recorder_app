@@ -428,6 +428,9 @@ class AppLocalizationsKu extends AppLocalizations {
   String get amount => 'بڕ';
 
   @override
+  String get memories => 'بیرەوەرییەکان';
+
+  @override
   String get journal => 'ڕۆژنامە';
 
   @override

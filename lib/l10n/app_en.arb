@@ -146,6 +146,8 @@
   "swap": "Swap",
   "amount": "Amount",
 
+  "memories": "Memories",
+
   "journal": "Journal",
   "addJournalEntry": "Add Entry",
   "journalTitle": "Entry Title",

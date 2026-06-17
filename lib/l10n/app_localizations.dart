@@ -904,6 +904,12 @@ abstract class AppLocalizations {
   /// **'Amount'**
   String get amount;
 
+  /// No description provided for @memories.
+  ///
+  /// In en, this message translates to:
+  /// **'Memories'**
+  String get memories;
+
   /// No description provided for @journal.
   ///
   /// In en, this message translates to:

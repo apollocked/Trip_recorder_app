@@ -1,5 +1,6 @@
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
+import 'package:animations_in_flutter/views/pages/memory_page.dart';
 import 'package:animations_in_flutter/views/widgets/title_widget.dart';
 import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -39,17 +40,29 @@ class _HomeState extends State<HomePage> {
                   child: titleWidget(l10n.appTitle, context),
                 ),
               ),
-              Positioned(top: 0, right: size.width * 0.04,
-                child: Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.04),
-                  child: IconButton(
-                    icon: Icon(Icons.swap_horiz_rounded, color: c.primary),
-                    tooltip: l10n.currencyConverter,
+            ]),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextButton.icon(
                     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CurrencyConverterPage())),
+                    icon: const Icon(Icons.swap_horiz_rounded, size: 18),
+                    label: Text(l10n.currencyConverter),
                   ),
                 ),
-              ),
-            ]),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextButton.icon(
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MemoryPage())),
+                    icon: const Icon(Icons.timeline_rounded, size: 18),
+                    label: Text(l10n.memories),
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(child: const TripListWidget()),
           SizedBox(height: size.height * 0.08),
