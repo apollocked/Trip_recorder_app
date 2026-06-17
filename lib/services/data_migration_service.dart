@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../core/constants.dart';
+import '../core/constants/constants.dart';
 import '../data/repositories/trip_repository.dart';
 import '../model/trip.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +13,8 @@ class DataMigrationService {
 
   Future<void> migrateIfNeeded() async {
     final prefs = await SharedPreferences.getInstance();
-    final alreadyMigrated = prefs.getBool(AppConstants.prefDataMigrated) ?? false;
+    final alreadyMigrated =
+        prefs.getBool(AppConstants.prefDataMigrated) ?? false;
     if (alreadyMigrated) return;
 
     final String? tripsJson = prefs.getString('user_trips');

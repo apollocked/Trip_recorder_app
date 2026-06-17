@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/checklist_item.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
@@ -26,7 +26,9 @@ class _PackingListPageState extends State<PackingListPage> {
 
   Future<void> _loadItems() async {
     try {
-      final items = await context.read<TripProvider>().getChecklistItems(widget.tripId);
+      final items = await context.read<TripProvider>().getChecklistItems(
+        widget.tripId,
+      );
       if (mounted) {
         setState(() {
           _items = items;
@@ -37,7 +39,9 @@ class _PackingListPageState extends State<PackingListPage> {
       if (mounted) {
         setState(() => _isLoading = false);
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.errorSavingTrip(e.toString()))));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.errorSavingTrip(e.toString()))),
+        );
       }
     }
   }
@@ -60,7 +64,10 @@ class _PackingListPageState extends State<PackingListPage> {
           onSubmitted: (val) => Navigator.pop(ctx, val.trim()),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.notNow)),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.notNow),
+          ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, controller.text.trim()),
             child: Text(l10n.addItem),
@@ -88,7 +95,10 @@ class _PackingListPageState extends State<PackingListPage> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text(l10n.packingList, style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text(
+          l10n.packingList,
+          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -106,7 +116,10 @@ class _PackingListPageState extends State<PackingListPage> {
                 children: [
                   if (_items.isNotEmpty)
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                       child: Row(
                         children: [
                           Expanded(
@@ -115,14 +128,19 @@ class _PackingListPageState extends State<PackingListPage> {
                               child: LinearProgressIndicator(
                                 value: checkedCount / _items.length,
                                 minHeight: 6,
-                                backgroundColor: colorScheme.surfaceContainerHighest,
+                                backgroundColor:
+                                    colorScheme.surfaceContainerHighest,
                               ),
                             ),
                           ),
                           const SizedBox(width: 12),
                           Text(
                             l10n.itemsChecked(checkedCount, _items.length),
-                            style: TextStyle(fontWeight: FontWeight.w600, color: colorScheme.onSurfaceVariant, fontSize: 13),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: colorScheme.onSurfaceVariant,
+                              fontSize: 13,
+                            ),
                           ),
                         ],
                       ),
@@ -146,12 +164,15 @@ class _PackingListPageState extends State<PackingListPage> {
                               return Dismissible(
                                 key: ValueKey(item.id),
                                 direction: DismissDirection.endToStart,
-                                confirmDismiss: (direction) => showConfirmationDialog(
-                                  context: context,
-                                  title: l10n.confirmDeleteTitle(item.title),
-                                  message: l10n.confirmDeleteMessage,
-                                  icon: Icons.delete_rounded,
-                                ),
+                                confirmDismiss: (direction) =>
+                                    showConfirmationDialog(
+                                      context: context,
+                                      title: l10n.confirmDeleteTitle(
+                                        item.title,
+                                      ),
+                                      message: l10n.confirmDeleteMessage,
+                                      icon: Icons.delete_rounded,
+                                    ),
                                 background: Container(
                                   alignment: Alignment.centerRight,
                                   padding: const EdgeInsets.only(right: 20),
@@ -159,10 +180,18 @@ class _PackingListPageState extends State<PackingListPage> {
                                     color: colorScheme.error,
                                     borderRadius: BorderRadius.circular(16),
                                   ),
-                                  child: Icon(Icons.delete_rounded, color: colorScheme.onError),
+                                  child: Icon(
+                                    Icons.delete_rounded,
+                                    color: colorScheme.onError,
+                                  ),
                                 ),
                                 onDismissed: (_) async {
-                                  await context.read<TripProvider>().deleteChecklistItem(widget.tripId, item.id);
+                                  await context
+                                      .read<TripProvider>()
+                                      .deleteChecklistItem(
+                                        widget.tripId,
+                                        item.id,
+                                      );
                                   _loadItems();
                                 },
                                 child: AnimatedContainer(
@@ -170,34 +199,46 @@ class _PackingListPageState extends State<PackingListPage> {
                                   margin: const EdgeInsets.only(bottom: 8),
                                   decoration: BoxDecoration(
                                     color: item.isChecked
-                                        ? colorScheme.primaryContainer.withAlpha(60)
-                                        : colorScheme.surfaceContainerHighest.withAlpha(60),
+                                        ? colorScheme.primaryContainer
+                                              .withAlpha(60)
+                                        : colorScheme.surfaceContainerHighest
+                                              .withAlpha(60),
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
                                       color: item.isChecked
                                           ? colorScheme.primary.withAlpha(80)
-                                          : colorScheme.outlineVariant.withAlpha(128),
+                                          : colorScheme.outlineVariant
+                                                .withAlpha(128),
                                     ),
                                   ),
                                   child: CheckboxListTile(
                                     value: item.isChecked,
                                     onChanged: (val) async {
-                                      await context.read<TripProvider>().toggleChecklistItem(
-                                        widget.tripId,
-                                        item.id,
-                                        val ?? false,
-                                      );
+                                      await context
+                                          .read<TripProvider>()
+                                          .toggleChecklistItem(
+                                            widget.tripId,
+                                            item.id,
+                                            val ?? false,
+                                          );
                                       _loadItems();
                                     },
                                     title: Text(
                                       item.title,
                                       style: TextStyle(
-                                        decoration: item.isChecked ? TextDecoration.lineThrough : null,
-                                        color: item.isChecked ? colorScheme.onSurfaceVariant : colorScheme.onSurface,
+                                        decoration: item.isChecked
+                                            ? TextDecoration.lineThrough
+                                            : null,
+                                        color: item.isChecked
+                                            ? colorScheme.onSurfaceVariant
+                                            : colorScheme.onSurface,
                                       ),
                                     ),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                    controlAffinity: ListTileControlAffinity.leading,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
                                   ),
                                 ),
                               );

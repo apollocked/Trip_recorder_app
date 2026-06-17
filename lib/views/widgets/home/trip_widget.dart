@@ -1,4 +1,4 @@
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
@@ -20,14 +20,14 @@ Widget tripWidget(
   final l10n = AppLocalizations.of(context)!;
 
   return SlideTransition(
-    position: Tween<Offset>(
-      begin: const Offset(0, 0.15),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: animation,
-      curve: Curves.easeOutCubic,
-      reverseCurve: Curves.easeInCubic,
-    )),
+    position: Tween<Offset>(begin: const Offset(0, 0.15), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutCubic,
+            reverseCurve: Curves.easeInCubic,
+          ),
+        ),
     child: FadeTransition(
       opacity: animation,
       child: Dismissible(
@@ -64,9 +64,7 @@ Widget tripWidget(
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            side: BorderSide(
-              color: colorScheme.outlineVariant.withAlpha(80),
-            ),
+            side: BorderSide(color: colorScheme.outlineVariant.withAlpha(80)),
           ),
           color: colorScheme.surfaceContainerLow,
           child: InkWell(

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../core/constants.dart';
+import '../core/constants/constants.dart';
 import '../data/repositories/trip_repository.dart';
 import '../model/trip.dart';
 import '../model/trip_category.dart';
@@ -70,11 +70,17 @@ class TripProvider extends ChangeNotifier
     DateTime? reminderDate,
   }) async {
     final trip = await _repository.addTrip(
-      title: title, price: price, nights: nights,
-      imageFiles: imageFiles, assetImagePaths: assetImagePaths,
-      date: date, description: description,
-      category: category, rating: rating,
-      currency: currency, reminderDate: reminderDate,
+      title: title,
+      price: price,
+      nights: nights,
+      imageFiles: imageFiles,
+      assetImagePaths: assetImagePaths,
+      date: date,
+      description: description,
+      category: category,
+      rating: rating,
+      currency: currency,
+      reminderDate: reminderDate,
     );
     _trips.insert(0, trip);
     _scheduleReminder(trip);
@@ -99,12 +105,21 @@ class TripProvider extends ChangeNotifier
     DateTime? reminderDate,
   }) async {
     await NotificationService().cancelTripReminder(id);
-    final trip = await _repository.updateTrip(id,
-      title: title, price: price, nights: nights,
-      imageFiles: imageFiles, existingImagePaths: existingImagePaths,
-      assetImagePaths: assetImagePaths, date: date, description: description,
-      isLiked: isLiked, category: category, rating: rating,
-      currency: currency, reminderDate: reminderDate,
+    final trip = await _repository.updateTrip(
+      id,
+      title: title,
+      price: price,
+      nights: nights,
+      imageFiles: imageFiles,
+      existingImagePaths: existingImagePaths,
+      assetImagePaths: assetImagePaths,
+      date: date,
+      description: description,
+      isLiked: isLiked,
+      category: category,
+      rating: rating,
+      currency: currency,
+      reminderDate: reminderDate,
     );
     final index = _trips.indexWhere((t) => t.id == id);
     if (index != -1) {
@@ -134,18 +149,33 @@ class TripProvider extends ChangeNotifier
     }
   }
 
-  void setSearchQuery(String query) { _searchQuery = query; notifyListeners(); }
-  void setCategoryFilter(TripCategory? category) { _categoryFilter = category; notifyListeners(); }
-  void setSortBy(String sort) { _sortBy = sort; notifyListeners(); }
+  void setSearchQuery(String query) {
+    _searchQuery = query;
+    notifyListeners();
+  }
+
+  void setCategoryFilter(TripCategory? category) {
+    _categoryFilter = category;
+    notifyListeners();
+  }
+
+  void setSortBy(String sort) {
+    _sortBy = sort;
+    notifyListeners();
+  }
 
   List<Trip> get filteredTrips {
     var result = List<Trip>.from(_trips);
 
     if (_searchQuery.isNotEmpty) {
       final lower = _searchQuery.toLowerCase();
-      result = result.where((t) =>
-          t.title.toLowerCase().contains(lower) ||
-          t.description.toLowerCase().contains(lower)).toList();
+      result = result
+          .where(
+            (t) =>
+                t.title.toLowerCase().contains(lower) ||
+                t.description.toLowerCase().contains(lower),
+          )
+          .toList();
     }
 
     if (_categoryFilter != null) {
@@ -153,22 +183,39 @@ class TripProvider extends ChangeNotifier
     }
 
     switch (_sortBy) {
-      case 'date_asc': result.sort((a, b) => a.date.compareTo(b.date)); break;
-      case 'date_desc': result.sort((a, b) => b.date.compareTo(a.date)); break;
-      case 'price_asc': result.sort((a, b) => a.price.compareTo(b.price)); break;
-      case 'price_desc': result.sort((a, b) => b.price.compareTo(a.price)); break;
-      case 'rating_desc': result.sort((a, b) => b.rating.compareTo(a.rating)); break;
-      case 'title_asc': result.sort((a, b) => a.title.compareTo(b.title)); break;
+      case 'date_asc':
+        result.sort((a, b) => a.date.compareTo(b.date));
+        break;
+      case 'date_desc':
+        result.sort((a, b) => b.date.compareTo(a.date));
+        break;
+      case 'price_asc':
+        result.sort((a, b) => a.price.compareTo(b.price));
+        break;
+      case 'price_desc':
+        result.sort((a, b) => b.price.compareTo(a.price));
+        break;
+      case 'rating_desc':
+        result.sort((a, b) => b.rating.compareTo(a.rating));
+        break;
+      case 'title_asc':
+        result.sort((a, b) => a.title.compareTo(b.title));
+        break;
     }
 
     return result;
   }
 
   Trip? getTripById(String id) {
-    try { return _trips.firstWhere((t) => t.id == id); } catch (_) { return null; }
+    try {
+      return _trips.firstWhere((t) => t.id == id);
+    } catch (_) {
+      return null;
+    }
   }
 
-  Map<String, dynamic> get statistics => TripStatistics.fromTrips(_trips).toMap();
+  Map<String, dynamic> get statistics =>
+      TripStatistics.fromTrips(_trips).toMap();
 
   Future<void> completeOnboarding() async {
     final prefs = await SharedPreferences.getInstance();

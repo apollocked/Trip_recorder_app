@@ -1,5 +1,5 @@
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/l10n/l10n.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
 import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
@@ -104,8 +104,7 @@ class _SettingsModalBody extends StatelessWidget {
                         ChoiceChip(
                           avatar: const Icon(Icons.phone_android_outlined),
                           label: Text(loc.system),
-                          selected:
-                              themeService.themeMode == ThemeMode.system,
+                          selected: themeService.themeMode == ThemeMode.system,
                           onSelected: (selected) {
                             if (selected) {
                               themeService.setThemeMode(ThemeMode.system);
@@ -126,7 +125,12 @@ class _SettingsModalBody extends StatelessWidget {
                   child: OutlinedButton.icon(
                     onPressed: () {
                       Navigator.pop(context);
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const CurrencyConverterPage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const CurrencyConverterPage(),
+                        ),
+                      );
                     },
                     icon: const Icon(Icons.open_in_new_rounded, size: 18),
                     label: Text(loc.currencyConverter),
@@ -144,7 +148,9 @@ class _SettingsModalBody extends StatelessWidget {
                       Navigator.pop(context);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const PrivacyPolicyPage()),
+                        MaterialPageRoute(
+                          builder: (_) => const PrivacyPolicyPage(),
+                        ),
                       );
                     },
                     icon: const Icon(Icons.open_in_new_rounded, size: 18),

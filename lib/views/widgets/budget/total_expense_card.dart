@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 
 class TotalExpenseCard extends StatelessWidget {
   final String currencySymbol;
@@ -28,10 +28,17 @@ class TotalExpenseCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(l10n.totalExpenses, style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 14)),
+          Text(
+            l10n.totalExpenses,
+            style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 14),
+          ),
           const SizedBox(height: 8),
-          Text('$currencySymbol${totalAmount.toStringAsFixed(2)}',
-              style: textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
+          Text(
+            '$currencySymbol${totalAmount.toStringAsFixed(2)}',
+            style: textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
     );

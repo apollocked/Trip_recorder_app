@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
 
 class CategoryBudgetBars extends StatelessWidget {
@@ -29,7 +29,10 @@ class CategoryBudgetBars extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(l10n.expenseCategory, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+        Text(
+          l10n.expenseCategory,
+          style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 12),
         ...categoryTotals.entries.map((entry) {
           final fraction = maxCatAmount > 0 ? entry.value / maxCatAmount : 0.0;
@@ -40,8 +43,13 @@ class CategoryBudgetBars extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 80,
-                  child: Text(categoryLabel(l10n, entry.key),
-                      style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13)),
+                  child: Text(
+                    categoryLabel(l10n, entry.key),
+                    style: TextStyle(
+                      color: colorScheme.onSurfaceVariant,
+                      fontSize: 13,
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: ClipRRect(
@@ -57,9 +65,14 @@ class CategoryBudgetBars extends StatelessWidget {
                 const SizedBox(width: 8),
                 SizedBox(
                   width: 70,
-                  child: Text('$currencySymbol${entry.value.toStringAsFixed(0)}',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+                  child: Text(
+                    '$currencySymbol${entry.value.toStringAsFixed(0)}',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
                 ),
               ],
             ),

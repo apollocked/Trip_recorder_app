@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 
 class DatePickerField extends StatelessWidget {
   final IconData icon;
@@ -27,7 +27,8 @@ class DatePickerField extends StatelessWidget {
       onTap: () async {
         final date = await showDatePicker(
           context: context,
-          initialDate: currentDate ?? DateTime.now().add(const Duration(days: 1)),
+          initialDate:
+              currentDate ?? DateTime.now().add(const Duration(days: 1)),
           firstDate: isOptional ? DateTime.now() : DateTime(1900),
           lastDate: DateTime(2100),
         );
@@ -40,7 +41,9 @@ class DatePickerField extends StatelessWidget {
           );
           if (time == null) return;
           if (!context.mounted) return;
-          onDateChanged(DateTime(date.year, date.month, date.day, time.hour, time.minute));
+          onDateChanged(
+            DateTime(date.year, date.month, date.day, time.hour, time.minute),
+          );
         } else {
           onDateChanged(date);
         }
@@ -56,12 +59,22 @@ class DatePickerField extends StatelessWidget {
           children: [
             Icon(icon, size: 20, color: colorScheme.primary),
             const SizedBox(width: 12),
-            Text(label, style: TextStyle(color: currentDate != null ? colorScheme.onSurface : colorScheme.onSurfaceVariant)),
+            Text(
+              label,
+              style: TextStyle(
+                color: currentDate != null
+                    ? colorScheme.onSurface
+                    : colorScheme.onSurfaceVariant,
+              ),
+            ),
             const Spacer(),
             if (currentDate != null)
               _DateDisplay(date: currentDate!, colorScheme: colorScheme)
             else
-              Text(l10n.notSet, style: TextStyle(color: colorScheme.onSurfaceVariant)),
+              Text(
+                l10n.notSet,
+                style: TextStyle(color: colorScheme.onSurfaceVariant),
+              ),
           ],
         ),
       ),
@@ -86,7 +99,10 @@ class _DateDisplay extends StatelessWidget {
         const SizedBox(width: 6),
         Text(
           "${date.day}/${date.month}/${date.year}",
-          style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.primary),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: colorScheme.primary,
+          ),
         ),
       ],
     );

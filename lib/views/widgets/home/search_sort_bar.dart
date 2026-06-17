@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 
@@ -53,7 +53,10 @@ class _SearchSortBarState extends State<SearchSortBar> {
                       : null,
                   filled: true,
                   fillColor: colorScheme.surfaceContainerHighest.withAlpha(80),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 0,
+                    horizontal: 16,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -71,10 +74,22 @@ class _SearchSortBarState extends State<SearchSortBar> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          _buildFilterChip(colorScheme, l10n, null, provider.categoryFilter == null, () => provider.setCategoryFilter(null)),
-                          ...TripCategory.values.map((cat) => _buildFilterChip(
-                            colorScheme, l10n, cat, provider.categoryFilter == cat, () => provider.setCategoryFilter(cat),
-                          )),
+                          _buildFilterChip(
+                            colorScheme,
+                            l10n,
+                            null,
+                            provider.categoryFilter == null,
+                            () => provider.setCategoryFilter(null),
+                          ),
+                          ...TripCategory.values.map(
+                            (cat) => _buildFilterChip(
+                              colorScheme,
+                              l10n,
+                              cat,
+                              provider.categoryFilter == cat,
+                              () => provider.setCategoryFilter(cat),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -83,18 +98,23 @@ class _SearchSortBarState extends State<SearchSortBar> {
                   PopupMenuButton<String>(
                     icon: const Icon(Icons.sort_rounded, size: 22),
                     tooltip: l10n.sortLabel,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     onSelected: (val) => provider.setSortBy(val),
                     itemBuilder: (_) => [
                       _sortItem(l10n.newest, 'date_desc', provider.sortBy),
                       _sortItem(l10n.oldest, 'date_asc', provider.sortBy),
                       _sortItem(l10n.priceAsc, 'price_asc', provider.sortBy),
                       _sortItem(l10n.priceDesc, 'price_desc', provider.sortBy),
-                      _sortItem(l10n.ratingLabel, 'rating_desc', provider.sortBy),
+                      _sortItem(
+                        l10n.ratingLabel,
+                        'rating_desc',
+                        provider.sortBy,
+                      ),
                       _sortItem(l10n.az, 'title_asc', provider.sortBy),
                     ],
                   ),
-
                 ],
               ),
             ),
@@ -104,11 +124,20 @@ class _SearchSortBarState extends State<SearchSortBar> {
     );
   }
 
-  Widget _buildFilterChip(ColorScheme colorScheme, var l10n, TripCategory? cat, bool selected, VoidCallback onTap) {
+  Widget _buildFilterChip(
+    ColorScheme colorScheme,
+    var l10n,
+    TripCategory? cat,
+    bool selected,
+    VoidCallback onTap,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(right: 6),
       child: FilterChip(
-        label: Text(cat == null ? l10n.all : cat.label(l10n), style: TextStyle(fontSize: 12)),
+        label: Text(
+          cat == null ? l10n.all : cat.label(l10n),
+          style: TextStyle(fontSize: 12),
+        ),
         selected: selected,
         onSelected: (_) => onTap(),
         selectedColor: colorScheme.primaryContainer,

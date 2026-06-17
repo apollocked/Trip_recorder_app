@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/expense.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
@@ -69,7 +69,10 @@ class ExpenseTile extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: categoryColor(expense.category, colorScheme).withAlpha(30),
+                color: categoryColor(
+                  expense.category,
+                  colorScheme,
+                ).withAlpha(30),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -83,14 +86,31 @@ class ExpenseTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(expense.title, style: TextStyle(fontWeight: FontWeight.w600, color: colorScheme.onSurface)),
-                  Text(categoryLabel(l10n, expense.category),
-                      style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant)),
+                  Text(
+                    expense.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  Text(
+                    categoryLabel(l10n, expense.category),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
                 ],
               ),
             ),
-            Text('$currencySymbol${expense.amount.toStringAsFixed(0)}',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: colorScheme.onSurface)),
+            Text(
+              '$currencySymbol${expense.amount.toStringAsFixed(0)}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: colorScheme.onSurface,
+              ),
+            ),
           ],
         ),
       ),

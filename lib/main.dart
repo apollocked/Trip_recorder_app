@@ -1,7 +1,7 @@
-import 'package:animations_in_flutter/core/constants.dart';
-import 'package:animations_in_flutter/core/routes.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/l10n/localization_config.dart';
+import 'package:animations_in_flutter/core/constants/constants.dart';
+import 'package:animations_in_flutter/core/routes/routes.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/localization_config.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/notification_service.dart';

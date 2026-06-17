@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/l10n/l10n.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
 import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
@@ -19,7 +19,10 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text(loc.settingsTitle, style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text(
+          loc.settingsTitle,
+          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: ListView(
@@ -33,13 +36,18 @@ class SettingsPage extends StatelessWidget {
             child: Consumer<LanguageService>(
               builder: (context, languageService, _) {
                 return Wrap(
-                  spacing: 10, runSpacing: 10,
+                  spacing: 10,
+                  runSpacing: 10,
                   children: L10n.all.map((locale) {
-                    final isSelected = languageService.locale.languageCode == locale.languageCode;
+                    final isSelected =
+                        languageService.locale.languageCode ==
+                        locale.languageCode;
                     return ChoiceChip(
                       label: Text(L10n.getNativeName(locale.languageCode)),
                       selected: isSelected,
-                      onSelected: (selected) { if (selected) languageService.setLocale(locale); },
+                      onSelected: (selected) {
+                        if (selected) languageService.setLocale(locale);
+                      },
                     );
                   }).toList(),
                 );
@@ -55,25 +63,36 @@ class SettingsPage extends StatelessWidget {
             child: Consumer<ThemeService>(
               builder: (context, themeService, _) {
                 return Wrap(
-                  spacing: 10, runSpacing: 10,
+                  spacing: 10,
+                  runSpacing: 10,
                   children: [
                     ChoiceChip(
                       avatar: const Icon(Icons.light_mode_outlined),
                       label: Text(loc.light),
                       selected: themeService.themeMode == ThemeMode.light,
-                      onSelected: (selected) { if (selected) themeService.setThemeMode(ThemeMode.light); },
+                      onSelected: (selected) {
+                        if (selected) {
+                          themeService.setThemeMode(ThemeMode.light);
+                        }
+                      },
                     ),
                     ChoiceChip(
                       avatar: const Icon(Icons.dark_mode_outlined),
                       label: Text(loc.dark),
                       selected: themeService.themeMode == ThemeMode.dark,
-                      onSelected: (selected) { if (selected) themeService.setThemeMode(ThemeMode.dark); },
+                      onSelected: (selected) {
+                        if (selected) themeService.setThemeMode(ThemeMode.dark);
+                      },
                     ),
                     ChoiceChip(
                       avatar: const Icon(Icons.phone_android_outlined),
                       label: Text(loc.system),
                       selected: themeService.themeMode == ThemeMode.system,
-                      onSelected: (selected) { if (selected) themeService.setThemeMode(ThemeMode.system); },
+                      onSelected: (selected) {
+                        if (selected) {
+                          themeService.setThemeMode(ThemeMode.system);
+                        }
+                      },
                     ),
                   ],
                 );
@@ -89,7 +108,12 @@ class SettingsPage extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CurrencyConverterPage())),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const CurrencyConverterPage(),
+                  ),
+                ),
                 icon: const Icon(Icons.open_in_new_rounded, size: 18),
                 label: Text(loc.currencyConverter),
               ),
@@ -104,7 +128,10 @@ class SettingsPage extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyPage())),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const PrivacyPolicyPage()),
+                ),
                 icon: const Icon(Icons.open_in_new_rounded, size: 18),
                 label: Text(loc.privacyPolicy),
               ),
@@ -148,7 +175,13 @@ class _SectionCard extends StatelessWidget {
             children: [
               Icon(icon, size: 20, color: colorScheme.primary),
               const SizedBox(width: 8),
-              Text(title, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: colorScheme.onSurface)),
+              Text(
+                title,
+                style: textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: colorScheme.onSurface,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 12),

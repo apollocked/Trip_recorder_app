@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 
 typedef CategoryLabeler<T> = String Function(AppLocalizations l10n, T category);
 
@@ -39,8 +39,13 @@ class CategoryBreakdown<T> extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 80,
-                  child: Text(labeler(l10n, entry.key),
-                      style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13)),
+                  child: Text(
+                    labeler(l10n, entry.key),
+                    style: TextStyle(
+                      color: colorScheme.onSurfaceVariant,
+                      fontSize: 13,
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: ClipRRect(
@@ -55,8 +60,14 @@ class CategoryBreakdown<T> extends StatelessWidget {
                 const SizedBox(width: 8),
                 SizedBox(
                   width: 30,
-                  child: Text('$count', textAlign: TextAlign.right,
-                      style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+                  child: Text(
+                    '$count',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
                 ),
               ],
             ),

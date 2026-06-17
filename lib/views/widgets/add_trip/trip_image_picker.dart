@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/views/widgets/permission_dialog.dart';
 
 class TripImagePicker extends StatelessWidget {
@@ -54,7 +54,8 @@ class TripImagePicker extends StatelessWidget {
         if (allPaths.isNotEmpty) ...[
           const SizedBox(height: 8),
           TextButton.icon(
-            onPressed: () => pickMultipleImages(context, (files) => onImagesAdded(files)),
+            onPressed: () =>
+                pickMultipleImages(context, (files) => onImagesAdded(files)),
             icon: const Icon(Icons.add_photo_alternate_rounded, size: 18),
             label: Text(l10n.addMorePhotos),
           ),
@@ -82,13 +83,28 @@ class TripImagePicker extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.add_a_photo_rounded, size: 42,
-                color: imageError ? colorScheme.error : colorScheme.primary),
+            Icon(
+              Icons.add_a_photo_rounded,
+              size: 42,
+              color: imageError ? colorScheme.error : colorScheme.primary,
+            ),
             const SizedBox(height: 12),
-            Text(l10n.photoreq,
-                style: TextStyle(color: imageError ? colorScheme.error : colorScheme.onSecondaryContainer)),
+            Text(
+              l10n.photoreq,
+              style: TextStyle(
+                color: imageError
+                    ? colorScheme.error
+                    : colorScheme.onSecondaryContainer,
+              ),
+            ),
             const SizedBox(height: 4),
-            Text(l10n.tapToAddPhotos, style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant)),
+            Text(
+              l10n.tapToAddPhotos,
+              style: TextStyle(
+                fontSize: 12,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
           ],
         ),
       ),
@@ -99,13 +115,17 @@ class TripImagePicker extends StatelessWidget {
     return GestureDetector(
       onTap: () => pickMultipleImages(context, (files) => onImagesAdded(files)),
       child: Container(
-        width: 120, height: 120,
+        width: 120,
+        height: 120,
         decoration: BoxDecoration(
           color: colorScheme.secondaryContainer.withAlpha(80),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: colorScheme.outlineVariant.withAlpha(128)),
         ),
-        child: Icon(Icons.add_photo_alternate_outlined, color: colorScheme.primary),
+        child: Icon(
+          Icons.add_photo_alternate_outlined,
+          color: colorScheme.primary,
+        ),
       ),
     );
   }
@@ -116,23 +136,30 @@ class TripImagePicker extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          width: 120, height: 120,
+          width: 120,
+          height: 120,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: colorScheme.outlineVariant),
             image: DecorationImage(
-              image: isAsset ? AssetImage(path) as ImageProvider : FileImage(File(path)),
+              image: isAsset
+                  ? AssetImage(path) as ImageProvider
+                  : FileImage(File(path)),
               fit: BoxFit.cover,
             ),
           ),
         ),
         Positioned(
-          top: 4, right: 4,
+          top: 4,
+          right: 4,
           child: GestureDetector(
             onTap: () => onImageRemovedAt(index),
             child: Container(
               padding: const EdgeInsets.all(4),
-              decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
+              decoration: const BoxDecoration(
+                color: Colors.black54,
+                shape: BoxShape.circle,
+              ),
               child: const Icon(Icons.close, size: 16, color: Colors.white),
             ),
           ),

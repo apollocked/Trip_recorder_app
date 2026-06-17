@@ -1,4 +1,4 @@
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
 import 'package:animations_in_flutter/views/pages/memory_page.dart';
 import 'package:animations_in_flutter/views/widgets/home/title_widget.dart';

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/journal_entry.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
@@ -29,7 +29,9 @@ class _JournalPageState extends State<JournalPage> {
 
   Future<void> _loadEntries() async {
     try {
-      final entries = await context.read<TripProvider>().getJournalEntries(widget.tripId);
+      final entries = await context.read<TripProvider>().getJournalEntries(
+        widget.tripId,
+      );
       if (mounted) {
         setState(() {
           _entries = entries;
@@ -40,7 +42,9 @@ class _JournalPageState extends State<JournalPage> {
       if (mounted) {
         setState(() => _isLoading = false);
         final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.errorSavingTrip(e.toString()))));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.errorSavingTrip(e.toString()))),
+        );
       }
     }
   }
@@ -48,7 +52,9 @@ class _JournalPageState extends State<JournalPage> {
   Future<void> _showAddEntryDialog() async {
     final result = await showJournalEntryDialog(context);
     if (result != null && mounted) {
-      final imagePaths = (result['images'] as List<File>).map((f) => f.path).toList();
+      final imagePaths = (result['images'] as List<File>)
+          .map((f) => f.path)
+          .toList();
       await context.read<TripProvider>().addJournalEntry(
         tripId: widget.tripId,
         title: result['title'],
@@ -61,7 +67,10 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   Future<void> _deleteEntry(JournalEntry entry) async {
-    await context.read<TripProvider>().deleteJournalEntry(widget.tripId, entry.id);
+    await context.read<TripProvider>().deleteJournalEntry(
+      widget.tripId,
+      entry.id,
+    );
     _loadEntries();
   }
 
@@ -74,7 +83,10 @@ class _JournalPageState extends State<JournalPage> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text(l10n.journal, style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text(
+          l10n.journal,
+          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -91,7 +103,9 @@ class _JournalPageState extends State<JournalPage> {
               child: _entries.isEmpty
                   ? ListView(
                       children: [
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.15,
+                        ),
                         EmptyState(
                           icon: Icons.article_rounded,
                           title: l10n.noJournalEntries,
@@ -121,13 +135,21 @@ class _JournalPageState extends State<JournalPage> {
                           background: Container(
                             alignment: Alignment.centerRight,
                             padding: const EdgeInsets.only(right: 20),
-                            decoration: BoxDecoration(color: colorScheme.error, borderRadius: BorderRadius.circular(20)),
-                            child: Icon(Icons.delete_rounded, color: colorScheme.onError),
+                            decoration: BoxDecoration(
+                              color: colorScheme.error,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Icon(
+                              Icons.delete_rounded,
+                              color: colorScheme.onError,
+                            ),
                           ),
                           onDismissed: (_) => _deleteEntry(entry),
                           child: Card(
                             margin: const EdgeInsets.only(bottom: 12),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.all(16),
                               child: Column(
@@ -136,17 +158,32 @@ class _JournalPageState extends State<JournalPage> {
                                   Row(
                                     children: [
                                       Expanded(
-                                        child: Text(entry.title, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                                        child: Text(
+                                          entry.title,
+                                          style: textTheme.titleMedium
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
                                       ),
                                       Text(
                                         '${entry.date.day}/${entry.date.month}/${entry.date.year}',
-                                        style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 12),
+                                        style: TextStyle(
+                                          color: colorScheme.onSurfaceVariant,
+                                          fontSize: 12,
+                                        ),
                                       ),
                                     ],
                                   ),
                                   if (entry.text.isNotEmpty) ...[
                                     const SizedBox(height: 8),
-                                    Text(entry.text, style: TextStyle(color: colorScheme.onSurfaceVariant, height: 1.5)),
+                                    Text(
+                                      entry.text,
+                                      style: TextStyle(
+                                        color: colorScheme.onSurfaceVariant,
+                                        height: 1.5,
+                                      ),
+                                    ),
                                   ],
                                   if (entry.imagePaths.isNotEmpty) ...[
                                     const SizedBox(height: 12),
@@ -155,10 +192,15 @@ class _JournalPageState extends State<JournalPage> {
                                       child: ListView.separated(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: entry.imagePaths.length,
-                                        separatorBuilder: (_, _) => const SizedBox(width: 8),
+                                        separatorBuilder: (_, _) =>
+                                            const SizedBox(width: 8),
                                         itemBuilder: (_, i) => ClipRRect(
-                                          borderRadius: BorderRadius.circular(12),
-                                          child: coverImage(entry.imagePaths[i]),
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                          child: coverImage(
+                                            entry.imagePaths[i],
+                                          ),
                                         ),
                                       ),
                                     ),

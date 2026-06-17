@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/views/widgets/image_source_card.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,15 +26,21 @@ void showImageSourceSheet(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 40, height: 4,
+              width: 40,
+              height: 4,
               margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
                 color: colorScheme.outlineVariant,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            Text(l10n.selectPhotoSource,
-                style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+            Text(
+              l10n.selectPhotoSource,
+              style: textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
+              ),
+            ),
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -46,10 +52,13 @@ void showImageSourceSheet(
                   onTap: () {
                     Navigator.pop(context);
                     if (multiPick) {
-                      ImagePicker().pickMultiImage(imageQuality: 85, maxWidth: 1000)
+                      ImagePicker()
+                          .pickMultiImage(imageQuality: 85, maxWidth: 1000)
                           .then((files) {
-                        if (files.isNotEmpty) onImagePicked(File(files.first.path));
-                      });
+                            if (files.isNotEmpty) {
+                              onImagePicked(File(files.first.path));
+                            }
+                          });
                     } else {
                       _pickImage(ImageSource.gallery, onImagePicked);
                     }
@@ -74,10 +83,17 @@ void showImageSourceSheet(
   );
 }
 
-Future<void> _pickImage(ImageSource source, void Function(File) onImagePicked) async {
+Future<void> _pickImage(
+  ImageSource source,
+  void Function(File) onImagePicked,
+) async {
   final picker = ImagePicker();
   try {
-    final pickedFile = await picker.pickImage(source: source, maxWidth: 1000, imageQuality: 85);
+    final pickedFile = await picker.pickImage(
+      source: source,
+      maxWidth: 1000,
+      imageQuality: 85,
+    );
     if (pickedFile != null) onImagePicked(File(pickedFile.path));
   } catch (e) {
     debugPrint("Error picking image: $e");

@@ -1,6 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
@@ -30,13 +30,23 @@ class TripListWidget extends StatelessWidget {
             Expanded(
               child: trips.isEmpty
                   ? EmptyState(
-                      icon: provider.trips.isEmpty ? Icons.explore_outlined : Icons.search_off_rounded,
-                      title: provider.trips.isEmpty ? l10n.emptyTripTitle : l10n.noTripsFound,
-                      subtitle: provider.trips.isEmpty ? l10n.emptylistDescription : l10n.tryAdjustingSearch,
+                      icon: provider.trips.isEmpty
+                          ? Icons.explore_outlined
+                          : Icons.search_off_rounded,
+                      title: provider.trips.isEmpty
+                          ? l10n.emptyTripTitle
+                          : l10n.noTripsFound,
+                      subtitle: provider.trips.isEmpty
+                          ? l10n.emptylistDescription
+                          : l10n.tryAdjustingSearch,
                       action: provider.trips.isEmpty
                           ? FilledButton.tonalIcon(
-                              onPressed: () => Navigator.push(context,
-                                MaterialPageRoute(builder: (_) => const AddTripPage())),
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const AddTripPage(),
+                                ),
+                              ),
                               icon: const Icon(Icons.add_rounded, size: 18),
                               label: Text(l10n.emptyTripAction),
                             )
@@ -69,9 +79,15 @@ class _TripListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return tripWidget(trip, kAlwaysCompleteAnimation, context, index, onRemove: () {
-      context.read<TripProvider>().deleteTrip(trip.id);
-    });
+    return tripWidget(
+      trip,
+      kAlwaysCompleteAnimation,
+      context,
+      index,
+      onRemove: () {
+        context.read<TripProvider>().deleteTrip(trip.id);
+      },
+    );
   }
 }
 

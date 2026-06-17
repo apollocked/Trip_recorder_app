@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 
 Future<bool> requestNotificationPermission(BuildContext context) async {
   final colorScheme = Theme.of(context).colorScheme;
@@ -10,9 +10,12 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
 
   final androidPlugin = FlutterLocalNotificationsPlugin();
   final androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-  await androidPlugin.initialize(settings: InitializationSettings(android: androidSettings));
+  await androidPlugin.initialize(
+    settings: InitializationSettings(android: androidSettings),
+  );
   final details = await androidPlugin.getNotificationAppLaunchDetails();
-  final notifGranted = details?.notificationResponse != null ||
+  final notifGranted =
+      details?.notificationResponse != null ||
       await Permission.notification.status.then((s) => s.isGranted);
 
   if (notifGranted) return true;
@@ -25,7 +28,11 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
       backgroundColor: colorScheme.surface,
       surfaceTintColor: colorScheme.surfaceTint,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-      title: Icon(Icons.notifications_active_rounded, size: 48, color: colorScheme.primary),
+      title: Icon(
+        Icons.notifications_active_rounded,
+        size: 48,
+        color: colorScheme.primary,
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -40,18 +47,25 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
           Text(
             l10n.notificationPermissionDescription,
             textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
-          child: Text(l10n.notNow, style: TextStyle(color: colorScheme.primary)),
+          child: Text(
+            l10n.notNow,
+            style: TextStyle(color: colorScheme.primary),
+          ),
         ),
         FilledButton(
           style: FilledButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
           onPressed: () async {
             Navigator.pop(ctx, true);

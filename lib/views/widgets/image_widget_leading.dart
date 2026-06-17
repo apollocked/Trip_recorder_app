@@ -1,11 +1,13 @@
 import 'dart:io';
 
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 Widget leadingImage(String imgPath, {BuildContext? context}) {
   final bool isFile = File(imgPath).isAbsolute;
-  final label = context != null ? AppLocalizations.of(context)!.coverPhotoSemantics : "Cover photo of the trip";
+  final label = context != null
+      ? AppLocalizations.of(context)!.coverPhotoSemantics
+      : "Cover photo of the trip";
 
   if (isFile) {
     return Image.file(
@@ -35,7 +37,8 @@ Widget leadingImage(String imgPath, {BuildContext? context}) {
 Widget leadingImageFromList(List<String> paths, {BuildContext? context}) {
   if (paths.isEmpty) {
     return Container(
-      height: 50, width: 50,
+      height: 50,
+      width: 50,
       color: Colors.grey[300],
       child: const Icon(Icons.landscape, size: 24),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
 
 class ExpenseDialogResult {
@@ -39,7 +39,9 @@ Future<ExpenseDialogResult?> showExpenseDialog(BuildContext context) async {
             TextField(
               controller: amountController,
               keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+              ],
               decoration: InputDecoration(labelText: l10n.expenseAmount),
             ),
             const SizedBox(height: 12),

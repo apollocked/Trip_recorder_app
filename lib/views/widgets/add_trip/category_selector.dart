@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 
 class CategorySelector extends StatelessWidget {
@@ -18,14 +18,17 @@ class CategorySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Wrap(
-      spacing: 8, runSpacing: 8,
+      spacing: 8,
+      runSpacing: 8,
       children: TripCategory.values.map((cat) {
         final isSelected = selectedCategory == cat;
         return ChoiceChip(
           label: Text(cat.label(l10n)),
           selected: isSelected,
           selectedColor: colorScheme.primaryContainer,
-          onSelected: (selected) { if (selected) onChanged(cat); },
+          onSelected: (selected) {
+            if (selected) onChanged(cat);
+          },
         );
       }).toList(),
     );

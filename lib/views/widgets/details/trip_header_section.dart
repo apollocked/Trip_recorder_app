@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/widgets/details/heart_widget.dart';
 import 'package:animations_in_flutter/views/widgets/star_rating.dart';
@@ -40,7 +40,10 @@ class TripHeaderSection extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: colorScheme.primaryContainer.withAlpha(120),
                     borderRadius: BorderRadius.circular(6),

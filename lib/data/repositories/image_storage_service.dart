@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
-import '../../core/constants.dart';
+import '../../core/constants/constants.dart';
 
 class ImageStorageService {
   Future<Directory> get _imageDir async {
@@ -13,7 +13,11 @@ class ImageStorageService {
     return dir;
   }
 
-  Future<String> saveImage(File sourceFile, String tripId, {int index = 0}) async {
+  Future<String> saveImage(
+    File sourceFile,
+    String tripId, {
+    int index = 0,
+  }) async {
     final dir = await _imageDir;
     final extension = p.extension(sourceFile.path).isNotEmpty
         ? p.extension(sourceFile.path)
@@ -23,7 +27,10 @@ class ImageStorageService {
     return targetPath;
   }
 
-  Future<List<String>> saveMultipleImages(List<File> sourceFiles, String tripId) async {
+  Future<List<String>> saveMultipleImages(
+    List<File> sourceFiles,
+    String tripId,
+  ) async {
     final paths = <String>[];
     for (int i = 0; i < sourceFiles.length; i++) {
       final path = await saveImage(sourceFiles[i], tripId, index: i);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/expense.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
@@ -39,15 +39,21 @@ class _BudgetPageState extends State<BudgetPage> {
         setState(() {
           _expenses = expenses;
           _isLoading = false;
-          _currencySymbol = trip != null ? CurrencyInfo.symbolFor(trip.currency) : '\$';
+          _currencySymbol = trip != null
+              ? CurrencyInfo.symbolFor(trip.currency)
+              : '\$';
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocalizations.of(context)!.errorSavingTrip(e.toString())),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.errorSavingTrip(e.toString()),
+            ),
+          ),
+        );
       }
     }
   }
@@ -76,12 +82,17 @@ class _BudgetPageState extends State<BudgetPage> {
     for (final e in _expenses) {
       categoryTotals[e.category] = (categoryTotals[e.category] ?? 0) + e.amount;
     }
-    final maxCatAmount = categoryTotals.values.isEmpty ? 1.0 : categoryTotals.values.reduce((a, b) => a > b ? a : b);
+    final maxCatAmount = categoryTotals.values.isEmpty
+        ? 1.0
+        : categoryTotals.values.reduce((a, b) => a > b ? a : b);
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text(l10n.budgetBreakdown, style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text(
+          l10n.budgetBreakdown,
+          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -120,7 +131,12 @@ class _BudgetPageState extends State<BudgetPage> {
                         categoryColor: _categoryColor,
                         categoryLabel: _categoryLabel,
                       ),
-                    Text(l10n.expenseTitle, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                    Text(
+                      l10n.expenseTitle,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     if (_expenses.isEmpty)
                       SizedBox(
@@ -137,18 +153,20 @@ class _BudgetPageState extends State<BudgetPage> {
                         ),
                       )
                     else
-                      ..._expenses.map((expense) => ExpenseTile(
-                        expense: expense,
-                        tripId: widget.tripId,
-                        currencySymbol: _currencySymbol,
-                        colorScheme: colorScheme,
-                        textTheme: textTheme,
-                        l10n: l10n,
-                        onDeleted: _loadExpenses,
-                        categoryColor: _categoryColor,
-                        categoryLabel: _categoryLabel,
-                        categoryIcon: _categoryIcon,
-                      )),
+                      ..._expenses.map(
+                        (expense) => ExpenseTile(
+                          expense: expense,
+                          tripId: widget.tripId,
+                          currencySymbol: _currencySymbol,
+                          colorScheme: colorScheme,
+                          textTheme: textTheme,
+                          l10n: l10n,
+                          onDeleted: _loadExpenses,
+                          categoryColor: _categoryColor,
+                          categoryLabel: _categoryLabel,
+                          categoryIcon: _categoryIcon,
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -158,34 +176,52 @@ class _BudgetPageState extends State<BudgetPage> {
 
   static Color _categoryColor(ExpenseCategory cat, ColorScheme cs) {
     switch (cat) {
-      case ExpenseCategory.hotel: return Colors.blue;
-      case ExpenseCategory.food: return Colors.orange;
-      case ExpenseCategory.transport: return Colors.purple;
-      case ExpenseCategory.activities: return Colors.green;
-      case ExpenseCategory.shopping: return Colors.pink;
-      case ExpenseCategory.other: return Colors.grey;
+      case ExpenseCategory.hotel:
+        return Colors.blue;
+      case ExpenseCategory.food:
+        return Colors.orange;
+      case ExpenseCategory.transport:
+        return Colors.purple;
+      case ExpenseCategory.activities:
+        return Colors.green;
+      case ExpenseCategory.shopping:
+        return Colors.pink;
+      case ExpenseCategory.other:
+        return Colors.grey;
     }
   }
 
   static String _categoryLabel(AppLocalizations l10n, ExpenseCategory cat) {
     switch (cat) {
-      case ExpenseCategory.hotel: return l10n.categoryHotel;
-      case ExpenseCategory.food: return l10n.categoryFood;
-      case ExpenseCategory.transport: return l10n.categoryTransport;
-      case ExpenseCategory.activities: return l10n.categoryActivities;
-      case ExpenseCategory.shopping: return l10n.categoryShopping;
-      case ExpenseCategory.other: return l10n.categoryOther;
+      case ExpenseCategory.hotel:
+        return l10n.categoryHotel;
+      case ExpenseCategory.food:
+        return l10n.categoryFood;
+      case ExpenseCategory.transport:
+        return l10n.categoryTransport;
+      case ExpenseCategory.activities:
+        return l10n.categoryActivities;
+      case ExpenseCategory.shopping:
+        return l10n.categoryShopping;
+      case ExpenseCategory.other:
+        return l10n.categoryOther;
     }
   }
 
   static IconData _categoryIcon(ExpenseCategory cat) {
     switch (cat) {
-      case ExpenseCategory.hotel: return Icons.hotel_rounded;
-      case ExpenseCategory.food: return Icons.restaurant_rounded;
-      case ExpenseCategory.transport: return Icons.directions_car_rounded;
-      case ExpenseCategory.activities: return Icons.sports_esports_rounded;
-      case ExpenseCategory.shopping: return Icons.shopping_bag_rounded;
-      case ExpenseCategory.other: return Icons.receipt_rounded;
+      case ExpenseCategory.hotel:
+        return Icons.hotel_rounded;
+      case ExpenseCategory.food:
+        return Icons.restaurant_rounded;
+      case ExpenseCategory.transport:
+        return Icons.directions_car_rounded;
+      case ExpenseCategory.activities:
+        return Icons.sports_esports_rounded;
+      case ExpenseCategory.shopping:
+        return Icons.shopping_bag_rounded;
+      case ExpenseCategory.other:
+        return Icons.receipt_rounded;
     }
   }
 }

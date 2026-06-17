@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/pages/image_viewer_page.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
@@ -26,7 +26,9 @@ class TripImageCarousel extends StatelessWidget {
           color: colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(32),
         ),
-        child: const Center(child: Icon(Icons.landscape, size: 60, color: Colors.grey)),
+        child: const Center(
+          child: Icon(Icons.landscape, size: 60, color: Colors.grey),
+        ),
       );
     }
 
@@ -49,7 +51,10 @@ class TripImageCarousel extends StatelessWidget {
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: colorScheme.onSurface.withAlpha(200), width: 1),
+                  border: Border.all(
+                    color: colorScheme.onSurface.withAlpha(200),
+                    width: 1,
+                  ),
                   borderRadius: BorderRadius.circular(32),
                   boxShadow: [
                     BoxShadow(

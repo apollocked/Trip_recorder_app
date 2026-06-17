@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animations_in_flutter/l10n/l10n.dart';
+import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageService extends ChangeNotifier {

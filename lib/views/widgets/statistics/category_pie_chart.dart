@@ -1,4 +1,4 @@
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,11 @@ class CategoryPieChart extends StatelessWidget {
         value: count.toDouble(),
         title: '$count',
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
+        titleStyle: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       );
     }).toList();
 
@@ -48,10 +52,20 @@ class CategoryPieChart extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('$total',
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-              Text(l10n.totalLabel,
-                  style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant)),
+              Text(
+                '$total',
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                l10n.totalLabel,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
             ],
           ),
         ],

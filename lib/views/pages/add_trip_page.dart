@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:animations_in_flutter/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
@@ -81,10 +81,15 @@ class _AddTripPageState extends State<AddTripPage> {
     setState(() => _isSaving = true);
     HapticFeedback.mediumImpact();
     try {
-      final assetPaths = _existingImagePaths.where((p) => p.startsWith('images/')).toList();
+      final assetPaths = _existingImagePaths
+          .where((p) => p.startsWith('images/'))
+          .toList();
       if (_reminderDate != null) {
         final granted = await requestNotificationPermission(context);
-        if (!granted) { if (mounted) setState(() => _isSaving = false); return; }
+        if (!granted) {
+          if (mounted) setState(() => _isSaving = false);
+          return;
+        }
         if (!mounted) return;
       }
       final String title = _titleController.text.trim();
@@ -92,30 +97,47 @@ class _AddTripPageState extends State<AddTripPage> {
       final int nights = int.tryParse(_nightsController.text.trim()) ?? 1;
       final String desc = _descriptionController.text.trim();
       if (widget.tripId != null) {
-        await context.read<TripProvider>().updateTrip(widget.tripId!,
-          title: title, price: price, nights: nights,
+        await context.read<TripProvider>().updateTrip(
+          widget.tripId!,
+          title: title,
+          price: price,
+          nights: nights,
           imageFiles: _imageFiles.isNotEmpty ? _imageFiles : null,
           existingImagePaths: _imageFiles.isEmpty ? _existingImagePaths : null,
           assetImagePaths: assetPaths.isNotEmpty ? assetPaths : null,
-          date: _selectedDate, description: desc,
-          category: _selectedCategory, rating: _rating,
-          currency: _selectedCurrency, reminderDate: _reminderDate,
+          date: _selectedDate,
+          description: desc,
+          category: _selectedCategory,
+          rating: _rating,
+          currency: _selectedCurrency,
+          reminderDate: _reminderDate,
         );
       } else {
         await context.read<TripProvider>().addTrip(
-          title: title, price: price, nights: nights,
+          title: title,
+          price: price,
+          nights: nights,
           imageFiles: _imageFiles,
-          assetImagePaths: _existingImagePaths.where((p) => p.startsWith('images/')).toList(),
-          date: _selectedDate, description: desc,
-          category: _selectedCategory, rating: _rating,
-          currency: _selectedCurrency, reminderDate: _reminderDate,
+          assetImagePaths: _existingImagePaths
+              .where((p) => p.startsWith('images/'))
+              .toList(),
+          date: _selectedDate,
+          description: desc,
+          category: _selectedCategory,
+          rating: _rating,
+          currency: _selectedCurrency,
+          reminderDate: _reminderDate,
         );
       }
       if (mounted) Navigator.pop(context);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.errorSavingTrip(e.toString()))),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.errorSavingTrip(e.toString()),
+            ),
+          ),
         );
       }
     } finally {
@@ -133,7 +155,10 @@ class _AddTripPageState extends State<AddTripPage> {
     Widget labeled(String label, Widget child) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: textTheme.labelLarge?.copyWith(color: colorScheme.primary)),
+        Text(
+          label,
+          style: textTheme.labelLarge?.copyWith(color: colorScheme.primary),
+        ),
         const SizedBox(height: 8),
         child,
       ],
@@ -149,7 +174,9 @@ class _AddTripPageState extends State<AddTripPage> {
           elevation: 0,
           title: Text(
             isEditing ? l10n.editJourney : l10n.addtitle,
-            semanticsLabel: isEditing ? l10n.editFormSemantics : l10n.addFormSemantics,
+            semanticsLabel: isEditing
+                ? l10n.editFormSemantics
+                : l10n.addFormSemantics,
             style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
@@ -160,14 +187,23 @@ class _AddTripPageState extends State<AddTripPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l10n.coverphoto, style: textTheme.labelLarge?.copyWith(
-                  color: _imageError ? colorScheme.error : colorScheme.primary)),
+                Text(
+                  l10n.coverphoto,
+                  style: textTheme.labelLarge?.copyWith(
+                    color: _imageError
+                        ? colorScheme.error
+                        : colorScheme.primary,
+                  ),
+                ),
                 const SizedBox(height: 12),
                 TripImagePicker(
                   imageFiles: _imageFiles,
                   existingImagePaths: _existingImagePaths,
                   imageError: _imageError,
-                  onImagesAdded: (files) => setState(() { _imageFiles.addAll(files); _imageError = false; }),
+                  onImagesAdded: (files) => setState(() {
+                    _imageFiles.addAll(files);
+                    _imageError = false;
+                  }),
                   onImageRemovedAt: (index) => setState(() {
                     if (index < _imageFiles.length) {
                       _imageFiles.removeAt(index);
@@ -179,47 +215,121 @@ class _AddTripPageState extends State<AddTripPage> {
                   textTheme: textTheme,
                   l10n: l10n,
                 ),
-                if (_imageError) Padding(
-                  padding: const EdgeInsets.only(top: 8, left: 12),
-                  child: Text(l10n.photoErrorReq, style: textTheme.bodySmall?.copyWith(color: colorScheme.error)),
+                if (_imageError)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 12),
+                    child: Text(
+                      l10n.photoErrorReq,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: colorScheme.error,
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 24),
+                labeled(
+                  l10n.rateTrip,
+                  Center(
+                    child: StarRating(
+                      rating: _rating,
+                      size: 36,
+                      interactive: true,
+                      onChanged: (val) => setState(() => _rating = val),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 24),
-                labeled(l10n.rateTrip, Center(child: StarRating(rating: _rating, size: 36, interactive: true,
-                    onChanged: (val) => setState(() => _rating = val)))),
+                labeled(
+                  l10n.tripCategory,
+                  CategorySelector(
+                    selectedCategory: _selectedCategory,
+                    onChanged: (cat) => setState(() => _selectedCategory = cat),
+                    colorScheme: colorScheme,
+                  ),
+                ),
                 const SizedBox(height: 24),
-                labeled(l10n.tripCategory, CategorySelector(
-                  selectedCategory: _selectedCategory,
-                  onChanged: (cat) => setState(() => _selectedCategory = cat),
-                  colorScheme: colorScheme,
-                )),
-                const SizedBox(height: 24),
-                labeled(l10n.currencyLabel, CurrencyDropdown(
-                  selectedCurrency: _selectedCurrency,
-                  onChanged: (val) => setState(() => _selectedCurrency = val),
-                  colorScheme: colorScheme,
-                )),
+                labeled(
+                  l10n.currencyLabel,
+                  CurrencyDropdown(
+                    selectedCurrency: _selectedCurrency,
+                    onChanged: (val) => setState(() => _selectedCurrency = val),
+                    colorScheme: colorScheme,
+                  ),
+                ),
                 const SizedBox(height: 32),
-                Text(l10n.tripDetails, style: textTheme.labelLarge?.copyWith(color: colorScheme.primary)),
+                Text(
+                  l10n.tripDetails,
+                  style: textTheme.labelLarge?.copyWith(
+                    color: colorScheme.primary,
+                  ),
+                ),
                 const SizedBox(height: 12),
-                AppTextField(controller: _titleController, label: l10n.destination, icon: Icons.map_rounded, colorScheme: colorScheme,
-                    validator: (val) => val == null || val.isEmpty ? l10n.destinationRequired : null),
+                AppTextField(
+                  controller: _titleController,
+                  label: l10n.destination,
+                  icon: Icons.map_rounded,
+                  colorScheme: colorScheme,
+                  validator: (val) => val == null || val.isEmpty
+                      ? l10n.destinationRequired
+                      : null,
+                ),
                 const SizedBox(height: 16),
-                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Expanded(child: AppTextField(controller: _priceController, label: l10n.budget, icon: Icons.attach_money_rounded, colorScheme: colorScheme,
-                      keyboardType: TextInputType.number, prefixText: '${CurrencyInfo.symbolFor(_selectedCurrency)} ',
-                      validator: (val) => val == null || val.isEmpty ? l10n.required : null)),
-                  const SizedBox(width: 16),
-                  Expanded(child: AppTextField(controller: _nightsController, label: l10n.nights, icon: Icons.bedtime_rounded, colorScheme: colorScheme,
-                      keyboardType: TextInputType.number, validator: (val) => val == null || val.isEmpty ? l10n.required : null)),
-                ]),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: AppTextField(
+                        controller: _priceController,
+                        label: l10n.budget,
+                        icon: Icons.attach_money_rounded,
+                        colorScheme: colorScheme,
+                        keyboardType: TextInputType.number,
+                        prefixText:
+                            '${CurrencyInfo.symbolFor(_selectedCurrency)} ',
+                        validator: (val) =>
+                            val == null || val.isEmpty ? l10n.required : null,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: AppTextField(
+                        controller: _nightsController,
+                        label: l10n.nights,
+                        icon: Icons.bedtime_rounded,
+                        colorScheme: colorScheme,
+                        keyboardType: TextInputType.number,
+                        validator: (val) =>
+                            val == null || val.isEmpty ? l10n.required : null,
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 16),
-                DatePickerField(icon: Icons.calendar_today_rounded, label: l10n.departureDate, currentDate: _selectedDate,
-                    onDateChanged: (d) => setState(() => _selectedDate = d), colorScheme: colorScheme, l10n: l10n),
+                DatePickerField(
+                  icon: Icons.calendar_today_rounded,
+                  label: l10n.departureDate,
+                  currentDate: _selectedDate,
+                  onDateChanged: (d) => setState(() => _selectedDate = d),
+                  colorScheme: colorScheme,
+                  l10n: l10n,
+                ),
                 const SizedBox(height: 16),
-                DatePickerField(icon: Icons.notifications_active_rounded, label: l10n.setReminder, currentDate: _reminderDate,
-                    onDateChanged: (d) => setState(() => _reminderDate = d), isOptional: true, colorScheme: colorScheme, l10n: l10n),
+                DatePickerField(
+                  icon: Icons.notifications_active_rounded,
+                  label: l10n.setReminder,
+                  currentDate: _reminderDate,
+                  onDateChanged: (d) => setState(() => _reminderDate = d),
+                  isOptional: true,
+                  colorScheme: colorScheme,
+                  l10n: l10n,
+                ),
                 const SizedBox(height: 16),
-                AppTextField(controller: _descriptionController, label: l10n.tripDescription, icon: Icons.notes_rounded, colorScheme: colorScheme, maxLines: 4),
+                AppTextField(
+                  controller: _descriptionController,
+                  label: l10n.tripDescription,
+                  icon: Icons.notes_rounded,
+                  colorScheme: colorScheme,
+                  maxLines: 4,
+                ),
                 const SizedBox(height: 40),
                 SaveButton(
                   isSaving: _isSaving,

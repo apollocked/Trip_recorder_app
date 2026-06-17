@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import '../../core/constants.dart';
+import '../../core/constants/constants.dart';
 import '../../model/trip.dart';
 
 class AppDatabase {
@@ -85,9 +85,24 @@ class AppDatabase {
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'image_paths', "TEXT NOT NULL DEFAULT '[]'");
-      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'category', "TEXT NOT NULL DEFAULT 'other'");
-      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'rating', 'REAL NOT NULL DEFAULT 0.0');
+      await _addColumnIfNotExists(
+        db,
+        AppConstants.tripsTable,
+        'image_paths',
+        "TEXT NOT NULL DEFAULT '[]'",
+      );
+      await _addColumnIfNotExists(
+        db,
+        AppConstants.tripsTable,
+        'category',
+        "TEXT NOT NULL DEFAULT 'other'",
+      );
+      await _addColumnIfNotExists(
+        db,
+        AppConstants.tripsTable,
+        'rating',
+        'REAL NOT NULL DEFAULT 0.0',
+      );
 
       final rows = await db.query(AppConstants.tripsTable);
       for (final row in rows) {
@@ -123,7 +138,12 @@ class AppDatabase {
       ''');
     }
     if (oldVersion < 4) {
-      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'currency', "TEXT NOT NULL DEFAULT 'USD'");
+      await _addColumnIfNotExists(
+        db,
+        AppConstants.tripsTable,
+        'currency',
+        "TEXT NOT NULL DEFAULT 'USD'",
+      );
     }
     if (oldVersion < 5) {
       await db.execute('''
@@ -139,10 +159,20 @@ class AppDatabase {
       ''');
     }
     if (oldVersion < 6) {
-      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'reminder_date', 'TEXT');
+      await _addColumnIfNotExists(
+        db,
+        AppConstants.tripsTable,
+        'reminder_date',
+        'TEXT',
+      );
     }
     if (oldVersion < 7) {
-      await _addColumnIfNotExists(db, AppConstants.tripsTable, 'reminder_date', 'TEXT');
+      await _addColumnIfNotExists(
+        db,
+        AppConstants.tripsTable,
+        'reminder_date',
+        'TEXT',
+      );
     }
     if (oldVersion < 8) {
       await db.execute('''
@@ -178,7 +208,12 @@ class AppDatabase {
     }
   }
 
-  Future<void> _addColumnIfNotExists(Database db, String table, String column, String type) async {
+  Future<void> _addColumnIfNotExists(
+    Database db,
+    String table,
+    String column,
+    String type,
+  ) async {
     try {
       await db.execute('ALTER TABLE $table ADD COLUMN $column $type');
     } catch (_) {
@@ -245,8 +280,9 @@ class AppDatabase {
 
   Future<int> getTripsCount() async {
     final db = await database;
-    final result =
-        await db.rawQuery('SELECT COUNT(*) as count FROM ${AppConstants.tripsTable}');
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM ${AppConstants.tripsTable}',
+    );
     return Sqflite.firstIntValue(result) ?? 0;
   }
 

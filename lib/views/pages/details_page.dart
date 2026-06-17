@@ -1,4 +1,4 @@
-﻿import 'package:animations_in_flutter/l10n/app_localizations.dart';
+﻿import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
@@ -52,7 +52,9 @@ class DetailsPage extends StatelessWidget {
                   HapticFeedback.selectionClick();
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AddTripPage(tripId: trip.id)),
+                    MaterialPageRoute(
+                      builder: (context) => AddTripPage(tripId: trip.id),
+                    ),
                   );
                 },
               ),
@@ -62,14 +64,26 @@ class DetailsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TripImageCarousel(trip: trip, colorScheme: colorScheme, l10n: l10n),
+                TripImageCarousel(
+                  trip: trip,
+                  colorScheme: colorScheme,
+                  l10n: l10n,
+                ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 24, right: 24, left: 24),
+                    padding: const EdgeInsets.only(
+                      top: 24,
+                      right: 24,
+                      left: 24,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TripHeaderSection(trip: trip, colorScheme: colorScheme, textTheme: textTheme),
+                        TripHeaderSection(
+                          trip: trip,
+                          colorScheme: colorScheme,
+                          textTheme: textTheme,
+                        ),
                         const SizedBox(height: 16),
                         TripInfoChips(trip: trip, colorScheme: colorScheme),
                         const SizedBox(height: 16),
@@ -77,7 +91,9 @@ class DetailsPage extends StatelessWidget {
                         const SizedBox(height: 16),
                         if (trip.reminderDate != null)
                           _buildReminderBanner(trip, colorScheme, l10n),
-                        Divider(color: colorScheme.outlineVariant.withAlpha(128)),
+                        Divider(
+                          color: colorScheme.outlineVariant.withAlpha(128),
+                        ),
                         const SizedBox(height: 16),
                         Text(
                           l10n.aboutjourney,
@@ -94,7 +110,9 @@ class DetailsPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 24),
                               child: Text(
-                                trip.description.isNotEmpty ? trip.description : l10n.noDescriptionAdded,
+                                trip.description.isNotEmpty
+                                    ? trip.description
+                                    : l10n.noDescriptionAdded,
                                 style: textTheme.bodyLarge?.copyWith(
                                   color: colorScheme.onSurfaceVariant,
                                   height: 1.6,
@@ -126,7 +144,8 @@ class DetailsPage extends StatelessWidget {
             avatar: const Icon(Icons.account_balance_wallet_rounded, size: 18),
             label: Text(l10n.budgetLabel),
             onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => BudgetPage(tripId: tripId)),
+              context,
+              MaterialPageRoute(builder: (_) => BudgetPage(tripId: tripId)),
             ),
           ),
           const SizedBox(width: 8),
@@ -134,7 +153,10 @@ class DetailsPage extends StatelessWidget {
             avatar: const Icon(Icons.checklist_rounded, size: 18),
             label: Text(l10n.checklist),
             onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => PackingListPage(tripId: tripId)),
+              context,
+              MaterialPageRoute(
+                builder: (_) => PackingListPage(tripId: tripId),
+              ),
             ),
           ),
           const SizedBox(width: 8),
@@ -142,7 +164,8 @@ class DetailsPage extends StatelessWidget {
             avatar: const Icon(Icons.article_rounded, size: 18),
             label: Text(l10n.journal),
             onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => JournalPage(tripId: tripId)),
+              context,
+              MaterialPageRoute(builder: (_) => JournalPage(tripId: tripId)),
             ),
           ),
         ],
@@ -155,7 +178,11 @@ class DetailsPage extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          Icon(Icons.notifications_active_rounded, size: 18, color: colorScheme.primary),
+          Icon(
+            Icons.notifications_active_rounded,
+            size: 18,
+            color: colorScheme.primary,
+          ),
           const SizedBox(width: 8),
           Text(
             '${l10n.reminder}: ${trip.reminderDate!.day}/${trip.reminderDate!.month}/${trip.reminderDate!.year} '
@@ -172,9 +199,13 @@ class DetailsPage extends StatelessWidget {
     final buffer = StringBuffer();
     buffer.writeln(l10n.exportHeader(trip.title));
     buffer.writeln('${l10n.tripCategory}: ${trip.category.label(l10n)}');
-    buffer.writeln('${l10n.budget}: ${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}');
+    buffer.writeln(
+      '${l10n.budget}: ${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}',
+    );
     buffer.writeln('${l10n.nights}: ${trip.nights}');
-    buffer.writeln('${l10n.departureDate}: ${trip.date.day}/${trip.date.month}/${trip.date.year}');
+    buffer.writeln(
+      '${l10n.departureDate}: ${trip.date.day}/${trip.date.month}/${trip.date.year}',
+    );
     if (trip.rating > 0) {
       buffer.writeln(l10n.exportRating(trip.rating.toStringAsFixed(1)));
     }
@@ -188,11 +219,15 @@ class DetailsPage extends StatelessWidget {
 
     final text = buffer.toString();
     try {
-      await SharePlus.instance.share(ShareParams(text: text, subject: trip.title));
+      await SharePlus.instance.share(
+        ShareParams(text: text, subject: trip.title),
+      );
     } catch (_) {
       await Clipboard.setData(ClipboardData(text: text));
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.copiedToClipboard)));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.copiedToClipboard)));
       }
     }
   }
