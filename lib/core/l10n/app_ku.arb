@@ -7,7 +7,7 @@
   "night": "شەو",
   "noTripsFound": "هیچ گەشتێک نەدۆزرایەوە",
   "tryAdjustingSearch": "هەوڵی ڕێکخستنی گەڕان یان فلتەرەکان بدە",
-  "emptylistDescription": "کاتی ئەوەیە پلانی گەشتی داهاتووت دابنێیت!",
+  "emptylistDescription": "کاتی ئەوەیە پلانی گەشتی داهاتووت دابنێیت!\nبۆ دووبارە سەیرکردنەوە بۆ خوار بکێشە.",
   "emptyTripTitle": "هێشتا هیچ گەشتێک نییە",
   "emptyTripAction": "دروستکردنی گەشت",
   "emptyBudgetSubtitle": "هێشتا هیچ خەرجییەک نییە. دەست بکە بە ڕێکخستنی خەرجییەکانت.",
@@ -166,16 +166,41 @@
   "cancel": "ڕەتکردنەوە",
   "delete": "سڕینەوە",
   "confirmDeleteTitle": "سڕینەوەی {item}؟",
+  "@confirmDeleteTitle": {
+    "placeholders": {
+      "item": {"type": "String"}
+    }
+  },
   "confirmDeleteMessage": "ئەم کارە ناگەڕێتەوە.",
   "errorSavingTrip": "هەڵە لە پاشەکەوتکردنی گەشت: {error}",
+  "@errorSavingTrip": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
   "tripNotFound": "گەشت نەدۆزرایەوە",
   "totalLabel": "کۆی گشتی",
   "notRated": "--",
   "exportHeader": "=== {title} ===",
+  "@exportHeader": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
   "exportRating": "هەڵسەنگاندن: {rating} / 5",
+  "@exportRating": {
+    "placeholders": {
+      "rating": {"type": "String"}
+    }
+  },
   "notificationChannelName": "بیریارەکانی گەشت",
   "notificationTitle": "گەشتی داهاتوو",
   "notificationBody": "{tripTitle} بەم زووانە دێت!",
+  "@notificationBody": {
+    "placeholders": {
+      "tripTitle": {"type": "String"}
+    }
+  },
   "notificationPermissionTitle": "به‌رده‌وام به‌",
   "notificationPermissionDescription": "دەمانەوێت بیریاری گەشتەکانی داهاتووت بۆ بنێرین بۆ ئەوەی هیچ گەشتێک لەدەست نەدەیت.",
   "goToSettings": "کردنەوەی ڕێکخستنەکان",
@@ -185,6 +210,11 @@
   "appTitleSemantics": "ناونیشانی ئەپەکە",
   "tripListTitle": "گەشتەکانم",
   "tripCardSemantics": "بەندی گەشتی {title}، بۆ وردەکارییەکان لێی بدە، بۆ سڕینەوە بۆ چەپ ڕابکێشە",
+  "@tripCardSemantics": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
   "shimmerSemantics": "بارکردنی وردەکاری گەشت",
   "addToFavorites": "زیادکردن بۆ دڵخوازەکان",
   "addedToFavorites": "زیاد کرا بۆ دڵخوازەکان",

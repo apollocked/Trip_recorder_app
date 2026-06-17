@@ -7,7 +7,7 @@
   "night": "ليلة",
   "noTripsFound": "لا توجد رحلات",
   "tryAdjustingSearch": "حاول تعديل البحث أو الفلاتر",
-  "emptylistDescription": "حان وقت التخطيط لمغامرتك القادمة!",
+  "emptylistDescription": "حان وقت التخطيط لمغامرتك القادمة!\nاسحب للأسفل للتحقق مرة أخرى.",
   "emptyTripTitle": "لا توجد رحلات بعد",
   "emptyTripAction": "إنشاء رحلة",
   "emptyBudgetSubtitle": "لا توجد نفقات بعد. ابدأ بتتبع مصروفاتك.",
@@ -166,16 +166,41 @@
   "cancel": "إلغاء",
   "delete": "حذف",
   "confirmDeleteTitle": "حذف {item}؟",
+  "@confirmDeleteTitle": {
+    "placeholders": {
+      "item": {"type": "String"}
+    }
+  },
   "confirmDeleteMessage": "لا يمكن التراجع عن هذا الإجراء.",
   "errorSavingTrip": "خطأ في حفظ الرحلة: {error}",
+  "@errorSavingTrip": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
   "tripNotFound": "الرحلة غير موجودة",
   "totalLabel": "المجموع",
   "notRated": "--",
   "exportHeader": "=== {title} ===",
+  "@exportHeader": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
   "exportRating": "التقييم: {rating} / 5",
+  "@exportRating": {
+    "placeholders": {
+      "rating": {"type": "String"}
+    }
+  },
   "notificationChannelName": "تذكيرات الرحلات",
   "notificationTitle": "رحلة قادمة",
   "notificationBody": "{tripTitle} قادمة قريباً!",
+  "@notificationBody": {
+    "placeholders": {
+      "tripTitle": {"type": "String"}
+    }
+  },
   "notificationPermissionTitle": "ابق على اطلاع",
   "notificationPermissionDescription": "نود إرسال تذكيرات لك حول رحلاتك القادمة حتى لا تفوّت أي رحلة.",
   "goToSettings": "فتح الإعدادات",
@@ -185,6 +210,11 @@
   "appTitleSemantics": "عنوان التطبيق",
   "tripListTitle": "رحلاتي",
   "tripCardSemantics": "عنصر الرحلة {title}، اضغط للتفاصيل، اسحب لليسار للحذف",
+  "@tripCardSemantics": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
   "shimmerSemantics": "جارٍ تحميل تفاصيل الرحلة",
   "addToFavorites": "إضافة إلى المفضلة",
   "addedToFavorites": "تمت الإضافة إلى المفضلة",
