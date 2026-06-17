@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:animations_in_flutter/core/constants.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import '../../core/constants/constants.dart';
+
 import '../../model/trip.dart';
 
 class AppDatabase {

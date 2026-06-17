@@ -66,7 +66,7 @@ class _CurrencyChart extends StatelessWidget {
                 barTouchData: BarTouchData(
                   enabled: true,
                   touchTooltipData: BarTouchTooltipData(
-                    tooltipBgColor: colorScheme.inverseSurface,
+                    getTooltipColor: (_) => colorScheme.inverseSurface,
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
                       return BarTooltipItem(
                         '${sorted[group.x.toInt()].key}\n',
@@ -77,7 +77,7 @@ class _CurrencyChart extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: '${rod.toY.toStringAsFixed(0)} ${currency}',
+                            text: '${rod.toY.toStringAsFixed(0)} $currency',
                             style: TextStyle(
                               color: colorScheme.onInverseSurface.withAlpha(200),
                               fontSize: 12,
@@ -105,7 +105,7 @@ class _CurrencyChart extends StatelessWidget {
                             sorted[idx].key.length > 6
                                 ? '${sorted[idx].key.substring(0, 6)}...'
                                 : sorted[idx].key,
-                            style: const TextStyle(fontSize: 10),
+                            style: TextStyle(fontSize: 10, color: colorScheme.onSurface),
                           ),
                         );
                       },

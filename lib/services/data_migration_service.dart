@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:animations_in_flutter/core/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../core/constants/constants.dart';
+
 import '../data/repositories/trip_repository.dart';
 import '../model/trip.dart';
 import 'package:flutter/foundation.dart';

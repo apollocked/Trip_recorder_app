@@ -76,15 +76,16 @@ class _MainShellState extends State<MainShell>
                 selectedIcon: const Icon(Icons.bar_chart_rounded),
                 label: l10n.statistics,
               ),
-              NavigationDestination(
-                icon: const Icon(Icons.settings_outlined),
-                selectedIcon: const Icon(Icons.settings_rounded),
-                label: l10n.settingsTitle,
-              ),
+
               NavigationDestination(
                 icon: const Icon(Icons.assignment_outlined),
                 selectedIcon: const Icon(Icons.assignment_rounded),
                 label: l10n.todo,
+              ),
+              NavigationDestination(
+                icon: const Icon(Icons.settings_outlined),
+                selectedIcon: const Icon(Icons.settings_rounded),
+                label: l10n.settingsTitle,
               ),
             ],
           ),

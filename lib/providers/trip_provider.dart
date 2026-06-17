@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:animations_in_flutter/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../core/constants/constants.dart';
 import '../data/repositories/trip_repository.dart';
 import '../model/trip.dart';
 import '../model/trip_category.dart';
