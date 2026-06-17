@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
-import 'package:animations_in_flutter/views/widgets/heart_widget.dart';
+import 'package:animations_in_flutter/views/widgets/details/heart_widget.dart';
 import 'package:animations_in_flutter/views/widgets/star_rating.dart';
 
 class TripHeaderSection extends StatelessWidget {

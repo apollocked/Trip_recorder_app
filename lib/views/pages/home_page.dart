@@ -1,8 +1,8 @@
 import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
 import 'package:animations_in_flutter/views/pages/memory_page.dart';
-import 'package:animations_in_flutter/views/widgets/title_widget.dart';
-import 'package:animations_in_flutter/views/widgets/trip_list_widget.dart';
+import 'package:animations_in_flutter/views/widgets/home/title_widget.dart';
+import 'package:animations_in_flutter/views/widgets/home/trip_list_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,51 +22,71 @@ class _HomeState extends State<HomePage> {
       backgroundColor: c.surface,
       body: SafeArea(
         bottom: false,
-        child: Column(children: [
-          SizedBox(
-            height: size.height * 0.28,
-            child: Stack(children: [
-              Positioned(bottom: 0, right: 0, height: size.height * 0.32,
-                child: TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0.0, end: 1.0),
-                  duration: const Duration(milliseconds: 400),
-                  builder: (_, v, ch) => Opacity(opacity: v, child: ch),
-                  child: Image.asset('assets/images/bg.png', semanticLabel: l10n.appBannerSemantics),
-                ),
-              ),
-              Positioned(top: 0, left: size.width * 0.03, bottom: 65,
-                child: Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.04),
-                  child: titleWidget(l10n.appTitle, context),
-                ),
-              ),
-            ]),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextButton.icon(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CurrencyConverterPage())),
-                    icon: const Icon(Icons.swap_horiz_rounded, size: 18),
-                    label: Text(l10n.currencyConverter),
+        child: Column(
+          children: [
+            SizedBox(
+              height: size.height * 0.28,
+              child: Stack(
+                children: [
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    height: size.height * 0.32,
+                    child: TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      duration: const Duration(milliseconds: 400),
+                      builder: (_, v, ch) => Opacity(opacity: v, child: ch),
+                      child: Image.asset(
+                        'assets/images/bg.png',
+                        semanticLabel: l10n.appBannerSemantics,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TextButton.icon(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MemoryPage())),
-                    icon: const Icon(Icons.timeline_rounded, size: 18),
-                    label: Text(l10n.memories),
+                  Positioned(
+                    top: 0,
+                    left: size.width * 0.03,
+                    bottom: 65,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: size.height * 0.04),
+                      child: titleWidget(l10n.appTitle, context),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(child: const TripListWidget()),
-          SizedBox(height: size.height * 0.08),
-        ]),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextButton.icon(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const CurrencyConverterPage(),
+                        ),
+                      ),
+                      icon: const Icon(Icons.swap_horiz_rounded, size: 18),
+                      label: Text(l10n.currencyConverter),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: TextButton.icon(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const MemoryPage()),
+                      ),
+                      icon: const Icon(Icons.timeline_rounded, size: 18),
+                      label: Text(l10n.memories),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(child: const TripListWidget()),
+          ],
+        ),
       ),
     );
   }

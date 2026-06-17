@@ -6,14 +6,14 @@ import 'package:animations_in_flutter/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
-import 'package:animations_in_flutter/views/widgets/app_text_field.dart';
-import 'package:animations_in_flutter/views/widgets/category_selector.dart';
-import 'package:animations_in_flutter/views/widgets/currency_dropdown.dart';
-import 'package:animations_in_flutter/views/widgets/date_picker_field.dart';
-import 'package:animations_in_flutter/views/widgets/notification_permission.dart';
-import 'package:animations_in_flutter/views/widgets/save_button.dart';
+import 'package:animations_in_flutter/views/widgets/add_trip/app_text_field.dart';
+import 'package:animations_in_flutter/views/widgets/add_trip/category_selector.dart';
+import 'package:animations_in_flutter/views/widgets/add_trip/currency_dropdown.dart';
+import 'package:animations_in_flutter/views/widgets/add_trip/date_picker_field.dart';
+import 'package:animations_in_flutter/views/widgets/add_trip/notification_permission.dart';
+import 'package:animations_in_flutter/views/widgets/add_trip/save_button.dart';
 import 'package:animations_in_flutter/views/widgets/star_rating.dart';
-import 'package:animations_in_flutter/views/widgets/trip_image_picker.dart';
+import 'package:animations_in_flutter/views/widgets/add_trip/trip_image_picker.dart';
 
 class AddTripPage extends StatefulWidget {
   final String? tripId;

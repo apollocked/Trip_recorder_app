@@ -5,9 +5,9 @@ import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
-import 'package:animations_in_flutter/views/widgets/search_sort_bar.dart';
-import 'package:animations_in_flutter/views/widgets/shimmer_card_widget.dart';
-import 'package:animations_in_flutter/views/widgets/trip_widget.dart';
+import 'package:animations_in_flutter/views/widgets/home/search_sort_bar.dart';
+import 'package:animations_in_flutter/views/widgets/home/shimmer_card_widget.dart';
+import 'package:animations_in_flutter/views/widgets/home/trip_widget.dart';
 
 class TripListWidget extends StatelessWidget {
   const TripListWidget({super.key});

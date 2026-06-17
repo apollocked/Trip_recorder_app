@@ -5,11 +5,11 @@ import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/expense.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
-import 'package:animations_in_flutter/views/widgets/category_budget_bars.dart';
+import 'package:animations_in_flutter/views/widgets/budget/category_budget_bars.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
-import 'package:animations_in_flutter/views/widgets/expense_dialog.dart';
-import 'package:animations_in_flutter/views/widgets/expense_tile.dart';
-import 'package:animations_in_flutter/views/widgets/total_expense_card.dart';
+import 'package:animations_in_flutter/views/widgets/budget/expense_dialog.dart';
+import 'package:animations_in_flutter/views/widgets/budget/expense_tile.dart';
+import 'package:animations_in_flutter/views/widgets/budget/total_expense_card.dart';
 
 class BudgetPage extends StatefulWidget {
   final String tripId;
