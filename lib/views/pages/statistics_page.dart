@@ -21,6 +21,7 @@ class StatisticsPage extends StatelessWidget {
     final stats = tripProvider.statistics;
     final loc = AppLocalizations.of(context)!;
     final trips = tripProvider.trips;
+    final spentByCurrency = stats['spentByCurrency'] as Map<String, double>;
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -37,17 +38,30 @@ class StatisticsPage extends StatelessWidget {
           children: [
             StatCard(title: loc.totalTrips, value: '${stats['totalTrips']}', icon: Icons.flight_takeoff_rounded, iconColor: colorScheme.primary, colorScheme: colorScheme),
             const SizedBox(height: 12),
-            Row(children: [
-              Expanded(child: StatCard(title: loc.totalSpent, value: (stats['totalSpent'] as double).toStringAsFixed(0), icon: Icons.attach_money_rounded, iconColor: Colors.green, colorScheme: colorScheme)),
-              const SizedBox(width: 12),
-              Expanded(child: StatCard(title: loc.totalNights, value: '${stats['totalNights']}', icon: Icons.bedtime_rounded, iconColor: Colors.indigo, colorScheme: colorScheme)),
-            ]),
-            const SizedBox(height: 12),
-            Row(children: [
-              Expanded(child: StatCard(title: loc.avgRating, value: (stats['avgRating'] as double) > 0 ? (stats['avgRating'] as double).toStringAsFixed(1) : loc.notRated, icon: Icons.star_rounded, iconColor: Colors.amber, colorScheme: colorScheme)),
-              const SizedBox(width: 12),
-              Expanded(child: StatCard(title: loc.favorites, value: '${stats['likedCount']}', icon: Icons.favorite_rounded, iconColor: Colors.red, colorScheme: colorScheme)),
-            ]),
+            if (spentByCurrency.length > 1) ...[
+              ..._currencyCards(spentByCurrency, loc, colorScheme),
+              const SizedBox(height: 12),
+              Row(children: [
+                Expanded(child: StatCard(title: loc.totalNights, value: '${stats['totalNights']}', icon: Icons.bedtime_rounded, iconColor: Colors.indigo, colorScheme: colorScheme)),
+                const SizedBox(width: 12),
+                Expanded(child: StatCard(title: loc.avgRating, value: (stats['avgRating'] as double) > 0 ? (stats['avgRating'] as double).toStringAsFixed(1) : loc.notRated, icon: Icons.star_rounded, iconColor: Colors.amber, colorScheme: colorScheme)),
+              ]),
+              const SizedBox(height: 12),
+              StatCard(title: loc.favorites, value: '${stats['likedCount']}', icon: Icons.favorite_rounded, iconColor: Colors.red, colorScheme: colorScheme),
+            ] else
+              Column(children: [
+                Row(children: [
+                  Expanded(child: StatCard(title: loc.totalSpent, value: '${(stats['totalSpent'] as double).toStringAsFixed(0)} ${spentByCurrency.keys.first}', icon: Icons.attach_money_rounded, iconColor: Colors.green, colorScheme: colorScheme)),
+                  const SizedBox(width: 12),
+                  Expanded(child: StatCard(title: loc.totalNights, value: '${stats['totalNights']}', icon: Icons.bedtime_rounded, iconColor: Colors.indigo, colorScheme: colorScheme)),
+                ]),
+                const SizedBox(height: 12),
+                Row(children: [
+                  Expanded(child: StatCard(title: loc.avgRating, value: (stats['avgRating'] as double) > 0 ? (stats['avgRating'] as double).toStringAsFixed(1) : loc.notRated, icon: Icons.star_rounded, iconColor: Colors.amber, colorScheme: colorScheme)),
+                  const SizedBox(width: 12),
+                  Expanded(child: StatCard(title: loc.favorites, value: '${stats['likedCount']}', icon: Icons.favorite_rounded, iconColor: Colors.red, colorScheme: colorScheme)),
+                ]),
+              ]),
             if ((stats['categoryCounts'] as Map).isNotEmpty) ...[
               const SizedBox(height: 24),
               Text(loc.tripsByCategory, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
@@ -77,10 +91,18 @@ class StatisticsPage extends StatelessWidget {
     );
   }
 
+  List<Widget> _currencyCards(Map<String, double> spentByCurrency, AppLocalizations loc, ColorScheme colorScheme) {
+    return spentByCurrency.entries.map((e) => Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: StatCard(title: '${loc.totalSpent} (${e.key})', value: e.value.toStringAsFixed(0), icon: Icons.attach_money_rounded, iconColor: Colors.green, colorScheme: colorScheme),
+    )).toList();
+  }
+
   Map<String, double> _spendByDestination(List<Trip> trips) {
     final map = <String, double>{};
     for (final t in trips) {
-      map[t.title] = (map[t.title] ?? 0) + t.price;
+      final key = '${t.title} (${t.currency.isNotEmpty ? t.currency : "USD"})';
+      map[key] = (map[key] ?? 0) + t.price;
     }
     return map;
   }

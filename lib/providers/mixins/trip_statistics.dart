@@ -10,6 +10,7 @@ class TripStatistics {
   final TripCategory? topCategory;
   final String? topDestination;
   final Map<TripCategory, int> categoryCounts;
+  final Map<String, double> spentByCurrency;
 
   const TripStatistics({
     required this.totalTrips,
@@ -20,12 +21,18 @@ class TripStatistics {
     required this.topCategory,
     required this.topDestination,
     required this.categoryCounts,
+    required this.spentByCurrency,
   });
 
   factory TripStatistics.fromTrips(List<Trip> trips) {
     final totalTrips = trips.length;
     final totalSpent = trips.fold<double>(0, (sum, t) => sum + t.price);
     final totalNights = trips.fold<int>(0, (sum, t) => sum + t.nights);
+    final spentByCurrency = <String, double>{};
+    for (final t in trips) {
+      final cur = t.currency.isNotEmpty ? t.currency : 'USD';
+      spentByCurrency[cur] = (spentByCurrency[cur] ?? 0) + t.price;
+    }
     final avgRating = totalTrips > 0
         ? trips.fold<double>(0, (sum, t) => sum + t.rating) / totalTrips
         : 0.0;
@@ -41,7 +48,8 @@ class TripStatistics {
 
     final destinationCounts = <String, int>{};
     for (final t in trips) {
-      destinationCounts[t.title] = (destinationCounts[t.title] ?? 0) + 1;
+      final key = '${t.title} (${t.currency.isNotEmpty ? t.currency : "USD"})';
+      destinationCounts[key] = (destinationCounts[key] ?? 0) + 1;
     }
     final topDestination = destinationCounts.entries.isNotEmpty
         ? destinationCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key
@@ -56,6 +64,7 @@ class TripStatistics {
       topCategory: topCategory,
       topDestination: topDestination,
       categoryCounts: categoryCounts,
+      spentByCurrency: spentByCurrency,
     );
   }
 
@@ -68,5 +77,6 @@ class TripStatistics {
     'topCategory': topCategory,
     'topDestination': topDestination,
     'categoryCounts': categoryCounts,
+    'spentByCurrency': spentByCurrency,
   };
 }
