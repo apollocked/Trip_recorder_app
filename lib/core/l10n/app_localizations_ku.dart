@@ -34,7 +34,7 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get emptylistDescription =>
-      'کاتی ئەوەیە پلانی گەشتی داهاتووت دابنێیت!';
+      'کاتی ئەوەیە پلانی گەشتی داهاتووت دابنێیت!\nبۆ دووبارە سەیرکردنەوە بۆ خوار بکێشە.';
 
   @override
   String get emptyTripTitle => 'هێشتا هیچ گەشتێک نییە';

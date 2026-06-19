@@ -33,7 +33,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tryAdjustingSearch => 'حاول تعديل البحث أو الفلاتر';
 
   @override
-  String get emptylistDescription => 'حان وقت التخطيط لمغامرتك القادمة!';
+  String get emptylistDescription =>
+      'حان وقت التخطيط لمغامرتك القادمة!\nاسحب للأسفل للتحقق مرة أخرى.';
 
   @override
   String get emptyTripTitle => 'لا توجد رحلات بعد';
