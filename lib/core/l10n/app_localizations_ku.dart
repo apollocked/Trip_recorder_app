@@ -216,7 +216,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get tripCatCultural => 'کەلتووری';
 
   @override
-  String get tripCatOther => 'تر';
+  String get tripCatOther => 'هیتر';
 
   @override
   String get tapToAddPhotos => 'بۆ زیادکردنی وێنە لێرەدا بدە';
@@ -318,7 +318,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get categoryShopping => 'کڕین';
 
   @override
-  String get categoryOther => 'تر';
+  String get categoryOther => 'هیتر';
 
   @override
   String get packingList => 'لیستی کەلوپەل';

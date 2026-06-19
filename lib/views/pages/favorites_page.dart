@@ -55,10 +55,7 @@ class _FavoriteTripCard extends StatelessWidget {
   final Trip trip;
   final ColorScheme colorScheme;
 
-  const _FavoriteTripCard({
-    required this.trip,
-    required this.colorScheme,
-  });
+  const _FavoriteTripCard({required this.trip, required this.colorScheme});
 
   @override
   Widget build(BuildContext context) {
@@ -74,20 +71,22 @@ class _FavoriteTripCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: colorScheme.surfaceContainerHighest.withAlpha(120),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: colorScheme.outlineVariant.withAlpha(100),
-          ),
+          border: Border.all(color: colorScheme.outlineVariant.withAlpha(100)),
         ),
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
             if (trip.imagePaths.isNotEmpty)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: SizedBox(
-                  width: 64,
-                  height: 64,
-                  child: _tripImage(trip.imagePaths.first),
+              Hero(
+                tag: 'tag-image-${trip.imagePaths.first}',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: SizedBox(
+                    width: 64,
+                    height: 64,
+
+                    child: _tripImage(trip.imagePaths.first),
+                  ),
                 ),
               )
             else
@@ -129,18 +128,32 @@ class _FavoriteTripCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(Icons.nightlight_round, size: 14, color: colorScheme.onSurfaceVariant),
+                      Icon(
+                        Icons.nightlight_round,
+                        size: 14,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         '${trip.nights} nights',
-                        style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                       const SizedBox(width: 12),
-                      Icon(Icons.star_rounded, size: 14, color: AppColors.ratingActive),
+                      Icon(
+                        Icons.star_rounded,
+                        size: 14,
+                        color: AppColors.ratingActive,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         trip.rating > 0 ? trip.rating.toStringAsFixed(1) : '--',
-                        style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
