@@ -152,7 +152,40 @@ class AppLocalizationsKu extends AppLocalizations {
   String get system => 'سیستەم';
 
   @override
-  String get onboardingTitle1 => 'گەشتەکانت پلان بکە';
+  String get onboardingWelcome => 'بەخێربێیت بۆ تۆمارکەری گەشت';
+
+  @override
+  String get onboardingBadgePhotos => 'وێنەکان';
+
+  @override
+  String get onboardingBadgeRatings => 'هەڵسەنگاندنەکان';
+
+  @override
+  String get onboardingBadgeCategories => 'پۆلەکان';
+
+  @override
+  String get onboardingBadgeBudget => 'بودجە';
+
+  @override
+  String get onboardingBadgeChecklist => 'لیستی ئامادەکاری';
+
+  @override
+  String get onboardingBadgeJournal => 'ڕۆژنامە';
+
+  @override
+  String get onboardingBadgeStatistics => 'ئامارەکان';
+
+  @override
+  String get onboardingBadgeFavorites => 'دڵخوازەکان';
+
+  @override
+  String get onboardingBadgeTimeline => 'هێڵی کات';
+
+  @override
+  String get onboardingBadgeConverter => 'گۆڕینی دراو';
+
+  @override
+  String get onboardingTitle1 => 'پلانی گەشتەکانت دابنێ';
 
   @override
   String get onboardingDesc1 =>
@@ -187,6 +220,12 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get firstLaunchHint => 'کلیک لە + بکە بۆ دەستپێکردنی یەکەم گەشت!';
+
+  @override
+  String get nextLabel => 'داهاتوو';
+
+  @override
+  String get skipLabel => 'پەڕاندن';
 
   @override
   String get getStarted => 'دەستپێبکە';

@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
 
 class AmbientGlow extends StatelessWidget {
-  const AmbientGlow({super.key});
+  final Color color;
+  final double size;
+  final Alignment alignment;
+
+  const AmbientGlow({
+    super.key,
+    this.color = Colors.transparent,
+    this.size = 0.8,
+    this.alignment = Alignment.topLeft,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Positioned(
-      top: -size.height * 0.08,
-      left: -size.width * 0.1,
-      child: Container(
-        width: size.width * 0.8,
-        height: size.width * 0.8,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
+    final screenSize = MediaQuery.of(context).size;
+    final glowColor = color == Colors.transparent
+        ? Theme.of(context).colorScheme.primary
+        : color;
+    return Positioned.fill(
+      child: Align(
+        alignment: alignment,
+        child: Container(
+          width: screenSize.width * size,
+          height: screenSize.width * size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: glowColor.withValues(alpha: 0.1),
+          ),
         ),
       ),
     );
@@ -42,14 +55,19 @@ class OnboardingHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(children: [
-            Icon(Icons.travel_explore, color: t.colorScheme.onSurfaceVariant, size: 28),
+            Icon(Icons.travel_explore, color: t.colorScheme.primary, size: 28),
             const SizedBox(width: 10),
             Text(title.toUpperCase(), style: t.textTheme.titleMedium?.copyWith(
               color: t.colorScheme.onSurface, fontWeight: FontWeight.w900, letterSpacing: 1.5)),
           ]),
-          IconButton(
-            icon: Icon(Icons.settings_suggest_rounded, color: t.colorScheme.onSurfaceVariant),
-            onPressed: onSettingsPressed, tooltip: tooltipText),
+          TextButton(
+            onPressed: onSettingsPressed,
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              Icon(Icons.settings_rounded, size: 18, color: t.colorScheme.onSurfaceVariant),
+              const SizedBox(width: 4),
+              Text(tooltipText, style: TextStyle(color: t.colorScheme.onSurfaceVariant, fontWeight: FontWeight.w600)),
+            ]),
+          ),
         ],
       ),
     );

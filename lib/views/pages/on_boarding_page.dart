@@ -10,14 +10,18 @@ import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 class OnboardingItem {
   final IconData icon;
   final String title;
+  final String? welcome;
   final String description;
   final String tip;
+  final List<FeatureBadge> features;
 
   const OnboardingItem({
     required this.icon,
     required this.title,
+    this.welcome,
     required this.description,
     required this.tip,
+    required this.features,
   });
 }
 
@@ -28,8 +32,17 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
-  final _ctrl = PageController();
+  final _ctrl = PageController(viewportFraction: 0.92);
   int _page = 0;
+  double _pageFraction = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl.addListener(() {
+      setState(() => _pageFraction = _ctrl.page ?? 0);
+    });
+  }
 
   @override
   void dispose() {
@@ -40,68 +53,128 @@ class _OnboardingPageState extends State<OnboardingPage> {
   void _next(int total) {
     if (_page < total - 1) {
       _ctrl.nextPage(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOutCubic,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeOutCubic,
       );
     } else {
       context.read<TripProvider>().completeOnboarding();
     }
   }
 
+  void _skip() {
+    context.read<TripProvider>().completeOnboarding();
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context);
+    final cs = t.colorScheme;
     final l = AppLocalizations.of(context)!;
     final items = [
       OnboardingItem(
-        icon: Icons.auto_awesome_rounded,
+        icon: Icons.explore_rounded,
         title: l.onboardingTitle1,
+        welcome: l.onboardingWelcome,
         description: l.onboardingDesc1,
         tip: l.onboardingTip1,
+        features: [
+          FeatureBadge(Icons.photo_camera_rounded, l.onboardingBadgePhotos),
+          FeatureBadge(Icons.star_rounded, l.onboardingBadgeRatings),
+          FeatureBadge(Icons.category_rounded, l.onboardingBadgeCategories),
+        ],
       ),
       OnboardingItem(
-        icon: Icons.map_rounded,
+        icon: Icons.dashboard_customize_rounded,
         title: l.onboardingTitle2,
         description: l.onboardingDesc2,
         tip: l.onboardingTip2,
+        features: [
+          FeatureBadge(Icons.account_balance_wallet_rounded, l.onboardingBadgeBudget),
+          FeatureBadge(Icons.checklist_rounded, l.onboardingBadgeChecklist),
+          FeatureBadge(Icons.auto_stories_rounded, l.onboardingBadgeJournal),
+        ],
       ),
       OnboardingItem(
-        icon: Icons.phonelink_setup_rounded,
+        icon: Icons.auto_awesome_rounded,
         title: l.onboardingTitle3,
         description: l.onboardingDesc3,
         tip: l.onboardingTip3,
+        features: [
+          FeatureBadge(Icons.bar_chart_rounded, l.onboardingBadgeStatistics),
+          FeatureBadge(Icons.favorite_rounded, l.onboardingBadgeFavorites),
+          FeatureBadge(Icons.timeline_rounded, l.onboardingBadgeTimeline),
+          FeatureBadge(Icons.currency_exchange_rounded, l.onboardingBadgeConverter),
+        ],
       ),
     ];
 
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: t.colorScheme.surface,
+        backgroundColor: cs.surface,
         body: Stack(
           children: [
-            AmbientGlow(),
+            // Animated ambient glow that follows page
+            AnimatedBuilder(
+              animation: _ctrl,
+              builder: (_, child) {
+                final glowProgress = (_pageFraction % 1).clamp(0.0, 1.0);
+                final colors = [
+                  cs.primary,
+                  cs.tertiary,
+                  cs.secondary,
+                ];
+                final i = _page.clamp(0, 2);
+                final next = (i + 1).clamp(0, 2);
+                final glowColor = Color.lerp(
+                  colors[i],
+                  colors[next],
+                  glowProgress,
+                )!;
+                return Stack(
+                  children: [
+                    AmbientGlow(
+                      color: glowColor,
+                      size: 0.9,
+                      alignment: Alignment.topLeft,
+                    ),
+                    AmbientGlow(
+                      color: glowColor.withValues(alpha: 0.5),
+                      size: 0.5,
+                      alignment: Alignment.bottomRight,
+                    ),
+                  ],
+                );
+              },
+            ),
             SafeArea(
               child: Column(
                 children: [
-                  const SizedBox(height: 16),
                   OnboardingHeader(
                     title: l.appTitle,
                     tooltipText: l.settingsTitle,
                     onSettingsPressed: () => showSettingsModal(context),
                   ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: PageView.builder(
                       controller: _ctrl,
                       itemCount: items.length,
                       onPageChanged: (i) => setState(() => _page = i),
-                      itemBuilder: (_, i) => OnboardingCard(item: items[i]),
+                      itemBuilder: (_, i) => OnboardingCard(
+                        item: items[i],
+                        pageFraction: _pageFraction - i,
+                      ),
                     ),
                   ),
                   OnboardingFooter(
                     itemCount: items.length,
                     currentPage: _page,
                     buttonText: l.getStarted,
+                    nextLabel: l.nextLabel,
+                    skipLabel: l.skipLabel,
                     onNextPressed: () => _next(items.length),
+                    onSkip: _skip,
                   ),
                 ],
               ),

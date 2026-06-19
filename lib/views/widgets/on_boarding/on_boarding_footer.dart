@@ -4,77 +4,108 @@ class OnboardingFooter extends StatelessWidget {
   final int itemCount;
   final int currentPage;
   final String buttonText;
+  final String nextLabel;
+  final String skipLabel;
   final VoidCallback onNextPressed;
+  final VoidCallback onSkip;
 
   const OnboardingFooter({
     super.key,
     required this.itemCount,
     required this.currentPage,
     required this.buttonText,
+    required this.nextLabel,
+    required this.skipLabel,
     required this.onNextPressed,
+    required this.onSkip,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final isLastPage = currentPage == itemCount - 1;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: List.generate(
-              itemCount,
-              (index) => AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                margin: const EdgeInsetsDirectional.only(end: 8),
-                height: 8,
-                width: currentPage == index ? 24 : 8,
-                decoration: BoxDecoration(
-                  color: currentPage == index
-                      ? colorScheme.primary
-                      : colorScheme.primaryContainer.withValues(
-                          alpha: 0.4,
-                        ), // Fixed: Changed .withOpacity(0.4) to .withValues(alpha: 0.4)
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
+          // Pill-shaped page indicator
+          Container(
+            height: 8,
+            padding: const EdgeInsets.symmetric(horizontal: 3),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(itemCount, (i) {
+                final isActive = i == currentPage;
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 350),
+                  curve: Curves.easeOutCubic,
+                  margin: const EdgeInsets.symmetric(horizontal: 3),
+                  height: 8,
+                  width: isActive ? 28 : 8,
+                  decoration: BoxDecoration(
+                    color: isActive
+                        ? colorScheme.primary
+                        : colorScheme.primary.withValues(alpha: 0.25),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                );
+              }),
             ),
           ),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
+          const SizedBox(height: 20),
+          // CTA button
+          SizedBox(
+            width: double.infinity,
             height: 56,
-            width: isLastPage ? 150 : 56,
-            child: ElevatedButton(
+            child: FilledButton(
               onPressed: onNextPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: colorScheme.primary,
-                foregroundColor: colorScheme.onPrimary,
+              style: FilledButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(28),
                 ),
-                padding: EdgeInsets.zero,
                 elevation: 0,
               ),
               child: isLastPage
                   ? Text(
                       buttonText,
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        color: colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
                       ),
                     )
-                  : Icon(
-                      Icons.arrow_forward_rounded,
-                      size: 24,
-                      color: colorScheme.onPrimary,
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          nextLabel,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Icon(Icons.arrow_forward_rounded, size: 20),
+                      ],
                     ),
             ),
           ),
+          if (!isLastPage) ...[
+            const SizedBox(height: 12),
+            // Skip button
+            TextButton(
+              onPressed: onSkip,
+              child: Text(
+                skipLabel,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );

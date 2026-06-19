@@ -151,6 +151,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get system => 'System';
 
   @override
+  String get onboardingWelcome => 'Welcome to Trip Recorder';
+
+  @override
+  String get onboardingBadgePhotos => 'Photos';
+
+  @override
+  String get onboardingBadgeRatings => 'Ratings';
+
+  @override
+  String get onboardingBadgeCategories => 'Categories';
+
+  @override
+  String get onboardingBadgeBudget => 'Budget';
+
+  @override
+  String get onboardingBadgeChecklist => 'Checklist';
+
+  @override
+  String get onboardingBadgeJournal => 'Journal';
+
+  @override
+  String get onboardingBadgeStatistics => 'Statistics';
+
+  @override
+  String get onboardingBadgeFavorites => 'Favorites';
+
+  @override
+  String get onboardingBadgeTimeline => 'Timeline';
+
+  @override
+  String get onboardingBadgeConverter => 'Converter';
+
+  @override
   String get onboardingTitle1 => 'Plan Your Trips';
 
   @override
@@ -185,6 +218,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get firstLaunchHint => 'Tap + to start planning your first trip!';
+
+  @override
+  String get nextLabel => 'Next';
+
+  @override
+  String get skipLabel => 'Skip';
 
   @override
   String get getStarted => 'Get Started';

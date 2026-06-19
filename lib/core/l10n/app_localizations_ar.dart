@@ -149,6 +149,39 @@ class AppLocalizationsAr extends AppLocalizations {
   String get system => 'النظام';
 
   @override
+  String get onboardingWelcome => 'مرحبًا بك في مسجّل الرحلات';
+
+  @override
+  String get onboardingBadgePhotos => 'صور';
+
+  @override
+  String get onboardingBadgeRatings => 'تقييمات';
+
+  @override
+  String get onboardingBadgeCategories => 'تصنيفات';
+
+  @override
+  String get onboardingBadgeBudget => 'الميزانية';
+
+  @override
+  String get onboardingBadgeChecklist => 'قائمة التجهيز';
+
+  @override
+  String get onboardingBadgeJournal => 'يوميات';
+
+  @override
+  String get onboardingBadgeStatistics => 'إحصائيات';
+
+  @override
+  String get onboardingBadgeFavorites => 'المفضلة';
+
+  @override
+  String get onboardingBadgeTimeline => 'الجدول الزمني';
+
+  @override
+  String get onboardingBadgeConverter => 'محوّل العملات';
+
+  @override
   String get onboardingTitle1 => 'خطط لرحلاتك';
 
   @override
@@ -183,6 +216,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get firstLaunchHint => 'اضغط + لبدء التخطيط لأول رحلة لك!';
+
+  @override
+  String get nextLabel => 'التالي';
+
+  @override
+  String get skipLabel => 'تخطي';
 
   @override
   String get getStarted => 'ابدأ الآن';

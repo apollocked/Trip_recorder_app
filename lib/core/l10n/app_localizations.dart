@@ -376,6 +376,72 @@ abstract class AppLocalizations {
   /// **'System'**
   String get system;
 
+  /// No description provided for @onboardingWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Trip Recorder'**
+  String get onboardingWelcome;
+
+  /// No description provided for @onboardingBadgePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get onboardingBadgePhotos;
+
+  /// No description provided for @onboardingBadgeRatings.
+  ///
+  /// In en, this message translates to:
+  /// **'Ratings'**
+  String get onboardingBadgeRatings;
+
+  /// No description provided for @onboardingBadgeCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get onboardingBadgeCategories;
+
+  /// No description provided for @onboardingBadgeBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget'**
+  String get onboardingBadgeBudget;
+
+  /// No description provided for @onboardingBadgeChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist'**
+  String get onboardingBadgeChecklist;
+
+  /// No description provided for @onboardingBadgeJournal.
+  ///
+  /// In en, this message translates to:
+  /// **'Journal'**
+  String get onboardingBadgeJournal;
+
+  /// No description provided for @onboardingBadgeStatistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get onboardingBadgeStatistics;
+
+  /// No description provided for @onboardingBadgeFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get onboardingBadgeFavorites;
+
+  /// No description provided for @onboardingBadgeTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get onboardingBadgeTimeline;
+
+  /// No description provided for @onboardingBadgeConverter.
+  ///
+  /// In en, this message translates to:
+  /// **'Converter'**
+  String get onboardingBadgeConverter;
+
   /// No description provided for @onboardingTitle1.
   ///
   /// In en, this message translates to:
@@ -441,6 +507,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap + to start planning your first trip!'**
   String get firstLaunchHint;
+
+  /// No description provided for @nextLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get nextLabel;
+
+  /// No description provided for @skipLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skipLabel;
 
   /// No description provided for @getStarted.
   ///
