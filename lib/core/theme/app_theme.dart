@@ -8,6 +8,7 @@ abstract final class AppTheme {
   static ThemeData _build(Brightness brightness) {
     return ThemeData(
       useMaterial3: true,
+      fontFamily: "xoshnus",
       colorScheme: ColorScheme.fromSeed(
         brightness: brightness,
         seedColor: AppColors.brandSeed,

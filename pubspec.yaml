@@ -50,6 +50,15 @@ flutter:
     - assets/images/
     - assets/icons/
     - .env
+    - assets/fonts/
+
+  fonts:
+    - family: xoshnus
+      fonts:
+        - asset: assets/fonts/xoshnus.ttf
+    - family: adbhawler
+      fonts:
+        - asset: assets/fonts/adbhawler.ttf
 
 flutter_launcher_icons:
   android: "launcher_icon"
