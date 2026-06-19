@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
@@ -39,6 +40,7 @@ class _SearchSortBarState extends State<SearchSortBar> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: TextField(
                 controller: _searchController,
+                inputFormatters: [LengthLimitingTextInputFormatter(100)],
                 decoration: InputDecoration(
                   hintText: l10n.searchTrips,
                   prefixIcon: const Icon(Icons.search_rounded, size: 20),

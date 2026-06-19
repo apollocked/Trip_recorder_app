@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/checklist_item.dart';
@@ -57,6 +58,7 @@ class _PackingListPageState extends State<PackingListPage> {
         content: TextField(
           controller: controller,
           autofocus: true,
+          inputFormatters: [LengthLimitingTextInputFormatter(200)],
           decoration: InputDecoration(
             labelText: l10n.itemName,
             hintText: l10n.addItemHint,

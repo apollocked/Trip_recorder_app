@@ -10,6 +10,7 @@ class AppTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final int maxLines;
   final String? prefixText;
+  final int? maxLength;
 
   const AppTextField({
     super.key,
@@ -21,18 +22,25 @@ class AppTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.maxLines = 1,
     this.prefixText,
+    this.maxLength,
   });
 
   @override
   Widget build(BuildContext context) {
+    final formatters = <TextInputFormatter>[];
+    if (keyboardType == TextInputType.number) {
+      formatters.add(FilteringTextInputFormatter.digitsOnly);
+    }
+    if (maxLength != null) {
+      formatters.add(LengthLimitingTextInputFormatter(maxLength));
+    }
+
     return TextFormField(
       controller: controller,
       validator: validator,
       keyboardType: keyboardType,
       maxLines: maxLines,
-      inputFormatters: keyboardType == TextInputType.number
-          ? [FilteringTextInputFormatter.digitsOnly]
-          : null,
+      inputFormatters: formatters.isNotEmpty ? formatters : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         labelText: label,

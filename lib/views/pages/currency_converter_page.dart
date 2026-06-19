@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/services/currency_converter_service.dart';
@@ -87,6 +88,9 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
                       keyboardType: TextInputType.numberWithOptions(
                         decimal: true,
                       ),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                      ],
                       decoration: InputDecoration(
                         hintText: '100',
                         prefixText: '${CurrencyInfo.symbolFor(_fromCurrency)} ',

@@ -329,6 +329,7 @@ class _AddTripPageState extends State<AddTripPage> {
                   icon: Icons.notes_rounded,
                   colorScheme: colorScheme,
                   maxLines: 4,
+                  maxLength: 1000,
                 ),
                 const SizedBox(height: 40),
                 SaveButton(

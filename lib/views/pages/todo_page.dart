@@ -120,6 +120,7 @@ class _TodoPageState extends State<TodoPage> {
               TextField(
                 controller: _c,
                 autofocus: true,
+                inputFormatters: [LengthLimitingTextInputFormatter(200)],
                 decoration: InputDecoration(
                   hintText: l10n.addItemHint,
                   filled: true,

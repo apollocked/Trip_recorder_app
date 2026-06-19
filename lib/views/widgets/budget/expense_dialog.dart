@@ -30,6 +30,7 @@ Future<ExpenseDialogResult?> showExpenseDialog(BuildContext context) async {
           children: [
             TextField(
               controller: titleController,
+              inputFormatters: [LengthLimitingTextInputFormatter(100)],
               decoration: InputDecoration(
                 labelText: l10n.expenseTitle,
                 hintText: l10n.addExpenseHint,
