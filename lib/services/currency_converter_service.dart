@@ -16,6 +16,7 @@ class CurrencyConverterService {
 
   static Future<Map<String, double>> fetchRates(String base) async {
     if (_cache.containsKey(base)) return _cache[base]!;
+    if (_apiKey.isEmpty) return Map.from(_fallbackRates);
     try {
       final res = await http.get(Uri.parse('$_baseUrl/$_apiKey/latest/$base'))
           .timeout(const Duration(seconds: 10));

@@ -15,8 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
-
+  try {
+    await dotenv.load();
+  } catch (_) {}
   await NotificationService().init();
   final prefs = await SharedPreferences.getInstance();
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
