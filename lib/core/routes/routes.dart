@@ -5,7 +5,7 @@ import 'package:animations_in_flutter/views/pages/on_boarding_page.dart';
 import 'package:animations_in_flutter/views/pages/settings_page.dart';
 import 'package:animations_in_flutter/views/pages/statistics_page.dart';
 import 'package:animations_in_flutter/views/pages/todo_page.dart';
-import 'package:animations_in_flutter/views/widgets/main_shell.dart';
+import 'package:animations_in_flutter/views/pages/main_shell.dart';
 import 'package:go_router/go_router.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -45,15 +45,15 @@ GoRouter createRouter(TripProvider tripProvider) {
           ),
           StatefulShellBranch(
             routes: [
-              GoRoute(
-                path: '/settings',
-                builder: (_, _) => const SettingsPage(),
-              ),
+              GoRoute(path: '/todo', builder: (_, _) => const TodoPage()),
             ],
           ),
           StatefulShellBranch(
             routes: [
-              GoRoute(path: '/todo', builder: (_, _) => const TodoPage()),
+              GoRoute(
+                path: '/settings',
+                builder: (_, _) => const SettingsPage(),
+              ),
             ],
           ),
         ],

@@ -72,8 +72,8 @@ class _MainShellState extends State<MainShell>
                 label: l10n.home,
               ),
               NavigationDestination(
-                icon: const Icon(Icons.bar_chart_outlined),
-                selectedIcon: const Icon(Icons.bar_chart_rounded),
+                icon: const Icon(Icons.stacked_bar_chart_outlined),
+                selectedIcon: const Icon(Icons.stacked_bar_chart_rounded),
                 label: l10n.statistics,
               ),
 

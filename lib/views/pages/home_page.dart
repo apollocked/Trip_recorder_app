@@ -1,5 +1,4 @@
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
 import 'package:animations_in_flutter/views/pages/favorites_page.dart';
 import 'package:animations_in_flutter/views/pages/memory_page.dart';
@@ -57,48 +56,35 @@ class _HomeState extends State<HomePage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Expanded(
-                    child: TextButton.icon(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const CurrencyConverterPage(),
-                        ),
+                  TextButton.icon(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const CurrencyConverterPage(),
                       ),
-                      icon: const Icon(Icons.swap_horiz_rounded, size: 18),
-                      label: Text(l10n.currencyConverter),
                     ),
+                    icon: const Icon(Icons.swap_horiz_rounded, size: 18),
+                    label: Text(l10n.currencyConverter),
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextButton.icon(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const MemoryPage()),
-                      ),
-                      icon: const Icon(Icons.timeline_rounded, size: 18),
-                      label: Text(l10n.memories),
+                  TextButton.icon(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const MemoryPage()),
                     ),
+                    icon: const Icon(Icons.timeline_rounded, size: 18),
+                    label: Text(l10n.memories),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.favoriteActive20,
+                  IconButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const FavoritesPage()),
                     ),
-                    child: IconButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const FavoritesPage(),
-                        ),
-                      ),
-                      icon: const Icon(Icons.favorite_rounded),
-                      color: AppColors.favoriteActive,
-                      tooltip: l10n.favorites,
-                    ),
+                    icon: const Icon(Icons.favorite_outline_rounded),
+                    tooltip: l10n.favorites,
                   ),
                 ],
               ),
