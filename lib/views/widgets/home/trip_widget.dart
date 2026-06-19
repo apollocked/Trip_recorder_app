@@ -1,4 +1,5 @@
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
@@ -199,7 +200,7 @@ Widget tripWidget(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          '\$${trip.price.toStringAsFixed(0)}',
+                          '${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}',
                           style: textTheme.labelLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: colorScheme.primary,
