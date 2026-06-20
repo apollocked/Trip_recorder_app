@@ -558,6 +558,14 @@ class AppLocalizationsAr extends AppLocalizations {
       'نود إرسال تذكيرات لك حول رحلاتك القادمة حتى لا تفوّت أي رحلة.';
 
   @override
+  String get monthsFull =>
+      'يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,أغسطس,سبتمبر,أكتوبر,نوفمبر,ديسمبر';
+
+  @override
+  String get monthsShort =>
+      'يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,أغسطس,سبتمبر,أكتوبر,نوفمبر,ديسمبر';
+
+  @override
   String get labelYes => 'نعم';
 
   @override

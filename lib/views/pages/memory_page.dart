@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
@@ -51,7 +52,7 @@ class _MemoryPageState extends State<MemoryPage> {
       ..sort((a, b) => b.date.compareTo(a.date));
     final grouped = <String, List<Trip>>{};
     for (final t in sorted) {
-      final key = DateFormat('MMMM yyyy').format(t.date);
+      final key = loc.formatMonthYear(t.date);
       grouped.putIfAbsent(key, () => []).add(t);
     }
 
@@ -298,7 +299,8 @@ class _DateTripTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final day = trip.date.day.toString();
-    final month = DateFormat('MMM').format(trip.date);
+    final loc = AppLocalizations.of(context)!;
+    final month = loc.monthShort(trip.date.month);
 
     return GestureDetector(
       onTap: onTap,
@@ -365,7 +367,7 @@ class _ExpandedTripCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final weekday = DateFormat('EEEE').format(trip.date);
-    final formattedDate = DateFormat('MMM d, yyyy').format(trip.date);
+    final formattedDate = loc.formatDateAbbreviated(trip.date);
 
     return Container(
       decoration: BoxDecoration(

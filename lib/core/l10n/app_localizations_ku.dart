@@ -562,6 +562,14 @@ class AppLocalizationsKu extends AppLocalizations {
       'دەمانەوێت بیریاری گەشتەکانی داهاتووت بۆ بنێرین بۆ ئەوەی هیچ گەشتێک لەدەست نەدەیت.';
 
   @override
+  String get monthsFull =>
+      'کانوونی دووەم,شوبات,ئازار,نیسان,ئایار,حوزەیران,تەممووز,ئاب,ئەیلوول,تشرینی یەکەم,تشرینی دووەم,کانوونی یەکەم';
+
+  @override
+  String get monthsShort =>
+      'کانوونی٢,شوبات,ئازار,نیسان,ئایار,حوزەیران,تەممووز,ئاب,ئەیلوول,تشرینی١,تشرینی٢,کانوونی١';
+
+  @override
   String get labelYes => 'بەڵێ';
 
   @override

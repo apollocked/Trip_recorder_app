@@ -1150,6 +1150,18 @@ abstract class AppLocalizations {
   /// **'We\'d like to send you reminders about your upcoming trips so you never miss a journey.'**
   String get notificationPermissionDescription;
 
+  /// No description provided for @monthsFull.
+  ///
+  /// In en, this message translates to:
+  /// **'January,February,March,April,May,June,July,August,September,October,November,December'**
+  String get monthsFull;
+
+  /// No description provided for @monthsShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'**
+  String get monthsShort;
+
   /// No description provided for @labelYes.
   ///
   /// In en, this message translates to:

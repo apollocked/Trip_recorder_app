@@ -211,6 +211,8 @@
   "notificationBody": "{tripTitle} is coming up!",
   "notificationPermissionTitle": "Stay Updated",
   "notificationPermissionDescription": "We'd like to send you reminders about your upcoming trips so you never miss a journey.",
+  "monthsFull": "January,February,March,April,May,June,July,August,September,October,November,December",
+  "monthsShort": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
   "labelYes": "Yes",
   "labelNo": "No",
   "viewDetailsLabel": "View Details",

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
@@ -59,8 +60,9 @@ class _FavoriteTripCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final weekday = DateFormat('EEEE').format(trip.date);
-    final formattedDate = DateFormat('MMM d, yyyy').format(trip.date);
+    final formattedDate = loc.formatDateAbbreviated(trip.date);
 
     return GestureDetector(
       onTap: () => Navigator.push(
