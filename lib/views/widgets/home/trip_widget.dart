@@ -52,12 +52,20 @@ Widget tripWidget(
             color: colorScheme.errorContainer,
             borderRadius: BorderRadius.circular(20),
           ),
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.only(right: 24),
-          child: Icon(
-            Icons.delete_sweep_rounded,
-            color: colorScheme.onErrorContainer,
-            size: 28,
+          alignment: Directionality.of(context) == TextDirection.rtl
+              ? Alignment.centerLeft
+              : Alignment.centerRight,
+          padding: EdgeInsets.only(
+            right: Directionality.of(context) == TextDirection.rtl ? 0 : 24,
+            left: Directionality.of(context) == TextDirection.rtl ? 24 : 0,
+          ),
+          child: Transform.flip(
+            flipX: Directionality.of(context) == TextDirection.rtl,
+            child: Icon(
+              Icons.delete_sweep_rounded,
+              color: colorScheme.onErrorContainer,
+              size: 28,
+            ),
           ),
         ),
         child: Card(
@@ -209,7 +217,9 @@ Widget tripWidget(
                       ),
                       const SizedBox(height: 8),
                       Icon(
-                        Icons.chevron_right_rounded,
+                        Directionality.of(context) == TextDirection.rtl
+                            ? Icons.chevron_left_rounded
+                            : Icons.chevron_right_rounded,
                         size: 18,
                         color: colorScheme.outline,
                       ),

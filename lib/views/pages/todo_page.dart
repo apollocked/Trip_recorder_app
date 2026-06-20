@@ -360,8 +360,13 @@ class _TodoPageState extends State<TodoPage> {
                 icon: Icons.delete_rounded,
               ),
               background: Container(
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 20),
+                alignment: Directionality.of(context) == TextDirection.rtl
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
+                padding: EdgeInsets.only(
+                  right: Directionality.of(context) == TextDirection.rtl ? 0 : 20,
+                  left: Directionality.of(context) == TextDirection.rtl ? 20 : 0,
+                ),
                 decoration: BoxDecoration(
                   color: c.error,
                   borderRadius: BorderRadius.circular(16),
