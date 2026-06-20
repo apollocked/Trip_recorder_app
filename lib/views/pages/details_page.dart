@@ -52,8 +52,7 @@ class DetailsPage extends StatelessWidget {
                 tooltip: l10n.editJourney,
                 onPressed: () async {
                   HapticFeedback.selectionClick();
-                  await Navigator.push(
-                    context,
+                  await Navigator.of(context, rootNavigator: true).push(
                     slideRoute(AddTripPage(tripId: trip.id)),
                   );
                 },

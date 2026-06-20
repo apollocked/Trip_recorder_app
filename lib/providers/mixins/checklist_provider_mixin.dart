@@ -16,10 +16,12 @@ mixin ChecklistProviderMixin on ChangeNotifier {
   Future<void> addChecklistItem({
     required String tripId,
     required String title,
+    String category = 'general',
   }) async {
     final item = await _checklistRepository.addItem(
       tripId: tripId,
       title: title,
+      category: category,
     );
     _checklistCache[tripId] = [...(_checklistCache[tripId] ?? []), item];
     notifyListeners();

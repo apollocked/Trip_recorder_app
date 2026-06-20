@@ -68,6 +68,7 @@ class AppDatabase {
         trip_id TEXT NOT NULL,
         title TEXT NOT NULL,
         is_checked INTEGER NOT NULL DEFAULT 0,
+        category TEXT NOT NULL DEFAULT 'general',
         FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
       )
     ''');
@@ -206,6 +207,14 @@ class AppDatabase {
           FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
         )
       ''');
+    }
+    if (oldVersion < 9) {
+      await _addColumnIfNotExists(
+        db,
+        AppConstants.checklistTable,
+        'category',
+        "TEXT NOT NULL DEFAULT 'general'",
+      );
     }
   }
 

@@ -74,9 +74,8 @@ class FutureTripCard extends StatelessWidget {
               title: Text(loc.editJourney),
               onTap: () {
                 Navigator.pop(ctx);
-                Navigator.push(
-                  context,
-                  slideRoute(AddTripPage(tripId: trip.id)),
+                  Navigator.of(context, rootNavigator: true).push(
+                    slideRoute(AddTripPage(tripId: trip.id)),
                 );
               },
             ),

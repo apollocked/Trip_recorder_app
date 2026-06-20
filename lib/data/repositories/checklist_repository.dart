@@ -18,8 +18,9 @@ class ChecklistRepository {
   Future<ChecklistItem> addItem({
     required String tripId,
     required String title,
+    String category = 'general',
   }) async {
-    final item = ChecklistItem(tripId: tripId, title: title);
+    final item = ChecklistItem(tripId: tripId, title: title, category: category);
     final db = await _database.database;
     await db.insert('checklist_items', item.toMap());
     return item;

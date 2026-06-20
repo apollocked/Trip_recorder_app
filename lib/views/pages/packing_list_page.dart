@@ -17,7 +17,22 @@ class PackingListPage extends StatefulWidget {
 
 class _PackingListPageState extends State<PackingListPage> {
   List<ChecklistItem> _items = [];
+  String _selectedCategory = 'general';
   bool _isLoading = true;
+
+  static const _categories = [
+    'general', 'documents', 'clothing', 'electronics', 'toiletries',
+  ];
+
+  String _catLabel(AppLocalizations l10n, String cat) {
+    switch (cat) {
+      case 'documents': return l10n.prepCatDocuments;
+      case 'clothing': return l10n.prepCatClothing;
+      case 'electronics': return l10n.prepCatElectronics;
+      case 'toiletries': return l10n.prepCatToiletries;
+      default: return l10n.categoryOther;
+    }
+  }
 
   @override
   void initState() { super.initState(); _loadItems(); }
@@ -36,29 +51,70 @@ class _PackingListPageState extends State<PackingListPage> {
     }
   }
 
+  Map<String, List<ChecklistItem>> get _grouped {
+    final map = <String, List<ChecklistItem>>{};
+    for (final cat in _categories) { map[cat] = []; }
+    for (final item in _items) {
+      map.putIfAbsent(item.category, () => []);
+      map[item.category]!.add(item);
+    }
+    map.removeWhere((_, v) => v.isEmpty);
+    return map;
+  }
+
   Future<void> _showAddItemDialog() async {
     final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController();
-    final result = await showDialog<String>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.addItem),
-        content: TextField(
-          controller: controller, autofocus: true,
-          inputFormatters: [LengthLimitingTextInputFormatter(200)],
-          decoration: InputDecoration(labelText: l10n.itemName, hintText: l10n.addItemHint),
-          onSubmitted: (val) => Navigator.pop(ctx, val.trim()),
+    String chosenCat = _selectedCategory;
+
+    final result = await showDialog<List<String>>( context: context,
+        builder: (ctx) => StatefulBuilder(
+            builder: (ctx, setDialogState) => AlertDialog(
+              title: Text(l10n.addItem),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: controller, autofocus: true,
+                    inputFormatters: [LengthLimitingTextInputFormatter(200)],
+                    decoration: InputDecoration(
+                      labelText: l10n.itemName,
+                      hintText: l10n.addItemHint,
+                    ),
+                    onSubmitted: (val) => Navigator.pop(ctx, [val.trim(), chosenCat]),
+                  ),
+                  const SizedBox(height: 16),
+                  Wrap(
+                    spacing: 8,
+                    children: _categories.map((cat) => ChoiceChip(
+                      label: Text(_catLabel(l10n, cat)),
+                      selected: chosenCat == cat,
+                      onSelected: (s) => setDialogState(() => chosenCat = cat),
+                    )).toList(),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.notNow)),
+                FilledButton(
+                  onPressed: () => Navigator.pop(ctx, [controller.text.trim(), chosenCat]),
+                  child: Text(l10n.addItem),
+                ),
+              ],
+            ),
         ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.notNow)),
-          FilledButton(onPressed: () => Navigator.pop(ctx, controller.text.trim()),
-              child: Text(l10n.addItem)),
-        ],
-      ),
     );
-    if (result != null && result.isNotEmpty && mounted) {
-      await context.read<TripProvider>().addChecklistItem(tripId: widget.tripId, title: result);
-      _loadItems();
+
+    if (result != null && mounted) {
+      final title = result[0];
+      final cat = result[1];
+      if (title.isNotEmpty) {
+        setState(() => _selectedCategory = cat);
+        await context.read<TripProvider>().addChecklistItem(
+          tripId: widget.tripId, title: title, category: cat,
+        );
+        _loadItems();
+      }
     }
   }
 
@@ -68,6 +124,8 @@ class _PackingListPageState extends State<PackingListPage> {
     final tt = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context)!;
     final checkedCount = _items.where((i) => i.isChecked).length;
+    final grouped = _grouped;
+    final catKeys = grouped.keys.toList();
 
     return Scaffold(
       backgroundColor: cs.surface,
@@ -75,8 +133,14 @@ class _PackingListPageState extends State<PackingListPage> {
         title: Text(l10n.packingList,
             style: tt.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
         centerTitle: true,
-        actions: [IconButton(icon: const Icon(Icons.add_rounded),
-            onPressed: _showAddItemDialog, tooltip: l10n.addItem)],
+        actions: [
+          FilledButton.icon(
+            onPressed: _showAddItemDialog,
+            icon: const Icon(Icons.add_rounded, size: 20),
+            label: Text(l10n.addItem),
+          ),
+          const SizedBox(width: 4),
+        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -109,13 +173,48 @@ class _PackingListPageState extends State<PackingListPage> {
                               label: Text(l10n.addItem)))
                       : ListView.builder(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: _items.length,
-                          itemBuilder: (_, i) => PackingListItem(
-                              tripId: widget.tripId, item: _items[i],
-                              colorScheme: cs, onDeleted: _loadItems)),
+                          itemCount: _buildItemCount(grouped, catKeys),
+                          itemBuilder: (_, i) => _buildItem(grouped, catKeys, i, l10n, cs),
+                        ),
                 ),
               ]),
             ),
     );
+  }
+
+  int _buildItemCount(Map<String, List<ChecklistItem>> grouped, List<String> keys) {
+    int count = 0;
+    for (final k in keys) {
+      count += 1; // section header
+      count += grouped[k]!.length;
+    }
+    return count;
+  }
+
+  Widget _buildItem(Map<String, List<ChecklistItem>> grouped, List<String> keys,
+      int i, AppLocalizations l10n, ColorScheme cs) {
+    int idx = 0;
+    for (final k in keys) {
+      if (i == idx) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 16, bottom: 8),
+          child: Text(_catLabel(l10n, k),
+              style: TextStyle(fontWeight: FontWeight.bold,
+                  color: cs.primary, fontSize: 14)),
+        );
+      }
+      idx++;
+      final items = grouped[k]!;
+      if (i < idx + items.length) {
+        return PackingListItem(
+          tripId: widget.tripId,
+          item: items[i - idx],
+          colorScheme: cs,
+          onDeleted: _loadItems,
+        );
+      }
+      idx += items.length;
+    }
+    return const SizedBox.shrink();
   }
 }

@@ -43,8 +43,7 @@ class TripListWidget extends StatelessWidget {
                           : l10n.tryAdjustingSearch,
                       action: past.isEmpty
                           ? FilledButton.tonalIcon(
-                              onPressed: () => Navigator.push(
-                                context,
+                              onPressed: () => Navigator.of(context, rootNavigator: true).push(
                                 slideRoute(const AddTripPage()),
                               ),
                               icon: const Icon(Icons.add_rounded, size: 18),

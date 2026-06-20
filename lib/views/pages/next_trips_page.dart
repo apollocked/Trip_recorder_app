@@ -66,7 +66,7 @@ class NextTripsPage extends StatelessWidget {
             action: FilledButton.icon(
               icon: const Icon(Icons.add_rounded, size: 20),
               label: Text(loc.planTrip),
-              onPressed: () => Navigator.push(context, slideRoute(const AddTripPage())),
+              onPressed: () => Navigator.of(context, rootNavigator: true).push(slideRoute(const AddTripPage())),
             ),
           )),
         ),
