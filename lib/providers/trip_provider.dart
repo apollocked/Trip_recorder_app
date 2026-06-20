@@ -149,6 +149,28 @@ class TripProvider extends ChangeNotifier
     }
   }
 
+  Future<void> rescheduleTrip(String id, DateTime newDate) async {
+    final index = _trips.indexWhere((t) => t.id == id);
+    if (index == -1) return;
+    final t = _trips[index];
+    await _repository.updateTrip(
+      id,
+      title: t.title,
+      price: t.price,
+      nights: t.nights,
+      existingImagePaths: t.imagePaths,
+      date: newDate,
+      description: t.description,
+      isLiked: t.isLiked,
+      category: t.category,
+      rating: t.rating,
+      currency: t.currency,
+      reminderDate: t.reminderDate,
+    );
+    _trips[index] = t.copyWith(date: newDate);
+    notifyListeners();
+  }
+
   void setSearchQuery(String query) {
     _searchQuery = query;
     notifyListeners();
