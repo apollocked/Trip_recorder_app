@@ -566,6 +566,16 @@ class AppLocalizationsAr extends AppLocalizations {
       'يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,أغسطس,سبتمبر,أكتوبر,نوفمبر,ديسمبر';
 
   @override
+  String get futureTripInfo =>
+      'رحلة مستقبلية — سيتم تذكيرك بإضافة الصور والتفاصيل في الوقت المناسب.';
+
+  @override
+  String get planTrip => 'خطّط الرحلة';
+
+  @override
+  String get optional => 'اختياري';
+
+  @override
   String get labelYes => 'نعم';
 
   @override

@@ -164,6 +164,12 @@ class TripProvider extends ChangeNotifier
     notifyListeners();
   }
 
+  List<Trip> get pastTrips =>
+      _trips.where((t) => !t.date.isAfter(DateTime.now())).toList();
+
+  List<Trip> get futureTrips =>
+      _trips.where((t) => t.date.isAfter(DateTime.now())).toList();
+
   List<Trip> get filteredTrips {
     var result = List<Trip>.from(_trips);
 
@@ -230,6 +236,18 @@ class TripProvider extends ChangeNotifier
         tripId: trip.id,
         tripTitle: trip.title,
         remindAt: trip.reminderDate!,
+      );
+    }
+    if (trip.date.isAfter(DateTime.now())) {
+      NotificationService().schedulePreTripReminder(
+        tripId: trip.id,
+        tripTitle: trip.title,
+        tripDate: trip.date,
+      );
+      NotificationService().scheduleOnDayReminder(
+        tripId: trip.id,
+        tripTitle: trip.title,
+        tripDate: trip.date,
       );
     }
   }

@@ -570,6 +570,16 @@ class AppLocalizationsKu extends AppLocalizations {
       'کانوونی٢,شوبات,ئازار,نیسان,ئایار,حوزەیران,تەممووز,ئاب,ئەیلوول,تشرینی١,تشرینی٢,کانوونی١';
 
   @override
+  String get futureTripInfo =>
+      'گەشتی داهاتوو — بیرخستنەوەت دەکەین کاتێک کاتی زیادکردنی وێنە و وردەکارییەکان دێت.';
+
+  @override
+  String get planTrip => 'پلانی گەشت';
+
+  @override
+  String get optional => 'دڵخواز';
+
+  @override
   String get labelYes => 'بەڵێ';
 
   @override

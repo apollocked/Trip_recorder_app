@@ -567,6 +567,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get monthsShort => 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec';
 
   @override
+  String get futureTripInfo =>
+      'Future Trip — you\'ll be reminded to add photos and details when it\'s time.';
+
+  @override
+  String get planTrip => 'Plan Trip';
+
+  @override
+  String get optional => 'Optional';
+
+  @override
   String get labelYes => 'Yes';
 
   @override

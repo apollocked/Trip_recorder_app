@@ -48,8 +48,51 @@ class NotificationService {
     );
   }
 
+  Future<void> schedulePreTripReminder({
+    required String tripId,
+    required String tripTitle,
+    required DateTime tripDate,
+  }) async {
+    final remindAt = tripDate.subtract(const Duration(days: 1));
+    await scheduleTripReminder(
+      tripId: tripId,
+      tripTitle: tripTitle,
+      remindAt: remindAt,
+      body: '$tripTitle starts tomorrow! Prepare your items.',
+      channelName: 'Trip Reminders',
+    );
+  }
+
+  Future<void> scheduleOnDayReminder({
+    required String tripId,
+    required String tripTitle,
+    required DateTime tripDate,
+  }) async {
+    await init();
+    final androidDetails = AndroidNotificationDetails(
+      'trip_reminders',
+      'Trip Reminders',
+      importance: Importance.high,
+      priority: Priority.high,
+    );
+    final details = NotificationDetails(android: androidDetails);
+
+    final scheduledDate = tz.TZDateTime.from(tripDate, tz.local);
+    if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) return;
+
+    await _plugin.zonedSchedule(
+      id: tripId.hashCode + 2,
+      title: tripTitle,
+      body: 'Your trip is today! Add photos and details to save your memories.',
+      scheduledDate: scheduledDate,
+      notificationDetails: details,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    );
+  }
+
   Future<void> cancelTripReminder(String tripId) async {
     if (!_initialized) await init();
     await _plugin.cancel(id: tripId.hashCode);
+    await _plugin.cancel(id: tripId.hashCode + 2);
   }
 }

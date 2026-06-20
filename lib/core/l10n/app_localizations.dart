@@ -1162,6 +1162,24 @@ abstract class AppLocalizations {
   /// **'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'**
   String get monthsShort;
 
+  /// No description provided for @futureTripInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Future Trip — you\'ll be reminded to add photos and details when it\'s time.'**
+  String get futureTripInfo;
+
+  /// No description provided for @planTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan Trip'**
+  String get planTrip;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optional;
+
   /// No description provided for @labelYes.
   ///
   /// In en, this message translates to:

@@ -39,6 +39,8 @@ class _AddTripPageState extends State<AddTripPage> {
   String _selectedCurrency = 'USD';
   DateTime? _reminderDate;
 
+  bool get _isFuture => _selectedDate.isAfter(DateTime.now());
+
   @override
   void initState() {
     super.initState();
@@ -73,9 +75,11 @@ class _AddTripPageState extends State<AddTripPage> {
   Future<void> _handleSave() async {
     final isFormValid = _formKey.currentState!.validate();
     final hasImages = _imageFiles.isNotEmpty || _existingImagePaths.isNotEmpty;
-    setState(() => _imageError = !hasImages);
-    if (!isFormValid || !hasImages) {
-      if (!hasImages) HapticFeedback.vibrate();
+    if (!_isFuture) {
+      setState(() => _imageError = !hasImages);
+    }
+    if (!isFormValid || (!_isFuture && !hasImages)) {
+      if (!_isFuture && !hasImages) HapticFeedback.vibrate();
       return;
     }
     setState(() => _isSaving = true);
@@ -84,7 +88,8 @@ class _AddTripPageState extends State<AddTripPage> {
       final assetPaths = _existingImagePaths
           .where((p) => p.startsWith('images/'))
           .toList();
-      if (_reminderDate != null) {
+      if (_reminderDate != null || _isFuture) {
+        final grantDate = _reminderDate ?? _selectedDate;
         final granted = await requestNotificationPermission(context);
         if (!granted) {
           if (mounted) setState(() => _isSaving = false);
@@ -94,8 +99,9 @@ class _AddTripPageState extends State<AddTripPage> {
       }
       final String title = _titleController.text.trim();
       final double price = double.tryParse(_priceController.text.trim()) ?? 0;
-      final int nights = int.tryParse(_nightsController.text.trim()) ?? 1;
+      final int nights = int.tryParse(_nightsController.text.trim()) ?? (_isFuture ? 0 : 1);
       final String desc = _descriptionController.text.trim();
+      final reminderToUse = _isFuture ? _selectedDate : _reminderDate;
       if (widget.tripId != null) {
         await context.read<TripProvider>().updateTrip(
           widget.tripId!,
@@ -110,7 +116,7 @@ class _AddTripPageState extends State<AddTripPage> {
           category: _selectedCategory,
           rating: _rating,
           currency: _selectedCurrency,
-          reminderDate: _reminderDate,
+          reminderDate: reminderToUse,
         );
       } else {
         await context.read<TripProvider>().addTrip(
@@ -126,7 +132,7 @@ class _AddTripPageState extends State<AddTripPage> {
           category: _selectedCategory,
           rating: _rating,
           currency: _selectedCurrency,
-          reminderDate: _reminderDate,
+          reminderDate: reminderToUse,
         );
       }
       if (mounted) Navigator.pop(context);
@@ -225,6 +231,16 @@ class _AddTripPageState extends State<AddTripPage> {
                       ),
                     ),
                   ),
+                if (_isFuture)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 12),
+                    child: Text(
+                      l10n.optional,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 24),
                 labeled(
                   l10n.rateTrip,
@@ -312,6 +328,38 @@ class _AddTripPageState extends State<AddTripPage> {
                   colorScheme: colorScheme,
                   l10n: l10n,
                 ),
+                if (_isFuture) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: colorScheme.tertiaryContainer.withAlpha(120),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: colorScheme.tertiary.withAlpha(80),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline_rounded,
+                          size: 18,
+                          color: colorScheme.onTertiaryContainer,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            l10n.futureTripInfo,
+                            style: textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onTertiaryContainer,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 16),
                 DatePickerField(
                   icon: Icons.notifications_active_rounded,
@@ -337,7 +385,7 @@ class _AddTripPageState extends State<AddTripPage> {
                   isEditing: isEditing,
                   onPressed: _handleSave,
                   updateText: l10n.updateJourney,
-                  createText: l10n.createJourney,
+                  createText: _isFuture ? l10n.planTrip : l10n.createJourney,
                 ),
                 const SizedBox(height: 40),
               ],

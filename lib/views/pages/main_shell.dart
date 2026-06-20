@@ -50,15 +50,15 @@ class _MainShellState extends State<MainShell>
 
     final navIcons = [
       Icons.home_outlined,
+      Icons.flight_takeoff_outlined,
       Icons.stacked_bar_chart_outlined,
-      Icons.assignment_outlined,
       Icons.settings_outlined,
     ];
 
     final navSelectedIcons = [
       Icons.home_rounded,
+      Icons.flight_takeoff_rounded,
       Icons.stacked_bar_chart_rounded,
-      Icons.assignment_rounded,
       Icons.settings_rounded,
     ];
 

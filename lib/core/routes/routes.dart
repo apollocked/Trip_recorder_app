@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/home_page.dart';
+import 'package:animations_in_flutter/views/pages/next_trips_page.dart';
 import 'package:animations_in_flutter/views/pages/on_boarding_page.dart';
 import 'package:animations_in_flutter/views/pages/settings_page.dart';
 import 'package:animations_in_flutter/views/pages/statistics_page.dart';
@@ -33,6 +34,14 @@ GoRouter createRouter(TripProvider tripProvider) {
           StatefulShellBranch(
             routes: [
               GoRoute(path: '/home', builder: (_, _) => const HomePage()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/next-trips',
+                builder: (_, _) => const NextTripsPage(),
+              ),
             ],
           ),
           StatefulShellBranch(
