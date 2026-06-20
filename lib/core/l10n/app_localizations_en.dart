@@ -184,34 +184,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingBadgeConverter => 'Converter';
 
   @override
-  String get onboardingTitle1 => 'Plan Your Trips';
+  String get onboardingTitle1 => 'Plan Your Adventures';
 
   @override
   String get onboardingDesc1 =>
-      'Create trips with photos, budgets, and categories. Track every detail of your journey in one place.';
+      'Create beautiful trip journals with photos, ratings, and categories. Plan future trips with automatic countdown reminders — we will help you prepare.';
 
   @override
-  String get onboardingTip1 => 'Tip: Tap + to create your first trip';
+  String get onboardingTip1 =>
+      'Tip: Add a future trip and get countdown reminders';
 
   @override
-  String get onboardingTitle2 => 'Stay Organized';
+  String get onboardingTitle2 => 'Get Ready to Go';
 
   @override
   String get onboardingDesc2 =>
-      'Manage packing checklists, track expenses by category, and keep a travel journal with photos.';
+      'Smart packing lists, expense tracking, and a travel journal keep you organized. Get notified before departure so you never miss a trip.';
 
   @override
-  String get onboardingTip2 => 'Tip: Swipe left on items to delete them';
+  String get onboardingTip2 =>
+      'Tip: Long-press a future trip to reschedule or edit it';
 
   @override
-  String get onboardingTitle3 => 'Private & Offline';
+  String get onboardingTitle3 => 'Your Travel Timeline';
 
   @override
   String get onboardingDesc3 =>
-      'No account needed. All your data stays safely on your device. Your privacy is built in.';
+      'Relive past trips as beautiful memories. Explore statistics, save favorites, convert currencies — all offline and private, with no account needed.';
 
   @override
-  String get onboardingTip3 => 'Tip: View Statistics for travel insights';
+  String get onboardingTip3 => 'Tip: Browse Memories to relive your journeys';
 
   @override
   String get fabTooltip => 'Create a new trip';
@@ -673,4 +675,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get comingSoon => 'Coming Soon';
+
+  @override
+  String get onboardingBadgeFutureTrips => 'Future trips';
+
+  @override
+  String get onboardingBadgeReminders => 'Reminders';
+
+  @override
+  String get onboardingBadgeMemories => 'Memories';
+
+  @override
+  String get onboardingBadgeOffline => 'Offline';
 }

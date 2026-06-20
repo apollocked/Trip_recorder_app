@@ -3,6 +3,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 
+bool _sessionAnswered = false;
+
 Future<bool> requestNotificationPermission(BuildContext context) async {
   final colorScheme = Theme.of(context).colorScheme;
   final textTheme = Theme.of(context).textTheme;
@@ -19,6 +21,7 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
       await Permission.notification.status.then((s) => s.isGranted);
 
   if (notifGranted) return true;
+  if (_sessionAnswered) return false;
   if (!context.mounted) return false;
 
   final result = await showDialog<bool>(
@@ -75,6 +78,8 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
       ],
     ),
   );
+
+  _sessionAnswered = true;
 
   if (result == true) {
     final status = await Permission.notification.request();

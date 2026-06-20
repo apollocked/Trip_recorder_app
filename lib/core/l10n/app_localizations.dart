@@ -445,55 +445,55 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingTitle1.
   ///
   /// In en, this message translates to:
-  /// **'Plan Your Trips'**
+  /// **'Plan Your Adventures'**
   String get onboardingTitle1;
 
   /// No description provided for @onboardingDesc1.
   ///
   /// In en, this message translates to:
-  /// **'Create trips with photos, budgets, and categories. Track every detail of your journey in one place.'**
+  /// **'Create beautiful trip journals with photos, ratings, and categories. Plan future trips with automatic countdown reminders — we will help you prepare.'**
   String get onboardingDesc1;
 
   /// No description provided for @onboardingTip1.
   ///
   /// In en, this message translates to:
-  /// **'Tip: Tap + to create your first trip'**
+  /// **'Tip: Add a future trip and get countdown reminders'**
   String get onboardingTip1;
 
   /// No description provided for @onboardingTitle2.
   ///
   /// In en, this message translates to:
-  /// **'Stay Organized'**
+  /// **'Get Ready to Go'**
   String get onboardingTitle2;
 
   /// No description provided for @onboardingDesc2.
   ///
   /// In en, this message translates to:
-  /// **'Manage packing checklists, track expenses by category, and keep a travel journal with photos.'**
+  /// **'Smart packing lists, expense tracking, and a travel journal keep you organized. Get notified before departure so you never miss a trip.'**
   String get onboardingDesc2;
 
   /// No description provided for @onboardingTip2.
   ///
   /// In en, this message translates to:
-  /// **'Tip: Swipe left on items to delete them'**
+  /// **'Tip: Long-press a future trip to reschedule or edit it'**
   String get onboardingTip2;
 
   /// No description provided for @onboardingTitle3.
   ///
   /// In en, this message translates to:
-  /// **'Private & Offline'**
+  /// **'Your Travel Timeline'**
   String get onboardingTitle3;
 
   /// No description provided for @onboardingDesc3.
   ///
   /// In en, this message translates to:
-  /// **'No account needed. All your data stays safely on your device. Your privacy is built in.'**
+  /// **'Relive past trips as beautiful memories. Explore statistics, save favorites, convert currencies — all offline and private, with no account needed.'**
   String get onboardingDesc3;
 
   /// No description provided for @onboardingTip3.
   ///
   /// In en, this message translates to:
-  /// **'Tip: View Statistics for travel insights'**
+  /// **'Tip: Browse Memories to relive your journeys'**
   String get onboardingTip3;
 
   /// No description provided for @fabTooltip.
@@ -1353,6 +1353,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Coming Soon'**
   String get comingSoon;
+
+  /// No description provided for @onboardingBadgeFutureTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'Future trips'**
+  String get onboardingBadgeFutureTrips;
+
+  /// No description provided for @onboardingBadgeReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get onboardingBadgeReminders;
+
+  /// No description provided for @onboardingBadgeMemories.
+  ///
+  /// In en, this message translates to:
+  /// **'Memories'**
+  String get onboardingBadgeMemories;
+
+  /// No description provided for @onboardingBadgeOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get onboardingBadgeOffline;
 }
 
 class _AppLocalizationsDelegate

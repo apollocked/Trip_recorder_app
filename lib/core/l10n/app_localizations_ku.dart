@@ -185,35 +185,37 @@ class AppLocalizationsKu extends AppLocalizations {
   String get onboardingBadgeConverter => 'گۆڕینی دراو';
 
   @override
-  String get onboardingTitle1 => 'پلانی گەشتەکانت دابنێ';
+  String get onboardingTitle1 => 'پلانی سەرگەرمییەکانت دابنێ';
 
   @override
   String get onboardingDesc1 =>
-      'گەشت دروست بکە بە وێنە، بودجە و پۆلێنکردنەوە. هەموو وردەکارییەکان لە یەک شوێندا ببینە.';
+      'ڕۆژنامەی گەشتی جوان دروست بکە بە وێنە، هەڵسەنگاندن، و پۆلەکان. پلانی گەشتی داهاتوو دابنێ لەگەڵ بیرخستنەوەی خۆکار — ئێمە یارمەتیت دەدەین لە ئامادەکاری.';
 
   @override
   String get onboardingTip1 =>
-      'ڕێنمایی: کلیک لە + بکە بۆ دروستکردنی یەکەم گەشت';
+      'ڕێنمایی: گەشتێکی داهاتوو زیاد بکە و بیرخستنەوەی ژماردن وەربگرە';
 
   @override
-  String get onboardingTitle2 => 'ڕێکخراو بە';
+  String get onboardingTitle2 => 'ئامادەبە بۆ ڕۆیشتن';
 
   @override
   String get onboardingDesc2 =>
-      'لیستی ئامادەکاری ئامادە بکە، بەدوای خەرجییەکان بەپێی پۆل بکەوە، و ڕۆژنامەی گەشتت بنووسە.';
+      'لیستی ئامادەکاری، شوێنکەوتنی خەرجی، و ڕۆژنامەی گەشت ڕێکخستنی گەشتەکەت ئاسان دەکەن. پێش ڕۆیشتن ئاگادار بکرێیتەوە.';
 
   @override
-  String get onboardingTip2 => 'ڕێنمایی: بۆ سڕینەوە، بەرەو چەپ بخزێنە';
+  String get onboardingTip2 =>
+      'ڕێنمایی: بۆ ڕێکخستنەوە یان دەستکاری، پەستانی درێژ لەسەر گەشتێکی داهاتوو بکە';
 
   @override
-  String get onboardingTitle3 => 'تایبەت و بێ ئینتەرنێت';
+  String get onboardingTitle3 => 'هێڵی کاتی گەشتەکانت';
 
   @override
   String get onboardingDesc3 =>
-      'پێویستی بە هەژمار نییە. هەموو داتاکانت بە سەلامەتی لەسەر ئامێرەکەت دەمێننەوە.';
+      'گەشتەکانی ڕابردوو وەک بیرەوەری جوان بژیت. ئامارەکان ببینە، دڵخوازەکان هەڵبژێرە، دراو بگۆڕە — هەمووی بێ ئینتەرنێت و تایبەت.';
 
   @override
-  String get onboardingTip3 => 'ڕێنمایی: بۆ بینینی گەشتەکانت، ئامارەکان ببینە';
+  String get onboardingTip3 =>
+      'ڕێنمایی: بۆ ژیانەوەی گەشتەکانت، بیرەوەرییەکان ببینە';
 
   @override
   String get fabTooltip => 'دروستکردنی گەشتێکی نوێ';
@@ -676,4 +678,16 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get comingSoon => 'بەم زووانە';
+
+  @override
+  String get onboardingBadgeFutureTrips => 'گەشتی داهاتوو';
+
+  @override
+  String get onboardingBadgeReminders => 'بیرخستنەوەکان';
+
+  @override
+  String get onboardingBadgeMemories => 'بیرەوەری';
+
+  @override
+  String get onboardingBadgeOffline => 'بێ ئینتەرنێت';
 }

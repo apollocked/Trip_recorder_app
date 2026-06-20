@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+bool _photoPermissionAsked = false;
+
 Future<bool> _isPhotoPermissionGranted() async {
   if (Platform.isAndroid) {
     final androidVersion = int.tryParse(Platform.version.split('.').firstOrNull ?? '0') ?? 0;
@@ -26,10 +28,12 @@ Future<void> checkExistingPermissions(
   BuildContext context,
   Function(File) onImagePicked,
 ) async {
-  if (await _isPhotoPermissionGranted()) {
+  final granted = await _isPhotoPermissionGranted();
+  if (granted || _photoPermissionAsked) {
     showImageSourceSheet(context, onImagePicked);
     return;
   }
+  _photoPermissionAsked = true;
   final l10n = AppLocalizations.of(context)!;
   await showSoftAskDialog(
     context,
@@ -43,39 +47,32 @@ Future<void> pickMultipleImages(
   BuildContext context,
   Function(List<File>) onImagesPicked,
 ) async {
-  if (await _isPhotoPermissionGranted()) {
-    final picker = ImagePicker();
-    try {
-      final pickedFiles = await picker.pickMultiImage(
-        imageQuality: 85,
-        maxWidth: 1000,
-      );
-      if (pickedFiles.isNotEmpty) {
-        onImagesPicked(pickedFiles.map((f) => File(f.path)).toList());
-      }
-    } catch (e) {
-      debugPrint("Error picking multiple images: $e");
-    }
+  final granted = await _isPhotoPermissionGranted();
+  if (granted || _photoPermissionAsked) {
+    await _pickMultiple(onImagesPicked);
     return;
   }
+  _photoPermissionAsked = true;
   final l10n = AppLocalizations.of(context)!;
   await showSoftAskDialog(
     context,
     title: l10n.shareJourney,
     message: l10n.permissionDescription,
-    onAllow: () async {
-      final picker = ImagePicker();
-      try {
-        final pickedFiles = await picker.pickMultiImage(
-          imageQuality: 85,
-          maxWidth: 1000,
-        );
-        if (pickedFiles.isNotEmpty) {
-          onImagesPicked(pickedFiles.map((f) => File(f.path)).toList());
-        }
-      } catch (e) {
-        debugPrint("Error picking multiple images: $e");
-      }
-    },
+    onAllow: () => _pickMultiple(onImagesPicked),
   );
+}
+
+Future<void> _pickMultiple(Function(List<File>) onImagesPicked) async {
+  final picker = ImagePicker();
+  try {
+    final pickedFiles = await picker.pickMultiImage(
+      imageQuality: 85,
+      maxWidth: 1000,
+    );
+    if (pickedFiles.isNotEmpty) {
+      onImagesPicked(pickedFiles.map((f) => File(f.path)).toList());
+    }
+  } catch (e) {
+    debugPrint("Error picking multiple images: $e");
+  }
 }

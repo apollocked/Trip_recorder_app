@@ -182,34 +182,36 @@ class AppLocalizationsAr extends AppLocalizations {
   String get onboardingBadgeConverter => 'محوّل العملات';
 
   @override
-  String get onboardingTitle1 => 'خطط لرحلاتك';
+  String get onboardingTitle1 => 'خطط لمغامراتك';
 
   @override
   String get onboardingDesc1 =>
-      'أنشئ رحلات بالصور والميزانيات والتصنيفات. تابع كل تفاصيل رحلتك في مكان واحد.';
+      'أنشئ سجلات رحلات جميلة بالصور والتقييمات والتصنيفات. خطط للرحلات المستقبلية مع تذكيرات تلقائية للعد التنازلي — سنساعدك في التجهيز.';
 
   @override
-  String get onboardingTip1 => 'نصيحة: اضغط + لإنشاء رحلتك الأولى';
+  String get onboardingTip1 =>
+      'نصيحة: أضف رحلة مستقبلية واحصل على تذكيرات بالعد التنازلي';
 
   @override
-  String get onboardingTitle2 => 'نظّم رحلتك';
+  String get onboardingTitle2 => 'استعد للانطلاق';
 
   @override
   String get onboardingDesc2 =>
-      'أعد قوائم التجهيز، تابع النفقات حسب التصنيف، وسجّل يوميات السفر بالصور.';
+      'قوائم التجهيز الذكية، تتبع المصروفات، ويوميات السفر تنظم رحلتك. احصل على إشعارات قبل المغادرة لتحظى برحلة لا تنسى.';
 
   @override
-  String get onboardingTip2 => 'نصيحة: اسحب العناصر لليسار لحذفها';
+  String get onboardingTip2 =>
+      'نصيحة: اضغط مطولاً على رحلة قادمة لإعادة جدولتها أو تعديلها';
 
   @override
-  String get onboardingTitle3 => 'خصوصية تامة بدون إنترنت';
+  String get onboardingTitle3 => 'رحلاتك عبر الزمن';
 
   @override
   String get onboardingDesc3 =>
-      'لا حاجة لحساب. جميع بياناتك تبقى بأمان على جهازك. الخصوصية جزء من تصميم التطبيق.';
+      'عش رحلاتك السابقة كذكريات جميلة. استكشف الإحصائيات، واحفظ المفضلة، وحوّل العملات — كل ذلك بدون إنترنت وبدون حساب.';
 
   @override
-  String get onboardingTip3 => 'نصيحة: تصفح الإحصائيات لمعرفة رحلاتك';
+  String get onboardingTip3 => 'نصيحة: تصفح الذكريات لاسترجاع رحلاتك';
 
   @override
   String get fabTooltip => 'إنشاء رحلة جديدة';
@@ -671,4 +673,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get comingSoon => 'قريباً';
+
+  @override
+  String get onboardingBadgeFutureTrips => 'الرحلات القادمة';
+
+  @override
+  String get onboardingBadgeReminders => 'تذكيرات';
+
+  @override
+  String get onboardingBadgeMemories => 'ذكريات';
+
+  @override
+  String get onboardingBadgeOffline => 'بدون إنترنت';
 }

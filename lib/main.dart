@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   try {
     await dotenv.load();
   } catch (_) {}

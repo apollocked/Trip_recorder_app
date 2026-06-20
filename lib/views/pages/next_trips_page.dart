@@ -52,14 +52,7 @@ class NextTripsPage extends StatelessWidget {
       key: const ValueKey('empty'),
       padding: const EdgeInsets.only(bottom: 88),
       children: [
-        SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-        TweenAnimationBuilder<double>(
-          tween: Tween(begin: 0, end: 1),
-          duration: const Duration(milliseconds: 800),
-          curve: Curves.easeOutCubic,
-          builder: (_, v, _) => Opacity(opacity: v, child: _buildEmptyArt(context, cs)),
-        ),
-        const SizedBox(height: 24),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.12),
         TweenAnimationBuilder<double>(
           tween: Tween(begin: 0, end: 1),
           duration: const Duration(milliseconds: 600),
@@ -78,23 +71,6 @@ class NextTripsPage extends StatelessWidget {
           )),
         ),
       ],
-    );
-  }
-
-  Widget _buildEmptyArt(BuildContext context, ColorScheme cs) {
-    return Center(
-      child: Container(
-        width: 160, height: 160,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [cs.primaryContainer, cs.tertiaryContainer.withAlpha(180)],
-            begin: Alignment.topLeft, end: Alignment.bottomRight,
-          ),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(Icons.flight_takeoff_rounded, size: 64,
-            color: cs.onPrimaryContainer.withAlpha(200)),
-      ),
     );
   }
 

@@ -81,6 +81,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           FeatureBadge(Icons.photo_camera_rounded, l.onboardingBadgePhotos),
           FeatureBadge(Icons.star_rounded, l.onboardingBadgeRatings),
           FeatureBadge(Icons.category_rounded, l.onboardingBadgeCategories),
+          FeatureBadge(Icons.event_rounded, l.onboardingBadgeFutureTrips),
         ],
       ),
       OnboardingItem(
@@ -89,12 +90,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
         description: l.onboardingDesc2,
         tip: l.onboardingTip2,
         features: [
-          FeatureBadge(
-            Icons.account_balance_wallet_rounded,
-            l.onboardingBadgeBudget,
-          ),
           FeatureBadge(Icons.checklist_rounded, l.onboardingBadgeChecklist),
+          FeatureBadge(Icons.account_balance_wallet_rounded, l.onboardingBadgeBudget),
           FeatureBadge(Icons.auto_stories_rounded, l.onboardingBadgeJournal),
+          FeatureBadge(Icons.notifications_active_rounded, l.onboardingBadgeReminders),
         ],
       ),
       OnboardingItem(
@@ -105,11 +104,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
         features: [
           FeatureBadge(Icons.bar_chart_rounded, l.onboardingBadgeStatistics),
           FeatureBadge(Icons.favorite_rounded, l.onboardingBadgeFavorites),
-          FeatureBadge(Icons.timeline_rounded, l.onboardingBadgeTimeline),
-          FeatureBadge(
-            Icons.currency_exchange_rounded,
-            l.onboardingBadgeConverter,
-          ),
+          FeatureBadge(Icons.timeline_rounded, l.onboardingBadgeMemories),
+          FeatureBadge(Icons.currency_exchange_rounded, l.onboardingBadgeConverter),
+          FeatureBadge(Icons.shield_rounded, l.onboardingBadgeOffline),
         ],
       ),
     ];

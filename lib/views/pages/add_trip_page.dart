@@ -80,13 +80,11 @@ class _AddTripPageState extends State<AddTripPage> {
     setState(() => _isSaving = true);
     HapticFeedback.mediumImpact();
     try {
-      if (_reminderDate != null || _isFuture) {
-        if (!await requestNotificationPermission(context)) {
-          if (mounted) setState(() => _isSaving = false);
-          return;
-        }
-        if (!mounted) return;
+      if (_isFuture && !await requestNotificationPermission(context)) {
+        if (mounted) setState(() => _isSaving = false);
+        return;
       }
+      if (!mounted) return;
       final title = _titleController.text.trim();
       final price = double.tryParse(_priceController.text.trim()) ?? 0;
       final nights = int.tryParse(_nightsController.text.trim()) ?? (_isFuture ? 0 : 1);
@@ -196,6 +194,7 @@ class _AddTripPageState extends State<AddTripPage> {
                     onCurrencyChanged: (val) =>
                         setState(() => _selectedCurrency = val),
                   ),
+                const SizedBox(height: 16),
                 AppTextField(
                   controller: _titleController,
                   label: l10n.destination,
@@ -217,16 +216,18 @@ class _AddTripPageState extends State<AddTripPage> {
                   const SizedBox(height: 12),
                   FutureTripBanner(colorScheme: cs, textTheme: tt, l10n: l10n),
                 ],
-                const SizedBox(height: 16),
-                DatePickerField(
-                  icon: Icons.notifications_active_rounded,
-                  label: l10n.setReminder,
-                  currentDate: _reminderDate,
-                  onDateChanged: (d) => setState(() => _reminderDate = d),
-                  isOptional: true,
-                  colorScheme: cs,
-                  l10n: l10n,
-                ),
+                if (_isFuture) ...[
+                  const SizedBox(height: 16),
+                  DatePickerField(
+                    icon: Icons.notifications_active_rounded,
+                    label: l10n.setReminder,
+                    currentDate: _reminderDate,
+                    onDateChanged: (d) => setState(() => _reminderDate = d),
+                    isOptional: true,
+                    colorScheme: cs,
+                    l10n: l10n,
+                  ),
+                ],
                 const SizedBox(height: 16),
                 AppTextField(
                   controller: _descriptionController,
