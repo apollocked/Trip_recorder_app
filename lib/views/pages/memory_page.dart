@@ -26,7 +26,7 @@ class _MemoryPageState extends State<MemoryPage> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final loc = AppLocalizations.of(context)!;
-    final trips = context.watch<TripProvider>().trips;
+    final trips = context.watch<TripProvider>().pastTrips;
 
     if (trips.isEmpty) {
       return Scaffold(

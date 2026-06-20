@@ -192,92 +192,89 @@ class _AddTripPageState extends State<AddTripPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  l10n.coverphoto,
-                  style: textTheme.labelLarge?.copyWith(
-                    color: _imageError
-                        ? colorScheme.error
-                        : colorScheme.primary,
+                if (!_isFuture) ...[
+                  Text(
+                    l10n.coverphoto,
+                    style: textTheme.labelLarge?.copyWith(
+                      color: _imageError
+                          ? colorScheme.error
+                          : colorScheme.primary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                TripImagePicker(
-                  imageFiles: _imageFiles,
-                  existingImagePaths: _existingImagePaths,
-                  imageError: _imageError,
-                  onImagesAdded: (files) => setState(() {
-                    _imageFiles.addAll(files);
-                    _imageError = false;
-                  }),
-                  onImageRemovedAt: (index) => setState(() {
-                    if (index < _imageFiles.length) {
-                      _imageFiles.removeAt(index);
-                    } else {
-                      _existingImagePaths.removeAt(index - _imageFiles.length);
-                    }
-                  }),
-                  colorScheme: colorScheme,
-                  textTheme: textTheme,
-                  l10n: l10n,
-                ),
-                if (_imageError)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 12),
-                    child: Text(
-                      l10n.photoErrorReq,
-                      style: textTheme.bodySmall?.copyWith(
-                        color: colorScheme.error,
+                  const SizedBox(height: 12),
+                  TripImagePicker(
+                    imageFiles: _imageFiles,
+                    existingImagePaths: _existingImagePaths,
+                    imageError: _imageError,
+                    onImagesAdded: (files) => setState(() {
+                      _imageFiles.addAll(files);
+                      _imageError = false;
+                    }),
+                    onImageRemovedAt: (index) => setState(() {
+                      if (index < _imageFiles.length) {
+                        _imageFiles.removeAt(index);
+                      } else {
+                        _existingImagePaths
+                            .removeAt(index - _imageFiles.length);
+                      }
+                    }),
+                    colorScheme: colorScheme,
+                    textTheme: textTheme,
+                    l10n: l10n,
+                  ),
+                  if (_imageError)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, left: 12),
+                      child: Text(
+                        l10n.photoErrorReq,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colorScheme.error,
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 24),
+                  labeled(
+                    l10n.rateTrip,
+                    Center(
+                      child: StarRating(
+                        rating: _rating,
+                        size: 36,
+                        interactive: true,
+                        onChanged: (val) => setState(() => _rating = val),
                       ),
                     ),
                   ),
-                if (_isFuture)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 12),
-                    child: Text(
-                      l10n.optional,
-                      style: textTheme.bodySmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                      ),
+                  const SizedBox(height: 24),
+                  labeled(
+                    l10n.tripCategory,
+                    CategorySelector(
+                      selectedCategory: _selectedCategory,
+                      onChanged: (cat) =>
+                          setState(() => _selectedCategory = cat),
+                      colorScheme: colorScheme,
                     ),
                   ),
-                const SizedBox(height: 24),
-                labeled(
-                  l10n.rateTrip,
-                  Center(
-                    child: StarRating(
-                      rating: _rating,
-                      size: 36,
-                      interactive: true,
-                      onChanged: (val) => setState(() => _rating = val),
+                  const SizedBox(height: 24),
+                  labeled(
+                    l10n.currencyLabel,
+                    CurrencyDropdown(
+                      selectedCurrency: _selectedCurrency,
+                      onChanged: (val) =>
+                          setState(() => _selectedCurrency = val),
+                      colorScheme: colorScheme,
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                labeled(
-                  l10n.tripCategory,
-                  CategorySelector(
-                    selectedCategory: _selectedCategory,
-                    onChanged: (cat) => setState(() => _selectedCategory = cat),
-                    colorScheme: colorScheme,
+                  const SizedBox(height: 32),
+                ],
+                if (!_isFuture) ...[
+                  Text(
+                    l10n.tripDetails,
+                    style: textTheme.labelLarge?.copyWith(
+                      color: colorScheme.primary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                labeled(
-                  l10n.currencyLabel,
-                  CurrencyDropdown(
-                    selectedCurrency: _selectedCurrency,
-                    onChanged: (val) => setState(() => _selectedCurrency = val),
-                    colorScheme: colorScheme,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                Text(
-                  l10n.tripDetails,
-                  style: textTheme.labelLarge?.copyWith(
-                    color: colorScheme.primary,
-                  ),
-                ),
-                const SizedBox(height: 12),
+                  const SizedBox(height: 12),
+                ],
                 AppTextField(
                   controller: _titleController,
                   label: l10n.destination,
@@ -287,37 +284,41 @@ class _AddTripPageState extends State<AddTripPage> {
                       ? l10n.destinationRequired
                       : null,
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: AppTextField(
-                        controller: _priceController,
-                        label: l10n.budget,
-                        icon: Icons.attach_money_rounded,
-                        colorScheme: colorScheme,
-                        keyboardType: TextInputType.number,
-                        prefixText:
-                            '${CurrencyInfo.symbolFor(_selectedCurrency)} ',
-                        validator: (val) =>
-                            val == null || val.isEmpty ? l10n.required : null,
+                if (!_isFuture) ...[
+                  const SizedBox(height: 16),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: AppTextField(
+                          controller: _priceController,
+                          label: l10n.budget,
+                          icon: Icons.attach_money_rounded,
+                          colorScheme: colorScheme,
+                          keyboardType: TextInputType.number,
+                          prefixText:
+                              '${CurrencyInfo.symbolFor(_selectedCurrency)} ',
+                          validator: (val) => val == null || val.isEmpty
+                              ? l10n.required
+                              : null,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: AppTextField(
-                        controller: _nightsController,
-                        label: l10n.nights,
-                        icon: Icons.bedtime_rounded,
-                        colorScheme: colorScheme,
-                        keyboardType: TextInputType.number,
-                        validator: (val) =>
-                            val == null || val.isEmpty ? l10n.required : null,
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: AppTextField(
+                          controller: _nightsController,
+                          label: l10n.nights,
+                          icon: Icons.bedtime_rounded,
+                          colorScheme: colorScheme,
+                          keyboardType: TextInputType.number,
+                          validator: (val) => val == null || val.isEmpty
+                              ? l10n.required
+                              : null,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
                 const SizedBox(height: 16),
                 DatePickerField(
                   icon: Icons.calendar_today_rounded,

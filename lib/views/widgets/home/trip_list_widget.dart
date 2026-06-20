@@ -22,7 +22,8 @@ class TripListWidget extends StatelessWidget {
           return const _ShimmerList();
         }
 
-        final trips = provider.filteredTrips;
+        final past = provider.pastTrips;
+        final trips = provider.filteredPastTrips;
 
         return Column(
           children: [
@@ -30,16 +31,16 @@ class TripListWidget extends StatelessWidget {
             Expanded(
               child: trips.isEmpty
                   ? EmptyState(
-                      icon: provider.trips.isEmpty
+                      icon: past.isEmpty
                           ? Icons.explore_outlined
                           : Icons.search_off_rounded,
-                      title: provider.trips.isEmpty
+                      title: past.isEmpty
                           ? l10n.emptyTripTitle
                           : l10n.noTripsFound,
-                      subtitle: provider.trips.isEmpty
+                      subtitle: past.isEmpty
                           ? l10n.emptylistDescription
                           : l10n.tryAdjustingSearch,
-                      action: provider.trips.isEmpty
+                      action: past.isEmpty
                           ? FilledButton.tonalIcon(
                               onPressed: () => Navigator.push(
                                 context,

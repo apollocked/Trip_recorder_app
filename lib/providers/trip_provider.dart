@@ -170,8 +170,12 @@ class TripProvider extends ChangeNotifier
   List<Trip> get futureTrips =>
       _trips.where((t) => t.date.isAfter(DateTime.now())).toList();
 
-  List<Trip> get filteredTrips {
-    var result = List<Trip>.from(_trips);
+  List<Trip> get filteredTrips => _filteredFrom(_trips);
+
+  List<Trip> get filteredPastTrips => _filteredFrom(pastTrips);
+
+  List<Trip> _filteredFrom(List<Trip> source) {
+    var result = List<Trip>.from(source);
 
     if (_searchQuery.isNotEmpty) {
       final lower = _searchQuery.toLowerCase();
@@ -221,7 +225,7 @@ class TripProvider extends ChangeNotifier
   }
 
   Map<String, dynamic> get statistics =>
-      TripStatistics.fromTrips(_trips).toMap();
+      TripStatistics.fromTrips(pastTrips).toMap();
 
   Future<void> completeOnboarding() async {
     final prefs = await SharedPreferences.getInstance();

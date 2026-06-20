@@ -19,7 +19,7 @@ class FavoritesPage extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final loc = AppLocalizations.of(context)!;
-    final trips = context.watch<TripProvider>().trips;
+    final trips = context.watch<TripProvider>().pastTrips;
     final liked = trips.where((t) => t.isLiked).toList();
 
     return Scaffold(

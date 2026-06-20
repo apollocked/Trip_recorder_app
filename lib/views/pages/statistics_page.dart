@@ -22,7 +22,7 @@ class StatisticsPage extends StatelessWidget {
     final tripProvider = context.watch<TripProvider>();
     final stats = tripProvider.statistics;
     final loc = AppLocalizations.of(context)!;
-    final trips = tripProvider.trips;
+    final trips = tripProvider.pastTrips;
     final spentByCurrency = stats['spentByCurrency'] as Map<String, double>;
 
     return Scaffold(
