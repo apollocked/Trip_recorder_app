@@ -380,6 +380,10 @@ class AppLocalizationsKu extends AppLocalizations {
   String get noItemsYet => 'هێشتا هیچ بابەتێک نییە';
 
   @override
+  String get travelPrepDescription =>
+      'ئەو شتانە زیاد بکە کە پێویستە بۆ گەشتەکەت ئامادەیان بکەیت. ڕێکبخە بەپێی پۆلەکان وەک بەڵگەنامەکان، جلوبەرگ، ئەلکترۆنیات، و خاوێنکاری.';
+
+  @override
   String get checklist => 'لیستەکە';
 
   @override

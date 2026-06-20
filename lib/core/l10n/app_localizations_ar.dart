@@ -376,6 +376,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noItemsYet => 'لا توجد عناصر بعد';
 
   @override
+  String get travelPrepDescription =>
+      'أضف العناصر التي تحتاج إلى تجهيزها قبل رحلتك. نظّم حسب الفئات مثل المستندات، الملابس، الإلكترونيات، ومستلزمات النظافة.';
+
+  @override
   String get checklist => 'القائمة';
 
   @override

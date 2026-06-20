@@ -4,6 +4,7 @@ class EmptyState extends StatelessWidget {
   final IconData icon;
   final String title;
   final String? subtitle;
+  final String? description;
   final Widget? action;
 
   const EmptyState({
@@ -11,6 +12,7 @@ class EmptyState extends StatelessWidget {
     required this.icon,
     required this.title,
     this.subtitle,
+    this.description,
     this.action,
   });
 
@@ -50,6 +52,17 @@ class EmptyState extends StatelessWidget {
                 style: t.bodyMedium?.copyWith(
                   color: c.onSurfaceVariant,
                   height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+            if (description != null) ...[
+              const SizedBox(height: 16),
+              Text(
+                description!,
+                style: t.bodySmall?.copyWith(
+                  color: c.onSurfaceVariant.withAlpha(180),
+                  height: 1.6,
                 ),
                 textAlign: TextAlign.center,
               ),

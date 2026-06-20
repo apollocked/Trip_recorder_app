@@ -104,6 +104,7 @@ class _HeroSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final totalNights = trips.fold<int>(0, (s, t) => s + t.nights);
     final avgRating =
         trips.fold<double>(0, (s, t) => s + t.rating) / trips.length;
@@ -138,7 +139,7 @@ class _HeroSummary extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'total trips',
+                  loc.totalTrips,
                   style: TextStyle(
                     fontSize: 13,
                     color: colorScheme.onPrimaryContainer.withAlpha(180),
@@ -167,7 +168,7 @@ class _HeroSummary extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'nights',
+                  loc.nightsLabel,
                   style: TextStyle(
                     fontSize: 13,
                     color: colorScheme.onPrimaryContainer.withAlpha(180),
@@ -201,7 +202,7 @@ class _HeroSummary extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'rating',
+                  loc.ratingLabel,
                   style: TextStyle(
                     fontSize: 13,
                     color: colorScheme.onPrimaryContainer.withAlpha(180),
@@ -408,7 +409,7 @@ class _ExpandedTripCard extends StatelessWidget {
               const SizedBox(width: 8),
               _QuickStat(
                 icon: Icons.favorite_rounded,
-                value: trip.isLiked ? 'Yes' : 'No',
+                value: trip.isLiked ? loc.yes : loc.no,
                 label: loc.favorites,
                 color: AppColors.favoriteActive,
                 colorScheme: colorScheme,
@@ -453,7 +454,7 @@ class _ExpandedTripCard extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (_) => DetailsPage(tripId: trip.id)),
               ),
-              child: Text('View Details'),
+              child: Text(loc.viewDetails),
             ),
           ),
         ],
