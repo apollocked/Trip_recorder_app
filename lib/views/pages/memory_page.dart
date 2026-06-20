@@ -409,7 +409,7 @@ class _ExpandedTripCard extends StatelessWidget {
               const SizedBox(width: 8),
               _QuickStat(
                 icon: Icons.favorite_rounded,
-                value: trip.isLiked ? loc.yes : loc.no,
+                value: trip.isLiked ? loc.labelYes : loc.labelNo,
                 label: loc.favorites,
                 color: AppColors.favoriteActive,
                 colorScheme: colorScheme,
@@ -454,7 +454,7 @@ class _ExpandedTripCard extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (_) => DetailsPage(tripId: trip.id)),
               ),
-              child: Text(loc.viewDetails),
+              child: Text(loc.viewDetailsLabel),
             ),
           ),
         ],

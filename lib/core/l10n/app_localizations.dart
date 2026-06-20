@@ -1150,6 +1150,30 @@ abstract class AppLocalizations {
   /// **'We\'d like to send you reminders about your upcoming trips so you never miss a journey.'**
   String get notificationPermissionDescription;
 
+  /// No description provided for @labelYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get labelYes;
+
+  /// No description provided for @labelNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get labelNo;
+
+  /// No description provided for @viewDetailsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get viewDetailsLabel;
+
+  /// No description provided for @prepDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add items you need to prepare before your trip. Organize by category like documents, clothing, electronics, and toiletries.'**
+  String get prepDescription;
+
   /// No description provided for @goToSettings.
   ///
   /// In en, this message translates to:

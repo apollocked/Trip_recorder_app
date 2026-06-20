@@ -560,6 +560,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'We\'d like to send you reminders about your upcoming trips so you never miss a journey.';
 
   @override
+  String get labelYes => 'Yes';
+
+  @override
+  String get labelNo => 'No';
+
+  @override
+  String get viewDetailsLabel => 'View Details';
+
+  @override
+  String get prepDescription =>
+      'Add items you need to prepare before your trip. Organize by category like documents, clothing, electronics, and toiletries.';
+
+  @override
   String get goToSettings => 'Open Settings';
 
   @override

@@ -235,7 +235,7 @@ class _TodoPageState extends State<TodoPage> {
                   icon: Icons.checklist_rounded,
                   title: l10n.noItemsYet,
                   subtitle: l10n.addItemHint,
-                  description: l10n.travelPrepDescription,
+                  description: l10n.prepDescription,
                   action: FilledButton.tonalIcon(
                     onPressed: _showAddDialog,
                     icon: const Icon(Icons.add_rounded, size: 18),

@@ -380,10 +380,6 @@ class AppLocalizationsKu extends AppLocalizations {
   String get noItemsYet => 'هێشتا هیچ بابەتێک نییە';
 
   @override
-  String get travelPrepDescription =>
-      'ئەو شتانە زیاد بکە کە پێویستە بۆ گەشتەکەت ئامادەیان بکەیت. ڕێکبخە بەپێی پۆلەکان وەک بەڵگەنامەکان، جلوبەرگ، ئەلکترۆنیات، و خاوێنکاری.';
-
-  @override
   String get checklist => 'لیستەکە';
 
   @override
@@ -564,6 +560,19 @@ class AppLocalizationsKu extends AppLocalizations {
   @override
   String get notificationPermissionDescription =>
       'دەمانەوێت بیریاری گەشتەکانی داهاتووت بۆ بنێرین بۆ ئەوەی هیچ گەشتێک لەدەست نەدەیت.';
+
+  @override
+  String get labelYes => 'بەڵێ';
+
+  @override
+  String get labelNo => 'نەخێر';
+
+  @override
+  String get viewDetailsLabel => 'بینینی وردەکارییەکان';
+
+  @override
+  String get prepDescription =>
+      'ئەو شتانە زیاد بکە کە پێویستە بۆ گەشتەکەت ئامادەیان بکەیت. ڕێکبخە بەپێی پۆلەکان وەک بەڵگەنامەکان، جلوبەرگ، ئەلکترۆنیات، و خاوێنکاری.';
 
   @override
   String get goToSettings => 'کردنەوەی ڕێکخستنەکان';

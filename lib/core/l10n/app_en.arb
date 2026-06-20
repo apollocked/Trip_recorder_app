@@ -211,6 +211,10 @@
   "notificationBody": "{tripTitle} is coming up!",
   "notificationPermissionTitle": "Stay Updated",
   "notificationPermissionDescription": "We'd like to send you reminders about your upcoming trips so you never miss a journey.",
+  "labelYes": "Yes",
+  "labelNo": "No",
+  "viewDetailsLabel": "View Details",
+  "prepDescription": "Add items you need to prepare before your trip. Organize by category like documents, clothing, electronics, and toiletries.",
   "goToSettings": "Open Settings",
   "@notificationBody": {
     "placeholders": {
