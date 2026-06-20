@@ -266,5 +266,8 @@
     "placeholders": {
       "count": {"type": "int"}
     }
-  }
+  },
+  "thisWeek": "ئەم هەفتەیە",
+  "thisMonth": "ئەم مانگە",
+  "comingSoon": "بەم زووانە"
 }

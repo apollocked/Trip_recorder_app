@@ -266,5 +266,8 @@
     "placeholders": {
       "count": {"type": "int"}
     }
-  }
+  },
+  "thisWeek": "هذا الأسبوع",
+  "thisMonth": "هذا الشهر",
+  "comingSoon": "قريباً"
 }

@@ -266,5 +266,8 @@
     "placeholders": {
       "count": {"type": "int"}
     }
-  }
+  },
+  "thisWeek": "This Week",
+  "thisMonth": "This Month",
+  "comingSoon": "Coming Soon"
 }

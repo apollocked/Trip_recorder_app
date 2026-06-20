@@ -664,4 +664,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String daysCount(int count) {
     return '$count days';
   }
+
+  @override
+  String get thisWeek => 'This Week';
+
+  @override
+  String get thisMonth => 'This Month';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }

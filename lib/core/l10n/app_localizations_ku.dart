@@ -667,4 +667,13 @@ class AppLocalizationsKu extends AppLocalizations {
   String daysCount(int count) {
     return '$count ڕۆژ';
   }
+
+  @override
+  String get thisWeek => 'ئەم هەفتەیە';
+
+  @override
+  String get thisMonth => 'ئەم مانگە';
+
+  @override
+  String get comingSoon => 'بەم زووانە';
 }

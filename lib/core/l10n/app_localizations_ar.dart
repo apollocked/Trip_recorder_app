@@ -662,4 +662,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String daysCount(int count) {
     return '$count أيام';
   }
+
+  @override
+  String get thisWeek => 'هذا الأسبوع';
+
+  @override
+  String get thisMonth => 'هذا الشهر';
+
+  @override
+  String get comingSoon => 'قريباً';
 }
