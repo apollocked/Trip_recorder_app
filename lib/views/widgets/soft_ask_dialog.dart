@@ -1,15 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/views/widgets/image_source_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 Future<void> showSoftAskDialog(
-  BuildContext context,
-  void Function(File) onImagePicked,
-) async {
+  BuildContext context, {
+  required String title,
+  required String message,
+  required VoidCallback onAllow,
+}) async {
   final colorScheme = Theme.of(context).colorScheme;
   final textTheme = Theme.of(context).textTheme;
   final l10n = AppLocalizations.of(context)!;
@@ -30,7 +29,7 @@ Future<void> showSoftAskDialog(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            l10n.shareJourney,
+            title,
             style: textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: colorScheme.onSurface,
@@ -38,7 +37,7 @@ Future<void> showSoftAskDialog(
           ),
           const SizedBox(height: 12),
           Text(
-            l10n.permissionDescription,
+            message,
             textAlign: TextAlign.center,
             style: textTheme.bodyMedium?.copyWith(
               color: colorScheme.onSurfaceVariant,
@@ -60,26 +59,13 @@ Future<void> showSoftAskDialog(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          onPressed: () async {
+          onPressed: () {
             Navigator.pop(context);
-            await _requestSystemPermissions(context, onImagePicked);
+            onAllow();
           },
           child: Text(l10n.allowAccess),
         ),
       ],
     ),
   );
-}
-
-Future<void> _requestSystemPermissions(
-  BuildContext context,
-  void Function(File) onImagePicked,
-) async {
-  final statuses = await [Permission.camera, Permission.photos].request();
-  if (statuses.values.any((s) => s.isGranted)) {
-    showImageSourceSheet(context, onImagePicked);
-  } else if (statuses[Permission.camera]!.isPermanentlyDenied ||
-      statuses[Permission.photos]!.isPermanentlyDenied) {
-    openAppSettings();
-  }
 }
