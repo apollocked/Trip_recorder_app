@@ -1299,6 +1299,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Travel Prep'**
   String get todo;
+
+  /// No description provided for @nextTripsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Trips'**
+  String get nextTripsTitle;
+
+  /// No description provided for @noUpcomingTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming trips'**
+  String get noUpcomingTrips;
+
+  /// No description provided for @noUpcomingTripsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan future trips and they will appear here.'**
+  String get noUpcomingTripsSubtitle;
+
+  /// No description provided for @nextTripsEmptyTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Dream big! Plan your next adventure and we’ll help you prepare.'**
+  String get nextTripsEmptyTip;
+
+  /// No description provided for @todayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Today!'**
+  String get todayLabel;
+
+  /// No description provided for @daysCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days'**
+  String daysCount(int count);
 }
 
 class _AppLocalizationsDelegate

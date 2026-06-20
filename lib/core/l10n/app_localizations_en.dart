@@ -642,4 +642,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get todo => 'Travel Prep';
+
+  @override
+  String get nextTripsTitle => 'Next Trips';
+
+  @override
+  String get noUpcomingTrips => 'No upcoming trips';
+
+  @override
+  String get noUpcomingTripsSubtitle =>
+      'Plan future trips and they will appear here.';
+
+  @override
+  String get nextTripsEmptyTip =>
+      'Dream big! Plan your next adventure and we’ll help you prepare.';
+
+  @override
+  String get todayLabel => 'Today!';
+
+  @override
+  String daysCount(int count) {
+    return '$count days';
+  }
 }

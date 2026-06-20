@@ -89,7 +89,6 @@ class _AddTripPageState extends State<AddTripPage> {
           .where((p) => p.startsWith('images/'))
           .toList();
       if (_reminderDate != null || _isFuture) {
-        final grantDate = _reminderDate ?? _selectedDate;
         final granted = await requestNotificationPermission(context);
         if (!granted) {
           if (mounted) setState(() => _isSaving = false);

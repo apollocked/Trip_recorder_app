@@ -5,7 +5,6 @@ import 'package:animations_in_flutter/views/pages/next_trips_page.dart';
 import 'package:animations_in_flutter/views/pages/on_boarding_page.dart';
 import 'package:animations_in_flutter/views/pages/settings_page.dart';
 import 'package:animations_in_flutter/views/pages/statistics_page.dart';
-import 'package:animations_in_flutter/views/pages/todo_page.dart';
 import 'package:animations_in_flutter/views/pages/main_shell.dart';
 import 'package:go_router/go_router.dart';
 
@@ -50,11 +49,6 @@ GoRouter createRouter(TripProvider tripProvider) {
                 path: '/statistics',
                 builder: (_, _) => const StatisticsPage(),
               ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(path: '/todo', builder: (_, _) => const TodoPage()),
             ],
           ),
           StatefulShellBranch(

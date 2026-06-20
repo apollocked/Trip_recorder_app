@@ -255,5 +255,16 @@
     }
   },
   "home": "سەرەکی",
-  "todo": "ئامادەکاری گەشت"
+  "todo": "ئامادەکاری گەشت",
+  "nextTripsTitle": "گەشتەکانی داهاتوو",
+  "noUpcomingTrips": "هیچ گەشتێکی داهاتوو نییە",
+  "noUpcomingTripsSubtitle": "پلانی گەشتی داهاتوو دابنێ و ئەوانە لێرەدا دەردەکەون.",
+  "nextTripsEmptyTip": "خەونی گەورە ببینە! پلانی گەشتی داهاتووت دابنێ و ئێمە یارمەتیت دەدەین لە ئامادەکاری.",
+  "todayLabel": "ئەمڕۆ!",
+  "daysCount": "{count} ڕۆژ",
+  "@daysCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  }
 }

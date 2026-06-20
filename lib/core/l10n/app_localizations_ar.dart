@@ -641,4 +641,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get todo => 'الاستعداد للسفر';
+
+  @override
+  String get nextTripsTitle => 'الرحلات القادمة';
+
+  @override
+  String get noUpcomingTrips => 'لا توجد رحلات قادمة';
+
+  @override
+  String get noUpcomingTripsSubtitle => 'خطط لرحلات مستقبلية وستظهر هنا.';
+
+  @override
+  String get nextTripsEmptyTip =>
+      'احلم كبيراً! خطّط لمغامرتك القادمة وسنساعدك في التجهيز.';
+
+  @override
+  String get todayLabel => 'اليوم!';
+
+  @override
+  String daysCount(int count) {
+    return '$count أيام';
+  }
 }

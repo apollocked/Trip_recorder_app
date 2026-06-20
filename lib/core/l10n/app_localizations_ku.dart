@@ -645,4 +645,26 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get todo => 'ئامادەکاری گەشت';
+
+  @override
+  String get nextTripsTitle => 'گەشتەکانی داهاتوو';
+
+  @override
+  String get noUpcomingTrips => 'هیچ گەشتێکی داهاتوو نییە';
+
+  @override
+  String get noUpcomingTripsSubtitle =>
+      'پلانی گەشتی داهاتوو دابنێ و ئەوانە لێرەدا دەردەکەون.';
+
+  @override
+  String get nextTripsEmptyTip =>
+      'خەونی گەورە ببینە! پلانی گەشتی داهاتووت دابنێ و ئێمە یارمەتیت دەدەین لە ئامادەکاری.';
+
+  @override
+  String get todayLabel => 'ئەمڕۆ!';
+
+  @override
+  String daysCount(int count) {
+    return '$count ڕۆژ';
+  }
 }

@@ -255,5 +255,16 @@
     }
   },
   "home": "الرئيسية",
-  "todo": "الاستعداد للسفر"
+  "todo": "الاستعداد للسفر",
+  "nextTripsTitle": "الرحلات القادمة",
+  "noUpcomingTrips": "لا توجد رحلات قادمة",
+  "noUpcomingTripsSubtitle": "خطط لرحلات مستقبلية وستظهر هنا.",
+  "nextTripsEmptyTip": "احلم كبيراً! خطّط لمغامرتك القادمة وسنساعدك في التجهيز.",
+  "todayLabel": "اليوم!",
+  "daysCount": "{count} أيام",
+  "@daysCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  }
 }

@@ -255,5 +255,16 @@
     }
   },
   "home": "Home",
-  "todo": "Travel Prep"
+  "todo": "Travel Prep",
+  "nextTripsTitle": "Next Trips",
+  "noUpcomingTrips": "No upcoming trips",
+  "noUpcomingTripsSubtitle": "Plan future trips and they will appear here.",
+  "nextTripsEmptyTip": "Dream big! Plan your next adventure and we\u2019ll help you prepare.",
+  "todayLabel": "Today!",
+  "daysCount": "{count} days",
+  "@daysCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  }
 }
