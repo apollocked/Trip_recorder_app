@@ -5,6 +5,7 @@ import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
 import 'package:animations_in_flutter/views/pages/privacy_policy_page.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -110,7 +111,7 @@ class SettingsPage extends StatelessWidget {
               child: OutlinedButton.icon(
                 onPressed: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const PrivacyPolicyPage()),
+                  slideRoute(const PrivacyPolicyPage()),
                 ),
                 icon: const Icon(Icons.open_in_new_rounded, size: 18),
                 label: Text(loc.privacyPolicy),

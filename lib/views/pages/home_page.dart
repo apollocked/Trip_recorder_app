@@ -5,6 +5,7 @@ import 'package:animations_in_flutter/views/pages/memory_page.dart';
 import 'package:animations_in_flutter/views/widgets/home/title_widget.dart';
 import 'package:animations_in_flutter/views/widgets/home/trip_list_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -68,9 +69,7 @@ class _HomeState extends State<HomePage> {
                     TextButton.icon(
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const CurrencyConverterPage(),
-                        ),
+                        slideRoute(const CurrencyConverterPage()),
                       ),
                       icon: const Icon(Icons.swap_horiz_rounded, size: 18),
                       label: Text(l10n.currencyConverter),
@@ -78,7 +77,7 @@ class _HomeState extends State<HomePage> {
                     TextButton.icon(
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const MemoryPage()),
+                        slideRoute(const MemoryPage()),
                       ),
                       icon: const Icon(Icons.timeline_rounded, size: 18),
                       label: Text(l10n.memories),
@@ -86,9 +85,7 @@ class _HomeState extends State<HomePage> {
                     IconButton(
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const FavoritesPage(),
-                        ),
+                        slideRoute(const FavoritesPage()),
                       ),
                       icon: const Icon(Icons.favorite_outline_rounded),
                       tooltip: l10n.favorites,

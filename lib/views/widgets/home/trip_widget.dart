@@ -7,6 +7,7 @@ import 'package:animations_in_flutter/views/widgets/image_widget_leading.dart';
 import 'package:animations_in_flutter/views/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 
 Widget tripWidget(
   Trip trip,
@@ -81,9 +82,7 @@ Widget tripWidget(
               HapticFeedback.selectionClick();
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => DetailsPage(tripId: trip.id),
-                ),
+                slideRoute(DetailsPage(tripId: trip.id)),
               );
             },
             child: Padding(

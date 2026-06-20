@@ -8,6 +8,7 @@ import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/home/search_sort_bar.dart';
 import 'package:animations_in_flutter/views/widgets/home/shimmer_card_widget.dart';
 import 'package:animations_in_flutter/views/widgets/home/trip_widget.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 
 class TripListWidget extends StatelessWidget {
   const TripListWidget({super.key});
@@ -44,9 +45,7 @@ class TripListWidget extends StatelessWidget {
                           ? FilledButton.tonalIcon(
                               onPressed: () => Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (_) => const AddTripPage(),
-                                ),
+                                slideRoute(const AddTripPage()),
                               ),
                               icon: const Icon(Icons.add_rounded, size: 18),
                               label: Text(l10n.emptyTripAction),

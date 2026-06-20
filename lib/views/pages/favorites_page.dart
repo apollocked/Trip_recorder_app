@@ -8,6 +8,7 @@ import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:flutter/material.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -31,8 +32,11 @@ class FavoritesPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: liked.isEmpty
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        child: liked.isEmpty
           ? Center(
+              key: const ValueKey('empty'),
               child: EmptyState(
                 icon: Icons.favorite_rounded,
                 title: loc.favorites,
@@ -40,6 +44,7 @@ class FavoritesPage extends StatelessWidget {
               ),
             )
           : ListView.separated(
+              key: const ValueKey('list'),
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
               itemCount: liked.length,
               separatorBuilder: (_, _) => const SizedBox(height: 12),
@@ -48,6 +53,7 @@ class FavoritesPage extends StatelessWidget {
                 return _FavoriteTripCard(trip: trip, colorScheme: colorScheme);
               },
             ),
+      ),
     );
   }
 }
@@ -67,7 +73,7 @@ class _FavoriteTripCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => DetailsPage(tripId: trip.id)),
+        slideRoute(DetailsPage(tripId: trip.id)),
       ),
       child: Container(
         decoration: BoxDecoration(

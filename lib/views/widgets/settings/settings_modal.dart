@@ -6,6 +6,7 @@ import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
 import 'package:animations_in_flutter/views/pages/privacy_policy_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 
 void showSettingsModal(BuildContext context) {
   showModalBottomSheet(
@@ -127,9 +128,7 @@ class _SettingsModalBody extends StatelessWidget {
                       Navigator.pop(context);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const CurrencyConverterPage(),
-                        ),
+                        slideRoute(const CurrencyConverterPage()),
                       );
                     },
                     icon: const Icon(Icons.open_in_new_rounded, size: 18),
@@ -148,9 +147,7 @@ class _SettingsModalBody extends StatelessWidget {
                       Navigator.pop(context);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const PrivacyPolicyPage(),
-                        ),
+                        slideRoute(const PrivacyPolicyPage()),
                       );
                     },
                     icon: const Icon(Icons.open_in_new_rounded, size: 18),

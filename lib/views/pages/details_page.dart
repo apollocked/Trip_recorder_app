@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 
 class DetailsPage extends StatelessWidget {
   final String tripId;
@@ -53,9 +54,7 @@ class DetailsPage extends StatelessWidget {
                   HapticFeedback.selectionClick();
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => AddTripPage(tripId: trip.id),
-                    ),
+                    slideRoute(AddTripPage(tripId: trip.id)),
                   );
                 },
               ),
@@ -146,7 +145,7 @@ class DetailsPage extends StatelessWidget {
             label: Text(l10n.budgetLabel),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => BudgetPage(tripId: tripId)),
+              slideRoute(BudgetPage(tripId: tripId)),
             ),
           ),
           const SizedBox(width: 8),
@@ -155,9 +154,7 @@ class DetailsPage extends StatelessWidget {
             label: Text(l10n.checklist),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (_) => PackingListPage(tripId: tripId),
-              ),
+                slideRoute(PackingListPage(tripId: tripId)),
             ),
           ),
           const SizedBox(width: 8),
@@ -166,7 +163,7 @@ class DetailsPage extends StatelessWidget {
             label: Text(l10n.journal),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => JournalPage(tripId: tripId)),
+              slideRoute(JournalPage(tripId: tripId)),
             ),
           ),
         ],

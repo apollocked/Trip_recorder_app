@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
@@ -11,8 +12,8 @@ class NextTripsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
 
     return Consumer<TripProvider>(
       builder: (context, provider, _) {
@@ -21,47 +22,41 @@ class NextTripsPage extends StatelessWidget {
           ..sort((a, b) => a.date.compareTo(b.date));
 
         return Scaffold(
-          backgroundColor: colorScheme.surface,
+          backgroundColor: cs.surface,
           appBar: AppBar(
-            backgroundColor: colorScheme.surface,
-            elevation: 0,
-            centerTitle: true,
-            title: Text(
-              loc.nextTripsTitle,
-              style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
+            backgroundColor: cs.surface, elevation: 0, centerTitle: true,
+            title: Text(loc.nextTripsTitle,
+                style: tt.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
           ),
-          body: upcoming.isEmpty
-              ? ListView(
-                  padding: const EdgeInsets.only(bottom: 88),
-                  children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.12),
-                    EmptyState(
-                      icon: Icons.flight_takeoff_rounded,
-                      title: loc.noUpcomingTrips,
-                      subtitle: loc.noUpcomingTripsSubtitle,
-                      description: loc.nextTripsEmptyTip,
-                      action: FilledButton.icon(
-                        icon: const Icon(Icons.add_rounded, size: 20),
-                        label: Text(loc.planTrip),
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const AddTripPage(),
-                          ),
+          body: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: upcoming.isEmpty
+                ? ListView(
+                    key: const ValueKey('empty'),
+                    padding: const EdgeInsets.only(bottom: 88),
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.12),
+                      EmptyState(
+                        key: const ValueKey('empty-state'),
+                        icon: Icons.flight_takeoff_rounded,
+                        title: loc.noUpcomingTrips,
+                        subtitle: loc.noUpcomingTripsSubtitle,
+                        description: loc.nextTripsEmptyTip,
+                        action: FilledButton.icon(
+                          icon: const Icon(Icons.add_rounded, size: 20),
+                          label: Text(loc.planTrip),
+                          onPressed: () => Navigator.push(context, slideRoute(const AddTripPage())),
                         ),
                       ),
-                    ),
-                  ],
-                )
-              : ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
-                  itemCount: upcoming.length,
-                  itemBuilder: (context, index) => FutureTripCard(
-                    trip: upcoming[index],
-                    colorScheme: colorScheme,
+                    ],
+                  )
+                : ListView.builder(
+                    key: const ValueKey('list'),
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
+                    itemCount: upcoming.length,
+                    itemBuilder: (_, i) => FutureTripCard(trip: upcoming[i], colorScheme: cs),
                   ),
-                ),
+          ),
         );
       },
     );

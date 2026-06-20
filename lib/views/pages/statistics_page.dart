@@ -10,6 +10,7 @@ import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/statistics/spending_bar_chart.dart';
 import 'package:animations_in_flutter/views/widgets/statistics/stat_card.dart';
 import 'package:flutter/material.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 import 'package:provider/provider.dart';
 
 class StatisticsPage extends StatelessWidget {
@@ -93,9 +94,7 @@ class StatisticsPage extends StatelessWidget {
                       colorScheme: colorScheme,
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const FavoritesPage(),
-                        ),
+                        slideRoute(const FavoritesPage()),
                       ),
                     ),
                   ] else
@@ -150,9 +149,7 @@ class StatisticsPage extends StatelessWidget {
                                 colorScheme: colorScheme,
                                 onTap: () => Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const FavoritesPage(),
-                                  ),
+                                  slideRoute(const FavoritesPage()),
                                 ),
                               ),
                             ),

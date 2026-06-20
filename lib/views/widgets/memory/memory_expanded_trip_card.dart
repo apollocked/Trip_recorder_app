@@ -6,6 +6,7 @@ import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 
 class MemoryExpandedTripCard extends StatelessWidget {
   final Trip trip;
@@ -81,7 +82,7 @@ class MemoryExpandedTripCard extends StatelessWidget {
             width: double.infinity,
             child: OutlinedButton(
               onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => DetailsPage(tripId: trip.id))),
+                  slideRoute(DetailsPage(tripId: trip.id))),
               child: Text(loc.viewDetailsLabel),
             ),
           ),

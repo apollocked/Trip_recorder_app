@@ -4,6 +4,7 @@ import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 
 class MainShell extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -38,7 +39,7 @@ class _MainShellState extends State<MainShell>
       ..forward().then((_) => _fabController.reverse());
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const AddTripPage()),
+      slideRoute(const AddTripPage()),
     );
   }
 

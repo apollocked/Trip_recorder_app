@@ -4,6 +4,7 @@ import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/views/pages/image_viewer_page.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
+import 'package:animations_in_flutter/core/route_transition.dart';
 
 class TripImageCarousel extends StatelessWidget {
   final Trip trip;
@@ -57,12 +58,10 @@ class TripImageCarousel extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => ImageViewerPage(
-                        imagePaths: trip.imagePaths,
-                        initialIndex: index,
-                      ),
-                    ),
+                    slideRoute(ImageViewerPage(
+                      imagePaths: trip.imagePaths,
+                      initialIndex: index,
+                    )),
                   ),
                   child: Container(
                     decoration: BoxDecoration(

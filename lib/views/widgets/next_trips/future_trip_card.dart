@@ -8,6 +8,7 @@ import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
 import 'package:animations_in_flutter/views/pages/packing_list_page.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart' show showConfirmationDialog;
+import 'package:animations_in_flutter/core/route_transition.dart';
 
 class FutureTripCard extends StatelessWidget {
   final Trip trip;
@@ -75,9 +76,7 @@ class FutureTripCard extends StatelessWidget {
                 Navigator.pop(ctx);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => AddTripPage(tripId: trip.id),
-                  ),
+                  slideRoute(AddTripPage(tripId: trip.id)),
                 );
               },
             ),
@@ -140,9 +139,7 @@ class _CardContent extends StatelessWidget {
               onLongPress: onLongPress,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => DetailsPage(tripId: trip.id),
-                ),
+                slideRoute(DetailsPage(tripId: trip.id)),
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -230,9 +227,7 @@ class _CardContent extends StatelessWidget {
                   label: Text(loc.checklist),
                   onPressed: () => Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => PackingListPage(tripId: trip.id),
-                    ),
+                slideRoute(PackingListPage(tripId: trip.id)),
                   ),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: cs.primary,
