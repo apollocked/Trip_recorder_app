@@ -89,7 +89,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
         description: l.onboardingDesc2,
         tip: l.onboardingTip2,
         features: [
-          FeatureBadge(Icons.account_balance_wallet_rounded, l.onboardingBadgeBudget),
+          FeatureBadge(
+            Icons.account_balance_wallet_rounded,
+            l.onboardingBadgeBudget,
+          ),
           FeatureBadge(Icons.checklist_rounded, l.onboardingBadgeChecklist),
           FeatureBadge(Icons.auto_stories_rounded, l.onboardingBadgeJournal),
         ],
@@ -103,7 +106,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
           FeatureBadge(Icons.bar_chart_rounded, l.onboardingBadgeStatistics),
           FeatureBadge(Icons.favorite_rounded, l.onboardingBadgeFavorites),
           FeatureBadge(Icons.timeline_rounded, l.onboardingBadgeTimeline),
-          FeatureBadge(Icons.currency_exchange_rounded, l.onboardingBadgeConverter),
+          FeatureBadge(
+            Icons.currency_exchange_rounded,
+            l.onboardingBadgeConverter,
+          ),
         ],
       ),
     ];
@@ -119,11 +125,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               animation: _ctrl,
               builder: (_, child) {
                 final glowProgress = (_pageFraction % 1).clamp(0.0, 1.0);
-                final colors = [
-                  cs.primary,
-                  cs.tertiary,
-                  cs.secondary,
-                ];
+                final colors = [cs.primary, cs.tertiary, cs.secondary];
                 final i = _page.clamp(0, 2);
                 final next = (i + 1).clamp(0, 2);
                 final glowColor = Color.lerp(

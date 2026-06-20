@@ -228,6 +228,7 @@ class _TodoPageState extends State<TodoPage> {
       ),
       body: _items.isEmpty
           ? ListView(
+              padding: const EdgeInsets.only(bottom: 88),
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.12),
                 EmptyState(

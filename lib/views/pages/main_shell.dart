@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' show ImageFilter;
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -64,104 +65,117 @@ class _MainShellState extends State<MainShell>
     return Scaffold(
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 88),
-            child: widget.navigationShell,
-          ),
+          widget.navigationShell,
           Positioned(
             left: 16,
             right: 16,
             bottom: 32,
-            child: Container(
-              height: 60,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.88),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.12),
-                    blurRadius: 16,
-                    offset: const Offset(0, 4),
-                  ),
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.06),
-                    blurRadius: 32,
-                    spreadRadius: -4,
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  for (int i = 0; i < 2; i++)
-                    Expanded(
-                      child: _buildNavItem(
-                        icon: currentIndex == i ? navSelectedIcons[i] : navIcons[i],
-                        isSelected: currentIndex == i,
-                        colorScheme: colorScheme,
-                        onTap: () => widget.navigationShell.goBranch(i),
-                      ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                child: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.65,
                     ),
-                  Expanded(
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: _onFabTap,
-                        child: Tooltip(
-                          message: l10n.fabTooltip,
-                          child: AnimatedBuilder(
-                            animation: _fabController,
-                            builder: (context, _) {
-                              final value = _fabController.value;
-                              final rotation = value * 0.125 * 2 * math.pi;
-                              final scale = 1.0 - (value * 0.12);
-                              return Transform.scale(
-                                scale: scale,
-                                child: Transform.rotate(
-                                  angle: rotation,
-                                  child: Container(
-                                    height: 42,
-                                    width: 42,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          colorScheme.primary,
-                                          colorScheme.tertiary,
-                                        ],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: colorScheme.primary.withValues(alpha: 0.4),
-                                          blurRadius: 10,
-                                          offset: const Offset(0, 3),
+                    border: Border.all(
+                      color: colorScheme.outlineVariant.withValues(alpha: 0.25),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.15),
+                        blurRadius: 20,
+                        offset: const Offset(0, 6),
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.06),
+                        blurRadius: 40,
+                        spreadRadius: -8,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      for (int i = 0; i < 2; i++)
+                        Expanded(
+                          child: _buildNavItem(
+                            icon: currentIndex == i
+                                ? navSelectedIcons[i]
+                                : navIcons[i],
+                            isSelected: currentIndex == i,
+                            colorScheme: colorScheme,
+                            onTap: () => widget.navigationShell.goBranch(i),
+                          ),
+                        ),
+                      Expanded(
+                        child: Center(
+                          child: GestureDetector(
+                            onTap: _onFabTap,
+                            child: Tooltip(
+                              message: l10n.fabTooltip,
+                              child: AnimatedBuilder(
+                                animation: _fabController,
+                                builder: (context, _) {
+                                  final value = _fabController.value;
+                                  final rotation = value * 0.125 * 2 * math.pi;
+                                  final scale = 1.0 - (value * 0.12);
+                                  return Transform.scale(
+                                    scale: scale,
+                                    child: Transform.rotate(
+                                      angle: rotation,
+                                      child: Container(
+                                        height: 42,
+                                        width: 42,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              colorScheme.primary,
+                                              colorScheme.tertiary,
+                                            ],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: colorScheme.primary
+                                                  .withValues(alpha: 0.4),
+                                              blurRadius: 10,
+                                              offset: const Offset(0, 3),
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                        child: Icon(
+                                          Icons.add_rounded,
+                                          color: colorScheme.onPrimary,
+                                          size: 24,
+                                        ),
+                                      ),
                                     ),
-                                    child: Icon(
-                                      Icons.add_rounded,
-                                      color: colorScheme.onPrimary,
-                                      size: 24,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                      for (int i = 2; i < 4; i++)
+                        Expanded(
+                          child: _buildNavItem(
+                            icon: currentIndex == i
+                                ? navSelectedIcons[i]
+                                : navIcons[i],
+                            isSelected: currentIndex == i,
+                            colorScheme: colorScheme,
+                            onTap: () => widget.navigationShell.goBranch(i),
+                          ),
+                        ),
+                    ],
                   ),
-                  for (int i = 2; i < 4; i++)
-                    Expanded(
-                      child: _buildNavItem(
-                        icon: currentIndex == i ? navSelectedIcons[i] : navIcons[i],
-                        isSelected: currentIndex == i,
-                        colorScheme: colorScheme,
-                        onTap: () => widget.navigationShell.goBranch(i),
-                      ),
-                    ),
-                ],
+                ),
               ),
             ),
           ),
