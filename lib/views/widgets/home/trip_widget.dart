@@ -1,6 +1,7 @@
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip.dart';
+import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
 import 'package:animations_in_flutter/views/widgets/image_widget_leading.dart';
@@ -8,6 +9,7 @@ import 'package:animations_in_flutter/views/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:animations_in_flutter/core/route_transition.dart';
+import 'package:provider/provider.dart';
 
 Widget tripWidget(
   Trip trip,
@@ -71,14 +73,24 @@ Widget tripWidget(
         ),
         child: InkWell(
           onLongPress: () {
-            final tripProvider = Provider.of<TripProvider>(
-              context,
-              listen: false,
-            );
-            final trip = tripProvider.getTripById(trip.tripId);
-            if (trip == null) return;
-            tripProvider.toggleLike(widget.tripId);
+            context.read<TripProvider>().toggleLike(trip.id);
             HapticFeedback.selectionClick();
+            ScaffoldMessenger.of(context).clearSnackBars();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  trip.isLiked
+                      ? AppLocalizations.of(context)!.removedFromFavorites
+                      : AppLocalizations.of(context)!.addedToFavorites,
+                ),
+                duration: const Duration(seconds: 2),
+                behavior: SnackBarBehavior.floating,
+                margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            );
           },
           child: Card(
             elevation: 0,
