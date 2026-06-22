@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/checklist_item.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
+import 'package:animations_in_flutter/views/shimmer/shimmer_packing_list_page.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/packing_list_item.dart';
 
@@ -143,7 +144,7 @@ class _PackingListPageState extends State<PackingListPage> {
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const ShimmerPackingListPage()
           : RefreshIndicator(
               onRefresh: _loadItems,
               child: Column(children: [

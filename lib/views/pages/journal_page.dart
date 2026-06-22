@@ -5,6 +5,7 @@ import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/journal_entry.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
+import 'package:animations_in_flutter/views/shimmer/shimmer_journal_page.dart';
 import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/journal/journal_entry_dialog.dart';
@@ -97,7 +98,7 @@ class _JournalPageState extends State<JournalPage> {
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const ShimmerJournalPage()
           : RefreshIndicator(
               onRefresh: _loadEntries,
               child: _entries.isEmpty

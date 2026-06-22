@@ -10,6 +10,7 @@ import 'package:animations_in_flutter/views/widgets/budget/category_budget_bars.
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/budget/expense_dialog.dart';
 import 'package:animations_in_flutter/views/widgets/budget/expense_tile.dart';
+import 'package:animations_in_flutter/views/shimmer/shimmer_budget_page.dart';
 import 'package:animations_in_flutter/views/widgets/budget/total_expense_card.dart';
 
 class BudgetPage extends StatefulWidget {
@@ -104,7 +105,7 @@ class _BudgetPageState extends State<BudgetPage> {
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const ShimmerBudgetPage()
           : RefreshIndicator(
               onRefresh: _loadExpenses,
               child: SingleChildScrollView(

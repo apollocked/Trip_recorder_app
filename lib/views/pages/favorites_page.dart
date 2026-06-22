@@ -75,6 +75,19 @@ class _FavoriteTripCard extends StatelessWidget {
         context,
         slideRoute(DetailsPage(tripId: trip.id)),
       ),
+      onLongPress: () {
+        context.read<TripProvider>().toggleLike(trip.id);
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(loc.removedFromFavorites),
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           color: colorScheme.surfaceContainerHighest.withAlpha(120),
