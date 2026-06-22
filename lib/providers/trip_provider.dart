@@ -10,7 +10,7 @@ import '../services/notification_service.dart';
 import 'mixins/checklist_provider_mixin.dart';
 import 'mixins/expense_provider_mixin.dart';
 import 'mixins/journal_provider_mixin.dart';
-import 'mixins/trip_statistics.dart';
+import '../model/trip_statistics.dart';
 
 class TripProvider extends ChangeNotifier
     with ExpenseProviderMixin, ChecklistProviderMixin, JournalProviderMixin {

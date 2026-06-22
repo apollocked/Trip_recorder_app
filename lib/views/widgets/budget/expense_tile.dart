@@ -4,7 +4,7 @@ import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/expense.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
-import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
+import 'package:animations_in_flutter/views/widgets/common/confirmation_dialog.dart';
 
 class ExpenseTile extends StatelessWidget {
   final Expense expense;

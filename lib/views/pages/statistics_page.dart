@@ -1,4 +1,4 @@
-﻿import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
@@ -6,7 +6,7 @@ import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/favorites_page.dart';
 import 'package:animations_in_flutter/views/widgets/statistics/category_breakdown.dart';
 import 'package:animations_in_flutter/views/widgets/statistics/category_pie_chart.dart';
-import 'package:animations_in_flutter/views/widgets/empty_state.dart';
+import 'package:animations_in_flutter/views/widgets/common/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/statistics/spending_bar_chart.dart';
 import 'package:animations_in_flutter/views/widgets/statistics/stat_card.dart';
 import 'package:flutter/material.dart';

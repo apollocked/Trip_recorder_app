@@ -5,7 +5,7 @@ import 'package:animations_in_flutter/core/route_transition.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/trip_type_selector.dart';
-import 'package:animations_in_flutter/views/widgets/empty_state.dart';
+import 'package:animations_in_flutter/views/widgets/common/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/next_trips/future_trip_card.dart';
 
 class NextTripsPage extends StatelessWidget {

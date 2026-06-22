@@ -2,7 +2,7 @@ import 'dart:io';
 import '../../model/trip.dart';
 import '../../model/trip_category.dart';
 import '../database/app_database.dart';
-import 'image_storage_service.dart';
+import '../../services/image_storage_service.dart';
 
 class TripRepository {
   final AppDatabase _database = AppDatabase();

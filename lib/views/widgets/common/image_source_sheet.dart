@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/views/widgets/image_source_card.dart';
+import 'package:animations_in_flutter/views/widgets/common/image_source_card.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

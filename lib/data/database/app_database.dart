@@ -168,14 +168,6 @@ class AppDatabase {
         'TEXT',
       );
     }
-    if (oldVersion < 7) {
-      await _addColumnIfNotExists(
-        db,
-        AppConstants.tripsTable,
-        'reminder_date',
-        'TEXT',
-      );
-    }
     if (oldVersion < 8) {
       await db.execute('''
         CREATE TABLE IF NOT EXISTS ${AppConstants.expensesTable} (

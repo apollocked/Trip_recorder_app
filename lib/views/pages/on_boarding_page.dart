@@ -1,7 +1,7 @@
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/on_boarding/on_boarding_card.dart';
 import 'package:animations_in_flutter/views/widgets/on_boarding/on_boarding_footer.dart';
-import 'package:animations_in_flutter/views/widgets/on_boarding/onboarding_header.dart';
+import 'package:animations_in_flutter/views/widgets/on_boarding/on_boarding_header.dart';
 import 'package:animations_in_flutter/views/widgets/settings/settings_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
