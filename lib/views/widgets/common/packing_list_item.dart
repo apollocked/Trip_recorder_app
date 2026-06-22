@@ -59,21 +59,24 @@ class PackingListItem extends StatelessWidget {
                 : colorScheme.outlineVariant.withAlpha(128),
           ),
         ),
-        child: CheckboxListTile(
-          value: item.isChecked,
-          onChanged: (val) async {
-            await context.read<TripProvider>().toggleChecklistItem(
-                tripId, item.id, val ?? false);
-            onDeleted();
-          },
-          title: Text(item.title, style: TextStyle(
-            decoration: item.isChecked ? TextDecoration.lineThrough : null,
-            color: item.isChecked
-                ? colorScheme.onSurfaceVariant
-                : colorScheme.onSurface,
-          )),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          controlAffinity: ListTileControlAffinity.leading,
+        child: Material(
+          type: MaterialType.transparency,
+          child: CheckboxListTile(
+            value: item.isChecked,
+            onChanged: (val) async {
+              await context.read<TripProvider>().toggleChecklistItem(
+                  tripId, item.id, val ?? false);
+              onDeleted();
+            },
+            title: Text(item.title, style: TextStyle(
+              decoration: item.isChecked ? TextDecoration.lineThrough : null,
+              color: item.isChecked
+                  ? colorScheme.onSurfaceVariant
+                  : colorScheme.onSurface,
+            )),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            controlAffinity: ListTileControlAffinity.leading,
+          ),
         ),
       ),
     );

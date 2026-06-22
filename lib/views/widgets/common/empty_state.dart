@@ -22,7 +22,7 @@ class EmptyState extends StatelessWidget {
     final t = Theme.of(context).textTheme;
 
     return Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
