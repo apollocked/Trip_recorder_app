@@ -690,4 +690,26 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get onboardingBadgeOffline => 'بێ ئینتەرنێت';
+
+  @override
+  String get howToStart => 'دەتەوێت چۆن دەست پێبکەیت؟';
+
+  @override
+  String get recordMemory => 'بیرەوەری تۆمار بکە';
+
+  @override
+  String get recordMemoryDesc =>
+      'وێنە زیاد بکە، هەڵسەنگاندن بکە، و گەشتی ڕابردوو تۆمار بکە';
+
+  @override
+  String get planTripDesc => 'بیرخستنەوە، لیستی ئامادەکاری، و ژمێرەری ڕێکخستن';
+
+  @override
+  String get reminders => 'بیرخستنەوەکان';
+
+  @override
+  String get countdown => 'ژمێرەری داهاتوو';
+
+  @override
+  String get photos => 'وێنەکان';
 }

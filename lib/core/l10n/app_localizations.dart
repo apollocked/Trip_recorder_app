@@ -1377,6 +1377,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Offline'**
   String get onboardingBadgeOffline;
+
+  /// No description provided for @howToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'How would you like to start?'**
+  String get howToStart;
+
+  /// No description provided for @recordMemory.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a Memory'**
+  String get recordMemory;
+
+  /// No description provided for @recordMemoryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos, rate, and log a past trip'**
+  String get recordMemoryDesc;
+
+  /// No description provided for @planTripDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Set reminders, packing list, and countdown'**
+  String get planTripDesc;
+
+  /// No description provided for @reminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get reminders;
+
+  /// No description provided for @countdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Countdown'**
+  String get countdown;
+
+  /// No description provided for @photos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photos;
 }
 
 class _AppLocalizationsDelegate

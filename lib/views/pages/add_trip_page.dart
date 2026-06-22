@@ -14,7 +14,8 @@ import 'package:animations_in_flutter/views/widgets/add_trip/save_button.dart';
 
 class AddTripPage extends StatefulWidget {
   final String? tripId;
-  const AddTripPage({super.key, this.tripId});
+  final bool? isFutureTrip;
+  const AddTripPage({super.key, this.tripId, this.isFutureTrip});
 
   @override
   State<AddTripPage> createState() => _AddTripPageState();
@@ -56,7 +57,9 @@ class _AddTripPageState extends State<AddTripPage> {
         _reminderDate = trip.reminderDate;
       }
     } else {
-      _selectedDate = DateTime.now();
+      _selectedDate = widget.isFutureTrip == true
+          ? DateTime.now().add(const Duration(days: 1))
+          : DateTime.now();
     }
   }
 

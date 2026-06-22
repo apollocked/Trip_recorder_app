@@ -273,5 +273,13 @@
   "onboardingBadgeFutureTrips": "الرحلات القادمة",
   "onboardingBadgeReminders": "تذكيرات",
   "onboardingBadgeMemories": "ذكريات",
-  "onboardingBadgeOffline": "بدون إنترنت"
+  "onboardingBadgeOffline": "بدون إنترنت",
+
+  "howToStart": "كيف تريد أن تبدأ؟",
+  "recordMemory": "سجل ذكرى",
+  "recordMemoryDesc": "أضف الصور والتقييم وسجل رحلة سابقة",
+  "planTripDesc": "تحديد التذكيرات وقائمة التجهيز والعد التنازلي",
+  "reminders": "تذكيرات",
+  "countdown": "عد تنازلي",
+  "photos": "صور"
 }

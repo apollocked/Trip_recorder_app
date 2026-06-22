@@ -273,5 +273,13 @@
   "onboardingBadgeFutureTrips": "Future trips",
   "onboardingBadgeReminders": "Reminders",
   "onboardingBadgeMemories": "Memories",
-  "onboardingBadgeOffline": "Offline"
+  "onboardingBadgeOffline": "Offline",
+
+  "howToStart": "How would you like to start?",
+  "recordMemory": "Record a Memory",
+  "recordMemoryDesc": "Add photos, rate, and log a past trip",
+  "planTripDesc": "Set reminders, packing list, and countdown",
+  "reminders": "Reminders",
+  "countdown": "Countdown",
+  "photos": "Photos"
 }

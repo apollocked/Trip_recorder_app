@@ -687,4 +687,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingBadgeOffline => 'Offline';
+
+  @override
+  String get howToStart => 'How would you like to start?';
+
+  @override
+  String get recordMemory => 'Record a Memory';
+
+  @override
+  String get recordMemoryDesc => 'Add photos, rate, and log a past trip';
+
+  @override
+  String get planTripDesc => 'Set reminders, packing list, and countdown';
+
+  @override
+  String get reminders => 'Reminders';
+
+  @override
+  String get countdown => 'Countdown';
+
+  @override
+  String get photos => 'Photos';
 }

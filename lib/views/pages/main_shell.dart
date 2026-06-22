@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui' show ImageFilter;
-import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
+import 'package:animations_in_flutter/views/pages/trip_type_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
@@ -39,7 +39,7 @@ class _MainShellState extends State<MainShell>
       ..forward().then((_) => _fabController.reverse());
     Navigator.push(
       context,
-      slideRoute(const AddTripPage()),
+      slideRoute(const TripTypeSelector()),
     );
   }
 

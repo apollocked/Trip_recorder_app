@@ -685,4 +685,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingBadgeOffline => 'بدون إنترنت';
+
+  @override
+  String get howToStart => 'كيف تريد أن تبدأ؟';
+
+  @override
+  String get recordMemory => 'سجل ذكرى';
+
+  @override
+  String get recordMemoryDesc => 'أضف الصور والتقييم وسجل رحلة سابقة';
+
+  @override
+  String get planTripDesc => 'تحديد التذكيرات وقائمة التجهيز والعد التنازلي';
+
+  @override
+  String get reminders => 'تذكيرات';
+
+  @override
+  String get countdown => 'عد تنازلي';
+
+  @override
+  String get photos => 'صور';
 }

@@ -273,5 +273,13 @@
   "onboardingBadgeFutureTrips": "گەشتی داهاتوو",
   "onboardingBadgeReminders": "بیرخستنەوەکان",
   "onboardingBadgeMemories": "بیرەوەری",
-  "onboardingBadgeOffline": "بێ ئینتەرنێت"
+  "onboardingBadgeOffline": "بێ ئینتەرنێت",
+
+  "howToStart": "دەتەوێت چۆن دەست پێبکەیت؟",
+  "recordMemory": "بیرەوەری تۆمار بکە",
+  "recordMemoryDesc": "وێنە زیاد بکە، هەڵسەنگاندن بکە، و گەشتی ڕابردوو تۆمار بکە",
+  "planTripDesc": "بیرخستنەوە، لیستی ئامادەکاری، و ژمێرەری ڕێکخستن",
+  "reminders": "بیرخستنەوەکان",
+  "countdown": "ژمێرەری داهاتوو",
+  "photos": "وێنەکان"
 }

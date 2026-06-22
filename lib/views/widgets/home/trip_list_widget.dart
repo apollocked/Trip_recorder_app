@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
-import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
+import 'package:animations_in_flutter/views/pages/trip_type_selector.dart';
 import 'package:animations_in_flutter/views/widgets/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/home/search_sort_bar.dart';
 import 'package:animations_in_flutter/views/shimmer/shimmer_card_widget.dart';
@@ -44,7 +44,7 @@ class TripListWidget extends StatelessWidget {
                       action: past.isEmpty
                           ? FilledButton.tonalIcon(
                               onPressed: () => Navigator.of(context, rootNavigator: true).push(
-                                slideRoute(const AddTripPage()),
+                                slideRoute(const TripTypeSelector()),
                               ),
                               icon: const Icon(Icons.add_rounded, size: 18),
                               label: Text(l10n.emptyTripAction),
