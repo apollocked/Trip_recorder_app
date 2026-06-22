@@ -1,4 +1,4 @@
-package com.example.animations_in_flutter
+package com.apollo.trip_recorder
 
 import io.flutter.embedding.android.FlutterActivity
 

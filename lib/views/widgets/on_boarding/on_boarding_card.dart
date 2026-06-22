@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-
 import 'package:animations_in_flutter/views/pages/on_boarding_page.dart';
 import 'package:flutter/material.dart';
 
@@ -64,37 +63,41 @@ class _OnboardingCardState extends State<OnboardingCard>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final cs = theme.colorScheme;
 
     return SlideTransition(
       position: _slide,
       child: FadeTransition(
         opacity: _fade,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 28),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _HeroVisual(icon: widget.item.icon, colorScheme: colorScheme),
+              _HeroVisual(icon: widget.item.icon, cs: cs),
               const SizedBox(height: 40),
               if (widget.item.welcome != null) ...[
-                Text(
-                  widget.item.welcome!,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.labelLarge?.copyWith(
-                    color: colorScheme.primary,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
-                    fontSize: 13,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: cs.primary.withAlpha(20),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    widget.item.welcome!,
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: cs.primary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
               ],
               Text(
                 widget.item.title,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.headlineSmall?.copyWith(
-                  color: colorScheme.onSurface,
+                  color: cs.onSurface,
                   fontWeight: FontWeight.bold,
                   letterSpacing: -0.5,
                   height: 1.2,
@@ -105,12 +108,14 @@ class _OnboardingCardState extends State<OnboardingCard>
                 widget.item.description,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
+                  color: cs.onSurfaceVariant,
                   height: 1.6,
                 ),
               ),
               const SizedBox(height: 32),
-              _FeatureBadgeRow(features: widget.item.features, colorScheme: colorScheme),
+              _FeatureBadgeRow(features: widget.item.features, cs: cs),
+              const SizedBox(height: 16),
+              _TipBox(tip: widget.item.tip, cs: cs, theme: theme),
             ],
           ),
         ),
@@ -121,48 +126,48 @@ class _OnboardingCardState extends State<OnboardingCard>
 
 class _HeroVisual extends StatelessWidget {
   final IconData icon;
-  final ColorScheme colorScheme;
+  final ColorScheme cs;
 
-  const _HeroVisual({required this.icon, required this.colorScheme});
+  const _HeroVisual({required this.icon, required this.cs});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
-      width: 200,
+      height: 180,
+      width: 180,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: RadialGradient(
           colors: [
-            colorScheme.primaryContainer,
-            colorScheme.surface,
+            cs.primaryContainer,
+            cs.surface,
           ],
           center: Alignment.center,
-          radius: 0.9,
+          radius: 0.85,
         ),
       ),
       child: Center(
         child: Transform.rotate(
           angle: -math.pi / 12,
           child: Container(
-            height: 140,
-            width: 140,
+            height: 120,
+            width: 120,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
-                colors: [colorScheme.primary, colorScheme.tertiary],
+                colors: [cs.primary, cs.tertiary],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: colorScheme.primary.withValues(alpha: 0.3),
+                  color: cs.primary.withValues(alpha: 0.3),
                   blurRadius: 24,
                   offset: const Offset(0, 8),
                 ),
               ],
             ),
-            child: Icon(icon, size: 60, color: colorScheme.onPrimary),
+            child: Icon(icon, size: 52, color: cs.onPrimary),
           ),
         ),
       ),
@@ -172,43 +177,82 @@ class _HeroVisual extends StatelessWidget {
 
 class _FeatureBadgeRow extends StatelessWidget {
   final List<FeatureBadge> features;
-  final ColorScheme colorScheme;
+  final ColorScheme cs;
 
-  const _FeatureBadgeRow({required this.features, required this.colorScheme});
+  const _FeatureBadgeRow({required this.features, required this.cs});
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 10,
-      runSpacing: 10,
+      spacing: 8,
+      runSpacing: 8,
       alignment: WrapAlignment.center,
       children: features.map((f) {
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
           decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest.withAlpha(120),
-            borderRadius: BorderRadius.circular(20),
+            color: cs.surfaceContainerHighest.withAlpha(120),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: colorScheme.outlineVariant.withAlpha(100),
+              color: cs.outlineVariant.withAlpha(80),
             ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(f.icon, size: 16, color: colorScheme.primary),
-              const SizedBox(width: 6),
+              Icon(f.icon, size: 15, color: cs.primary),
+              const SizedBox(width: 5),
               Text(
                 f.label,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: colorScheme.onSurfaceVariant,
+                  color: cs.onSurfaceVariant,
                 ),
               ),
             ],
           ),
         );
       }).toList(),
+    );
+  }
+}
+
+class _TipBox extends StatelessWidget {
+  final String tip;
+  final ColorScheme cs;
+  final ThemeData theme;
+
+  const _TipBox({
+    required this.tip,
+    required this.cs,
+    required this.theme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: cs.tertiaryContainer.withAlpha(80),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.lightbulb_outline_rounded, size: 16, color: cs.tertiary),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              tip,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: cs.onTertiaryContainer,
+                fontSize: 12,
+                height: 1.3,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

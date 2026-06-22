@@ -32,7 +32,7 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
-  final _ctrl = PageController(viewportFraction: 0.92);
+  final _ctrl = PageController();
   int _page = 0;
   double _pageFraction = 0.0;
 
@@ -149,12 +149,49 @@ class _OnboardingPageState extends State<OnboardingPage> {
             SafeArea(
               child: Column(
                 children: [
-                  OnboardingHeader(
-                    title: l.appTitle,
-                    tooltipText: l.settingsTitle,
-                    onSettingsPressed: () => showSettingsModal(context),
+                  // Top bar with settings
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.travel_explore, color: cs.primary, size: 24),
+                            const SizedBox(width: 8),
+                            Text(
+                              l.appTitle.toUpperCase(),
+                              style: t.textTheme.titleSmall?.copyWith(
+                                color: cs.onSurface,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 1.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                        TextButton(
+                          onPressed: () => showSettingsModal(context),
+                          style: TextButton.styleFrom(
+                            foregroundColor: cs.onSurfaceVariant,
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.settings_rounded, size: 16),
+                              const SizedBox(width: 4),
+                              Text(
+                                l.settingsTitle,
+                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 8),
                   Expanded(
                     child: PageView.builder(
                       controller: _ctrl,

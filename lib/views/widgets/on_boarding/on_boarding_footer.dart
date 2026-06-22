@@ -22,22 +22,23 @@ class OnboardingFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final isLastPage = currentPage == itemCount - 1;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Pill-shaped page indicator
-          Container(
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeOutCubic,
             height: 8,
-            padding: const EdgeInsets.symmetric(horizontal: 3),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: List.generate(itemCount, (i) {
                 final isActive = i == currentPage;
+                final isPast = i < currentPage;
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 350),
                   curve: Curves.easeOutCubic,
@@ -46,8 +47,10 @@ class OnboardingFooter extends StatelessWidget {
                   width: isActive ? 28 : 8,
                   decoration: BoxDecoration(
                     color: isActive
-                        ? colorScheme.primary
-                        : colorScheme.primary.withValues(alpha: 0.25),
+                        ? cs.primary
+                        : isPast
+                            ? cs.primary.withValues(alpha: 0.4)
+                            : cs.primary.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 );
@@ -55,7 +58,6 @@ class OnboardingFooter extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          // CTA button
           SizedBox(
             width: double.infinity,
             height: 56,
@@ -66,6 +68,8 @@ class OnboardingFooter extends StatelessWidget {
                   borderRadius: BorderRadius.circular(28),
                 ),
                 elevation: 0,
+                backgroundColor: cs.primary,
+                foregroundColor: cs.onPrimary,
               ),
               child: isLastPage
                   ? Text(
@@ -73,6 +77,7 @@ class OnboardingFooter extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
+                        letterSpacing: 0.3,
                       ),
                     )
                   : Row(
@@ -93,15 +98,18 @@ class OnboardingFooter extends StatelessWidget {
           ),
           if (!isLastPage) ...[
             const SizedBox(height: 12),
-            // Skip button
             TextButton(
               onPressed: onSkip,
+              style: TextButton.styleFrom(
+                foregroundColor: cs.onSurfaceVariant,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              ),
               child: Text(
                 skipLabel,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: colorScheme.onSurfaceVariant,
+                  color: cs.onSurfaceVariant,
                 ),
               ),
             ),
