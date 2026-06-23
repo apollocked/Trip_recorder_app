@@ -62,12 +62,7 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: appLocalizationsDelegates,
       localeResolutionCallback: appLocaleResolutionCallback,
-      builder: (context, child) {
-        return Directionality(
-          textDirection: appTextDirectionForLocale(l10n),
-          child: child ?? const SizedBox.shrink(),
-        );
-      },
+      builder: (context, child) => child ?? const SizedBox.shrink(),
       routerConfig: _router,
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
