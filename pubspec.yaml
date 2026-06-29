@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: "none"
 
-version: 1.0.0+2
+version: 1.0.1+4
 
 environment:
   sdk: ^3.11.4
@@ -50,6 +50,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/fonts/
+    - assets/.env
 
   fonts:
     - family: xoshnus

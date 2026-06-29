@@ -11,7 +11,7 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
   final l10n = AppLocalizations.of(context)!;
 
   final androidPlugin = FlutterLocalNotificationsPlugin();
-  final androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+  final androidSettings = AndroidInitializationSettings('@mipmap/launcher_icon');
   await androidPlugin.initialize(
     settings: InitializationSettings(android: androidSettings),
   );

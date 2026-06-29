@@ -16,9 +16,10 @@ import 'package:animations_in_flutter/services/theme_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    await dotenv.load();
+    await dotenv.load(fileName: 'assets/.env');
   } catch (_) {}
   await NotificationService().init();
+
   final prefs = await SharedPreferences.getInstance();
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
   runApp(
