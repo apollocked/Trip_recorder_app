@@ -97,12 +97,14 @@ class _ExpenseDialogState extends State<_ExpenseDialog> {
         ),
         FilledButton(
           onPressed: () {
-            if (_titleController.text.trim().isEmpty) return;
-            final amount = double.tryParse(_amountController.text.trim()) ?? 0;
+            final title = _titleController.text.trim();
+            final text = _amountController.text.trim();
+            final amount = double.tryParse(text);
+            if (title.isEmpty || amount == null || amount <= 0) return;
             Navigator.pop(
               context,
               ExpenseDialogResult(
-                title: _titleController.text.trim(),
+                title: title,
                 amount: amount,
                 category: _selectedCategory,
               ),

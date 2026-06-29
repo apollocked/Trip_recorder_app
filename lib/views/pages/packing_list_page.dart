@@ -20,6 +20,7 @@ class _PackingListPageState extends State<PackingListPage> {
   List<ChecklistItem> _items = [];
   String _selectedCategory = 'general';
   bool _isLoading = true;
+  int _cachedItemCount = 0;
 
   static const _categories = [
     'general', 'documents', 'clothing', 'electronics', 'toiletries',
@@ -37,6 +38,15 @@ class _PackingListPageState extends State<PackingListPage> {
 
   @override
   void initState() { super.initState(); _loadItems(); }
+
+  void _updateCachedCount(Map<String, List<ChecklistItem>> grouped, List<String> keys) {
+    int count = 0;
+    for (final k in keys) {
+      count += 1;
+      count += grouped[k]!.length;
+    }
+    _cachedItemCount = count;
+  }
 
   Future<void> _loadItems() async {
     try {
@@ -127,6 +137,7 @@ class _PackingListPageState extends State<PackingListPage> {
     final checkedCount = _items.where((i) => i.isChecked).length;
     final grouped = _grouped;
     final catKeys = grouped.keys.toList();
+    _updateCachedCount(grouped, catKeys);
 
     return Scaffold(
       backgroundColor: cs.surface,
@@ -174,22 +185,13 @@ class _PackingListPageState extends State<PackingListPage> {
                               label: Text(l10n.addItem)))
                       : ListView.builder(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: _buildItemCount(grouped, catKeys),
+                          itemCount: _cachedItemCount,
                           itemBuilder: (_, i) => _buildItem(grouped, catKeys, i, l10n, cs),
                         ),
                 ),
               ]),
             ),
     );
-  }
-
-  int _buildItemCount(Map<String, List<ChecklistItem>> grouped, List<String> keys) {
-    int count = 0;
-    for (final k in keys) {
-      count += 1; // section header
-      count += grouped[k]!.length;
-    }
-    return count;
   }
 
   Widget _buildItem(Map<String, List<ChecklistItem>> grouped, List<String> keys,

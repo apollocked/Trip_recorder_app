@@ -106,12 +106,12 @@ class _HeartWidgetState extends State<HeartWidget>
                   if (controller.value > 0.5) {
                     SemanticsService.announce(
                       l10n.addedToFavorites,
-                      TextDirection.ltr,
+                      Directionality.of(context),
                     );
                   } else {
                     SemanticsService.announce(
                       l10n.removedFromFavorites,
-                      TextDirection.ltr,
+                      Directionality.of(context),
                     );
                   }
                 },

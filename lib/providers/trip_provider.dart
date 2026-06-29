@@ -257,24 +257,26 @@ class TripProvider extends ChangeNotifier
   }
 
   void _scheduleReminder(Trip trip) {
-    if (trip.reminderDate != null) {
-      NotificationService().scheduleTripReminder(
-        tripId: trip.id,
-        tripTitle: trip.title,
-        remindAt: trip.reminderDate!,
-      );
-    }
-    if (trip.date.isAfter(DateTime.now())) {
-      NotificationService().schedulePreTripReminder(
-        tripId: trip.id,
-        tripTitle: trip.title,
-        tripDate: trip.date,
-      );
-      NotificationService().scheduleOnDayReminder(
-        tripId: trip.id,
-        tripTitle: trip.title,
-        tripDate: trip.date,
-      );
-    }
+    try {
+      if (trip.reminderDate != null) {
+        NotificationService().scheduleTripReminder(
+          tripId: trip.id,
+          tripTitle: trip.title,
+          remindAt: trip.reminderDate!,
+        );
+      }
+      if (trip.date.isAfter(DateTime.now())) {
+        NotificationService().schedulePreTripReminder(
+          tripId: trip.id,
+          tripTitle: trip.title,
+          tripDate: trip.date,
+        );
+        NotificationService().scheduleOnDayReminder(
+          tripId: trip.id,
+          tripTitle: trip.title,
+          tripDate: trip.date,
+        );
+      }
+    } catch (_) {}
   }
 }

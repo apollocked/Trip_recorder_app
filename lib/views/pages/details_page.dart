@@ -12,6 +12,7 @@ import 'package:animations_in_flutter/views/widgets/details/trip_image_carousel.
 import 'package:animations_in_flutter/views/widgets/details/trip_info_chips.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:animations_in_flutter/core/route_transition.dart';
@@ -182,8 +183,7 @@ class DetailsPage extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            '${l10n.reminder}: ${trip.reminderDate!.day}/${trip.reminderDate!.month}/${trip.reminderDate!.year} '
-            '${trip.reminderDate!.hour.toString().padLeft(2, '0')}:${trip.reminderDate!.minute.toString().padLeft(2, '0')}',
+            '${l10n.reminder}: ${DateFormat.yMd().add_jm().format(trip.reminderDate!)}',
             style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13),
           ),
         ],

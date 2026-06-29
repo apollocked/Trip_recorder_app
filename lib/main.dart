@@ -18,6 +18,7 @@ Future<void> main() async {
   try {
     await dotenv.load(fileName: 'assets/.env');
   } catch (_) {}
+
   await NotificationService().init();
 
   final prefs = await SharedPreferences.getInstance();

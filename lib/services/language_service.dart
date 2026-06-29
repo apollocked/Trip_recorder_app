@@ -29,7 +29,6 @@ class LanguageService extends ChangeNotifier {
     for (final supportedLocale in L10n.all) {
       if (supportedLocale.languageCode == savedLanguageCode) {
         _locale = supportedLocale;
-        notifyListeners();
         return;
       }
     }
