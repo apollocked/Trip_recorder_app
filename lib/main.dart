@@ -18,13 +18,10 @@ Future<void> main() async {
   try {
     await dotenv.load(fileName: 'assets/.env');
   } catch (_) {}
-
   await NotificationService().init();
-
   final prefs = await SharedPreferences.getInstance();
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
   final savedLocale = LanguageService.readSavedLocale(prefs);
-
   runApp(
     MultiProvider(
       providers: [
@@ -61,7 +58,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final l10n = context.watch<LanguageService>().locale;
     final themeMode = context.watch<ThemeService>().themeMode;
-
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       locale: l10n,

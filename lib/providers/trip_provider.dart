@@ -262,9 +262,8 @@ class TripProvider extends ChangeNotifier
       final notifGranted = await Permission.notification.status.isGranted;
       if (!notifGranted) return;
       if (trip.reminderDate != null) {
-        await NotificationService().scheduleTripReminder(
+        await NotificationService().scheduleUserReminder(
           tripId: trip.id,
-          tripTitle: trip.title,
           remindAt: trip.reminderDate!,
           title: 'Trip Reminder',
           body: '${trip.title} is coming up!',
