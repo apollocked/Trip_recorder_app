@@ -221,6 +221,7 @@
   "viewDetailsLabel": "View Details",
   "prepDescription": "Add items you need to prepare before your trip. Organize by category like documents, clothing, electronics, and toiletries.",
   "goToSettings": "Open Settings",
+  "goToSettingsDescription": "Notifications have been blocked for this app. Please enable them in Settings to receive trip reminders.",
   "@notificationBody": {
     "placeholders": {
       "tripTitle": {"type": "String"}

@@ -1210,6 +1210,12 @@ abstract class AppLocalizations {
   /// **'Open Settings'**
   String get goToSettings;
 
+  /// No description provided for @goToSettingsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications have been blocked for this app. Please enable them in Settings to receive trip reminders.'**
+  String get goToSettingsDescription;
+
   /// No description provided for @editFormSemantics.
   ///
   /// In en, this message translates to:

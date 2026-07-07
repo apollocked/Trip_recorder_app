@@ -598,6 +598,10 @@ class AppLocalizationsKu extends AppLocalizations {
   String get goToSettings => 'کردنەوەی ڕێکخستنەکان';
 
   @override
+  String get goToSettingsDescription =>
+      'ئاگادارکردنەوەکان بۆ ئەم ئەپە ڕاگیراون. تکایە لە ڕێکخستنەکاندا چالاکیان بکە بۆ وەرگرتنی بیرخستنەوەی گەشت.';
+
+  @override
   String get editFormSemantics => 'فۆرمی دەستکاریکردنی گەشت';
 
   @override

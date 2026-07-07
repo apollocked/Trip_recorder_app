@@ -263,6 +263,8 @@ class TripProvider extends ChangeNotifier
           tripId: trip.id,
           tripTitle: trip.title,
           remindAt: trip.reminderDate!,
+          title: 'Trip Reminder',
+          body: '${trip.title} is coming up!',
         );
       }
       if (trip.date.isAfter(DateTime.now())) {

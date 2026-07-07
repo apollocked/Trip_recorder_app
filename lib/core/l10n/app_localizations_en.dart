@@ -595,6 +595,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goToSettings => 'Open Settings';
 
   @override
+  String get goToSettingsDescription =>
+      'Notifications have been blocked for this app. Please enable them in Settings to receive trip reminders.';
+
+  @override
   String get editFormSemantics => 'Edit Journey form';
 
   @override

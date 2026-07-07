@@ -594,6 +594,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get goToSettings => 'فتح الإعدادات';
 
   @override
+  String get goToSettingsDescription =>
+      'تم حظر الإشعارات لهذا التطبيق. يرجى تمكينها في الإعدادات لتلقي تذكيرات الرحلات.';
+
+  @override
   String get editFormSemantics => 'نموذج تعديل الرحلة';
 
   @override

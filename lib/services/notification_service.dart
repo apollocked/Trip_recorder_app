@@ -13,7 +13,7 @@ class NotificationService {
   Future<void> init() async {
     if (_initialized) return;
     tz_data.initializeTimeZones();
-    const android = AndroidInitializationSettings('@mipmap/launcher_icon');
+    const android = AndroidInitializationSettings('@drawable/ic_notification');
     const settings = InitializationSettings(android: android);
     await _plugin.initialize(settings: settings);
     _initialized = true;
@@ -23,15 +23,24 @@ class NotificationService {
     required String tripId,
     required String tripTitle,
     required DateTime remindAt,
-    String? body,
+    required String title,
+    required String body,
     String? channelName,
   }) async {
     await init();
     final androidDetails = AndroidNotificationDetails(
       'trip_reminders',
       channelName ?? 'Trip Reminders',
+      channelDescription: 'Reminders for your upcoming trips',
       importance: Importance.high,
       priority: Priority.high,
+      icon: '@drawable/ic_notification',
+      setAsGroupSummary: false,
+      category: AndroidNotificationCategory.reminder,
+      visibility: NotificationVisibility.public,
+      showWhen: true,
+      enableVibration: true,
+      playSound: true,
     );
     final details = NotificationDetails(android: androidDetails);
 
@@ -40,8 +49,8 @@ class NotificationService {
 
     await _plugin.zonedSchedule(
       id: tripId.hashCode,
-      title: 'Upcoming Trip',
-      body: body ?? '$tripTitle is coming up!',
+      title: title,
+      body: body,
       scheduledDate: scheduledDate,
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
@@ -58,6 +67,7 @@ class NotificationService {
       tripId: tripId,
       tripTitle: tripTitle,
       remindAt: remindAt,
+      title: 'Trip Reminder',
       body: '$tripTitle starts tomorrow! Prepare your items.',
       channelName: 'Trip Reminders',
     );
@@ -72,8 +82,15 @@ class NotificationService {
     final androidDetails = AndroidNotificationDetails(
       'trip_reminders',
       'Trip Reminders',
+      channelDescription: 'Reminders for your upcoming trips',
       importance: Importance.high,
       priority: Priority.high,
+      icon: '@drawable/ic_notification',
+      category: AndroidNotificationCategory.reminder,
+      visibility: NotificationVisibility.public,
+      showWhen: true,
+      enableVibration: true,
+      playSound: true,
     );
     final details = NotificationDetails(android: androidDetails);
 
