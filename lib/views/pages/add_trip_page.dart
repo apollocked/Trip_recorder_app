@@ -83,16 +83,15 @@ class _AddTripPageState extends State<AddTripPage> {
     setState(() => _isSaving = true);
     HapticFeedback.mediumImpact();
     try {
-      if (_isFuture && !await requestNotificationPermission(context)) {
-        if (mounted) setState(() => _isSaving = false);
-        return;
+      if (_isFuture) {
+        await requestNotificationPermission(context);
       }
       if (!mounted) return;
       final title = _titleController.text.trim();
       final price = double.tryParse(_priceController.text.trim()) ?? 0;
       final nights = int.tryParse(_nightsController.text.trim()) ?? (_isFuture ? 0 : 1);
       final desc = _descriptionController.text.trim();
-      final reminderToUse = _isFuture ? _selectedDate : _reminderDate;
+      final reminderToUse = _reminderDate;
       final assetPaths =
           _existingImagePaths.where((p) => p.startsWith('images/')).toList();
       final provider = context.read<TripProvider>();

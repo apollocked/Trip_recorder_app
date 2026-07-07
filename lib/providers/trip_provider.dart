@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:animations_in_flutter/core/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data/repositories/trip_repository.dart';
 import '../model/trip.dart';
@@ -83,7 +84,7 @@ class TripProvider extends ChangeNotifier
       reminderDate: reminderDate,
     );
     _trips.insert(0, trip);
-    _scheduleReminder(trip);
+    await _scheduleReminder(trip);
     notifyListeners();
     return trip;
   }
@@ -124,7 +125,7 @@ class TripProvider extends ChangeNotifier
     final index = _trips.indexWhere((t) => t.id == id);
     if (index != -1) {
       _trips[index] = trip;
-      _scheduleReminder(trip);
+      await _scheduleReminder(trip);
       notifyListeners();
     }
     return trip;
@@ -256,10 +257,12 @@ class TripProvider extends ChangeNotifier
     notifyListeners();
   }
 
-  void _scheduleReminder(Trip trip) {
+  Future<void> _scheduleReminder(Trip trip) async {
     try {
+      final notifGranted = await Permission.notification.status.isGranted;
+      if (!notifGranted) return;
       if (trip.reminderDate != null) {
-        NotificationService().scheduleTripReminder(
+        await NotificationService().scheduleTripReminder(
           tripId: trip.id,
           tripTitle: trip.title,
           remindAt: trip.reminderDate!,
@@ -267,18 +270,20 @@ class TripProvider extends ChangeNotifier
           body: '${trip.title} is coming up!',
         );
       }
-      if (trip.date.isAfter(DateTime.now())) {
-        NotificationService().schedulePreTripReminder(
+      if (!trip.date.isBefore(DateTime.now())) {
+        await NotificationService().schedulePreTripReminder(
           tripId: trip.id,
           tripTitle: trip.title,
           tripDate: trip.date,
         );
-        NotificationService().scheduleOnDayReminder(
+        await NotificationService().scheduleOnDayReminder(
           tripId: trip.id,
           tripTitle: trip.title,
           tripDate: trip.date,
         );
       }
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('scheduleReminder error: $e');
+    }
   }
 }

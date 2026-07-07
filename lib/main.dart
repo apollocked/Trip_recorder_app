@@ -23,13 +23,17 @@ Future<void> main() async {
 
   final prefs = await SharedPreferences.getInstance();
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
+  final savedLocale = LanguageService.readSavedLocale(prefs);
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (_) => TripProvider(isFirstTime: isFirstTime),
         ),
-        ChangeNotifierProvider(create: (_) => LanguageService()),
+        ChangeNotifierProvider(
+          create: (_) => LanguageService(initialLocale: savedLocale),
+        ),
         ChangeNotifierProvider(create: (_) => ThemeService()),
       ],
       child: const MyApp(),
@@ -64,7 +68,13 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: appLocalizationsDelegates,
       localeResolutionCallback: appLocaleResolutionCallback,
-      builder: (context, child) => child ?? const SizedBox.shrink(),
+      builder: (context, child) {
+        final dir = appTextDirectionForLocale(l10n);
+        return Directionality(
+          textDirection: dir,
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       routerConfig: _router,
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),

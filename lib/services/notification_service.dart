@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
@@ -12,12 +13,30 @@ class NotificationService {
 
   Future<void> init() async {
     if (_initialized) return;
-    tz_data.initializeTimeZones();
-    const android = AndroidInitializationSettings('@drawable/ic_notification');
-    const settings = InitializationSettings(android: android);
-    await _plugin.initialize(settings: settings);
-    _initialized = true;
+    try {
+      tz_data.initializeTimeZones();
+      const android = AndroidInitializationSettings('ic_notification');
+      const settings = InitializationSettings(android: android);
+      await _plugin.initialize(settings: settings);
+      _initialized = true;
+    } catch (e) {
+      debugPrint('NotificationService.init error: $e');
+    }
   }
+
+  AndroidNotificationDetails _details() => const AndroidNotificationDetails(
+        'trip_reminders',
+        'Trip Reminders',
+        channelDescription: 'Reminders for your upcoming trips',
+        importance: Importance.high,
+        priority: Priority.high,
+        icon: 'ic_notification',
+        category: AndroidNotificationCategory.reminder,
+        visibility: NotificationVisibility.public,
+        showWhen: true,
+        enableVibration: true,
+        playSound: true,
+      );
 
   Future<void> scheduleTripReminder({
     required String tripId,
@@ -28,21 +47,7 @@ class NotificationService {
     String? channelName,
   }) async {
     await init();
-    final androidDetails = AndroidNotificationDetails(
-      'trip_reminders',
-      channelName ?? 'Trip Reminders',
-      channelDescription: 'Reminders for your upcoming trips',
-      importance: Importance.high,
-      priority: Priority.high,
-      icon: '@drawable/ic_notification',
-      setAsGroupSummary: false,
-      category: AndroidNotificationCategory.reminder,
-      visibility: NotificationVisibility.public,
-      showWhen: true,
-      enableVibration: true,
-      playSound: true,
-    );
-    final details = NotificationDetails(android: androidDetails);
+    final details = NotificationDetails(android: _details());
 
     final scheduledDate = tz.TZDateTime.from(remindAt, tz.local);
     if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) return;
@@ -79,20 +84,7 @@ class NotificationService {
     required DateTime tripDate,
   }) async {
     await init();
-    final androidDetails = AndroidNotificationDetails(
-      'trip_reminders',
-      'Trip Reminders',
-      channelDescription: 'Reminders for your upcoming trips',
-      importance: Importance.high,
-      priority: Priority.high,
-      icon: '@drawable/ic_notification',
-      category: AndroidNotificationCategory.reminder,
-      visibility: NotificationVisibility.public,
-      showWhen: true,
-      enableVibration: true,
-      playSound: true,
-    );
-    final details = NotificationDetails(android: androidDetails);
+    final details = NotificationDetails(android: _details());
 
     final scheduledDate = tz.TZDateTime.from(tripDate, tz.local);
     if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) return;
