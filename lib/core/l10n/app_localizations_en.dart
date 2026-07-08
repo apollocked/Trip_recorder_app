@@ -547,6 +547,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationChannelName => 'Trip Reminders';
 
   @override
+  String get notificationChannelDescription =>
+      'Reminders for your upcoming trips so you never miss a journey.';
+
+  @override
   String get notificationTitle => 'Upcoming Trip';
 
   @override
@@ -597,6 +601,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get goToSettingsDescription =>
       'Notifications have been blocked for this app. Please enable them in Settings to receive trip reminders.';
+
+  @override
+  String get notificationPreTripTitle => 'Trip Reminder';
+
+  @override
+  String notificationPreTripBody(String tripTitle) {
+    return '$tripTitle starts tomorrow! Prepare your items.';
+  }
+
+  @override
+  String get notificationOnDayBody =>
+      'Your trip is today! Add photos and details to save your memories.';
 
   @override
   String get editFormSemantics => 'Edit Journey form';

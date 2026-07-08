@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:animations_in_flutter/core/constants.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +17,9 @@ import '../model/trip_statistics.dart';
 class TripProvider extends ChangeNotifier
     with ExpenseProviderMixin, ChecklistProviderMixin, JournalProviderMixin {
   final TripRepository _repository = TripRepository();
+  Locale _locale = const Locale('en');
+
+  set notificationLocale(Locale locale) => _locale = locale;
 
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
@@ -261,23 +265,26 @@ class TripProvider extends ChangeNotifier
     try {
       final notifGranted = await Permission.notification.status.isGranted;
       if (!notifGranted) return;
+      final loc = lookupAppLocalizations(_locale);
       if (trip.reminderDate != null) {
         await NotificationService().scheduleUserReminder(
           tripId: trip.id,
           remindAt: trip.reminderDate!,
-          title: 'Trip Reminder',
-          body: '${trip.title} is coming up!',
+          title: loc.notificationPreTripTitle,
+          body: loc.notificationBody(trip.title),
         );
       }
       if (!trip.date.isBefore(DateTime.now())) {
         await NotificationService().schedulePreTripReminder(
           tripId: trip.id,
-          tripTitle: trip.title,
+          title: loc.notificationPreTripTitle,
+          body: loc.notificationPreTripBody(trip.title),
           tripDate: trip.date,
         );
         await NotificationService().scheduleOnDayReminder(
           tripId: trip.id,
-          tripTitle: trip.title,
+          title: trip.title,
+          body: loc.notificationOnDayBody,
           tripDate: trip.date,
         );
       }

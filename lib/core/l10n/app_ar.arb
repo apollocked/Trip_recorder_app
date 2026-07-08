@@ -207,6 +207,7 @@
     }
   },
   "notificationChannelName": "تذكيرات الرحلات",
+  "notificationChannelDescription": "تذكيرات برحلاتك القادمة حتى لا تفوّت أي رحلة.",
   "notificationTitle": "رحلة قادمة",
   "notificationBody": "{tripTitle} قادمة قريباً!",
   "@notificationBody": {
@@ -214,6 +215,14 @@
       "tripTitle": {"type": "String"}
     }
   },
+  "notificationPreTripTitle": "تذكير الرحلة",
+  "notificationPreTripBody": "{tripTitle} تبدأ غداً! جهّز أغراضك.",
+  "@notificationPreTripBody": {
+    "placeholders": {
+      "tripTitle": {"type": "String"}
+    }
+  },
+  "notificationOnDayBody": "رحلتك اليوم! أضف الصور والتفاصيل لحفظ ذكرياتك.",
   "notificationPermissionTitle": "ابق على اطلاع",
   "notificationPermissionDescription": "نود إرسال تذكيرات لك حول رحلاتك القادمة حتى لا تفوّت أي رحلة.",
   "monthsFull": "يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,أغسطس,سبتمبر,أكتوبر,نوفمبر,ديسمبر",

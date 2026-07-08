@@ -66,29 +66,31 @@ class NotificationService {
 
   Future<void> schedulePreTripReminder({
     required String tripId,
-    required String tripTitle,
+    required String title,
+    required String body,
     required DateTime tripDate,
   }) async {
     final remindAt = tripDate.subtract(const Duration(days: 1));
     if (remindAt.isBefore(DateTime.now())) return;
     await _scheduleNativeAlarm(
       notificationId: tripId.hashCode + 1,
-      title: 'Trip Reminder',
-      body: '$tripTitle starts tomorrow! Prepare your items.',
+      title: title,
+      body: body,
       targetDate: remindAt,
     );
   }
 
   Future<void> scheduleOnDayReminder({
     required String tripId,
-    required String tripTitle,
+    required String title,
+    required String body,
     required DateTime tripDate,
   }) async {
     if (tripDate.isBefore(DateTime.now())) return;
     await _scheduleNativeAlarm(
       notificationId: tripId.hashCode + 2,
-      title: tripTitle,
-      body: 'Your trip is today! Add photos and details to save your memories.',
+      title: title,
+      body: body,
       targetDate: tripDate,
     );
   }

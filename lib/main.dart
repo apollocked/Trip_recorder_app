@@ -19,13 +19,16 @@ Future<void> main() async {
   try {
     await dotenv.load(fileName: 'assets/.env');
   } catch (_) {}
+  final prefs = await SharedPreferences.getInstance();
+  final savedLocale = LanguageService.readSavedLocale(prefs);
+  final loc = lookupAppLocalizations(savedLocale);
   await AwesomeNotifications().initialize(
     'resource://drawable/ic_notification',
     [
       NotificationChannel(
         channelKey: 'trip_reminders',
-        channelName: 'Trip Reminders',
-        channelDescription: 'Reminders for your upcoming trips',
+        channelName: loc.notificationChannelName,
+        channelDescription: loc.notificationChannelDescription,
         importance: NotificationImportance.High,
         defaultColor: Color(0xFF1C1B1F),
         ledColor: Color(0xFF1C1B1F),
@@ -33,9 +36,7 @@ Future<void> main() async {
     ],
   );
   await NotificationService().init();
-  final prefs = await SharedPreferences.getInstance();
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
-  final savedLocale = LanguageService.readSavedLocale(prefs);
   runApp(
     MultiProvider(
       providers: [
