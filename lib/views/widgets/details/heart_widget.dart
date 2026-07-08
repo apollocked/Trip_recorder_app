@@ -77,9 +77,10 @@ class _HeartWidgetState extends State<HeartWidget>
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (BuildContext context, _) {
+    return RepaintBoundary(
+      child: ListenableBuilder(
+        listenable: controller,
+        builder: (BuildContext context, _) {
         return ClipOval(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
@@ -106,12 +107,12 @@ class _HeartWidgetState extends State<HeartWidget>
                   if (controller.value > 0.5) {
                     SemanticsService.announce(
                       l10n.addedToFavorites,
-                      TextDirection.ltr,
+                      Directionality.of(context),
                     );
                   } else {
                     SemanticsService.announce(
                       l10n.removedFromFavorites,
-                      TextDirection.ltr,
+                      Directionality.of(context),
                     );
                   }
                 },
@@ -120,6 +121,7 @@ class _HeartWidgetState extends State<HeartWidget>
           ),
         );
       },
+      ),
     );
   }
 }

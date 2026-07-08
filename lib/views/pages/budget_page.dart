@@ -7,7 +7,7 @@ import 'package:animations_in_flutter/model/expense.dart';
 import 'package:animations_in_flutter/model/expense_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/budget/category_budget_bars.dart';
-import 'package:animations_in_flutter/views/widgets/empty_state.dart';
+import 'package:animations_in_flutter/views/widgets/common/empty_state.dart';
 import 'package:animations_in_flutter/views/widgets/budget/expense_dialog.dart';
 import 'package:animations_in_flutter/views/widgets/budget/expense_tile.dart';
 import 'package:animations_in_flutter/views/shimmer/shimmer_budget_page.dart';

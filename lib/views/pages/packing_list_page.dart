@@ -5,8 +5,8 @@ import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/checklist_item.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/shimmer/shimmer_packing_list_page.dart';
-import 'package:animations_in_flutter/views/widgets/empty_state.dart';
-import 'package:animations_in_flutter/views/widgets/packing_list_item.dart';
+import 'package:animations_in_flutter/views/widgets/common/empty_state.dart';
+import 'package:animations_in_flutter/views/widgets/common/packing_list_item.dart';
 
 class PackingListPage extends StatefulWidget {
   final String tripId;
@@ -20,6 +20,7 @@ class _PackingListPageState extends State<PackingListPage> {
   List<ChecklistItem> _items = [];
   String _selectedCategory = 'general';
   bool _isLoading = true;
+  int _cachedItemCount = 0;
 
   static const _categories = [
     'general', 'documents', 'clothing', 'electronics', 'toiletries',
@@ -37,6 +38,15 @@ class _PackingListPageState extends State<PackingListPage> {
 
   @override
   void initState() { super.initState(); _loadItems(); }
+
+  void _updateCachedCount(Map<String, List<ChecklistItem>> grouped, List<String> keys) {
+    int count = 0;
+    for (final k in keys) {
+      count += 1;
+      count += grouped[k]!.length;
+    }
+    _cachedItemCount = count;
+  }
 
   Future<void> _loadItems() async {
     try {
@@ -88,6 +98,7 @@ class _PackingListPageState extends State<PackingListPage> {
                   Wrap(
                     spacing: 8,
                     children: _categories.map((cat) => ChoiceChip(
+                      key: ValueKey(cat),
                       label: Text(_catLabel(l10n, cat)),
                       selected: chosenCat == cat,
                       onSelected: (s) => setDialogState(() => chosenCat = cat),
@@ -106,6 +117,7 @@ class _PackingListPageState extends State<PackingListPage> {
         ),
     );
 
+    controller.dispose();
     if (result != null && mounted) {
       final title = result[0];
       final cat = result[1];
@@ -127,6 +139,7 @@ class _PackingListPageState extends State<PackingListPage> {
     final checkedCount = _items.where((i) => i.isChecked).length;
     final grouped = _grouped;
     final catKeys = grouped.keys.toList();
+    _updateCachedCount(grouped, catKeys);
 
     return Scaffold(
       backgroundColor: cs.surface,
@@ -174,22 +187,13 @@ class _PackingListPageState extends State<PackingListPage> {
                               label: Text(l10n.addItem)))
                       : ListView.builder(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: _buildItemCount(grouped, catKeys),
+                          itemCount: _cachedItemCount,
                           itemBuilder: (_, i) => _buildItem(grouped, catKeys, i, l10n, cs),
                         ),
                 ),
               ]),
             ),
     );
-  }
-
-  int _buildItemCount(Map<String, List<ChecklistItem>> grouped, List<String> keys) {
-    int count = 0;
-    for (final k in keys) {
-      count += 1; // section header
-      count += grouped[k]!.length;
-    }
-    return count;
   }
 
   Widget _buildItem(Map<String, List<ChecklistItem>> grouped, List<String> keys,

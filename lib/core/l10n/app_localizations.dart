@@ -1126,6 +1126,12 @@ abstract class AppLocalizations {
   /// **'Trip Reminders'**
   String get notificationChannelName;
 
+  /// No description provided for @notificationChannelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders for your upcoming trips so you never miss a journey.'**
+  String get notificationChannelDescription;
+
   /// No description provided for @notificationTitle.
   ///
   /// In en, this message translates to:
@@ -1209,6 +1215,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open Settings'**
   String get goToSettings;
+
+  /// No description provided for @goToSettingsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications have been blocked for this app. Please enable them in Settings to receive trip reminders.'**
+  String get goToSettingsDescription;
+
+  /// No description provided for @notificationPreTripTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip Reminder'**
+  String get notificationPreTripTitle;
+
+  /// No description provided for @notificationPreTripBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{tripTitle} starts tomorrow! Prepare your items.'**
+  String notificationPreTripBody(String tripTitle);
+
+  /// No description provided for @notificationOnDayBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your trip is today! Add photos and details to save your memories.'**
+  String get notificationOnDayBody;
 
   /// No description provided for @editFormSemantics.
   ///

@@ -7,7 +7,7 @@ import 'package:animations_in_flutter/views/widgets/add_trip/app_text_field.dart
 import 'package:animations_in_flutter/views/widgets/add_trip/category_selector.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/currency_dropdown.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/trip_image_picker.dart';
-import 'package:animations_in_flutter/views/widgets/star_rating.dart';
+import 'package:animations_in_flutter/views/widgets/common/star_rating.dart';
 
 class PastTripFields extends StatelessWidget {
   final List<File> imageFiles;

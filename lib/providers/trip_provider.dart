@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:animations_in_flutter/core/constants.dart';
+import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data/repositories/trip_repository.dart';
 import '../model/trip.dart';
@@ -10,11 +12,14 @@ import '../services/notification_service.dart';
 import 'mixins/checklist_provider_mixin.dart';
 import 'mixins/expense_provider_mixin.dart';
 import 'mixins/journal_provider_mixin.dart';
-import 'mixins/trip_statistics.dart';
+import '../model/trip_statistics.dart';
 
 class TripProvider extends ChangeNotifier
     with ExpenseProviderMixin, ChecklistProviderMixin, JournalProviderMixin {
   final TripRepository _repository = TripRepository();
+  Locale _locale = const Locale('en');
+
+  set notificationLocale(Locale locale) => _locale = locale;
 
   List<Trip> _trips = [];
   List<Trip> get trips => _trips;
@@ -83,7 +88,7 @@ class TripProvider extends ChangeNotifier
       reminderDate: reminderDate,
     );
     _trips.insert(0, trip);
-    _scheduleReminder(trip);
+    await _scheduleReminder(trip);
     notifyListeners();
     return trip;
   }
@@ -124,7 +129,7 @@ class TripProvider extends ChangeNotifier
     final index = _trips.indexWhere((t) => t.id == id);
     if (index != -1) {
       _trips[index] = trip;
-      _scheduleReminder(trip);
+      await _scheduleReminder(trip);
       notifyListeners();
     }
     return trip;
@@ -256,25 +261,35 @@ class TripProvider extends ChangeNotifier
     notifyListeners();
   }
 
-  void _scheduleReminder(Trip trip) {
-    if (trip.reminderDate != null) {
-      NotificationService().scheduleTripReminder(
-        tripId: trip.id,
-        tripTitle: trip.title,
-        remindAt: trip.reminderDate!,
-      );
-    }
-    if (trip.date.isAfter(DateTime.now())) {
-      NotificationService().schedulePreTripReminder(
-        tripId: trip.id,
-        tripTitle: trip.title,
-        tripDate: trip.date,
-      );
-      NotificationService().scheduleOnDayReminder(
-        tripId: trip.id,
-        tripTitle: trip.title,
-        tripDate: trip.date,
-      );
+  Future<void> _scheduleReminder(Trip trip) async {
+    try {
+      final notifGranted = await Permission.notification.status.isGranted;
+      if (!notifGranted) return;
+      final loc = lookupAppLocalizations(_locale);
+      if (trip.reminderDate != null) {
+        await NotificationService().scheduleUserReminder(
+          tripId: trip.id,
+          remindAt: trip.reminderDate!,
+          title: loc.notificationPreTripTitle,
+          body: loc.notificationBody(trip.title),
+        );
+      }
+      if (!trip.date.isBefore(DateTime.now())) {
+        await NotificationService().schedulePreTripReminder(
+          tripId: trip.id,
+          title: loc.notificationPreTripTitle,
+          body: loc.notificationPreTripBody(trip.title),
+          tripDate: trip.date,
+        );
+        await NotificationService().scheduleOnDayReminder(
+          tripId: trip.id,
+          title: trip.title,
+          body: loc.notificationOnDayBody,
+          tripDate: trip.date,
+        );
+      }
+    } catch (e) {
+      debugPrint('scheduleReminder error: $e');
     }
   }
 }

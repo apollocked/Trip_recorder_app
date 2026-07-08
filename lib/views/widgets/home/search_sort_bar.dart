@@ -28,12 +28,6 @@ class _SearchSortBarState extends State<SearchSortBar> {
 
     return Consumer<TripProvider>(
       builder: (context, provider, _) {
-        if (_searchController.text != provider.searchQuery) {
-          _searchController.text = provider.searchQuery;
-          _searchController.selection = TextSelection.fromPosition(
-            TextPosition(offset: _searchController.text.length),
-          );
-        }
         return Column(
           children: [
             Padding(

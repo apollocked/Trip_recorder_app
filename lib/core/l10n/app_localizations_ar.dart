@@ -545,6 +545,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationChannelName => 'تذكيرات الرحلات';
 
   @override
+  String get notificationChannelDescription =>
+      'تذكيرات برحلاتك القادمة حتى لا تفوّت أي رحلة.';
+
+  @override
   String get notificationTitle => 'رحلة قادمة';
 
   @override
@@ -592,6 +596,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get goToSettings => 'فتح الإعدادات';
+
+  @override
+  String get goToSettingsDescription =>
+      'تم حظر الإشعارات لهذا التطبيق. يرجى تمكينها في الإعدادات لتلقي تذكيرات الرحلات.';
+
+  @override
+  String get notificationPreTripTitle => 'تذكير الرحلة';
+
+  @override
+  String notificationPreTripBody(String tripTitle) {
+    return '$tripTitle تبدأ غداً! جهّز أغراضك.';
+  }
+
+  @override
+  String get notificationOnDayBody =>
+      'رحلتك اليوم! أضف الصور والتفاصيل لحفظ ذكرياتك.';
 
   @override
   String get editFormSemantics => 'نموذج تعديل الرحلة';

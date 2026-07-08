@@ -66,136 +66,139 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      loc.amount,
-                      style: textTheme.titleSmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _amountController,
-                      keyboardType: TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d{0,2}'),
-                        ),
-                      ],
-                      decoration: InputDecoration(
-                        hintText: '100',
-                        prefixText: '${CurrencyInfo.symbolFor(_fromCurrency)} ',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      style: textTheme.headlineMedium,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            _CurrencyPicker(
-              label: loc.from,
-              selected: _fromCurrency,
-              onChanged: (v) {
-                setState(() {
-                  _fromCurrency = v;
-                  _result = null;
-                });
-              },
-              colorScheme: colorScheme,
-            ),
-            const SizedBox(height: 8),
-            Center(
-              child: IconButton(
-                icon: Icon(
-                  Icons.swap_vert_rounded,
-                  size: 28,
-                  color: colorScheme.primary,
-                ),
-                onPressed: _swap,
-                tooltip: loc.swap,
-              ),
-            ),
-            _CurrencyPicker(
-              label: loc.to,
-              selected: _toCurrency,
-              onChanged: (v) {
-                setState(() {
-                  _toCurrency = v;
-                  _result = null;
-                });
-              },
-              colorScheme: colorScheme,
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: FilledButton.icon(
-                onPressed: _convert,
-                icon: _isLoading
-                    ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: colorScheme.onPrimary,
-                        ),
-                      )
-                    : const Icon(Icons.swap_horiz_rounded),
-                label: Text(
-                  loc.convert,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-              ),
-            ),
-            if (_result != null) ...[
-              const SizedBox(height: 28),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
               Card(
-                color: colorScheme.primaryContainer,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 24,
-                    horizontal: 20,
-                  ),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          loc.convertedAmount,
-                          style: textTheme.titleSmall?.copyWith(
-                            color: colorScheme.onPrimaryContainer,
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        loc.amount,
+                        style: textTheme.titleSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _amountController,
+                        keyboardType: TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d*\.?\d{0,2}'),
+                          ),
+                        ],
+                        decoration: InputDecoration(
+                          hintText: '100',
+                          prefixText:
+                              '${CurrencyInfo.symbolFor(_fromCurrency)} ',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          '${CurrencyInfo.symbolFor(_toCurrency)} ${_result!.toStringAsFixed(2)}',
-                          style: textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: colorScheme.onPrimaryContainer,
-                          ),
-                        ),
-                      ],
-                    ),
+                        style: textTheme.headlineMedium,
+                      ),
+                    ],
                   ),
                 ),
               ),
+              const SizedBox(height: 16),
+              _CurrencyPicker(
+                label: loc.from,
+                selected: _fromCurrency,
+                onChanged: (v) {
+                  setState(() {
+                    _fromCurrency = v;
+                    _result = null;
+                  });
+                },
+                colorScheme: colorScheme,
+              ),
+              const SizedBox(height: 8),
+              Center(
+                child: IconButton(
+                  icon: Icon(
+                    Icons.swap_vert_rounded,
+                    size: 28,
+                    color: colorScheme.primary,
+                  ),
+                  onPressed: _swap,
+                  tooltip: loc.swap,
+                ),
+              ),
+              _CurrencyPicker(
+                label: loc.to,
+                selected: _toCurrency,
+                onChanged: (v) {
+                  setState(() {
+                    _toCurrency = v;
+                    _result = null;
+                  });
+                },
+                colorScheme: colorScheme,
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: FilledButton.icon(
+                  onPressed: _convert,
+                  icon: _isLoading
+                      ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: colorScheme.onPrimary,
+                          ),
+                        )
+                      : const Icon(Icons.swap_horiz_rounded),
+                  label: Text(
+                    loc.convert,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+              if (_result != null) ...[
+                const SizedBox(height: 28),
+                Card(
+                  color: colorScheme.primaryContainer,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 24,
+                      horizontal: 20,
+                    ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            loc.convertedAmount,
+                            style: textTheme.titleSmall?.copyWith(
+                              color: colorScheme.onPrimaryContainer,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            '${CurrencyInfo.symbolFor(_toCurrency)} ${_result!.toStringAsFixed(2)}',
+                            style: textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: colorScheme.onPrimaryContainer,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

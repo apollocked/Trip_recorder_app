@@ -1,8 +1,9 @@
 import 'dart:io';
+import '../../core/constants.dart';
 import '../../model/trip.dart';
 import '../../model/trip_category.dart';
 import '../database/app_database.dart';
-import 'image_storage_service.dart';
+import '../../services/image_storage_service.dart';
 
 class TripRepository {
   final AppDatabase _database = AppDatabase();
@@ -122,12 +123,14 @@ class TripRepository {
 
   Future<List<Trip>> searchTrips(String query) async {
     if (query.isEmpty) return await getAllTrips();
-    final all = await getAllTrips();
-    final lower = query.toLowerCase();
-    return all
-        .where((t) =>
-            t.title.toLowerCase().contains(lower) ||
-            t.description.toLowerCase().contains(lower))
-        .toList();
+    final db = await _database.database;
+    final pattern = '%$query%';
+    final maps = await db.query(
+      AppConstants.tripsTable,
+      where: 'title LIKE ? OR description LIKE ?',
+      whereArgs: [pattern, pattern],
+      orderBy: 'created_at DESC',
+    );
+    return maps.map((map) => Trip.fromMap(map)).toList();
   }
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
+import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/app_text_field.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/date_picker_field.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/future_trip_banner.dart';
@@ -83,19 +84,19 @@ class _AddTripPageState extends State<AddTripPage> {
     setState(() => _isSaving = true);
     HapticFeedback.mediumImpact();
     try {
-      if (_isFuture && !await requestNotificationPermission(context)) {
-        if (mounted) setState(() => _isSaving = false);
-        return;
+      if (_isFuture) {
+        await requestNotificationPermission(context);
       }
       if (!mounted) return;
       final title = _titleController.text.trim();
       final price = double.tryParse(_priceController.text.trim()) ?? 0;
       final nights = int.tryParse(_nightsController.text.trim()) ?? (_isFuture ? 0 : 1);
       final desc = _descriptionController.text.trim();
-      final reminderToUse = _isFuture ? _selectedDate : _reminderDate;
+      final reminderToUse = _reminderDate;
       final assetPaths =
           _existingImagePaths.where((p) => p.startsWith('images/')).toList();
       final provider = context.read<TripProvider>();
+      provider.notificationLocale = context.read<LanguageService>().locale;
       if (widget.tripId != null) {
         await provider.updateTrip(
           widget.tripId!,

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/checklist_item.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
-import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
+import 'package:animations_in_flutter/views/widgets/common/confirmation_dialog.dart';
 
 class PackingListItem extends StatelessWidget {
   final String tripId;
@@ -59,21 +59,24 @@ class PackingListItem extends StatelessWidget {
                 : colorScheme.outlineVariant.withAlpha(128),
           ),
         ),
-        child: CheckboxListTile(
-          value: item.isChecked,
-          onChanged: (val) async {
-            await context.read<TripProvider>().toggleChecklistItem(
-                tripId, item.id, val ?? false);
-            onDeleted();
-          },
-          title: Text(item.title, style: TextStyle(
-            decoration: item.isChecked ? TextDecoration.lineThrough : null,
-            color: item.isChecked
-                ? colorScheme.onSurfaceVariant
-                : colorScheme.onSurface,
-          )),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          controlAffinity: ListTileControlAffinity.leading,
+        child: Material(
+          type: MaterialType.transparency,
+          child: CheckboxListTile(
+            value: item.isChecked,
+            onChanged: (val) async {
+              await context.read<TripProvider>().toggleChecklistItem(
+                  tripId, item.id, val ?? false);
+              onDeleted();
+            },
+            title: Text(item.title, style: TextStyle(
+              decoration: item.isChecked ? TextDecoration.lineThrough : null,
+              color: item.isChecked
+                  ? colorScheme.onSurfaceVariant
+                  : colorScheme.onSurface,
+            )),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            controlAffinity: ListTileControlAffinity.leading,
+          ),
         ),
       ),
     );

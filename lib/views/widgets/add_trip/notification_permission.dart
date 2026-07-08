@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 
@@ -10,16 +9,7 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
   final textTheme = Theme.of(context).textTheme;
   final l10n = AppLocalizations.of(context)!;
 
-  final androidPlugin = FlutterLocalNotificationsPlugin();
-  final androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-  await androidPlugin.initialize(
-    settings: InitializationSettings(android: androidSettings),
-  );
-  final details = await androidPlugin.getNotificationAppLaunchDetails();
-  final notifGranted =
-      details?.notificationResponse != null ||
-      await Permission.notification.status.then((s) => s.isGranted);
-
+  final notifGranted = await Permission.notification.status.isGranted;
   if (notifGranted) return true;
   if (_sessionAnswered) return false;
   if (!context.mounted) return false;
@@ -31,14 +21,22 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
       backgroundColor: colorScheme.surface,
       surfaceTintColor: colorScheme.surfaceTint,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-      title: Icon(
-        Icons.notifications_active_rounded,
-        size: 48,
-        color: colorScheme.primary,
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
+      title: Column(
         children: [
+          Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.notifications_active_rounded,
+              size: 32,
+              color: colorScheme.onPrimaryContainer,
+            ),
+          ),
+          const SizedBox(height: 16),
           Text(
             l10n.notificationPermissionTitle,
             style: textTheme.headlineSmall?.copyWith(
@@ -46,15 +44,14 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
               color: colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: 12),
-          Text(
-            l10n.notificationPermissionDescription,
-            textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-            ),
-          ),
         ],
+      ),
+      content: Text(
+        l10n.notificationPermissionDescription,
+        textAlign: TextAlign.center,
+        style: textTheme.bodyMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
       ),
       actions: [
         TextButton(
@@ -70,7 +67,7 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          onPressed: () async {
+          onPressed: () {
             Navigator.pop(ctx, true);
           },
           child: Text(l10n.allowAccess),
@@ -82,30 +79,30 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
   _sessionAnswered = true;
 
   if (result == true) {
-    final status = await Permission.notification.request();
-    if (status.isPermanentlyDenied) {
-      if (context.mounted) {
-        final goSettings = await showDialog<bool>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text(l10n.notificationPermissionTitle),
-            content: Text(l10n.notificationPermissionDescription),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(ctx, false),
-                child: Text(l10n.notNow),
-              ),
-              FilledButton(
-                onPressed: () {
-                  Navigator.pop(ctx, true);
-                  openAppSettings();
-                },
-                child: Text(l10n.goToSettings),
-              ),
-            ],
-          ),
-        );
-        return goSettings ?? false;
+    var status = await Permission.notification.request();
+    if (status.isPermanentlyDenied && context.mounted) {
+      final goSettings = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text(l10n.notificationPermissionTitle),
+          content: Text(l10n.goToSettingsDescription),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(l10n.notNow),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.pop(ctx, true);
+                openAppSettings();
+              },
+              child: Text(l10n.goToSettings),
+            ),
+          ],
+        ),
+      );
+      if (goSettings == true) {
+        status = await Permission.notification.request();
       }
     }
     return status.isGranted;

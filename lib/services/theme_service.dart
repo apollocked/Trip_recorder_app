@@ -34,6 +34,5 @@ class ThemeService extends ChangeNotifier {
       (mode) => mode.name == savedMode,
       orElse: () => ThemeMode.system,
     );
-    notifyListeners();
   }
 }

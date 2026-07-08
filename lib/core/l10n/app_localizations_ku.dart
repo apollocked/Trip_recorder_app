@@ -549,6 +549,10 @@ class AppLocalizationsKu extends AppLocalizations {
   String get notificationChannelName => 'بیریارەکانی گەشت';
 
   @override
+  String get notificationChannelDescription =>
+      'بیریاری گەشتەکانی داهاتووت بۆ ئەوەی هیچ گەشتێک لەدەست نەدەیت.';
+
+  @override
   String get notificationTitle => 'گەشتی داهاتوو';
 
   @override
@@ -596,6 +600,22 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get goToSettings => 'کردنەوەی ڕێکخستنەکان';
+
+  @override
+  String get goToSettingsDescription =>
+      'ئاگادارکردنەوەکان بۆ ئەم ئەپە ڕاگیراون. تکایە لە ڕێکخستنەکاندا چالاکیان بکە بۆ وەرگرتنی بیرخستنەوەی گەشت.';
+
+  @override
+  String get notificationPreTripTitle => 'بیریاری گەشت';
+
+  @override
+  String notificationPreTripBody(String tripTitle) {
+    return '$tripTitle سبەینێ دەست پێدەکات! ئامادەکارییەکانت بکە.';
+  }
+
+  @override
+  String get notificationOnDayBody =>
+      'گەشتی ئەمڕۆتە! وێنە و وردەکاری زیاد بکە بۆ پاراستنی یادگارییەکانت.';
 
   @override
   String get editFormSemantics => 'فۆرمی دەستکاریکردنی گەشت';

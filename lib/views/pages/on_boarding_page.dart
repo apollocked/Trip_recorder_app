@@ -1,7 +1,7 @@
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/on_boarding/on_boarding_card.dart';
 import 'package:animations_in_flutter/views/widgets/on_boarding/on_boarding_footer.dart';
-import 'package:animations_in_flutter/views/widgets/on_boarding/onboarding_header.dart';
+import 'package:animations_in_flutter/views/widgets/on_boarding/on_boarding_header.dart';
 import 'package:animations_in_flutter/views/widgets/settings/settings_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -118,9 +118,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
         body: Stack(
           children: [
             // Animated ambient glow that follows page
-            AnimatedBuilder(
-              animation: _ctrl,
-              builder: (_, child) {
+            RepaintBoundary(
+              child: ListenableBuilder(
+                listenable: _ctrl,
+                builder: (_, child) {
                 final glowProgress = (_pageFraction % 1).clamp(0.0, 1.0);
                 final colors = [cs.primary, cs.tertiary, cs.secondary];
                 final i = _page.clamp(0, 2);
@@ -145,6 +146,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ],
                 );
               },
+              ),
             ),
             SafeArea(
               child: Column(

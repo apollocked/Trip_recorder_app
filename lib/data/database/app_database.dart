@@ -12,10 +12,16 @@ class AppDatabase {
   AppDatabase._internal();
 
   Database? _database;
+  Future<void>? _initFuture;
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDatabase();
+    if (_initFuture != null) {
+      await _initFuture;
+      return _database!;
+    }
+    _initFuture = _initDatabase().then((db) => _database = db);
+    await _initFuture;
     return _database!;
   }
 
@@ -161,14 +167,6 @@ class AppDatabase {
       ''');
     }
     if (oldVersion < 6) {
-      await _addColumnIfNotExists(
-        db,
-        AppConstants.tripsTable,
-        'reminder_date',
-        'TEXT',
-      );
-    }
-    if (oldVersion < 7) {
       await _addColumnIfNotExists(
         db,
         AppConstants.tripsTable,

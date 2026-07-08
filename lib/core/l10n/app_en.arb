@@ -207,6 +207,7 @@
     }
   },
   "notificationChannelName": "Trip Reminders",
+  "notificationChannelDescription": "Reminders for your upcoming trips so you never miss a journey.",
   "notificationTitle": "Upcoming Trip",
   "notificationBody": "{tripTitle} is coming up!",
   "notificationPermissionTitle": "Stay Updated",
@@ -221,11 +222,20 @@
   "viewDetailsLabel": "View Details",
   "prepDescription": "Add items you need to prepare before your trip. Organize by category like documents, clothing, electronics, and toiletries.",
   "goToSettings": "Open Settings",
+  "goToSettingsDescription": "Notifications have been blocked for this app. Please enable them in Settings to receive trip reminders.",
   "@notificationBody": {
     "placeholders": {
       "tripTitle": {"type": "String"}
     }
   },
+  "notificationPreTripTitle": "Trip Reminder",
+  "notificationPreTripBody": "{tripTitle} starts tomorrow! Prepare your items.",
+  "@notificationPreTripBody": {
+    "placeholders": {
+      "tripTitle": {"type": "String"}
+    }
+  },
+  "notificationOnDayBody": "Your trip is today! Add photos and details to save your memories.",
   "editFormSemantics": "Edit Journey form",
   "addFormSemantics": "Add New Journey form",
   "appBannerSemantics": "Banner of the app",

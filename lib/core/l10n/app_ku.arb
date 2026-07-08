@@ -207,6 +207,7 @@
     }
   },
   "notificationChannelName": "بیریارەکانی گەشت",
+  "notificationChannelDescription": "بیریاری گەشتەکانی داهاتووت بۆ ئەوەی هیچ گەشتێک لەدەست نەدەیت.",
   "notificationTitle": "گەشتی داهاتوو",
   "notificationBody": "{tripTitle} بەم زووانە دێت!",
   "@notificationBody": {
@@ -214,6 +215,14 @@
       "tripTitle": {"type": "String"}
     }
   },
+  "notificationPreTripTitle": "بیریاری گەشت",
+  "notificationPreTripBody": "{tripTitle} سبەینێ دەست پێدەکات! ئامادەکارییەکانت بکە.",
+  "@notificationPreTripBody": {
+    "placeholders": {
+      "tripTitle": {"type": "String"}
+    }
+  },
+  "notificationOnDayBody": "گەشتی ئەمڕۆتە! وێنە و وردەکاری زیاد بکە بۆ پاراستنی یادگارییەکانت.",
   "notificationPermissionTitle": "به‌رده‌وام به‌",
   "notificationPermissionDescription": "دەمانەوێت بیریاری گەشتەکانی داهاتووت بۆ بنێرین بۆ ئەوەی هیچ گەشتێک لەدەست نەدەیت.",
   "monthsFull": "کانوونی دووەم,شوبات,ئازار,نیسان,ئایار,حوزەیران,تەممووز,ئاب,ئەیلوول,تشرینی یەکەم,تشرینی دووەم,کانوونی یەکەم",
@@ -226,6 +235,7 @@
   "viewDetailsLabel": "بینینی وردەکارییەکان",
   "prepDescription": "ئەو شتانە زیاد بکە کە پێویستە بۆ گەشتەکەت ئامادەیان بکەیت. ڕێکبخە بەپێی پۆلەکان وەک بەڵگەنامەکان، جلوبەرگ، ئەلکترۆنیات، و خاوێنکاری.",
   "goToSettings": "کردنەوەی ڕێکخستنەکان",
+  "goToSettingsDescription": "ئاگادارکردنەوەکان بۆ ئەم ئەپە ڕاگیراون. تکایە لە ڕێکخستنەکاندا چالاکیان بکە بۆ وەرگرتنی بیرخستنەوەی گەشت.",
   "editFormSemantics": "فۆرمی دەستکاریکردنی گەشت",
   "addFormSemantics": "فۆرمی زیادکردنی گەشتی نوێ",
   "appBannerSemantics": "بانەری ئەپەکە",

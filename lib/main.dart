@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
@@ -16,10 +17,25 @@ import 'package:animations_in_flutter/services/theme_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    await dotenv.load();
+    await dotenv.load(fileName: 'assets/.env');
   } catch (_) {}
-  await NotificationService().init();
   final prefs = await SharedPreferences.getInstance();
+  final savedLocale = LanguageService.readSavedLocale(prefs);
+  final loc = lookupAppLocalizations(savedLocale);
+  await AwesomeNotifications().initialize(
+    'resource://drawable/ic_notification',
+    [
+      NotificationChannel(
+        channelKey: 'trip_reminders',
+        channelName: loc.notificationChannelName,
+        channelDescription: loc.notificationChannelDescription,
+        importance: NotificationImportance.High,
+        defaultColor: Color(0xFF1C1B1F),
+        ledColor: Color(0xFF1C1B1F),
+      ),
+    ],
+  );
+  await NotificationService().init();
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
   runApp(
     MultiProvider(
@@ -27,7 +43,9 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => TripProvider(isFirstTime: isFirstTime),
         ),
-        ChangeNotifierProvider(create: (_) => LanguageService()),
+        ChangeNotifierProvider(
+          create: (_) => LanguageService(initialLocale: savedLocale),
+        ),
         ChangeNotifierProvider(create: (_) => ThemeService()),
       ],
       child: const MyApp(),
@@ -55,7 +73,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final l10n = context.watch<LanguageService>().locale;
     final themeMode = context.watch<ThemeService>().themeMode;
-
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       locale: l10n,
@@ -63,8 +80,9 @@ class _MyAppState extends State<MyApp> {
       localizationsDelegates: appLocalizationsDelegates,
       localeResolutionCallback: appLocaleResolutionCallback,
       builder: (context, child) {
+        final dir = appTextDirectionForLocale(l10n);
         return Directionality(
-          textDirection: appTextDirectionForLocale(l10n),
+          textDirection: dir,
           child: child ?? const SizedBox.shrink(),
         );
       },

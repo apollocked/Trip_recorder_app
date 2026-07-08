@@ -14,22 +14,50 @@ class ExpenseDialogResult {
   });
 }
 
-Future<ExpenseDialogResult?> showExpenseDialog(BuildContext context) async {
-  final l10n = AppLocalizations.of(context)!;
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
-  ExpenseCategory selectedCategory = ExpenseCategory.other;
+Future<ExpenseDialogResult?> showExpenseDialog(BuildContext context) =>
+    showDialog<ExpenseDialogResult>(
+      context: context,
+      builder: (_) => const _ExpenseDialog(),
+    );
 
-  final result = await showDialog<Map<String, dynamic>>(
-    context: context,
-    builder: (ctx) => StatefulBuilder(
-      builder: (ctx, setDialogState) => AlertDialog(
-        title: Text(l10n.addExpense),
-        content: Column(
+class _ExpenseDialog extends StatefulWidget {
+  const _ExpenseDialog();
+
+  @override
+  State<_ExpenseDialog> createState() => _ExpenseDialogState();
+}
+
+class _ExpenseDialogState extends State<_ExpenseDialog> {
+  late final TextEditingController _titleController;
+  late final TextEditingController _amountController;
+  ExpenseCategory _selectedCategory = ExpenseCategory.other;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController();
+    _amountController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return AlertDialog(
+      title: Text(l10n.addExpense),
+      content: SingleChildScrollView(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              controller: titleController,
+              controller: _titleController,
               inputFormatters: [LengthLimitingTextInputFormatter(100)],
               decoration: InputDecoration(
                 labelText: l10n.expenseTitle,
@@ -38,7 +66,7 @@ Future<ExpenseDialogResult?> showExpenseDialog(BuildContext context) async {
             ),
             const SizedBox(height: 12),
             TextField(
-              controller: amountController,
+              controller: _amountController,
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
@@ -47,7 +75,7 @@ Future<ExpenseDialogResult?> showExpenseDialog(BuildContext context) async {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<ExpenseCategory>(
-              initialValue: selectedCategory,
+              initialValue: _selectedCategory,
               decoration: InputDecoration(labelText: l10n.expenseCategory),
               items: ExpenseCategory.values.map((cat) {
                 return DropdownMenuItem(
@@ -56,46 +84,37 @@ Future<ExpenseDialogResult?> showExpenseDialog(BuildContext context) async {
                 );
               }).toList(),
               onChanged: (val) {
-                if (val != null) setDialogState(() => selectedCategory = val);
+                if (val != null) setState(() => _selectedCategory = val);
               },
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(AppLocalizations.of(ctx)!.notNow),
-          ),
-          FilledButton(
-            onPressed: () {
-              if (titleController.text.trim().isEmpty) return;
-              final amount = double.tryParse(amountController.text.trim()) ?? 0;
-              Navigator.pop(ctx, {
-                'title': titleController.text.trim(),
-                'amount': amount,
-                'category': selectedCategory.name,
-              });
-            },
-            child: Text(l10n.addExpense),
-          ),
-        ],
       ),
-    ),
-  );
-
-  titleController.dispose();
-  amountController.dispose();
-
-  if (result != null) {
-    return ExpenseDialogResult(
-      title: result['title'],
-      amount: result['amount'],
-      category: ExpenseCategory.values.firstWhere(
-        (c) => c.name == result['category'],
-      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(l10n.notNow),
+        ),
+        FilledButton(
+          onPressed: () {
+            final title = _titleController.text.trim();
+            final text = _amountController.text.trim();
+            final amount = double.tryParse(text);
+            if (title.isEmpty || amount == null || amount <= 0) return;
+            Navigator.pop(
+              context,
+              ExpenseDialogResult(
+                title: title,
+                amount: amount,
+                category: _selectedCategory,
+              ),
+            );
+          },
+          child: Text(l10n.addExpense),
+        ),
+      ],
     );
   }
-  return null;
 }
 
 String _categoryLabel(AppLocalizations l10n, ExpenseCategory cat) {

@@ -7,7 +7,7 @@ import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
 import 'package:animations_in_flutter/views/pages/details_page.dart';
 import 'package:animations_in_flutter/views/pages/packing_list_page.dart';
-import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart' show showConfirmationDialog;
+import 'package:animations_in_flutter/views/widgets/common/confirmation_dialog.dart' show showConfirmationDialog;
 import 'package:animations_in_flutter/core/route_transition.dart';
 
 class FutureTripCard extends StatelessWidget {

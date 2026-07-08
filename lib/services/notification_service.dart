@@ -1,98 +1,103 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz_data;
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/foundation.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
   factory NotificationService() => _instance;
   NotificationService._internal();
 
-  final _plugin = FlutterLocalNotificationsPlugin();
-  bool _initialized = false;
-
   Future<void> init() async {
-    if (_initialized) return;
-    tz_data.initializeTimeZones();
-    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const settings = InitializationSettings(android: android);
-    await _plugin.initialize(settings: settings);
-    _initialized = true;
+    debugPrint('NotificationService: init');
+    bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+    debugPrint('NotificationService: isAllowed=$isAllowed');
+    if (!isAllowed) {
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+    }
   }
 
-  Future<void> scheduleTripReminder({
-    required String tripId,
-    required String tripTitle,
-    required DateTime remindAt,
-    String? body,
-    String? channelName,
+  Future<void> _scheduleNativeAlarm({
+    required int notificationId,
+    required String title,
+    required String body,
+    required DateTime targetDate,
   }) async {
-    await init();
-    final androidDetails = AndroidNotificationDetails(
-      'trip_reminders',
-      channelName ?? 'Trip Reminders',
-      importance: Importance.high,
-      priority: Priority.high,
-    );
-    final details = NotificationDetails(android: androidDetails);
+    debugPrint('_scheduleNativeAlarm: id=$notificationId title=$title target=$targetDate');
+    try {
+      await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: notificationId,
+          channelKey: 'trip_reminders',
+          title: title,
+          body: body,
+          wakeUpScreen: true,
+          category: NotificationCategory.Reminder,
+        ),
+        schedule: NotificationCalendar(
+          year: targetDate.year,
+          month: targetDate.month,
+          day: targetDate.day,
+          hour: targetDate.hour,
+          minute: targetDate.minute,
+          second: 0,
+          preciseAlarm: true,
+          allowWhileIdle: true,
+        ),
+      );
+      debugPrint('_scheduleNativeAlarm: success');
+    } catch (e) {
+      debugPrint('_scheduleNativeAlarm: error=$e');
+    }
+  }
 
-    final scheduledDate = tz.TZDateTime.from(remindAt, tz.local);
-    if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) return;
-
-    await _plugin.zonedSchedule(
-      id: tripId.hashCode,
-      title: 'Upcoming Trip',
-      body: body ?? '$tripTitle is coming up!',
-      scheduledDate: scheduledDate,
-      notificationDetails: details,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+  Future<void> scheduleUserReminder({
+    required String tripId,
+    required DateTime remindAt,
+    required String title,
+    required String body,
+  }) async {
+    if (remindAt.isBefore(DateTime.now())) return;
+    await _scheduleNativeAlarm(
+      notificationId: tripId.hashCode,
+      title: title,
+      body: body,
+      targetDate: remindAt,
     );
   }
 
   Future<void> schedulePreTripReminder({
     required String tripId,
-    required String tripTitle,
+    required String title,
+    required String body,
     required DateTime tripDate,
   }) async {
     final remindAt = tripDate.subtract(const Duration(days: 1));
-    await scheduleTripReminder(
-      tripId: tripId,
-      tripTitle: tripTitle,
-      remindAt: remindAt,
-      body: '$tripTitle starts tomorrow! Prepare your items.',
-      channelName: 'Trip Reminders',
+    if (remindAt.isBefore(DateTime.now())) return;
+    await _scheduleNativeAlarm(
+      notificationId: tripId.hashCode + 1,
+      title: title,
+      body: body,
+      targetDate: remindAt,
     );
   }
 
   Future<void> scheduleOnDayReminder({
     required String tripId,
-    required String tripTitle,
+    required String title,
+    required String body,
     required DateTime tripDate,
   }) async {
-    await init();
-    final androidDetails = AndroidNotificationDetails(
-      'trip_reminders',
-      'Trip Reminders',
-      importance: Importance.high,
-      priority: Priority.high,
-    );
-    final details = NotificationDetails(android: androidDetails);
-
-    final scheduledDate = tz.TZDateTime.from(tripDate, tz.local);
-    if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) return;
-
-    await _plugin.zonedSchedule(
-      id: tripId.hashCode + 2,
-      title: tripTitle,
-      body: 'Your trip is today! Add photos and details to save your memories.',
-      scheduledDate: scheduledDate,
-      notificationDetails: details,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    if (tripDate.isBefore(DateTime.now())) return;
+    await _scheduleNativeAlarm(
+      notificationId: tripId.hashCode + 2,
+      title: title,
+      body: body,
+      targetDate: tripDate,
     );
   }
 
   Future<void> cancelTripReminder(String tripId) async {
-    if (!_initialized) await init();
-    await _plugin.cancel(id: tripId.hashCode);
-    await _plugin.cancel(id: tripId.hashCode + 2);
+    await AwesomeNotifications().cancel(tripId.hashCode);
+    await AwesomeNotifications().cancel(tripId.hashCode + 1);
+    await AwesomeNotifications().cancel(tripId.hashCode + 2);
   }
 }

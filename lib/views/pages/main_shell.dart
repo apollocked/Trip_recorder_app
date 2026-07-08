@@ -117,9 +117,10 @@ class _MainShellState extends State<MainShell>
                             onTap: _onFabTap,
                             child: Tooltip(
                               message: l10n.fabTooltip,
-                              child: AnimatedBuilder(
-                                animation: _fabController,
-                                builder: (context, _) {
+                              child: RepaintBoundary(
+                                child: ListenableBuilder(
+                                  listenable: _fabController,
+                                  builder: (context, _) {
                                   final value = _fabController.value;
                                   final rotation = value * 0.125 * 2 * math.pi;
                                   final scale = 1.0 - (value * 0.12);
@@ -162,6 +163,7 @@ class _MainShellState extends State<MainShell>
                             ),
                           ),
                         ),
+                      ),
                       ),
                       for (int i = 2; i < 4; i++)
                         Expanded(
