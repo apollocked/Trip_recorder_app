@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
@@ -18,6 +19,19 @@ Future<void> main() async {
   try {
     await dotenv.load(fileName: 'assets/.env');
   } catch (_) {}
+  await AwesomeNotifications().initialize(
+    'resource://drawable/ic_notification',
+    [
+      NotificationChannel(
+        channelKey: 'trip_reminders',
+        channelName: 'Trip Reminders',
+        channelDescription: 'Reminders for your upcoming trips',
+        importance: NotificationImportance.High,
+        defaultColor: Color(0xFF1C1B1F),
+        ledColor: Color(0xFF1C1B1F),
+      ),
+    ],
+  );
   await NotificationService().init();
   final prefs = await SharedPreferences.getInstance();
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
