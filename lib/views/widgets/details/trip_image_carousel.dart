@@ -6,7 +6,7 @@ import 'package:animations_in_flutter/views/pages/image_viewer_page.dart';
 import 'package:animations_in_flutter/views/widgets/common/cover_image_leading.dart';
 import 'package:animations_in_flutter/core/route_transition.dart';
 
-class TripImageCarousel extends StatelessWidget {
+class TripImageCarousel extends StatefulWidget {
   final Trip trip;
   final ColorScheme colorScheme;
   final AppLocalizations l10n;
@@ -19,17 +19,36 @@ class TripImageCarousel extends StatelessWidget {
   });
 
   @override
+  State<TripImageCarousel> createState() => _TripImageCarouselState();
+}
+
+class _TripImageCarouselState extends State<TripImageCarousel> {
+  late final PageController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController(viewportFraction: 0.75);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     const double size = 280.0;
 
-    if (trip.imagePaths.isEmpty) {
+    if (widget.trip.imagePaths.isEmpty) {
       return Center(
         child: Container(
           height: size,
           width: size,
           margin: const EdgeInsets.symmetric(horizontal: 6),
           decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest,
+            color: widget.colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(32),
           ),
           child: const Center(
@@ -46,8 +65,8 @@ class TripImageCarousel extends StatelessWidget {
     return SizedBox(
       height: size,
       child: PageView.builder(
-        itemCount: trip.imagePaths.length,
-        controller: PageController(viewportFraction: 0.75),
+        itemCount: widget.trip.imagePaths.length,
+        controller: _controller,
         itemBuilder: (context, index) {
           return Center(
             child: SizedBox(
@@ -59,32 +78,32 @@ class TripImageCarousel extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     slideRoute(ImageViewerPage(
-                      imagePaths: trip.imagePaths,
+                      imagePaths: widget.trip.imagePaths,
                       initialIndex: index,
                     )),
                   ),
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: colorScheme.onSurface.withAlpha(200),
+                        color: widget.colorScheme.onSurface.withAlpha(200),
                         width: 1,
                       ),
                       borderRadius: BorderRadius.circular(32),
                       boxShadow: [
                         BoxShadow(
-                          color: colorScheme.primary.withAlpha(20),
+                          color: widget.colorScheme.primary.withAlpha(20),
                           blurRadius: 12,
                           offset: const Offset(0, 6),
                         ),
                       ],
                     ),
                     child: Hero(
-                      tag: 'tag-image-${trip.imagePaths[index]}',
+                      tag: 'tag-image-${widget.trip.imagePaths[index]}',
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(32),
                         child: Semantics(
-                          label: l10n.imageCoverSemantics(index + 1),
-                          child: coverImage(trip.imagePaths[index]),
+                          label: widget.l10n.imageCoverSemantics(index + 1),
+                          child: coverImage(widget.trip.imagePaths[index]),
                         ),
                       ),
                     ),

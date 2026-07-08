@@ -118,9 +118,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
         body: Stack(
           children: [
             // Animated ambient glow that follows page
-            AnimatedBuilder(
-              animation: _ctrl,
-              builder: (_, child) {
+            RepaintBoundary(
+              child: ListenableBuilder(
+                listenable: _ctrl,
+                builder: (_, child) {
                 final glowProgress = (_pageFraction % 1).clamp(0.0, 1.0);
                 final colors = [cs.primary, cs.tertiary, cs.secondary];
                 final i = _page.clamp(0, 2);
@@ -145,6 +146,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ],
                 );
               },
+              ),
             ),
             SafeArea(
               child: Column(

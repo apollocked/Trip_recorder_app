@@ -77,9 +77,10 @@ class _HeartWidgetState extends State<HeartWidget>
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (BuildContext context, _) {
+    return RepaintBoundary(
+      child: ListenableBuilder(
+        listenable: controller,
+        builder: (BuildContext context, _) {
         return ClipOval(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
@@ -120,6 +121,7 @@ class _HeartWidgetState extends State<HeartWidget>
           ),
         );
       },
+      ),
     );
   }
 }

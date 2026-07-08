@@ -98,6 +98,7 @@ class _PackingListPageState extends State<PackingListPage> {
                   Wrap(
                     spacing: 8,
                     children: _categories.map((cat) => ChoiceChip(
+                      key: ValueKey(cat),
                       label: Text(_catLabel(l10n, cat)),
                       selected: chosenCat == cat,
                       onSelected: (s) => setDialogState(() => chosenCat = cat),
@@ -116,6 +117,7 @@ class _PackingListPageState extends State<PackingListPage> {
         ),
     );
 
+    controller.dispose();
     if (result != null && mounted) {
       final title = result[0];
       final cat = result[1];

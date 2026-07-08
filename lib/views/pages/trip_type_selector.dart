@@ -60,9 +60,7 @@ class _TripTypeSelectorState extends State<TripTypeSelector>
                   padding: const EdgeInsets.only(top: 8, bottom: 40),
                   child: Text(
                     l10n.howToStart,
-                    style: tt.bodyLarge?.copyWith(
-                      color: cs.onSurfaceVariant,
-                    ),
+                    style: tt.bodyLarge?.copyWith(color: cs.onSurfaceVariant),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -110,9 +108,15 @@ class _TripTypeSelectorState extends State<TripTypeSelector>
                       Expanded(
                         child: _DescriptionList(
                           items: [
-                            _DescItem(Icons.add_photo_alternate_rounded, l10n.photos),
+                            _DescItem(
+                              Icons.add_photo_alternate_rounded,
+                              l10n.photos,
+                            ),
                             _DescItem(Icons.star_rounded, l10n.rateTrip),
-                            _DescItem(Icons.category_rounded, l10n.tripCategory),
+                            _DescItem(
+                              Icons.category_rounded,
+                              l10n.tripCategory,
+                            ),
                           ],
                           color: cs.onSurfaceVariant,
                           tt: tt,
@@ -122,8 +126,14 @@ class _TripTypeSelectorState extends State<TripTypeSelector>
                       Expanded(
                         child: _DescriptionList(
                           items: [
-                            _DescItem(Icons.notifications_active_rounded, l10n.reminders),
-                            _DescItem(Icons.checklist_rounded, l10n.packingList),
+                            _DescItem(
+                              Icons.notifications_active_rounded,
+                              l10n.reminders,
+                            ),
+                            _DescItem(
+                              Icons.checklist_rounded,
+                              l10n.packingList,
+                            ),
                             _DescItem(Icons.flight_rounded, l10n.countdown),
                           ],
                           color: cs.onSurfaceVariant,
@@ -215,9 +225,10 @@ class _OptionCardState extends State<_OptionCard>
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
-    _scale = Tween(begin: 1.0, end: 0.97).animate(
-      CurvedAnimation(parent: _hover, curve: Curves.easeOut),
-    );
+    _scale = Tween(
+      begin: 1.0,
+      end: 0.97,
+    ).animate(CurvedAnimation(parent: _hover, curve: Curves.easeOut));
   }
 
   @override
@@ -230,47 +241,49 @@ class _OptionCardState extends State<_OptionCard>
   Widget build(BuildContext context) {
     final tt = Theme.of(context).textTheme;
 
-    return AnimatedBuilder(
-      animation: _scale,
-      builder: (_, _) => Transform.scale(
-        scale: _scale.value,
-        child: GestureDetector(
-          onTap: widget.onTap,
-          onTapDown: (_) => _hover.forward(),
-          onTapUp: (_) => _hover.reverse(),
-          onTapCancel: () => _hover.reverse(),
-          child: Container(
-            height: 140,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                colors: widget.gradientColors,
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+    return RepaintBoundary(
+      child: ListenableBuilder(
+        listenable: _scale,
+        builder: (_, _) => Transform.scale(
+          scale: _scale.value,
+          child: GestureDetector(
+            onTap: widget.onTap,
+            onTapDown: (_) => _hover.forward(),
+            onTapUp: (_) => _hover.reverse(),
+            onTapCancel: () => _hover.reverse(),
+            child: Container(
+              height: 140,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: widget.gradientColors,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: widget.iconColor.withAlpha(20),
-                    shape: BoxShape.circle,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: widget.iconColor.withAlpha(20),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(widget.icon, size: 22, color: widget.iconColor),
                   ),
-                  child: Icon(widget.icon, size: 22, color: widget.iconColor),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  widget.label,
-                  style: tt.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: widget.iconColor,
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.label,
+                    style: tt.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: widget.iconColor,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
