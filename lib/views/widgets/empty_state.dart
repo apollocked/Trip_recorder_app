@@ -22,21 +22,21 @@ class EmptyState extends StatelessWidget {
     final t = Theme.of(context).textTheme;
 
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 100,
-              width: 100,
+              height: 80,
+              width: 80,
               decoration: BoxDecoration(
                 color: c.primaryContainer.withAlpha(80),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, size: 44, color: c.primary.withAlpha(180)),
+              child: Icon(icon, size: 36, color: c.primary.withAlpha(180)),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
             Text(
               title,
               style: t.titleMedium?.copyWith(
@@ -57,7 +57,7 @@ class EmptyState extends StatelessWidget {
               ),
             ],
             if (description != null) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               Text(
                 description!,
                 style: t.bodySmall?.copyWith(
@@ -68,7 +68,7 @@ class EmptyState extends StatelessWidget {
               ),
             ],
             if (action != null) ...[
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
               action!,
             ],
           ],

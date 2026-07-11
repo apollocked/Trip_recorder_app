@@ -54,7 +54,7 @@ class TripListWidget extends StatelessWidget {
                   : RefreshIndicator(
                       onRefresh: provider.refresh,
                       child: ListView.builder(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
+                        padding: EdgeInsets.fromLTRB(16, 8, 16, MediaQuery.of(context).padding.bottom + 12),
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemCount: trips.length,
                         itemBuilder: (context, index) {

@@ -64,59 +64,66 @@ class _OnboardingCardState extends State<OnboardingCard>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
+    final isSmall = MediaQuery.of(context).size.height < 700;
 
     return SlideTransition(
       position: _slide,
       child: FadeTransition(
         opacity: _fade,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _HeroVisual(icon: widget.item.icon, cs: cs),
-              const SizedBox(height: 40),
-              if (widget.item.welcome != null) ...[
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: cs.primary.withAlpha(20),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    widget.item.welcome!,
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: cs.primary,
-                      fontWeight: FontWeight.w700,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).padding.top + 60,
+            bottom: 40,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 28),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _HeroVisual(icon: widget.item.icon, cs: cs, compact: isSmall),
+                SizedBox(height: isSmall ? 24 : 40),
+                if (widget.item.welcome != null) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: cs.primary.withAlpha(20),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      widget.item.welcome!,
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        color: cs.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 12),
+                ],
+                Text(
+                  widget.item.title,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: cs.onSurface,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: -0.5,
+                    height: 1.2,
+                  ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 14),
+                Text(
+                  widget.item.description,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: cs.onSurfaceVariant,
+                    height: 1.6,
+                  ),
+                ),
+                SizedBox(height: isSmall ? 20 : 32),
+                _FeatureBadgeRow(features: widget.item.features, cs: cs),
+                const SizedBox(height: 16),
+                _TipBox(tip: widget.item.tip, cs: cs, theme: theme),
               ],
-              Text(
-                widget.item.title,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: cs.onSurface,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.5,
-                  height: 1.2,
-                ),
-              ),
-              const SizedBox(height: 14),
-              Text(
-                widget.item.description,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: cs.onSurfaceVariant,
-                  height: 1.6,
-                ),
-              ),
-              const SizedBox(height: 32),
-              _FeatureBadgeRow(features: widget.item.features, cs: cs),
-              const SizedBox(height: 16),
-              _TipBox(tip: widget.item.tip, cs: cs, theme: theme),
-            ],
+            ),
           ),
         ),
       ),
@@ -127,14 +134,18 @@ class _OnboardingCardState extends State<OnboardingCard>
 class _HeroVisual extends StatelessWidget {
   final IconData icon;
   final ColorScheme cs;
+  final bool compact;
 
-  const _HeroVisual({required this.icon, required this.cs});
+  const _HeroVisual({required this.icon, required this.cs, this.compact = false});
 
   @override
   Widget build(BuildContext context) {
+    final outer = compact ? 120.0 : 180.0;
+    final inner = compact ? 80.0 : 120.0;
+    final iconSize = compact ? 36.0 : 52.0;
     return Container(
-      height: 180,
-      width: 180,
+      height: outer,
+      width: outer,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: RadialGradient(
@@ -150,8 +161,8 @@ class _HeroVisual extends StatelessWidget {
         child: Transform.rotate(
           angle: -math.pi / 12,
           child: Container(
-            height: 120,
-            width: 120,
+            height: inner,
+            width: inner,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
@@ -167,7 +178,7 @@ class _HeroVisual extends StatelessWidget {
                 ),
               ],
             ),
-            child: Icon(icon, size: 52, color: cs.onPrimary),
+            child: Icon(icon, size: iconSize, color: cs.onPrimary),
           ),
         ),
       ),

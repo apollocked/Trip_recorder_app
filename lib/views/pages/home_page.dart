@@ -19,23 +19,25 @@ class _HomeState extends State<HomePage> {
     final size = MediaQuery.of(context).size;
     final c = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
+    final bottomInset = MediaQuery.of(context).padding.bottom;
+    final heroHeight = size.height > 700 ? size.height * 0.28 : size.height * 0.22;
 
     return Scaffold(
       backgroundColor: c.surface,
       body: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 88),
+          padding: EdgeInsets.only(bottom: 92 + bottomInset),
           child: Column(
             children: [
               SizedBox(
-                height: size.height * 0.28,
+                height: heroHeight,
                 child: Stack(
                   children: [
                     Positioned(
                       bottom: 0,
                       right: 0,
-                      height: size.height * 0.32,
+                      height: heroHeight + 20,
                       child: TweenAnimationBuilder<double>(
                         tween: Tween(begin: 0.0, end: 1.0),
                         duration: const Duration(milliseconds: 400),

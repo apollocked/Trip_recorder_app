@@ -45,7 +45,7 @@ class FavoritesPage extends StatelessWidget {
             )
           : ListView.separated(
               key: const ValueKey('list'),
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+              padding: EdgeInsets.fromLTRB(16, 8, 16, MediaQuery.of(context).padding.bottom + 24),
               itemCount: liked.length,
               separatorBuilder: (_, _) => const SizedBox(height: 12),
               itemBuilder: (context, index) {

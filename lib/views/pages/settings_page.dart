@@ -26,7 +26,7 @@ class SettingsPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 92 + MediaQuery.of(context).padding.bottom),
         children: [
           _SectionCard(
             icon: Icons.language_rounded,

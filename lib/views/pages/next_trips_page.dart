@@ -48,9 +48,10 @@ class NextTripsPage extends StatelessWidget {
   }
 
   Widget _emptyState(BuildContext context, ColorScheme cs, TextTheme tt, AppLocalizations loc) {
+    final bottomInset = MediaQuery.of(context).padding.bottom;
     return ListView(
       key: const ValueKey('empty'),
-      padding: const EdgeInsets.only(bottom: 88),
+      padding: EdgeInsets.only(bottom: 92 + bottomInset),
       children: [
         SizedBox(height: MediaQuery.of(context).size.height * 0.12),
         TweenAnimationBuilder<double>(
@@ -86,11 +87,12 @@ class NextTripsPage extends StatelessWidget {
 
     final nextTrip = upcoming.first;
 
+    final bottomInset = MediaQuery.of(context).padding.bottom;
     return RefreshIndicator(
       onRefresh: () => context.read<TripProvider>().refresh(),
       child: ListView(
         key: const ValueKey('list'),
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
+        padding: EdgeInsets.fromLTRB(16, 8, 16, 92 + bottomInset),
         children: [
           _HeroSummary(cs: cs, tt: tt, loc: loc, upcoming: upcoming, nextTrip: nextTrip),
           const SizedBox(height: 20),

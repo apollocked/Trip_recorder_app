@@ -173,7 +173,7 @@ class _PackingListPageState extends State<PackingListPage> {
                               icon: const Icon(Icons.add_rounded, size: 18),
                               label: Text(l10n.addItem)))
                       : ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          padding: EdgeInsets.fromLTRB(16, 0, 16, MediaQuery.of(context).padding.bottom + 24),
                           itemCount: _buildItemCount(grouped, catKeys),
                           itemBuilder: (_, i) => _buildItem(grouped, catKeys, i, l10n, cs),
                         ),
