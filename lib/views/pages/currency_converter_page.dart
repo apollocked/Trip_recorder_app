@@ -17,16 +17,42 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
   String _toCurrency = 'IQD';
   double? _result;
   bool _isLoading = false;
+  bool _hasValidAmount = false;
+  DateTime? _lastTap;
+
+  @override
+  void initState() {
+    super.initState();
+    _amountController.addListener(_onAmountChanged);
+  }
+
+  void _onAmountChanged() {
+    final valid = double.tryParse(_amountController.text) != null &&
+        double.parse(_amountController.text.isNotEmpty ? _amountController.text : '0') > 0;
+    if (valid != _hasValidAmount) setState(() => _hasValidAmount = valid);
+  }
 
   @override
   void dispose() {
+    _amountController.removeListener(_onAmountChanged);
     _amountController.dispose();
     super.dispose();
   }
 
   Future<void> _convert() async {
+    if (_isLoading) return;
+    if (_lastTap != null &&
+        DateTime.now().difference(_lastTap!) < const Duration(seconds: 1)) {
+      return;
+    }
+    await _doConvert();
+  }
+
+  Future<void> _doConvert() async {
+    if (_isLoading) return;
     final amount = double.tryParse(_amountController.text);
     if (amount == null || amount <= 0) return;
+    _lastTap = DateTime.now();
     setState(() => _isLoading = true);
     final converted = await CurrencyConverterService.convert(
       amount,
@@ -48,7 +74,7 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
       _toCurrency = temp;
       _result = null;
     });
-    if (_amountController.text.isNotEmpty) _convert();
+    if (_amountController.text.isNotEmpty) _doConvert();
   }
 
   @override
@@ -67,7 +93,7 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).padding.bottom + 92),
+        padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).padding.bottom + 160),
         child: Column(
           children: [
             Card(
@@ -146,7 +172,7 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
               width: double.infinity,
               height: 52,
               child: FilledButton.icon(
-                onPressed: _convert,
+                onPressed: _hasValidAmount ? _convert : null,
                 icon: _isLoading
                     ? SizedBox(
                         width: 20,
