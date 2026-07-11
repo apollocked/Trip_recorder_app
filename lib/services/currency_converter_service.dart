@@ -3,7 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class CurrencyConverterService {
-  static String get _apiKey => dotenv.env['EXCHANGE_API_KEY'] ?? '';
+  static String? _cachedKey;
   static const String _baseUrl = 'https://v6.exchangerate-api.com/v6';
 
   static final Map<String, Map<String, double>> _cache = {};
@@ -14,11 +14,27 @@ class CurrencyConverterService {
     'AED': 3.67, 'SAR': 3.75, 'TRY': 32.4, 'IQD': 1310.0,
   };
 
+  static Future<String> _apiKey() async {
+    if (_cachedKey != null) return _cachedKey!;
+    try {
+      _cachedKey = dotenv.env['EXCHANGE_API_KEY'] ?? '';
+    } catch (_) {
+      try {
+        await dotenv.load();
+        _cachedKey = dotenv.env['EXCHANGE_API_KEY'] ?? '';
+      } catch (_) {
+        _cachedKey = '';
+      }
+    }
+    return _cachedKey!;
+  }
+
   static Future<Map<String, double>> fetchRates(String base) async {
     if (_cache.containsKey(base)) return _cache[base]!;
-    if (_apiKey.isEmpty) return Map.from(_fallbackRates);
+    final key = await _apiKey();
+    if (key.isEmpty) return Map.from(_fallbackRates);
     try {
-      final res = await http.get(Uri.parse('$_baseUrl/$_apiKey/latest/$base'))
+      final res = await http.get(Uri.parse('$_baseUrl/$key/latest/$base'))
           .timeout(const Duration(seconds: 10));
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body) as Map<String, dynamic>;

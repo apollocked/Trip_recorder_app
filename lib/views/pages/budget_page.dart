@@ -110,7 +110,7 @@ class _BudgetPageState extends State<BudgetPage> {
               onRefresh: _loadExpenses,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.of(context).padding.bottom + 24),
+                padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.of(context).padding.bottom + 92),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

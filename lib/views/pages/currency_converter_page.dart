@@ -66,8 +66,8 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).padding.bottom + 92),
         child: Column(
           children: [
             Card(

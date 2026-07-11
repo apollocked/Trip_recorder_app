@@ -165,7 +165,7 @@ class _AddTripPageState extends State<AddTripPage> {
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(24, 16, 24, MediaQuery.of(context).padding.bottom + 16),
+            padding: EdgeInsets.fromLTRB(24, 16, 24, MediaQuery.of(context).padding.bottom + 92),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -20,7 +20,7 @@ class PrivacyPolicyPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).padding.bottom + 20),
+        padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).padding.bottom + 92),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

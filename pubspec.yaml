@@ -50,6 +50,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/fonts/
+    - assets/.env
 
   fonts:
     - family: xoshnus

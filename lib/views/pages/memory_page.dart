@@ -48,7 +48,7 @@ class _MemoryPageState extends State<MemoryPage> {
       appBar: AppBar(title: Text(loc.memories,
           style: tt.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
           centerTitle: true),
-      body: ListView(padding: EdgeInsets.fromLTRB(20, 8, 20, MediaQuery.of(context).padding.bottom + 24), children: [
+      body: ListView(padding: EdgeInsets.fromLTRB(20, 8, 20, MediaQuery.of(context).padding.bottom + 92), children: [
         MemoryHeroSummary(trips: trips, colorScheme: cs, textTheme: tt),
         const SizedBox(height: 24),
         ...grouped.entries.map((e) => MemoryMonthSection(
