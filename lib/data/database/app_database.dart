@@ -22,15 +22,28 @@ class AppDatabase {
   Future<Database> _initDatabase() async {
     final dir = await getApplicationDocumentsDirectory();
     final path = p.join(dir.path, AppConstants.dbName);
-    return await openDatabase(
-      path,
-      version: AppConstants.dbVersion,
-      onCreate: _onCreate,
-      onUpgrade: _onUpgrade,
-      onConfigure: (db) async {
-        await db.execute('PRAGMA foreign_keys = ON');
-      },
-    );
+    try {
+      return await openDatabase(
+        path,
+        version: AppConstants.dbVersion,
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade,
+        onDowngrade: _onDowngrade,
+        onConfigure: (db) async {
+          await db.execute('PRAGMA foreign_keys = ON');
+        },
+      );
+    } catch (e) {
+      await deleteDatabase(path);
+      return await openDatabase(
+        path,
+        version: AppConstants.dbVersion,
+        onCreate: _onCreate,
+        onConfigure: (db) async {
+          await db.execute('PRAGMA foreign_keys = ON');
+        },
+      );
+    }
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -83,6 +96,11 @@ class AppDatabase {
         FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
       )
     ''');
+  }
+
+  Future<void> _onDowngrade(Database db, int oldVersion, int newVersion) async {
+    // All schema changes are additive (new columns). Old code safely ignores
+    // extra columns, so no data migration is needed.
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {

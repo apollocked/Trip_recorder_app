@@ -39,8 +39,14 @@ class TripProvider extends ChangeNotifier
   }
 
   Future<void> _load() async {
-    await DataMigrationService(_repository).migrateIfNeeded();
-    await loadTrips();
+    try {
+      await DataMigrationService(_repository).migrateIfNeeded();
+      await loadTrips();
+    } catch (e) {
+      _trips = [];
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> loadTrips() async {
