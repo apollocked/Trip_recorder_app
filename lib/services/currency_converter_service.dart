@@ -20,7 +20,7 @@ class CurrencyConverterService {
       _cachedKey = dotenv.env['EXCHANGE_API_KEY'] ?? '';
     } catch (_) {
       try {
-        await dotenv.load();
+        await dotenv.load(fileName: 'assets/.env');
         _cachedKey = dotenv.env['EXCHANGE_API_KEY'] ?? '';
       } catch (_) {
         _cachedKey = '';

@@ -42,22 +42,33 @@ class _MemoryPageState extends State<MemoryPage> {
     for (final t in sorted) {
       grouped.putIfAbsent(loc.formatMonthYear(t.date), () => []).add(t);
     }
+    final entries = grouped.entries.toList();
 
     return Scaffold(
       backgroundColor: cs.surface,
       appBar: AppBar(title: Text(loc.memories,
           style: tt.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
           centerTitle: true),
-      body: ListView(padding: EdgeInsets.fromLTRB(20, 8, 20, MediaQuery.of(context).padding.bottom + 92), children: [
-        MemoryHeroSummary(trips: trips, colorScheme: cs, textTheme: tt),
-        const SizedBox(height: 24),
-        ...grouped.entries.map((e) => MemoryMonthSection(
+      body: ListView.builder(
+        padding: EdgeInsets.fromLTRB(20, 8, 20, MediaQuery.of(context).padding.bottom + 92),
+        itemCount: entries.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Column(children: [
+              MemoryHeroSummary(trips: trips, colorScheme: cs, textTheme: tt),
+              const SizedBox(height: 24),
+            ]);
+          }
+          final e = entries[index - 1];
+          return MemoryMonthSection(
             month: e.key, trips: e.value,
             expandedId: _expandedTripId,
             onTap: (id) => setState(
                 () => _expandedTripId = _expandedTripId == id ? null : id),
-            colorScheme: cs, loc: loc)),
-      ]),
+            colorScheme: cs, loc: loc,
+          );
+        },
+      ),
     );
   }
 }

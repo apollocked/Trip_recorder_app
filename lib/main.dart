@@ -16,9 +16,11 @@ import 'package:animations_in_flutter/services/theme_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    await dotenv.load();
+    await dotenv.load(fileName: 'assets/.env');
   } catch (_) {}
-  await NotificationService().init();
+  try {
+    await NotificationService().init();
+  } catch (_) {}
   final prefs = await SharedPreferences.getInstance();
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
   runApp(
@@ -27,8 +29,18 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => TripProvider(isFirstTime: isFirstTime),
         ),
-        ChangeNotifierProvider(create: (_) => LanguageService()),
-        ChangeNotifierProvider(create: (_) => ThemeService()),
+        ChangeNotifierProvider(
+          create: (_) => LanguageService(
+            prefs: prefs,
+            savedLanguageCode: prefs.getString(LanguageService.localeKey),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ThemeService(
+            prefs: prefs,
+            savedThemeMode: prefs.getString(ThemeService.themeModeKey),
+          ),
+        ),
       ],
       child: const MyApp(),
     ),

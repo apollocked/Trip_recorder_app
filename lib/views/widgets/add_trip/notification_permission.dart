@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 
@@ -10,17 +9,7 @@ Future<bool> requestNotificationPermission(BuildContext context) async {
   final textTheme = Theme.of(context).textTheme;
   final l10n = AppLocalizations.of(context)!;
 
-  final androidPlugin = FlutterLocalNotificationsPlugin();
-  final androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-  await androidPlugin.initialize(
-    settings: InitializationSettings(android: androidSettings),
-  );
-  final details = await androidPlugin.getNotificationAppLaunchDetails();
-  final notifGranted =
-      details?.notificationResponse != null ||
-      await Permission.notification.status.then((s) => s.isGranted);
-
-  if (notifGranted) return true;
+  if (await Permission.notification.status.then((s) => s.isGranted)) return true;
   if (_sessionAnswered) return false;
   if (!context.mounted) return false;
 
