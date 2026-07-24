@@ -26,7 +26,7 @@ class NextTripsPage extends StatelessWidget {
     return Consumer<TripProvider>(
       builder: (context, provider, _) {
         final loc = AppLocalizations.of(context)!;
-        final upcoming = provider.futureTrips
+        final upcoming = [...provider.futureTrips]
           ..sort((a, b) => a.date.compareTo(b.date));
 
         return Scaffold(

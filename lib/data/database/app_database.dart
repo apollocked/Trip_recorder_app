@@ -11,12 +11,10 @@ class AppDatabase {
   factory AppDatabase() => _instance;
   AppDatabase._internal();
 
-  Database? _database;
+  Future<Database>? _database;
 
   Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await _initDatabase();
-    return _database!;
+    return _database ??= _initDatabase();
   }
 
   Future<Database> _initDatabase() async {

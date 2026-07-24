@@ -50,9 +50,10 @@ class ImageStorageService {
   Future<void> deleteAllTripImages(String tripId) async {
     final dir = await _imageDir;
     if (!await dir.exists()) return;
+    final prefix = '${tripId}_';
     final entities = await dir.list().toList();
     for (final entity in entities) {
-      if (entity is File && p.basenameWithoutExtension(entity.path) == tripId) {
+      if (entity is File && p.basename(entity.path).startsWith(prefix)) {
         await entity.delete();
       }
     }

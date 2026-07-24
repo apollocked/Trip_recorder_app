@@ -48,16 +48,17 @@ class DataMigrationService {
           description: trip.description,
           category: trip.category,
           rating: trip.rating,
+          currency: trip.currency,
+          reminderDate: trip.reminderDate,
         );
         if (trip.isLiked) {
           await _repository.toggleLike(saved.id);
         }
       }
       await prefs.remove('user_trips');
+      await prefs.setBool(AppConstants.prefDataMigrated, true);
     } catch (e) {
       debugPrint('Migration error: $e');
     }
-
-    await prefs.setBool(AppConstants.prefDataMigrated, true);
   }
 }
