@@ -1,3 +1,5 @@
+import '../core/l10n/app_localizations.dart';
+
 enum ExpenseCategory {
   hotel,
   food,
@@ -6,20 +8,20 @@ enum ExpenseCategory {
   shopping,
   other;
 
-  String get label {
+  String label(AppLocalizations l10n) {
     switch (this) {
       case ExpenseCategory.hotel:
-        return 'Hotel';
+        return l10n.categoryHotel;
       case ExpenseCategory.food:
-        return 'Food';
+        return l10n.categoryFood;
       case ExpenseCategory.transport:
-        return 'Transport';
+        return l10n.categoryTransport;
       case ExpenseCategory.activities:
-        return 'Activities';
+        return l10n.categoryActivities;
       case ExpenseCategory.shopping:
-        return 'Shopping';
+        return l10n.categoryShopping;
       case ExpenseCategory.other:
-        return 'Other';
+        return l10n.categoryOther;
     }
   }
 

@@ -46,7 +46,7 @@ class _PackingListPageState extends State<PackingListPage> {
       if (mounted) {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.errorSavingTrip(e.toString()))),
+          SnackBar(content: Text(AppLocalizations.of(context)!.errorLoadingData(e.toString()))),
         );
       }
     }
@@ -128,6 +128,14 @@ class _PackingListPageState extends State<PackingListPage> {
     final grouped = _grouped;
     final catKeys = grouped.keys.toList();
 
+    final flatItems = <({String? header, ChecklistItem? item})>[];
+    for (final k in catKeys) {
+      flatItems.add((header: k, item: null));
+      for (final item in grouped[k]!) {
+        flatItems.add((header: null, item: item));
+      }
+    }
+
     return Scaffold(
       backgroundColor: cs.surface,
       appBar: AppBar(
@@ -174,8 +182,24 @@ class _PackingListPageState extends State<PackingListPage> {
                               label: Text(l10n.addItem)))
                       : ListView.builder(
                           padding: EdgeInsets.fromLTRB(16, 0, 16, MediaQuery.of(context).padding.bottom + 92),
-                          itemCount: _buildItemCount(grouped, catKeys),
-                          itemBuilder: (_, i) => _buildItem(grouped, catKeys, i, l10n, cs),
+                          itemCount: flatItems.length,
+                          itemBuilder: (_, i) {
+                            final entry = flatItems[i];
+                            if (entry.header != null) {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 16, bottom: 8),
+                                child: Text(_catLabel(l10n, entry.header!),
+                                    style: TextStyle(fontWeight: FontWeight.bold,
+                                        color: cs.primary, fontSize: 14)),
+                              );
+                            }
+                            return PackingListItem(
+                              tripId: widget.tripId,
+                              item: entry.item!,
+                              colorScheme: cs,
+                              onDeleted: _loadItems,
+                            );
+                          },
                         ),
                 ),
               ]),
@@ -183,39 +207,4 @@ class _PackingListPageState extends State<PackingListPage> {
     );
   }
 
-  int _buildItemCount(Map<String, List<ChecklistItem>> grouped, List<String> keys) {
-    int count = 0;
-    for (final k in keys) {
-      count += 1; // section header
-      count += grouped[k]!.length;
-    }
-    return count;
-  }
-
-  Widget _buildItem(Map<String, List<ChecklistItem>> grouped, List<String> keys,
-      int i, AppLocalizations l10n, ColorScheme cs) {
-    int idx = 0;
-    for (final k in keys) {
-      if (i == idx) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 16, bottom: 8),
-          child: Text(_catLabel(l10n, k),
-              style: TextStyle(fontWeight: FontWeight.bold,
-                  color: cs.primary, fontSize: 14)),
-        );
-      }
-      idx++;
-      final items = grouped[k]!;
-      if (i < idx + items.length) {
-        return PackingListItem(
-          tripId: widget.tripId,
-          item: items[i - idx],
-          colorScheme: cs,
-          onDeleted: _loadItems,
-        );
-      }
-      idx += items.length;
-    }
-    return const SizedBox.shrink();
-  }
 }

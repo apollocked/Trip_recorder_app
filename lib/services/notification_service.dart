@@ -34,9 +34,10 @@ class NotificationService {
     String? title,
     String? body,
   }) async {
+    final id = _notificationId(tripId, 0);
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
-        id: tripId.hashCode,
+        id: id,
         channelKey: _channelKey,
         title: title ?? 'Upcoming Trip',
         body: body ?? '$tripTitle is coming up!',
@@ -81,7 +82,7 @@ class NotificationService {
     if (tripDate.isBefore(DateTime.now())) return;
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
-        id: tripId.hashCode + 2,
+        id: _notificationId(tripId, 2),
         channelKey: _channelKey,
         title: title ?? tripTitle,
         body: body ?? 'Your trip is today! Add photos and details to save your memories.',
@@ -99,7 +100,12 @@ class NotificationService {
   }
 
   Future<void> cancelTripReminder(String tripId) async {
-    await AwesomeNotifications().cancel(tripId.hashCode);
-    await AwesomeNotifications().cancel(tripId.hashCode + 2);
+    await AwesomeNotifications().cancel(_notificationId(tripId, 0));
+    await AwesomeNotifications().cancel(_notificationId(tripId, 2));
+  }
+
+  static int _notificationId(String tripId, int offset) {
+    final id = tripId.hashCode.toUnsigned(31);
+    return id + offset;
   }
 }

@@ -51,17 +51,7 @@ void showImageSourceSheet(
                   colorScheme: colorScheme,
                   onTap: () {
                     Navigator.pop(context);
-                    if (multiPick) {
-                      ImagePicker()
-                          .pickMultiImage(imageQuality: 85, maxWidth: 1000)
-                          .then((files) {
-                            if (files.isNotEmpty) {
-                              onImagePicked(File(files.first.path));
-                            }
-                          });
-                    } else {
-                      _pickImage(ImageSource.gallery, onImagePicked);
-                    }
+                    _pickImage(ImageSource.gallery, onImagePicked);
                   },
                 ),
                 ImageSourceCard(

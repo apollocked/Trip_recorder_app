@@ -13,8 +13,30 @@ import 'package:flutter/material.dart';
 import 'package:animations_in_flutter/core/route_transition.dart';
 import 'package:provider/provider.dart';
 
-class StatisticsPage extends StatelessWidget {
+class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
+
+  @override
+  State<StatisticsPage> createState() => _StatisticsPageState();
+}
+
+class _StatisticsPageState extends State<StatisticsPage> {
+  Map<String, double>? _cachedSpendByDestination;
+  List<Trip>? _cachedTrips;
+
+  Map<String, double> _spendByDestination(List<Trip> trips) {
+    if (identical(_cachedTrips, trips) && _cachedSpendByDestination != null) {
+      return _cachedSpendByDestination!;
+    }
+    final map = <String, double>{};
+    for (final t in trips) {
+      final key = '${t.title} (${t.currency.isNotEmpty ? t.currency : "USD"})';
+      map[key] = (map[key] ?? 0) + t.price;
+    }
+    _cachedTrips = trips;
+    _cachedSpendByDestination = map;
+    return map;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,12 +268,4 @@ class StatisticsPage extends StatelessWidget {
         .toList();
   }
 
-  Map<String, double> _spendByDestination(List<Trip> trips) {
-    final map = <String, double>{};
-    for (final t in trips) {
-      final key = '${t.title} (${t.currency.isNotEmpty ? t.currency : "USD"})';
-      map[key] = (map[key] ?? 0) + t.price;
-    }
-    return map;
-  }
 }

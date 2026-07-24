@@ -17,6 +17,7 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell>
     with SingleTickerProviderStateMixin {
   late final AnimationController _fabController;
+  static final _blurFilter = ImageFilter.blur(sigmaX: 18, sigmaY: 18);
 
   @override
   void initState() {
@@ -37,10 +38,7 @@ class _MainShellState extends State<MainShell>
     _fabController
       ..value = 0.0
       ..forward().then((_) => _fabController.reverse());
-    Navigator.push(
-      context,
-      slideRoute(const TripTypeSelector()),
-    );
+    Navigator.push(context, slideRoute(const TripTypeSelector()));
   }
 
   @override
@@ -74,7 +72,7 @@ class _MainShellState extends State<MainShell>
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                filter: _blurFilter,
                 child: Container(
                   height: 60,
                   decoration: BoxDecoration(

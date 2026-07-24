@@ -31,12 +31,11 @@ class ImageStorageService {
     List<File> sourceFiles,
     String tripId,
   ) async {
-    final paths = <String>[];
+    final futures = <Future<String>>[];
     for (int i = 0; i < sourceFiles.length; i++) {
-      final path = await saveImage(sourceFiles[i], tripId, index: i);
-      paths.add(path);
+      futures.add(saveImage(sourceFiles[i], tripId, index: i));
     }
-    return paths;
+    return Future.wait(futures);
   }
 
   Future<void> deleteImage(String imagePath) async {

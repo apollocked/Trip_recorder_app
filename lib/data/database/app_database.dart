@@ -123,16 +123,18 @@ class AppDatabase {
       );
 
       final rows = await db.query(AppConstants.tripsTable);
+      final batch = db.batch();
       for (final row in rows) {
         final oldPath = row['image_path'] as String? ?? '';
         final paths = oldPath.isNotEmpty ? jsonEncode([oldPath]) : '[]';
-        await db.update(
+        batch.update(
           AppConstants.tripsTable,
           {'image_paths': paths},
           where: 'id = ?',
           whereArgs: [row['id']],
         );
       }
+      await batch.commit(noResult: true);
     }
     if (oldVersion < 3) {
       await db.execute('''
@@ -293,14 +295,9 @@ class AppDatabase {
 
   Future<void> toggleLike(String id) async {
     final db = await database;
-    final trip = await getTripById(id);
-    if (trip == null) return;
-    final newValue = trip.isLiked ? 0 : 1;
-    await db.update(
-      AppConstants.tripsTable,
-      {'is_liked': newValue},
-      where: 'id = ?',
-      whereArgs: [id],
+    await db.rawUpdate(
+      'UPDATE ${AppConstants.tripsTable} SET is_liked = CASE WHEN is_liked = 0 THEN 1 ELSE 0 END WHERE id = ?',
+      [id],
     );
   }
 

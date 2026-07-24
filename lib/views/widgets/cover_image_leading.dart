@@ -3,17 +3,18 @@ import 'dart:io';
 import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-Widget coverImage(String imgPath) {
+Widget coverImage(String imgPath, {double? height}) {
+  final h = height ?? 360;
   final bool isFile = File(imgPath).isAbsolute;
 
   if (isFile) {
     return Image.file(
       File(imgPath),
-      height: 360,
+      height: h,
       fit: BoxFit.cover,
       alignment: Alignment.topCenter,
       errorBuilder: (context, error, stackTrace) => Container(
-        height: 360,
+        height: h,
         color: AppColors.placeholderBg,
         child: const Icon(Icons.broken_image, size: 50),
       ),
@@ -24,11 +25,11 @@ Widget coverImage(String imgPath) {
         : 'images/$imgPath';
     return Image.asset(
       assetPath,
-      height: 360,
+      height: h,
       fit: BoxFit.cover,
       alignment: Alignment.topCenter,
       errorBuilder: (context, error, stackTrace) => Container(
-        height: 360,
+        height: h,
         color: AppColors.placeholderBg,
         child: const Icon(Icons.landscape, size: 50),
       ),
@@ -36,10 +37,11 @@ Widget coverImage(String imgPath) {
   }
 }
 
-Widget coverImageFromList(List<String> paths) {
+Widget coverImageFromList(List<String> paths, {double? height}) {
+  final h = height ?? 360;
   if (paths.isEmpty) {
     return Container(
-      height: 360,
+      height: h,
       color: AppColors.placeholderBg,
       child: const Icon(Icons.landscape, size: 50),
     );
@@ -47,7 +49,7 @@ Widget coverImageFromList(List<String> paths) {
   return Stack(
     fit: StackFit.expand,
     children: [
-      coverImage(paths.first),
+      coverImage(paths.first, height: h),
       if (paths.length > 1)
         Positioned(
           right: 12,

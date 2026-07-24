@@ -1,4 +1,5 @@
 ﻿import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/currency.dart';
 import 'package:animations_in_flutter/model/trip.dart';
@@ -52,9 +53,10 @@ class DetailsPage extends StatelessWidget {
                 tooltip: l10n.editJourney,
                 onPressed: () async {
                   HapticFeedback.selectionClick();
-                  await Navigator.of(context, rootNavigator: true).push(
-                    slideRoute(AddTripPage(tripId: trip.id)),
-                  );
+                  await Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).push(slideRoute(AddTripPage(tripId: trip.id)));
                 },
               ),
             ],
@@ -142,10 +144,8 @@ class DetailsPage extends StatelessWidget {
           ActionChip(
             avatar: const Icon(Icons.account_balance_wallet_rounded, size: 18),
             label: Text(l10n.budgetLabel),
-            onPressed: () => Navigator.push(
-              context,
-              slideRoute(BudgetPage(tripId: tripId)),
-            ),
+            onPressed: () =>
+                Navigator.push(context, slideRoute(BudgetPage(tripId: tripId))),
           ),
           const SizedBox(width: 8),
           ActionChip(
@@ -153,7 +153,7 @@ class DetailsPage extends StatelessWidget {
             label: Text(l10n.checklist),
             onPressed: () => Navigator.push(
               context,
-                slideRoute(PackingListPage(tripId: tripId)),
+              slideRoute(PackingListPage(tripId: tripId)),
             ),
           ),
           const SizedBox(width: 8),
@@ -170,7 +170,11 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReminderBanner(Trip trip, ColorScheme colorScheme, AppLocalizations l10n) {
+  Widget _buildReminderBanner(
+    Trip trip,
+    ColorScheme colorScheme,
+    AppLocalizations l10n,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
