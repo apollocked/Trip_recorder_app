@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:animations_in_flutter/core/constants.dart';
 import 'package:animations_in_flutter/services/supabase_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +21,24 @@ class PremiumService extends ChangeNotifier {
       return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
     }
     return parts[0][0].toUpperCase();
+  }
+
+  bool get canAddTrip => _isPremium;
+  bool canAddPhotos(int currentCount) => _isPremium || currentCount < AppConstants.freeMaxPhotosPerTrip;
+  bool get canAddCustomCategory => _isPremium;
+
+  String remainingTripsMessage(int currentCount) {
+    if (_isPremium) return '';
+    final remaining = AppConstants.freeMaxTrips - currentCount;
+    if (remaining <= 0) return 'Free plan limited to ${AppConstants.freeMaxTrips} trips. Upgrade to Premium for unlimited.';
+    return '$remaining trips remaining on free plan.';
+  }
+
+  String remainingPhotosMessage(int currentCount) {
+    if (_isPremium) return '';
+    final remaining = AppConstants.freeMaxPhotosPerTrip - currentCount;
+    if (remaining <= 0) return 'Free plan limited to ${AppConstants.freeMaxPhotosPerTrip} photos per trip. Upgrade to Premium for unlimited.';
+    return '$remaining photos remaining.';
   }
 
   Future<void> load() async {

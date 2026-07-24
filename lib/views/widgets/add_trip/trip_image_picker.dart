@@ -2,7 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/core/theme/app_colors.dart';
+import 'package:animations_in_flutter/services/premium_service.dart';
 import 'package:animations_in_flutter/views/widgets/shared/permission_dialog.dart';
+import 'package:animations_in_flutter/views/widgets/shared/premium_popup.dart';
+import 'package:provider/provider.dart';
 
 class TripImagePicker extends StatelessWidget {
   final List<File> imageFiles;
@@ -31,6 +34,15 @@ class TripImagePicker extends StatelessWidget {
     ...existingImagePaths,
   ];
 
+  Future<void> _handlePickImages(BuildContext context, ValueChanged<List<File>> onAdded) async {
+    final premium = context.read<PremiumService>();
+    if (!premium.canAddPhotos(allPaths.length)) {
+      await PremiumPopup.show(context);
+      return;
+    }
+    pickMultipleImages(context, onAdded);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -55,10 +67,16 @@ class TripImagePicker extends StatelessWidget {
         if (allPaths.isNotEmpty) ...[
           const SizedBox(height: 8),
           TextButton.icon(
-            onPressed: () =>
-                pickMultipleImages(context, (files) => onImagesAdded(files)),
+            onPressed: () => _handlePickImages(context, (files) => onImagesAdded(files)),
             icon: const Icon(Icons.add_photo_alternate_rounded, size: 18),
             label: Text(l10n.addMorePhotos),
+          ),
+        ],
+        if (!context.read<PremiumService>().isPremium && allPaths.isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Text(
+            context.read<PremiumService>().remainingPhotosMessage(allPaths.length),
+            style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
           ),
         ],
       ],
@@ -67,7 +85,7 @@ class TripImagePicker extends StatelessWidget {
 
   Widget _buildEmptyState(BuildContext context) {
     return GestureDetector(
-      onTap: () => pickMultipleImages(context, (files) => onImagesAdded(files)),
+      onTap: () => _handlePickImages(context, (files) => onImagesAdded(files)),
       child: Container(
         height: 200,
         width: double.infinity,
@@ -114,7 +132,7 @@ class TripImagePicker extends StatelessWidget {
 
   Widget _buildAddButton(BuildContext context) {
     return GestureDetector(
-      onTap: () => pickMultipleImages(context, (files) => onImagesAdded(files)),
+      onTap: () => _handlePickImages(context, (files) => onImagesAdded(files)),
       child: Container(
         width: 120,
         height: 120,

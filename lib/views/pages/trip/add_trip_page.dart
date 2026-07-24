@@ -5,12 +5,14 @@ import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
+import 'package:animations_in_flutter/services/premium_service.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/app_text_field.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/date_picker_field.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/future_trip_banner.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/notification_permission.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/past_trip_fields.dart';
 import 'package:animations_in_flutter/views/widgets/add_trip/save_button.dart';
+import 'package:animations_in_flutter/views/widgets/shared/premium_popup.dart';
 
 class AddTripPage extends StatefulWidget {
   final String? tripId;
@@ -73,6 +75,19 @@ class _AddTripPageState extends State<AddTripPage> {
   }
 
   Future<void> _handleSave() async {
+    final premium = context.read<PremiumService>();
+    final provider = context.read<TripProvider>();
+    if (widget.tripId == null && !premium.canAddTrip) {
+      final currentCount = provider.trips.length;
+      final msg = premium.remainingTripsMessage(currentCount);
+      if (mounted) {
+        final result = await PremiumPopup.show(context);
+        if (result == true && mounted) {
+          await premium.activatePremium();
+        }
+      }
+      return;
+    }
     final isFormValid = _formKey.currentState!.validate();
     final hasImages = _imageFiles.isNotEmpty || _existingImagePaths.isNotEmpty;
     if (!_isFuture) setState(() => _imageError = !hasImages);
