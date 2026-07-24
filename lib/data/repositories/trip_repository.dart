@@ -21,6 +21,14 @@ class TripRepository {
     return await _database.getAllTrips();
   }
 
+  Future<List<Trip>> getAllTripsFromLocal() async {
+    return await _database.getAllTrips();
+  }
+
+  Future<void> insertAllTripsToCloud(List<Trip> trips) async {
+    await _cloudTrips.insertAll(trips);
+  }
+
   Future<Trip> addTrip({
     required String title,
     required double price,

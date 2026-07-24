@@ -287,5 +287,15 @@
   "planTripDesc": "Set reminders, packing list, and countdown",
   "reminders": "Reminders",
   "countdown": "Countdown",
-  "photos": "Photos"
+  "photos": "Photos",
+
+  "cloudSync": "Cloud Sync",
+  "cloudSyncDesc": "Sign in to sync your trips across devices.",
+  "email": "Email",
+  "password": "Password",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "signOut": "Sign Out",
+  "alreadyHaveAccount": "Already have an account? Sign in",
+  "dontHaveAccount": "Don't have an account? Sign up"
 }

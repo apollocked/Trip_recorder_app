@@ -59,7 +59,6 @@ class CloudImageStorageService {
   }
 
   Future<void> deleteAllTripImages(String tripId) async {
-    final prefix = '${_userFolder()}${tripId}_';
     try {
       final files = await _svc.client.storage.from(_bucket).list(path: _userFolder());
       final toDelete = files

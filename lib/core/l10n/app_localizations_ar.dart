@@ -711,4 +711,31 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get photos => 'صور';
+
+  @override
+  String get cloudSync => 'المزامنة السحابية';
+
+  @override
+  String get cloudSyncDesc => 'سجّل الدخول لمزامنة رحلاتك عبر الأجهزة.';
+
+  @override
+  String get email => 'البريد الإلكتروني';
+
+  @override
+  String get password => 'كلمة المرور';
+
+  @override
+  String get signIn => 'تسجيل الدخول';
+
+  @override
+  String get signUp => 'إنشاء حساب';
+
+  @override
+  String get signOut => 'تسجيل الخروج';
+
+  @override
+  String get alreadyHaveAccount => 'لديك حساب بالفعل؟ تسجيل الدخول';
+
+  @override
+  String get dontHaveAccount => 'ليس لديك حساب؟ إنشاء حساب';
 }

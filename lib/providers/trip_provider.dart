@@ -7,6 +7,7 @@ import '../model/trip.dart';
 import '../model/trip_category.dart';
 import '../services/data_migration_service.dart';
 import '../services/notification_service.dart';
+import '../services/supabase_service.dart';
 import 'mixins/checklist_provider_mixin.dart';
 import 'mixins/expense_provider_mixin.dart';
 import 'mixins/journal_provider_mixin.dart';
@@ -36,17 +37,42 @@ class TripProvider extends ChangeNotifier
 
   TripProvider({bool isFirstTime = true}) : _isFirstTime = isFirstTime {
     _load();
+    _listenToAuth();
+  }
+
+  void _listenToAuth() {
+    final svc = SupabaseService();
+    if (!svc.isInitialized) return;
+    svc.onAuthStateChange.listen((_) {
+      _load();
+    });
   }
 
   Future<void> _load() async {
     try {
-      await DataMigrationService(_repository).migrateIfNeeded();
+      final svc = SupabaseService();
+      if (svc.isLoggedIn) {
+        await _syncLocalToCloudIfNeeded();
+      } else {
+        await DataMigrationService(_repository).migrateIfNeeded();
+      }
       await loadTrips();
     } catch (e) {
       _trips = [];
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> _syncLocalToCloudIfNeeded() async {
+    final prefs = await SharedPreferences.getInstance();
+    final synced = prefs.getBool('cloud_sync_done') == true;
+    if (synced) return;
+    final localTrips = await _repository.getAllTripsFromLocal();
+    if (localTrips.isNotEmpty) {
+      await _repository.insertAllTripsToCloud(localTrips);
+    }
+    await prefs.setBool('cloud_sync_done', true);
   }
 
   Future<void> loadTrips() async {

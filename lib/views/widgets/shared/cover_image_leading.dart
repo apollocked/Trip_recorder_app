@@ -5,6 +5,21 @@ import 'package:flutter/material.dart';
 
 Widget coverImage(String imgPath, {double? height}) {
   final h = height ?? 360;
+
+  if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) {
+    return Image.network(
+      imgPath,
+      height: h,
+      fit: BoxFit.cover,
+      alignment: Alignment.topCenter,
+      errorBuilder: (context, error, stackTrace) => Container(
+        height: h,
+        color: AppColors.placeholderBg,
+        child: const Icon(Icons.broken_image, size: 50),
+      ),
+    );
+  }
+
   final bool isFile = File(imgPath).isAbsolute;
 
   if (isFile) {

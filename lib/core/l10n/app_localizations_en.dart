@@ -713,4 +713,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photos => 'Photos';
+
+  @override
+  String get cloudSync => 'Cloud Sync';
+
+  @override
+  String get cloudSyncDesc => 'Sign in to sync your trips across devices.';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get signUp => 'Sign Up';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? Sign in';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account? Sign up';
 }

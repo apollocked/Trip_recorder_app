@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/services/supabase_service.dart';
+import 'cloud_image_storage_service.dart';
 
 class CloudTripRepository {
   final SupabaseService _svc = SupabaseService();
+  final CloudImageStorageService _images = CloudImageStorageService();
 
   Future<List<Trip>> getAllTrips() async {
     if (!_svc.isLoggedIn) return [];
@@ -13,7 +15,19 @@ class CloudTripRepository {
         .select()
         .eq('user_id', _svc.userId!)
         .order('created_at', ascending: false);
-    return (data as List).map((map) => _fromCloudMap(map)).toList();
+    final rawTrips = (data as List).map((map) => _fromCloudMap(map)).toList();
+    final resolved = <Trip>[];
+    for (final trip in rawTrips) {
+      final assetPaths = trip.imagePaths.where((p) => p.startsWith('images/')).toList();
+      final storagePaths = trip.imagePaths.where((p) => !p.startsWith('images/')).toList();
+      if (storagePaths.isNotEmpty) {
+        final urls = await _images.getSignedUrls(storagePaths);
+        resolved.add(trip.copyWith(imagePaths: [...urls, ...assetPaths]));
+      } else {
+        resolved.add(trip);
+      }
+    }
+    return resolved;
   }
 
   Future<Trip> insertTrip(Trip trip) async {

@@ -717,4 +717,32 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get photos => 'وێنەکان';
+
+  @override
+  String get cloudSync => 'هاوکاری بەرێزوە';
+
+  @override
+  String get cloudSyncDesc =>
+      'چوونە ژوورەوە بۆ هاوبەشکردنی گەشتەکانت لە ئامێرە جیاوازەکان.';
+
+  @override
+  String get email => 'ئیمەیڵ';
+
+  @override
+  String get password => 'وشەی نهێنی';
+
+  @override
+  String get signIn => 'چوونە ژوورەوە';
+
+  @override
+  String get signUp => 'دروستکردنی هەژمار';
+
+  @override
+  String get signOut => 'چوونە دەرەوە';
+
+  @override
+  String get alreadyHaveAccount => 'هەژمارت هەیە؟ چوونە ژوورەوە';
+
+  @override
+  String get dontHaveAccount => 'هەژمارت نییە؟ دروستکردنی هەژمار';
 }

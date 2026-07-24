@@ -38,7 +38,7 @@ class SupabaseService {
       final url = dotenv.env['SUPABASE_URL'] ?? '';
       final anonKey = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
       if (url.isEmpty || anonKey.isEmpty) return;
-      await Supabase.initialize(url: url, anonKey: anonKey);
+      await Supabase.initialize(url: url, publishableKey: anonKey);
       _client = Supabase.instance.client;
       _auth = _client!.auth;
       _initialized = true;

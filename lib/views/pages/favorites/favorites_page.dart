@@ -193,6 +193,16 @@ class _FavoriteTripCard extends StatelessWidget {
   }
 
   Widget _tripImage(String path) {
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return Image.network(
+        path,
+        fit: BoxFit.cover,
+        errorBuilder: (_, e, s) => Container(
+          color: colorScheme.surfaceContainerHighest,
+          child: Icon(Icons.broken_image, color: colorScheme.onSurfaceVariant),
+        ),
+      );
+    }
     final isFile = File(path).isAbsolute;
     if (isFile) {
       return Image.file(

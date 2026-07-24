@@ -5,10 +5,23 @@ import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 Widget leadingImage(String imgPath, {BuildContext? context}) {
-  final bool isFile = File(imgPath).isAbsolute;
   final label = context != null
       ? AppLocalizations.of(context)!.coverPhotoSemantics
       : "Cover photo of the trip";
+
+  if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) {
+    return Image.network(
+      imgPath,
+      semanticLabel: label,
+      height: 50.0,
+      width: 50.0,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) =>
+          const Icon(Icons.broken_image, size: 50),
+    );
+  }
+
+  final bool isFile = File(imgPath).isAbsolute;
 
   if (isFile) {
     return Image.file(
