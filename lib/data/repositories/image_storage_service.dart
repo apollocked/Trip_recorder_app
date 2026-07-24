@@ -1,9 +1,15 @@
 import 'dart:io';
 import 'package:animations_in_flutter/core/constants.dart';
+import 'package:animations_in_flutter/services/supabase_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'cloud/cloud_image_storage_service.dart';
 
 class ImageStorageService {
+  final CloudImageStorageService _cloud = CloudImageStorageService();
+
+  bool get _isCloud => SupabaseService().isLoggedIn;
+
   Future<Directory> get _imageDir async {
     final appDir = await getApplicationDocumentsDirectory();
     final dir = Directory(p.join(appDir.path, AppConstants.tripImagesDir));
@@ -18,6 +24,7 @@ class ImageStorageService {
     String tripId, {
     int index = 0,
   }) async {
+    if (_isCloud) return _cloud.uploadImage(sourceFile, tripId, index: index);
     final dir = await _imageDir;
     final extension = p.extension(sourceFile.path).isNotEmpty
         ? p.extension(sourceFile.path)
@@ -31,6 +38,7 @@ class ImageStorageService {
     List<File> sourceFiles,
     String tripId,
   ) async {
+    if (_isCloud) return _cloud.uploadMultiple(sourceFiles, tripId);
     final futures = <Future<String>>[];
     for (int i = 0; i < sourceFiles.length; i++) {
       futures.add(saveImage(sourceFiles[i], tripId, index: i));
@@ -39,6 +47,7 @@ class ImageStorageService {
   }
 
   Future<void> deleteImage(String imagePath) async {
+    if (_isCloud) return _cloud.deleteImage(imagePath);
     if (imagePath.startsWith('images/')) return;
     final file = File(imagePath);
     if (await file.exists()) {
@@ -47,6 +56,7 @@ class ImageStorageService {
   }
 
   Future<void> deleteAllTripImages(String tripId) async {
+    if (_isCloud) return _cloud.deleteAllTripImages(tripId);
     final dir = await _imageDir;
     if (!await dir.exists()) return;
     final prefix = '${tripId}_';

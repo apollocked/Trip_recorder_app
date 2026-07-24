@@ -2,14 +2,22 @@ import 'dart:convert';
 import 'dart:io';
 import '../../model/trip.dart';
 import '../../model/trip_category.dart';
+import '../../services/supabase_service.dart';
 import '../database/app_database.dart';
+import 'cloud/cloud_trip_repository.dart';
+import 'cloud/cloud_image_storage_service.dart';
 import 'image_storage_service.dart';
 
 class TripRepository {
   final AppDatabase _database = AppDatabase();
   final ImageStorageService _imageService = ImageStorageService();
+  final CloudTripRepository _cloudTrips = CloudTripRepository();
+  final CloudImageStorageService _cloudImages = CloudImageStorageService();
+
+  bool get _isCloud => SupabaseService().isLoggedIn;
 
   Future<List<Trip>> getAllTrips() async {
+    if (_isCloud) return _cloudTrips.getAllTrips();
     return await _database.getAllTrips();
   }
 
@@ -37,6 +45,18 @@ class TripRepository {
       currency: currency,
       reminderDate: reminderDate,
     );
+
+    if (_isCloud) {
+      final savedPaths = <String>[];
+      if (imageFiles.isNotEmpty) {
+        final cloudPaths = await _cloudImages.uploadMultiple(imageFiles, trip.id);
+        savedPaths.addAll(cloudPaths);
+      }
+      savedPaths.addAll(assetImagePaths);
+      final savedTrip = trip.copyWith(imagePaths: savedPaths);
+      await _cloudTrips.insertTrip(savedTrip);
+      return savedTrip;
+    }
 
     final savedPaths = <String>[];
     if (imageFiles.isNotEmpty) {
@@ -77,7 +97,9 @@ class TripRepository {
     String? currency,
     DateTime? reminderDate,
   }) async {
-    final oldTrip = await _database.getTripById(id);
+    final oldTrip = _isCloud
+        ? (await _cloudTrips.getAllTrips()).where((t) => t.id == id).firstOrNull
+        : await _database.getTripById(id);
     if (oldTrip == null) throw Exception('Trip not found');
 
     final finalPaths = <String>[];
@@ -96,7 +118,9 @@ class TripRepository {
     }
 
     if (imageFiles != null && imageFiles.isNotEmpty) {
-      final newPaths = await _imageService.saveMultipleImages(imageFiles, id);
+      final newPaths = _isCloud
+          ? await _cloudImages.uploadMultiple(imageFiles, id)
+          : await _imageService.saveMultipleImages(imageFiles, id);
       finalPaths.addAll(newPaths);
     }
 
@@ -120,19 +144,31 @@ class TripRepository {
       reminderDate: reminderDate ?? oldTrip.reminderDate,
     );
 
-    await _database.updateTrip(updatedTrip);
+    if (_isCloud) {
+      await _cloudTrips.updateTrip(updatedTrip);
+    } else {
+      await _database.updateTrip(updatedTrip);
+    }
 
     final removedPaths = oldTrip.imagePaths
         .where((p) => !finalPaths.contains(p))
         .toList();
     for (final path in removedPaths) {
-      await _imageService.deleteImage(path);
+      if (_isCloud) {
+        await _cloudImages.deleteImage(path);
+      } else {
+        await _imageService.deleteImage(path);
+      }
     }
 
     return updatedTrip;
   }
 
   Future<void> deleteTrip(String id) async {
+    if (_isCloud) {
+      await _cloudImages.deleteAllTripImages(id);
+      return _cloudTrips.deleteTrip(id);
+    }
     final trip = await _database.getTripById(id);
     if (trip != null) {
       await _imageService.deleteAllTripImages(id);
@@ -157,6 +193,7 @@ class TripRepository {
   }
 
   Future<void> toggleLike(String id) async {
+    if (_isCloud) return _cloudTrips.toggleLike(id);
     await _database.toggleLike(id);
   }
 

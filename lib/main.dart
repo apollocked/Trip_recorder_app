@@ -11,12 +11,16 @@ import 'package:animations_in_flutter/core/theme/app_theme.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/notification_service.dart';
+import 'package:animations_in_flutter/services/supabase_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await dotenv.load(fileName: 'assets/.env');
+  } catch (_) {}
+  try {
+    await SupabaseService().initialize();
   } catch (_) {}
   try {
     await NotificationService().init();
