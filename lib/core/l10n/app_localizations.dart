@@ -1551,6 +1551,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Full Name'**
   String get premiumName;
+
+  /// No description provided for @premiumRequiresAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in first to activate Premium.'**
+  String get premiumRequiresAuth;
+
+  /// No description provided for @premiumActivateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to activate Premium. Please try again.'**
+  String get premiumActivateFailed;
 }
 
 class _AppLocalizationsDelegate

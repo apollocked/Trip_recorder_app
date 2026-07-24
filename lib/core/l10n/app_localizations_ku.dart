@@ -783,4 +783,12 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get premiumName => 'ناوی تەواو';
+
+  @override
+  String get premiumRequiresAuth =>
+      'تکایە سەرەکا چوونە ژوورەوە بکە بۆ چالاککردنی پرەمیوم.';
+
+  @override
+  String get premiumActivateFailed =>
+      'چالاککردنی پرەمیوم سەرنەکەوتوو. تکایە دووبارە هەوڵ بدە.';
 }

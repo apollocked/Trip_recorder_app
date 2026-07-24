@@ -310,5 +310,7 @@
   "premiumFeatureBackup": "نسخ احتياطي سحابي تلقائي",
   "premiumFeatureSupport": "دعم أولوية العملاء",
   "premiumEnterInfo": "أدخل بياناتك",
-  "premiumName": "الاسم الكامل"
+  "premiumName": "الاسم الكامل",
+  "premiumRequiresAuth": "يرجى تسجيل الدخول أولاً لتفعيل الاشتراك المميز.",
+  "premiumActivateFailed": "فشل تفعيل الاشتراك المميز. يرجى المحاولة مرة أخرى."
 }

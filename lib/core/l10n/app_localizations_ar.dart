@@ -776,4 +776,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get premiumName => 'الاسم الكامل';
+
+  @override
+  String get premiumRequiresAuth =>
+      'يرجى تسجيل الدخول أولاً لتفعيل الاشتراك المميز.';
+
+  @override
+  String get premiumActivateFailed =>
+      'فشل تفعيل الاشتراك المميز. يرجى المحاولة مرة أخرى.';
 }

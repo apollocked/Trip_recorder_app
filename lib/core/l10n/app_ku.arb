@@ -310,5 +310,7 @@
   "premiumFeatureBackup": "پشتگیری بەرێزوەی خۆکار",
   "premiumFeatureSupport": "پشتگیری یەکەمی بەکارهێنەران",
   "premiumEnterInfo": "زانیارییەکانت بنووسە",
-  "premiumName": "ناوی تەواو"
+  "premiumName": "ناوی تەواو",
+  "premiumRequiresAuth": "تکایە سەرەکا چوونە ژوورەوە بکە بۆ چالاککردنی پرەمیوم.",
+  "premiumActivateFailed": "چالاککردنی پرەمیوم سەرنەکەوتوو. تکایە دووبارە هەوڵ بدە."
 }

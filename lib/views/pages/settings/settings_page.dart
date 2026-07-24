@@ -67,53 +67,29 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _handlePremiumTap() async {
     final premium = context.read<PremiumService>();
     if (premium.isPremium) return;
+    final svc = SupabaseService();
+    if (!svc.isLoggedIn) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.premiumRequiresAuth),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
+      }
+      return;
+    }
     final result = await PremiumPopup.show(context);
     if (result == true && mounted) {
-      final nameCtrl = TextEditingController();
-      final emailCtrl = TextEditingController();
-      final confirmed = await showDialog<bool>(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text(AppLocalizations.of(ctx)!.premiumEnterInfo),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameCtrl,
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(ctx)!.premiumName,
-                  border: const OutlineInputBorder(),
-                  isDense: true,
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: emailCtrl,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(ctx)!.email,
-                  border: const OutlineInputBorder(),
-                  isDense: true,
-                ),
-              ),
-            ],
+      final success = await premium.activatePremium();
+      if (!success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.premiumActivateFailed),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(AppLocalizations.of(ctx)!.cancel),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(AppLocalizations.of(ctx)!.labelYes),
-            ),
-          ],
-        ),
-      );
-      if (confirmed == true && mounted) {
-        await premium.activatePremium(
-          name: nameCtrl.text.trim(),
-          email: emailCtrl.text.trim(),
         );
       }
     }

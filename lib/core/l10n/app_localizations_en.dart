@@ -778,4 +778,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get premiumName => 'Full Name';
+
+  @override
+  String get premiumRequiresAuth => 'Please sign in first to activate Premium.';
+
+  @override
+  String get premiumActivateFailed =>
+      'Failed to activate Premium. Please try again.';
 }

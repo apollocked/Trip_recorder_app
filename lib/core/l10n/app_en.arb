@@ -310,5 +310,7 @@
   "premiumFeatureBackup": "Automatic cloud backup",
   "premiumFeatureSupport": "Priority customer support",
   "premiumEnterInfo": "Enter your details",
-  "premiumName": "Full Name"
+  "premiumName": "Full Name",
+  "premiumRequiresAuth": "Please sign in first to activate Premium.",
+  "premiumActivateFailed": "Failed to activate Premium. Please try again."
 }
