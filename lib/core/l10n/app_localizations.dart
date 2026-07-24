@@ -1479,6 +1479,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Don\'t have an account? Sign up'**
   String get dontHaveAccount;
+
+  /// No description provided for @premiumTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premiumTitle;
+
+  /// No description provided for @premiumSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock the full Trip Recorder experience with cloud power.'**
+  String get premiumSubtitle;
+
+  /// No description provided for @premiumDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium to upload files, sync across devices, and more.'**
+  String get premiumDesc;
+
+  /// No description provided for @premiumActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate Premium'**
+  String get premiumActivate;
+
+  /// No description provided for @premiumNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe Later'**
+  String get premiumNotNow;
+
+  /// No description provided for @premiumActiveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Active'**
+  String get premiumActiveLabel;
+
+  /// No description provided for @premiumFeatureUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload files to the cloud'**
+  String get premiumFeatureUpload;
+
+  /// No description provided for @premiumFeatureSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync trips across all devices'**
+  String get premiumFeatureSync;
+
+  /// No description provided for @premiumFeatureBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic cloud backup'**
+  String get premiumFeatureBackup;
+
+  /// No description provided for @premiumFeatureSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority customer support'**
+  String get premiumFeatureSupport;
+
+  /// No description provided for @premiumEnterInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your details'**
+  String get premiumEnterInfo;
+
+  /// No description provided for @premiumName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get premiumName;
 }
 
 class _AppLocalizationsDelegate

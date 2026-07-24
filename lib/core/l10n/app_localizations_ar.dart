@@ -738,4 +738,42 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dontHaveAccount => 'ليس لديك حساب؟ إنشاء حساب';
+
+  @override
+  String get premiumTitle => 'الاشتراك المميز';
+
+  @override
+  String get premiumSubtitle =>
+      'افتح تجربة مسجّل الرحلات الكاملة بالقوة السحابية.';
+
+  @override
+  String get premiumDesc =>
+      'ترقية إلى الاشتراك المميز لرفع الملفات والمزامنة عبر الأجهزة والمزيد.';
+
+  @override
+  String get premiumActivate => 'تفعيل الاشتراك المميز';
+
+  @override
+  String get premiumNotNow => 'ربما لاحقاً';
+
+  @override
+  String get premiumActiveLabel => 'الاشتراك المميز مفعّل';
+
+  @override
+  String get premiumFeatureUpload => 'رفع الملفات إلى السحابة';
+
+  @override
+  String get premiumFeatureSync => 'مزامنة الرحلات عبر كل الأجهزة';
+
+  @override
+  String get premiumFeatureBackup => 'نسخ احتياطي سحابي تلقائي';
+
+  @override
+  String get premiumFeatureSupport => 'دعم أولوية العملاء';
+
+  @override
+  String get premiumEnterInfo => 'أدخل بياناتك';
+
+  @override
+  String get premiumName => 'الاسم الكامل';
 }

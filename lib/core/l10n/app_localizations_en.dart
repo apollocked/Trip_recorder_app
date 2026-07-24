@@ -740,4 +740,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dontHaveAccount => 'Don\'t have an account? Sign up';
+
+  @override
+  String get premiumTitle => 'Premium';
+
+  @override
+  String get premiumSubtitle =>
+      'Unlock the full Trip Recorder experience with cloud power.';
+
+  @override
+  String get premiumDesc =>
+      'Upgrade to Premium to upload files, sync across devices, and more.';
+
+  @override
+  String get premiumActivate => 'Activate Premium';
+
+  @override
+  String get premiumNotNow => 'Maybe Later';
+
+  @override
+  String get premiumActiveLabel => 'Premium Active';
+
+  @override
+  String get premiumFeatureUpload => 'Upload files to the cloud';
+
+  @override
+  String get premiumFeatureSync => 'Sync trips across all devices';
+
+  @override
+  String get premiumFeatureBackup => 'Automatic cloud backup';
+
+  @override
+  String get premiumFeatureSupport => 'Priority customer support';
+
+  @override
+  String get premiumEnterInfo => 'Enter your details';
+
+  @override
+  String get premiumName => 'Full Name';
 }

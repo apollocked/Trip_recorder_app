@@ -745,4 +745,42 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get dontHaveAccount => 'هەژمارت نییە؟ دروستکردنی هەژمار';
+
+  @override
+  String get premiumTitle => 'پرەمیوم';
+
+  @override
+  String get premiumSubtitle =>
+      'تەجروبەی تەواوی تۆمارکەری گەشت بە هێزی بەرێزوە بکەرەوە.';
+
+  @override
+  String get premiumDesc =>
+      'بەرکەوت بۆ پرەمیوم بۆ بارکردنی فایل و هاوبەشکردن لەگەڵ ئامێرە جیاوازەکان و زیاتر.';
+
+  @override
+  String get premiumActivate => 'چالاککردنی پرەمیوم';
+
+  @override
+  String get premiumNotNow => 'باشە دوایە';
+
+  @override
+  String get premiumActiveLabel => 'پرەمیوم چالاکە';
+
+  @override
+  String get premiumFeatureUpload => 'بارکردنی فایل بۆ بەرێزوە';
+
+  @override
+  String get premiumFeatureSync => 'هاوبەشکردنی گەشتەکان لەگەڵ هەموو ئامێرەکان';
+
+  @override
+  String get premiumFeatureBackup => 'پشتگیری بەرێزوەی خۆکار';
+
+  @override
+  String get premiumFeatureSupport => 'پشتگیری یەکەمی بەکارهێنەران';
+
+  @override
+  String get premiumEnterInfo => 'زانیارییەکانت بنووسە';
+
+  @override
+  String get premiumName => 'ناوی تەواو';
 }

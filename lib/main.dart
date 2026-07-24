@@ -11,6 +11,7 @@ import 'package:animations_in_flutter/core/theme/app_theme.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/notification_service.dart';
+import 'package:animations_in_flutter/services/premium_service.dart';
 import 'package:animations_in_flutter/services/supabase_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
 
@@ -27,6 +28,8 @@ Future<void> main() async {
   } catch (_) {}
   final prefs = await SharedPreferences.getInstance();
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
+  final premiumService = PremiumService();
+  await premiumService.load();
   runApp(
     MultiProvider(
       providers: [
@@ -45,6 +48,7 @@ Future<void> main() async {
             savedThemeMode: prefs.getString(ThemeService.themeModeKey),
           ),
         ),
+        ChangeNotifierProvider.value(value: premiumService),
       ],
       child: const MyApp(),
     ),

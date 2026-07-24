@@ -297,5 +297,18 @@
   "signUp": "دروستکردنی هەژمار",
   "signOut": "چوونە دەرەوە",
   "alreadyHaveAccount": "هەژمارت هەیە؟ چوونە ژوورەوە",
-  "dontHaveAccount": "هەژمارت نییە؟ دروستکردنی هەژمار"
+  "dontHaveAccount": "هەژمارت نییە؟ دروستکردنی هەژمار",
+
+  "premiumTitle": "پرەمیوم",
+  "premiumSubtitle": "تەجروبەی تەواوی تۆمارکەری گەشت بە هێزی بەرێزوە بکەرەوە.",
+  "premiumDesc": "بەرکەوت بۆ پرەمیوم بۆ بارکردنی فایل و هاوبەشکردن لەگەڵ ئامێرە جیاوازەکان و زیاتر.",
+  "premiumActivate": "چالاککردنی پرەمیوم",
+  "premiumNotNow": "باشە دوایە",
+  "premiumActiveLabel": "پرەمیوم چالاکە",
+  "premiumFeatureUpload": "بارکردنی فایل بۆ بەرێزوە",
+  "premiumFeatureSync": "هاوبەشکردنی گەشتەکان لەگەڵ هەموو ئامێرەکان",
+  "premiumFeatureBackup": "پشتگیری بەرێزوەی خۆکار",
+  "premiumFeatureSupport": "پشتگیری یەکەمی بەکارهێنەران",
+  "premiumEnterInfo": "زانیارییەکانت بنووسە",
+  "premiumName": "ناوی تەواو"
 }

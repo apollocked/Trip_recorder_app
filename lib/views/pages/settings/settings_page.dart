@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
+import 'package:animations_in_flutter/services/premium_service.dart';
 import 'package:animations_in_flutter/services/supabase_service.dart';
 import 'package:animations_in_flutter/services/theme_service.dart';
 import 'package:animations_in_flutter/views/pages/settings/privacy_policy_page.dart';
+import 'package:animations_in_flutter/views/widgets/shared/premium_popup.dart';
 import 'package:animations_in_flutter/core/route_transition.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -62,6 +64,61 @@ class _SettingsPageState extends State<SettingsPage> {
     if (mounted) setState(() => _isLoading = false);
   }
 
+  Future<void> _handlePremiumTap() async {
+    final premium = context.read<PremiumService>();
+    if (premium.isPremium) return;
+    final result = await PremiumPopup.show(context);
+    if (result == true && mounted) {
+      final nameCtrl = TextEditingController();
+      final emailCtrl = TextEditingController();
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text(AppLocalizations.of(ctx)!.premiumEnterInfo),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameCtrl,
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(ctx)!.premiumName,
+                  border: const OutlineInputBorder(),
+                  isDense: true,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: emailCtrl,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(ctx)!.email,
+                  border: const OutlineInputBorder(),
+                  isDense: true,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(AppLocalizations.of(ctx)!.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text(AppLocalizations.of(ctx)!.labelYes),
+            ),
+          ],
+        ),
+      );
+      if (confirmed == true && mounted) {
+        await premium.activatePremium(
+          name: nameCtrl.text.trim(),
+          email: emailCtrl.text.trim(),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -69,6 +126,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final loc = AppLocalizations.of(context)!;
     final svc = SupabaseService();
     final isLoggedIn = svc.isLoggedIn;
+    final premium = context.watch<PremiumService>();
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -82,6 +140,93 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 92 + MediaQuery.of(context).padding.bottom),
         children: [
+          _SectionCard(
+            icon: Icons.workspace_premium_rounded,
+            title: loc.premiumTitle,
+            colorScheme: colorScheme,
+            textTheme: textTheme,
+            child: premium.isPremium
+                ? Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 28,
+                        backgroundColor: colorScheme.primaryContainer,
+                        child: Text(
+                          premium.initials,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onPrimaryContainer,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              premium.userName,
+                              style: textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              premium.userEmail,
+                              style: textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: colorScheme.primaryContainer,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                loc.premiumActiveLabel,
+                                style: textTheme.labelSmall?.copyWith(
+                                  color: colorScheme.onPrimaryContainer,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        loc.premiumDesc,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton.icon(
+                          onPressed: _handlePremiumTap,
+                          icon: const Icon(Icons.workspace_premium_rounded, size: 20),
+                          label: Text(loc.premiumActivate),
+                          style: FilledButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
+
+          const SizedBox(height: 14),
           _SectionCard(
             icon: Icons.cloud_outlined,
             title: loc.cloudSync,

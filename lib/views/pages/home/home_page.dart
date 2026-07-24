@@ -1,10 +1,13 @@
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/services/premium_service.dart';
 import 'package:animations_in_flutter/views/pages/currency/currency_converter_page.dart';
 import 'package:animations_in_flutter/views/pages/favorites/favorites_page.dart';
 import 'package:animations_in_flutter/views/pages/memory/memory_page.dart';
 import 'package:animations_in_flutter/views/widgets/home/title_widget.dart';
 import 'package:animations_in_flutter/views/widgets/home/trip_list_widget.dart';
+import 'package:animations_in_flutter/views/widgets/shared/premium_banner.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/route_transition.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,6 +24,7 @@ class _HomeState extends State<HomePage> {
     final l10n = AppLocalizations.of(context)!;
     final bottomInset = MediaQuery.of(context).padding.bottom;
     final heroHeight = size.height > 700 ? size.height * 0.28 : size.height * 0.22;
+    final premium = context.watch<PremiumService>();
 
     return Scaffold(
       backgroundColor: c.surface,
@@ -60,6 +64,7 @@ class _HomeState extends State<HomePage> {
                   ],
                 ),
               ),
+              if (premium.isPremium) const PremiumBanner(),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 14,

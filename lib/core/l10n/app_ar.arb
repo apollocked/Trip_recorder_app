@@ -297,5 +297,18 @@
   "signUp": "إنشاء حساب",
   "signOut": "تسجيل الخروج",
   "alreadyHaveAccount": "لديك حساب بالفعل؟ تسجيل الدخول",
-  "dontHaveAccount": "ليس لديك حساب؟ إنشاء حساب"
+  "dontHaveAccount": "ليس لديك حساب؟ إنشاء حساب",
+
+  "premiumTitle": "الاشتراك المميز",
+  "premiumSubtitle": "افتح تجربة مسجّل الرحلات الكاملة بالقوة السحابية.",
+  "premiumDesc": "ترقية إلى الاشتراك المميز لرفع الملفات والمزامنة عبر الأجهزة والمزيد.",
+  "premiumActivate": "تفعيل الاشتراك المميز",
+  "premiumNotNow": "ربما لاحقاً",
+  "premiumActiveLabel": "الاشتراك المميز مفعّل",
+  "premiumFeatureUpload": "رفع الملفات إلى السحابة",
+  "premiumFeatureSync": "مزامنة الرحلات عبر كل الأجهزة",
+  "premiumFeatureBackup": "نسخ احتياطي سحابي تلقائي",
+  "premiumFeatureSupport": "دعم أولوية العملاء",
+  "premiumEnterInfo": "أدخل بياناتك",
+  "premiumName": "الاسم الكامل"
 }

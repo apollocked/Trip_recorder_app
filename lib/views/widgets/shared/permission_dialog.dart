@@ -2,11 +2,14 @@
 
 import 'dart:io';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/services/premium_service.dart';
 import 'package:animations_in_flutter/views/widgets/shared/image_source_sheet.dart';
+import 'package:animations_in_flutter/views/widgets/shared/premium_popup.dart';
 import 'package:animations_in_flutter/views/widgets/shared/soft_ask_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 bool _photoPermissionAsked = false;
 
@@ -24,10 +27,19 @@ Future<bool> _isPhotoPermissionGranted() async {
   return false;
 }
 
+Future<bool> _checkPremiumOrShowPopup(BuildContext context) async {
+  final premium = context.read<PremiumService>();
+  if (premium.isPremium) return true;
+  final result = await PremiumPopup.show(context);
+  return result == true;
+}
+
 Future<void> checkExistingPermissions(
   BuildContext context,
   Function(File) onImagePicked,
 ) async {
+  final hasPremium = await _checkPremiumOrShowPopup(context);
+  if (!hasPremium) return;
   final granted = await _isPhotoPermissionGranted();
   if (granted || _photoPermissionAsked) {
     showImageSourceSheet(context, onImagePicked);
@@ -47,6 +59,8 @@ Future<void> pickMultipleImages(
   BuildContext context,
   Function(List<File>) onImagesPicked,
 ) async {
+  final hasPremium = await _checkPremiumOrShowPopup(context);
+  if (!hasPremium) return;
   final granted = await _isPhotoPermissionGranted();
   if (granted || _photoPermissionAsked) {
     await _pickMultiple(onImagesPicked);

@@ -297,5 +297,18 @@
   "signUp": "Sign Up",
   "signOut": "Sign Out",
   "alreadyHaveAccount": "Already have an account? Sign in",
-  "dontHaveAccount": "Don't have an account? Sign up"
+  "dontHaveAccount": "Don't have an account? Sign up",
+
+  "premiumTitle": "Premium",
+  "premiumSubtitle": "Unlock the full Trip Recorder experience with cloud power.",
+  "premiumDesc": "Upgrade to Premium to upload files, sync across devices, and more.",
+  "premiumActivate": "Activate Premium",
+  "premiumNotNow": "Maybe Later",
+  "premiumActiveLabel": "Premium Active",
+  "premiumFeatureUpload": "Upload files to the cloud",
+  "premiumFeatureSync": "Sync trips across all devices",
+  "premiumFeatureBackup": "Automatic cloud backup",
+  "premiumFeatureSupport": "Priority customer support",
+  "premiumEnterInfo": "Enter your details",
+  "premiumName": "Full Name"
 }
