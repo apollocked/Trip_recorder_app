@@ -525,6 +525,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String errorLoadingData(String error) {
+    return 'Error loading data: $error';
+  }
+
+  @override
   String get tripNotFound => 'Trip not found';
 
   @override

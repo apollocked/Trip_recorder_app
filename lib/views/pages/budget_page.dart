@@ -52,7 +52,7 @@ class _BudgetPageState extends State<BudgetPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              AppLocalizations.of(context)!.errorSavingTrip(e.toString()),
+              AppLocalizations.of(context)!.errorLoadingData(e.toString()),
             ),
           ),
         );

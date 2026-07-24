@@ -70,7 +70,7 @@ class _MainShellState extends State<MainShell>
           Positioned(
             left: 16,
             right: 16,
-            bottom: 32,
+            bottom: 32 + MediaQuery.of(context).padding.bottom,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: BackdropFilter(

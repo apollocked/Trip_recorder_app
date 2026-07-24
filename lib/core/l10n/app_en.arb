@@ -191,6 +191,12 @@
       "error": {"type": "String"}
     }
   },
+  "errorLoadingData": "Error loading data: {error}",
+  "@errorLoadingData": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
   "tripNotFound": "Trip not found",
   "totalLabel": "total",
   "notRated": "--",

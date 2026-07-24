@@ -16,7 +16,7 @@ class CurrencyDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: selectedCurrency,
+      initialValue: selectedCurrency,
       decoration: InputDecoration(
         filled: true,
         fillColor: colorScheme.surface,
@@ -26,11 +26,16 @@ class CurrencyDropdown extends StatelessWidget {
         ),
       ),
       items: CurrencyInfo.all
-          .map((c) => DropdownMenuItem(
+          .map(
+            (c) => DropdownMenuItem(
               value: c.code,
-              child: Text('${c.symbol}  ${c.code} — ${c.name}')))
+              child: Text('${c.symbol}  ${c.code} — ${c.name}'),
+            ),
+          )
           .toList(),
-      onChanged: (val) { if (val != null) onChanged(val); },
+      onChanged: (val) {
+        if (val != null) onChanged(val);
+      },
     );
   }
 }

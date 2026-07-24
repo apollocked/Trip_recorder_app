@@ -191,6 +191,12 @@
       "error": {"type": "String"}
     }
   },
+  "errorLoadingData": "خطأ في تحميل البيانات: {error}",
+  "@errorLoadingData": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
   "tripNotFound": "الرحلة غير موجودة",
   "totalLabel": "المجموع",
   "notRated": "--",

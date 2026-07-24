@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/model/journal_entry.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart';
@@ -44,7 +45,7 @@ class _JournalPageState extends State<JournalPage> {
         setState(() => _isLoading = false);
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.errorSavingTrip(e.toString()))),
+          SnackBar(content: Text(l10n.errorLoadingData(e.toString()))),
         );
       }
     }

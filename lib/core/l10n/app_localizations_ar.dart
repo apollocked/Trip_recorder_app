@@ -523,6 +523,11 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String errorLoadingData(String error) {
+    return 'خطأ في تحميل البيانات: $error';
+  }
+
+  @override
   String get tripNotFound => 'الرحلة غير موجودة';
 
   @override

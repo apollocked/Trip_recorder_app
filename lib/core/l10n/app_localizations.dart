@@ -1090,6 +1090,12 @@ abstract class AppLocalizations {
   /// **'Error saving trip: {error}'**
   String errorSavingTrip(String error);
 
+  /// No description provided for @errorLoadingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading data: {error}'**
+  String errorLoadingData(String error);
+
   /// No description provided for @tripNotFound.
   ///
   /// In en, this message translates to:

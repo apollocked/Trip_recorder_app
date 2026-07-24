@@ -191,6 +191,12 @@
       "error": {"type": "String"}
     }
   },
+  "errorLoadingData": "هەڵە لە بارکردنی زانیاری: {error}",
+  "@errorLoadingData": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
   "tripNotFound": "گەشت نەدۆزرایەوە",
   "totalLabel": "کۆی گشتی",
   "notRated": "--",

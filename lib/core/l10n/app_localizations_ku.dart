@@ -527,6 +527,11 @@ class AppLocalizationsKu extends AppLocalizations {
   }
 
   @override
+  String errorLoadingData(String error) {
+    return 'هەڵە لە بارکردنی زانیاری: $error';
+  }
+
+  @override
   String get tripNotFound => 'گەشت نەدۆزرایەوە';
 
   @override
