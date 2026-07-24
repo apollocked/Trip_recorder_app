@@ -5,7 +5,7 @@ import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/model/trip.dart';
-import 'package:animations_in_flutter/views/pages/details_page.dart';
+import 'package:animations_in_flutter/views/pages/trip/details_page.dart';
 import 'package:animations_in_flutter/core/route_transition.dart';
 
 class MemoryExpandedTripCard extends StatelessWidget {

@@ -2,8 +2,8 @@
 
 import 'dart:io';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/views/widgets/image_source_sheet.dart';
-import 'package:animations_in_flutter/views/widgets/soft_ask_dialog.dart';
+import 'package:animations_in_flutter/views/widgets/shared/image_source_sheet.dart';
+import 'package:animations_in_flutter/views/widgets/shared/soft_ask_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';

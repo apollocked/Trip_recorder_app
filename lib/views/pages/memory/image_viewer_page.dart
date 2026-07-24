@@ -1,6 +1,6 @@
 import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:animations_in_flutter/views/widgets/cover_image_leading.dart';
+import 'package:animations_in_flutter/views/widgets/shared/cover_image_leading.dart';
 
 class ImageViewerPage extends StatelessWidget {
   final List<String> imagePaths;

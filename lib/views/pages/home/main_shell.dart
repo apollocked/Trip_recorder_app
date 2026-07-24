@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui' show ImageFilter;
-import 'package:animations_in_flutter/views/pages/trip_type_selector.dart';
+import 'package:animations_in_flutter/views/pages/trip/trip_type_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';

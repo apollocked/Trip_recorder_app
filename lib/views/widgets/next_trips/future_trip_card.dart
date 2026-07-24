@@ -4,10 +4,10 @@ import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
-import 'package:animations_in_flutter/views/pages/add_trip_page.dart';
-import 'package:animations_in_flutter/views/pages/details_page.dart';
-import 'package:animations_in_flutter/views/pages/packing_list_page.dart';
-import 'package:animations_in_flutter/views/widgets/confirmation_dialog.dart' show showConfirmationDialog;
+import 'package:animations_in_flutter/views/pages/trip/add_trip_page.dart';
+import 'package:animations_in_flutter/views/pages/trip/details_page.dart';
+import 'package:animations_in_flutter/views/pages/packing_list/packing_list_page.dart';
+import 'package:animations_in_flutter/views/widgets/shared/confirmation_dialog.dart' show showConfirmationDialog;
 import 'package:animations_in_flutter/core/route_transition.dart';
 
 class FutureTripCard extends StatelessWidget {

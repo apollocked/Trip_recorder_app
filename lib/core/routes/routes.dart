@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
-import 'package:animations_in_flutter/views/pages/home_page.dart';
-import 'package:animations_in_flutter/views/pages/next_trips_page.dart';
-import 'package:animations_in_flutter/views/pages/on_boarding_page.dart';
-import 'package:animations_in_flutter/views/pages/settings_page.dart';
-import 'package:animations_in_flutter/views/pages/statistics_page.dart';
-import 'package:animations_in_flutter/views/pages/main_shell.dart';
+import 'package:animations_in_flutter/views/pages/home/home_page.dart';
+import 'package:animations_in_flutter/views/pages/next_trips/next_trips_page.dart';
+import 'package:animations_in_flutter/views/pages/settings/on_boarding_page.dart';
+import 'package:animations_in_flutter/views/pages/settings/settings_page.dart';
+import 'package:animations_in_flutter/views/pages/statistics/statistics_page.dart';
+import 'package:animations_in_flutter/views/pages/home/main_shell.dart';
 import 'package:go_router/go_router.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();

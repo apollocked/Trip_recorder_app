@@ -1,7 +1,7 @@
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
-import 'package:animations_in_flutter/views/pages/currency_converter_page.dart';
-import 'package:animations_in_flutter/views/pages/favorites_page.dart';
-import 'package:animations_in_flutter/views/pages/memory_page.dart';
+import 'package:animations_in_flutter/views/pages/currency/currency_converter_page.dart';
+import 'package:animations_in_flutter/views/pages/favorites/favorites_page.dart';
+import 'package:animations_in_flutter/views/pages/memory/memory_page.dart';
 import 'package:animations_in_flutter/views/widgets/home/title_widget.dart';
 import 'package:animations_in_flutter/views/widgets/home/trip_list_widget.dart';
 import 'package:flutter/material.dart';

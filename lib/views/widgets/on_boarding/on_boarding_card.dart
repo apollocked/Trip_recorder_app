@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'package:animations_in_flutter/views/pages/on_boarding_page.dart';
+import 'package:animations_in_flutter/views/pages/settings/on_boarding_page.dart';
 import 'package:flutter/material.dart';
 
 class FeatureBadge {
