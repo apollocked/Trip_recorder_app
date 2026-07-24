@@ -170,7 +170,7 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReminderBanner(Trip trip, ColorScheme colorScheme, var l10n) {
+  Widget _buildReminderBanner(Trip trip, ColorScheme colorScheme, AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -182,7 +182,7 @@ class DetailsPage extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            '${l10n.reminder}: ${trip.reminderDate!.day}/${trip.reminderDate!.month}/${trip.reminderDate!.year} '
+            '${l10n.reminder}: ${l10n.formatDateAbbreviated(trip.reminderDate!)} '
             '${trip.reminderDate!.hour.toString().padLeft(2, '0')}:${trip.reminderDate!.minute.toString().padLeft(2, '0')}',
             style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13),
           ),
@@ -201,7 +201,7 @@ class DetailsPage extends StatelessWidget {
     );
     buffer.writeln('${l10n.nights}: ${trip.nights}');
     buffer.writeln(
-      '${l10n.departureDate}: ${trip.date.day}/${trip.date.month}/${trip.date.year}',
+      '${l10n.departureDate}: ${l10n.formatDateAbbreviated(trip.date)}',
     );
     if (trip.rating > 0) {
       buffer.writeln(l10n.exportRating(trip.rating.toStringAsFixed(1)));

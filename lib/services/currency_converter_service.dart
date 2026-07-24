@@ -49,10 +49,11 @@ class CurrencyConverterService {
     return Map.from(_fallbackRates);
   }
 
-  static Future<double> convert(double amount, String from, String to) async {
+  static Future<double?> convert(double amount, String from, String to) async {
     if (from == to) return amount;
     final rates = await fetchRates(from);
-    final rate = rates[to] ?? 1.0;
+    final rate = rates[to];
+    if (rate == null) return null;
     return amount * rate;
   }
 

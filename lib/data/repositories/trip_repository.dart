@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import '../../model/trip.dart';
 import '../../model/trip_category.dart';
@@ -36,6 +37,7 @@ class TripRepository {
       currency: currency,
       reminderDate: reminderDate,
     );
+
     final savedPaths = <String>[];
     if (imageFiles.isNotEmpty) {
       final paths = await _imageService.saveMultipleImages(imageFiles, trip.id);
@@ -44,7 +46,18 @@ class TripRepository {
     savedPaths.addAll(assetImagePaths);
 
     final savedTrip = trip.copyWith(imagePaths: savedPaths);
-    await _database.insertTrip(savedTrip);
+
+    try {
+      await _database.insertTrip(savedTrip);
+    } catch (e) {
+      for (final path in savedPaths) {
+        if (!_imageService.isAssetImage(path)) {
+          await _imageService.deleteImage(path);
+        }
+      }
+      rethrow;
+    }
+
     return savedTrip;
   }
 
@@ -108,11 +121,38 @@ class TripRepository {
     );
 
     await _database.updateTrip(updatedTrip);
+
+    final removedPaths = oldTrip.imagePaths
+        .where((p) => !finalPaths.contains(p))
+        .toList();
+    for (final path in removedPaths) {
+      await _imageService.deleteImage(path);
+    }
+
     return updatedTrip;
   }
 
   Future<void> deleteTrip(String id) async {
-    await _imageService.deleteAllTripImages(id);
+    final trip = await _database.getTripById(id);
+    if (trip != null) {
+      await _imageService.deleteAllTripImages(id);
+      final db = await _database.database;
+      final journalMaps = await db.query(
+        'journal_entries',
+        columns: ['image_paths'],
+        where: 'trip_id = ?',
+        whereArgs: [id],
+      );
+      for (final map in journalMaps) {
+        final pathsJson = map['image_paths'] as String? ?? '[]';
+        final List<dynamic> imagePaths = jsonDecode(pathsJson);
+        for (final path in imagePaths) {
+          if (path is String && !_imageService.isAssetImage(path)) {
+            await _imageService.deleteImage(path);
+          }
+        }
+      }
+    }
     await _database.deleteTrip(id);
   }
 

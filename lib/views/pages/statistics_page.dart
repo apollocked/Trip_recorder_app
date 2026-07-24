@@ -24,7 +24,15 @@ class StatisticsPage extends StatelessWidget {
     final stats = tripProvider.statistics;
     final loc = AppLocalizations.of(context)!;
     final trips = tripProvider.pastTrips;
-    final spentByCurrency = stats['spentByCurrency'] as Map<String, double>;
+    final spentByCurrency = (stats['spentByCurrency'] as Map<String, double>?) ?? {};
+    final totalTrips = (stats['totalTrips'] as int?) ?? 0;
+    final totalNights = (stats['totalNights'] as int?) ?? 0;
+    final avgRating = (stats['avgRating'] as double?) ?? 0.0;
+    final likedCount = (stats['likedCount'] as int?) ?? 0;
+    final totalSpent = (stats['totalSpent'] as double?) ?? 0.0;
+    final categoryCounts = (stats['categoryCounts'] as Map?) ?? {};
+    final topCategory = stats['topCategory'];
+    final topDestination = stats['topDestination'] as String?;
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -50,7 +58,7 @@ class StatisticsPage extends StatelessWidget {
                 children: [
                   StatCard(
                     title: loc.totalTrips,
-                    value: '${stats['totalTrips']}',
+                    value: '$totalTrips',
                     icon: Icons.flight_takeoff_rounded,
                     iconColor: colorScheme.primary,
                     colorScheme: colorScheme,
@@ -64,7 +72,7 @@ class StatisticsPage extends StatelessWidget {
                         Expanded(
                           child: StatCard(
                             title: loc.totalNights,
-                            value: '${stats['totalNights']}',
+                            value: '$totalNights',
                             icon: Icons.bedtime_rounded,
                             iconColor: AppColors.statNights,
                             colorScheme: colorScheme,
@@ -74,8 +82,8 @@ class StatisticsPage extends StatelessWidget {
                         Expanded(
                           child: StatCard(
                             title: loc.avgRating,
-                            value: (stats['avgRating'] as double) > 0
-                                ? (stats['avgRating'] as double)
+                            value: avgRating > 0
+                                ? avgRating
                                       .toStringAsFixed(1)
                                 : loc.notRated,
                             icon: Icons.star_rounded,
@@ -88,7 +96,7 @@ class StatisticsPage extends StatelessWidget {
                     const SizedBox(height: 12),
                     StatCard(
                       title: loc.favorites,
-                      value: '${stats['likedCount']}',
+                      value: '$likedCount',
                       icon: Icons.favorite_rounded,
                       iconColor: AppColors.statFavorites,
                       colorScheme: colorScheme,
@@ -106,7 +114,7 @@ class StatisticsPage extends StatelessWidget {
                               child: StatCard(
                                 title: loc.totalSpent,
                                 value:
-                                    '${(stats['totalSpent'] as double).toStringAsFixed(0)} ${spentByCurrency.keys.first}',
+                                    '${totalSpent.toStringAsFixed(0)} ${spentByCurrency.keys.first}',
                                 icon: Icons.attach_money_rounded,
                                 iconColor: AppColors.statSpending,
                                 colorScheme: colorScheme,
@@ -116,7 +124,7 @@ class StatisticsPage extends StatelessWidget {
                             Expanded(
                               child: StatCard(
                                 title: loc.totalNights,
-                                value: '${stats['totalNights']}',
+                                value: '$totalNights',
                                 icon: Icons.bedtime_rounded,
                                 iconColor: AppColors.statNights,
                                 colorScheme: colorScheme,
@@ -130,8 +138,8 @@ class StatisticsPage extends StatelessWidget {
                             Expanded(
                               child: StatCard(
                                 title: loc.avgRating,
-                                value: (stats['avgRating'] as double) > 0
-                                    ? (stats['avgRating'] as double)
+                                value: avgRating > 0
+                                    ? avgRating
                                           .toStringAsFixed(1)
                                     : loc.notRated,
                                 icon: Icons.star_rounded,
@@ -143,7 +151,7 @@ class StatisticsPage extends StatelessWidget {
                             Expanded(
                               child: StatCard(
                                 title: loc.favorites,
-                                value: '${stats['likedCount']}',
+                                value: '$likedCount',
                                 icon: Icons.favorite_rounded,
                                 iconColor: AppColors.statFavorites,
                                 colorScheme: colorScheme,
@@ -157,7 +165,7 @@ class StatisticsPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                  if ((stats['categoryCounts'] as Map).isNotEmpty) ...[
+                  if (categoryCounts.isNotEmpty) ...[
                     const SizedBox(height: 24),
                     Text(
                       loc.tripsByCategory,
@@ -167,7 +175,7 @@ class StatisticsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     CategoryPieChart(
-                      categoryCounts: stats['categoryCounts'] as Map,
+                      categoryCounts: categoryCounts,
                       colorScheme: colorScheme,
                       l10n: loc,
                     ),
@@ -183,7 +191,7 @@ class StatisticsPage extends StatelessWidget {
                     const SizedBox(height: 12),
                     SpendingBarChart(trips: trips, colorScheme: colorScheme),
                   ],
-                  if (stats['topCategory'] != null) ...[
+                  if (topCategory != null) ...[
                     const SizedBox(height: 24),
                     Text(
                       loc.topCategory,
@@ -194,17 +202,17 @@ class StatisticsPage extends StatelessWidget {
                     const SizedBox(height: 8),
                     CategoryBreakdown<TripCategory>(
                       categoryCounts:
-                          stats['categoryCounts'] as Map<TripCategory, int>,
+                          categoryCounts.map((k, v) => MapEntry(k as TripCategory, v as int)),
                       colorScheme: colorScheme,
                       l10n: loc,
                       labeler: (l, c) => c.label(l),
                     ),
                   ],
-                  if (stats['topDestination'] != null) ...[
+                  if (topDestination != null) ...[
                     const SizedBox(height: 24),
                     StatCard(
                       title: loc.mostVisited,
-                      value: stats['topDestination'] as String,
+                      value: topDestination,
                       icon: Icons.place_rounded,
                       iconColor: colorScheme.tertiary,
                       colorScheme: colorScheme,

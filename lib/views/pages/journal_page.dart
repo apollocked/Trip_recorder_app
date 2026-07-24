@@ -173,7 +173,7 @@ class _JournalPageState extends State<JournalPage> {
                                         ),
                                       ),
                                       Text(
-                                        '${entry.date.day}/${entry.date.month}/${entry.date.year}',
+                                        l10n.formatDateAbbreviated(entry.date),
                                         style: TextStyle(
                                           color: colorScheme.onSurfaceVariant,
                                           fontSize: 12,

@@ -156,7 +156,7 @@ class _FavoriteTripCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '${trip.nights} nights',
+                        '${trip.nights} ${loc.nightsLabel}',
                         style: TextStyle(
                           fontSize: 12,
                           color: colorScheme.onSurfaceVariant,

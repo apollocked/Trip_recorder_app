@@ -16,7 +16,7 @@ class CurrencyDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      initialValue: selectedCurrency,
+      value: selectedCurrency,
       decoration: InputDecoration(
         filled: true,
         fillColor: colorScheme.surface,

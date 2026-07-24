@@ -47,7 +47,7 @@ Future<ExpenseDialogResult?> showExpenseDialog(BuildContext context) async {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<ExpenseCategory>(
-              initialValue: selectedCategory,
+              value: selectedCategory,
               decoration: InputDecoration(labelText: l10n.expenseCategory),
               items: ExpenseCategory.values.map((cat) {
                 return DropdownMenuItem(
