@@ -30,6 +30,11 @@ Future<void> main() async {
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
   final premiumService = PremiumService();
   await premiumService.load();
+  final themeService = ThemeService(
+    prefs: prefs,
+    savedThemeMode: prefs.getString(ThemeService.themeModeKey),
+  );
+  themeService.loadPremiumTheme();
   runApp(
     MultiProvider(
       providers: [
@@ -42,12 +47,7 @@ Future<void> main() async {
             savedLanguageCode: prefs.getString(LanguageService.localeKey),
           ),
         ),
-        ChangeNotifierProvider(
-          create: (_) => ThemeService(
-            prefs: prefs,
-            savedThemeMode: prefs.getString(ThemeService.themeModeKey),
-          ),
-        ),
+        ChangeNotifierProvider.value(value: themeService),
         ChangeNotifierProvider.value(value: premiumService),
       ],
       child: const MyApp(),
@@ -73,7 +73,28 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.watch<LanguageService>().locale;
-    final themeMode = context.watch<ThemeService>().themeMode;
+    final themeService = context.watch<ThemeService>();
+    final themeMode = themeService.themeMode;
+
+    ThemeData lightTheme;
+    ThemeData darkTheme;
+    switch (themeService.premiumTheme) {
+      case 'midnight':
+        lightTheme = AppTheme.midnightLight();
+        darkTheme = AppTheme.midnightDark();
+        break;
+      case 'sunset':
+        lightTheme = AppTheme.sunsetLight();
+        darkTheme = AppTheme.sunsetDark();
+        break;
+      case 'forest':
+        lightTheme = AppTheme.forestLight();
+        darkTheme = AppTheme.forestDark();
+        break;
+      default:
+        lightTheme = AppTheme.light();
+        darkTheme = AppTheme.dark();
+    }
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
@@ -88,8 +109,8 @@ class _MyAppState extends State<MyApp> {
         );
       },
       routerConfig: _router,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       themeMode: themeMode,
     );
   }

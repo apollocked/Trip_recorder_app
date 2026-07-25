@@ -76,10 +76,7 @@ class _AddTripPageState extends State<AddTripPage> {
 
   Future<void> _handleSave() async {
     final premium = context.read<PremiumService>();
-    final provider = context.read<TripProvider>();
     if (widget.tripId == null && !premium.canAddTrip) {
-      final currentCount = provider.trips.length;
-      final msg = premium.remainingTripsMessage(currentCount);
       if (mounted) {
         final result = await PremiumPopup.show(context);
         if (result == true && mounted) {

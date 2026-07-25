@@ -785,4 +785,96 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get premiumActivateFailed =>
       'Failed to activate Premium. Please try again.';
+
+  @override
+  String get premiumAdvancedStats => 'Advanced Statistics';
+
+  @override
+  String get premiumAdvancedStatsDesc =>
+      'Unlock charts, spending breakdowns, and detailed analytics.';
+
+  @override
+  String get premiumUpgrade => 'Upgrade to Premium';
+
+  @override
+  String get premiumPhotoLimit => 'Photo limit reached';
+
+  @override
+  String get premiumTripLimit => 'Trip limit reached';
+
+  @override
+  String get colorScheme => 'Color Scheme';
+
+  @override
+  String get customCategories => 'Custom Categories';
+
+  @override
+  String get customCategoriesDesc =>
+      'Create your own trip and expense categories.';
+
+  @override
+  String get addTripCategory => 'Add Trip Category';
+
+  @override
+  String get addExpenseCategory => 'Add Expense Category';
+
+  @override
+  String get categoryAdded => 'Category added successfully!';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get prioritySupport => 'Priority Support';
+
+  @override
+  String get premiumSupportDesc =>
+      'Get priority customer support with Premium.';
+
+  @override
+  String get premiumSupportActiveDesc =>
+      'Contact us directly for priority assistance.';
+
+  @override
+  String get supportContactEmail => 'support@triprecorder.app';
+
+  @override
+  String get contactSupport => 'Contact Support';
+
+  @override
+  String get exportPdf => 'Export as PDF';
+
+  @override
+  String get shareTrip => 'Share Trip';
+
+  @override
+  String get annualReport => 'Annual Report';
+
+  @override
+  String get annualReportDesc =>
+      'Generate a beautiful summary of your year in travel.';
+
+  @override
+  String get tripTemplate => 'Trip Template';
+
+  @override
+  String get saveAsTemplate => 'Save as Template';
+
+  @override
+  String get useTemplate => 'Use Template';
+
+  @override
+  String get noTemplates => 'No templates saved yet';
+
+  @override
+  String get templateSaved => 'Template saved!';
+
+  @override
+  String get templateUsed => 'Template applied!';
+
+  @override
+  String get manageCategories => 'Manage Categories';
+
+  @override
+  String get confirmDeleteCategory => 'Delete this category?';
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/core/l10n/l10n.dart';
+import 'package:animations_in_flutter/data/repositories/custom_category_repository.dart';
+import 'package:animations_in_flutter/model/custom_category.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/premium_service.dart';
 import 'package:animations_in_flutter/services/supabase_service.dart';
@@ -312,39 +314,185 @@ class _SettingsPageState extends State<SettingsPage> {
             title: loc.theme,
             colorScheme: colorScheme,
             textTheme: textTheme,
-            child: Consumer<ThemeService>(
-              builder: (context, themeService, _) {
-                return Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
+            child: Consumer2<ThemeService, PremiumService>(
+              builder: (context, themeService, premium, _) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ChoiceChip(
-                      avatar: const Icon(Icons.light_mode_outlined),
-                      label: Text(loc.light),
-                      selected: themeService.themeMode == ThemeMode.light,
-                      onSelected: (selected) {
-                        if (selected) {
-                          themeService.setThemeMode(ThemeMode.light);
-                        }
-                      },
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        ChoiceChip(
+                          avatar: const Icon(Icons.light_mode_outlined),
+                          label: Text(loc.light),
+                          selected: themeService.themeMode == ThemeMode.light,
+                          onSelected: (selected) {
+                            if (selected) {
+                              themeService.setThemeMode(ThemeMode.light);
+                            }
+                          },
+                        ),
+                        ChoiceChip(
+                          avatar: const Icon(Icons.dark_mode_outlined),
+                          label: Text(loc.dark),
+                          selected: themeService.themeMode == ThemeMode.dark,
+                          onSelected: (selected) {
+                            if (selected) themeService.setThemeMode(ThemeMode.dark);
+                          },
+                        ),
+                        ChoiceChip(
+                          avatar: const Icon(Icons.phone_android_outlined),
+                          label: Text(loc.system),
+                          selected: themeService.themeMode == ThemeMode.system,
+                          onSelected: (selected) {
+                            if (selected) {
+                              themeService.setThemeMode(ThemeMode.system);
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    ChoiceChip(
-                      avatar: const Icon(Icons.dark_mode_outlined),
-                      label: Text(loc.dark),
-                      selected: themeService.themeMode == ThemeMode.dark,
-                      onSelected: (selected) {
-                        if (selected) themeService.setThemeMode(ThemeMode.dark);
-                      },
+                    const SizedBox(height: 14),
+                    Text(
+                      loc.colorScheme,
+                      style: textTheme.labelLarge?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                     ),
-                    ChoiceChip(
-                      avatar: const Icon(Icons.phone_android_outlined),
-                      label: Text(loc.system),
-                      selected: themeService.themeMode == ThemeMode.system,
-                      onSelected: (selected) {
-                        if (selected) {
-                          themeService.setThemeMode(ThemeMode.system);
-                        }
-                      },
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: ThemeService.themeNames.entries.map((entry) {
+                        final isSelected = themeService.premiumTheme == entry.key;
+                        final isLocked = ThemeService.isPremiumTheme(entry.key) && !premium.isPremium;
+                        return ChoiceChip(
+                          avatar: isLocked
+                              ? const Icon(Icons.lock_rounded, size: 16)
+                              : null,
+                          label: Text(entry.value),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            if (isLocked) {
+                              _handlePremiumThemeTap(context);
+                              return;
+                            }
+                            if (selected) themeService.setPremiumTheme(entry.key);
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+
+          const SizedBox(height: 14),
+          _SectionCard(
+            icon: Icons.category_outlined,
+            title: loc.customCategories,
+            colorScheme: colorScheme,
+            textTheme: textTheme,
+            child: Consumer<PremiumService>(
+              builder: (context, premium, _) {
+                if (!premium.isPremium) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        loc.customCategoriesDesc,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton.tonalIcon(
+                          onPressed: () => _handlePremiumThemeTap(context),
+                          icon: const Icon(Icons.workspace_premium_rounded, size: 18),
+                          label: Text(loc.premiumUpgrade),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      loc.customCategoriesDesc,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () => _showAddCategoryDialog(context, 'trip'),
+                        icon: const Icon(Icons.add_rounded, size: 18),
+                        label: Text(loc.addTripCategory),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () => _showAddCategoryDialog(context, 'expense'),
+                        icon: const Icon(Icons.add_rounded, size: 18),
+                        label: Text(loc.addExpenseCategory),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+
+          const SizedBox(height: 14),
+          _SectionCard(
+            icon: Icons.support_agent_rounded,
+            title: loc.prioritySupport,
+            colorScheme: colorScheme,
+            textTheme: textTheme,
+            child: Consumer<PremiumService>(
+              builder: (context, premium, _) {
+                if (!premium.isPremium) {
+                  return Text(
+                    loc.premiumSupportDesc,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  );
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      loc.premiumSupportActiveDesc,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(loc.supportContactEmail),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.email_outlined, size: 18),
+                        label: Text(loc.contactSupport),
+                      ),
                     ),
                   ],
                 );
@@ -373,6 +521,77 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _handlePremiumThemeTap(BuildContext context) async {
+    final premium = context.read<PremiumService>();
+    final svc = SupabaseService();
+    if (!svc.isLoggedIn) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.premiumRequiresAuth),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
+      }
+      return;
+    }
+    final result = await PremiumPopup.show(context);
+    if (result == true && mounted) {
+      final success = await premium.activatePremium();
+      if (!success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.premiumActivateFailed),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _showAddCategoryDialog(BuildContext context, String type) async {
+    final loc = AppLocalizations.of(context)!;
+    final controller = TextEditingController();
+    final result = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(type == 'trip' ? loc.addTripCategory : loc.addExpenseCategory),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: type == 'trip' ? 'e.g. Safari' : 'e.g. Visa',
+            border: const OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(loc.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            child: Text(loc.save),
+          ),
+        ],
+      ),
+    );
+    if (result != null && result.isNotEmpty) {
+      final repo = CustomCategoryRepository();
+      await repo.addCategory(CustomCategory(name: result, type: type));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(loc.categoryAdded),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
   }
 }
 

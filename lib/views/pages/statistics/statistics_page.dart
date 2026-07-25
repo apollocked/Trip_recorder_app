@@ -48,7 +48,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
     final stats = tripProvider.statistics;
     final loc = AppLocalizations.of(context)!;
     final trips = tripProvider.pastTrips;
-    final spentByCurrency = (stats['spentByCurrency'] as Map<String, double>?) ?? {};
+    final spentByCurrency =
+        (stats['spentByCurrency'] as Map<String, double>?) ?? {};
     final totalTrips = (stats['totalTrips'] as int?) ?? 0;
     final totalNights = (stats['totalNights'] as int?) ?? 0;
     final avgRating = (stats['avgRating'] as double?) ?? 0.0;
@@ -77,7 +78,12 @@ class _StatisticsPageState extends State<StatisticsPage> {
               ),
             )
           : SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 92 + MediaQuery.of(context).padding.bottom),
+              padding: EdgeInsets.fromLTRB(
+                16,
+                16,
+                16,
+                92 + MediaQuery.of(context).padding.bottom,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -122,7 +128,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   StatCard(
                     title: loc.totalSpent,
                     value: spentByCurrency.length > 1
-                        ? '${totalSpent.toStringAsFixed(0)}'
+                        ? totalSpent.toStringAsFixed(0)
                         : '${totalSpent.toStringAsFixed(0)} ${spentByCurrency.keys.first}',
                     icon: Icons.attach_money_rounded,
                     iconColor: AppColors.statSpending,
@@ -183,8 +189,9 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       ),
                       const SizedBox(height: 8),
                       CategoryBreakdown<TripCategory>(
-                        categoryCounts:
-                            categoryCounts.map((k, v) => MapEntry(k as TripCategory, v as int)),
+                        categoryCounts: categoryCounts.map(
+                          (k, v) => MapEntry(k as TripCategory, v as int),
+                        ),
                         colorScheme: colorScheme,
                         l10n: loc,
                         labeler: (l, c) => c.label(l),
@@ -263,9 +270,7 @@ class _PremiumStatsOverlay extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: colorScheme.primary.withAlpha(60),
-          ),
+          border: Border.all(color: colorScheme.primary.withAlpha(60)),
         ),
         child: Column(
           children: [

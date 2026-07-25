@@ -784,4 +784,94 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get premiumActivateFailed =>
       'فشل تفعيل الاشتراك المميز. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get premiumAdvancedStats => 'إحصائيات متقدمة';
+
+  @override
+  String get premiumAdvancedStatsDesc =>
+      'افتح الرسوم البيانية وتحليل الإنفاق والتحليلات التفصيلية.';
+
+  @override
+  String get premiumUpgrade => 'ترقية إلى المميز';
+
+  @override
+  String get premiumPhotoLimit => 'تم الوصول للحد الأقصى من الصور';
+
+  @override
+  String get premiumTripLimit => 'تم الوصول للحد الأقصى من الرحلات';
+
+  @override
+  String get colorScheme => 'نظام الألوان';
+
+  @override
+  String get customCategories => 'فئات مخصصة';
+
+  @override
+  String get customCategoriesDesc => 'أنشئ فئات رحلات ومصروفات خاصة بك.';
+
+  @override
+  String get addTripCategory => 'إضافة فئة رحلة';
+
+  @override
+  String get addExpenseCategory => 'إضافة فئة مصروفات';
+
+  @override
+  String get categoryAdded => 'تمت إضافة الفئة بنجاح!';
+
+  @override
+  String get save => 'حفظ';
+
+  @override
+  String get prioritySupport => 'دعم ذو أولوية';
+
+  @override
+  String get premiumSupportDesc =>
+      'احصل على دعم أولوية العملاء مع الاشتراك المميز.';
+
+  @override
+  String get premiumSupportActiveDesc =>
+      'تواصل معنا مباشرة للحصول على دعم أولوي.';
+
+  @override
+  String get supportContactEmail => 'support@triprecorder.app';
+
+  @override
+  String get contactSupport => 'تواصل مع الدعم';
+
+  @override
+  String get exportPdf => 'تصدير كـ PDF';
+
+  @override
+  String get shareTrip => 'مشاركة الرحلة';
+
+  @override
+  String get annualReport => 'التقرير السنوي';
+
+  @override
+  String get annualReportDesc => 'إنشاء ملخص جميل لسنة سفرك.';
+
+  @override
+  String get tripTemplate => 'قالب رحلة';
+
+  @override
+  String get saveAsTemplate => 'حفظ كقالب';
+
+  @override
+  String get useTemplate => 'استخدام القالب';
+
+  @override
+  String get noTemplates => 'لم يتم حفظ أي قوالب بعد';
+
+  @override
+  String get templateSaved => 'تم حفظ القالب!';
+
+  @override
+  String get templateUsed => 'تم تطبيق القالب!';
+
+  @override
+  String get manageCategories => 'إدارة الفئات';
+
+  @override
+  String get confirmDeleteCategory => 'حذف هذه الفئة؟';
 }

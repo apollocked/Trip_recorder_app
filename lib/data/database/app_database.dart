@@ -94,6 +94,14 @@ class AppDatabase {
         FOREIGN KEY (trip_id) REFERENCES ${AppConstants.tripsTable}(id) ON DELETE CASCADE
       )
     ''');
+    await db.execute('''
+      CREATE TABLE ${AppConstants.customCategoriesTable} (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        type TEXT NOT NULL DEFAULT 'trip',
+        icon TEXT NOT NULL DEFAULT 'label'
+      )
+    ''');
   }
 
   Future<void> _onDowngrade(Database db, int oldVersion, int newVersion) async {
@@ -233,6 +241,16 @@ class AppDatabase {
         'category',
         "TEXT NOT NULL DEFAULT 'general'",
       );
+    }
+    if (oldVersion < 10) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS ${AppConstants.customCategoriesTable} (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          type TEXT NOT NULL DEFAULT 'trip',
+          icon TEXT NOT NULL DEFAULT 'label'
+        )
+      ''');
     }
   }
 

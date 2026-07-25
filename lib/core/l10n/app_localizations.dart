@@ -1563,6 +1563,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to activate Premium. Please try again.'**
   String get premiumActivateFailed;
+
+  /// No description provided for @premiumAdvancedStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced Statistics'**
+  String get premiumAdvancedStats;
+
+  /// No description provided for @premiumAdvancedStatsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock charts, spending breakdowns, and detailed analytics.'**
+  String get premiumAdvancedStatsDesc;
+
+  /// No description provided for @premiumUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium'**
+  String get premiumUpgrade;
+
+  /// No description provided for @premiumPhotoLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo limit reached'**
+  String get premiumPhotoLimit;
+
+  /// No description provided for @premiumTripLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip limit reached'**
+  String get premiumTripLimit;
+
+  /// No description provided for @colorScheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Color Scheme'**
+  String get colorScheme;
+
+  /// No description provided for @customCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Categories'**
+  String get customCategories;
+
+  /// No description provided for @customCategoriesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your own trip and expense categories.'**
+  String get customCategoriesDesc;
+
+  /// No description provided for @addTripCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Trip Category'**
+  String get addTripCategory;
+
+  /// No description provided for @addExpenseCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Expense Category'**
+  String get addExpenseCategory;
+
+  /// No description provided for @categoryAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Category added successfully!'**
+  String get categoryAdded;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @prioritySupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority Support'**
+  String get prioritySupport;
+
+  /// No description provided for @premiumSupportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get priority customer support with Premium.'**
+  String get premiumSupportDesc;
+
+  /// No description provided for @premiumSupportActiveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us directly for priority assistance.'**
+  String get premiumSupportActiveDesc;
+
+  /// No description provided for @supportContactEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'support@triprecorder.app'**
+  String get supportContactEmail;
+
+  /// No description provided for @contactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get contactSupport;
+
+  /// No description provided for @exportPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Export as PDF'**
+  String get exportPdf;
+
+  /// No description provided for @shareTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Trip'**
+  String get shareTrip;
+
+  /// No description provided for @annualReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual Report'**
+  String get annualReport;
+
+  /// No description provided for @annualReportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate a beautiful summary of your year in travel.'**
+  String get annualReportDesc;
+
+  /// No description provided for @tripTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip Template'**
+  String get tripTemplate;
+
+  /// No description provided for @saveAsTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Save as Template'**
+  String get saveAsTemplate;
+
+  /// No description provided for @useTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Template'**
+  String get useTemplate;
+
+  /// No description provided for @noTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'No templates saved yet'**
+  String get noTemplates;
+
+  /// No description provided for @templateSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Template saved!'**
+  String get templateSaved;
+
+  /// No description provided for @templateUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Template applied!'**
+  String get templateUsed;
+
+  /// No description provided for @manageCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Categories'**
+  String get manageCategories;
+
+  /// No description provided for @confirmDeleteCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this category?'**
+  String get confirmDeleteCategory;
 }
 
 class _AppLocalizationsDelegate

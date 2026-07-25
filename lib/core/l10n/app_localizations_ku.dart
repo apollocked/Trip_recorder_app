@@ -791,4 +791,95 @@ class AppLocalizationsKu extends AppLocalizations {
   @override
   String get premiumActivateFailed =>
       'چالاککردنی پرەمیوم سەرنەکەوتوو. تکایە دووبارە هەوڵ بدە.';
+
+  @override
+  String get premiumAdvancedStats => 'ئامارە پێشکەوەکان';
+
+  @override
+  String get premiumAdvancedStatsDesc =>
+      'چارت و شیکارەی خەرجکردن و شیکارەی ورد بکەرەوە.';
+
+  @override
+  String get premiumUpgrade => 'بەرکەوت بۆ پرەمیوم';
+
+  @override
+  String get premiumPhotoLimit => ' سنووری وێنە تەواو بوو';
+
+  @override
+  String get premiumTripLimit => 'سنووری گەشت تەواو بوو';
+
+  @override
+  String get colorScheme => 'سیستەمی رەنگ';
+
+  @override
+  String get customCategories => 'هاوپۆلە تایبەتەکان';
+
+  @override
+  String get customCategoriesDesc =>
+      'هاوپۆلەی گەشت و خەرجی تایبەتەی خۆت دروست بکە.';
+
+  @override
+  String get addTripCategory => 'هاوپۆلەی گەشت زیاد بکە';
+
+  @override
+  String get addExpenseCategory => 'هاوپۆلەی خەرجی زیاد بکە';
+
+  @override
+  String get categoryAdded => 'هاوپۆلە بە سەرکەوتوویی زیاد کرا!';
+
+  @override
+  String get save => 'پاشەکەوت کردن';
+
+  @override
+  String get prioritySupport => 'پشتگیری یەکەم';
+
+  @override
+  String get premiumSupportDesc =>
+      'پشتگیری یەکەمی بەکارهێنەران بە پرەمیوم بەدەست بهێنە.';
+
+  @override
+  String get premiumSupportActiveDesc =>
+      'بە مستقیمی پەیوەندیمان بکە بۆ پشتگیری یەکەم.';
+
+  @override
+  String get supportContactEmail => 'support@triprecorder.app';
+
+  @override
+  String get contactSupport => 'پەیوەندی پشتگیری بکە';
+
+  @override
+  String get exportPdf => 'بەدەستҳێنان وەک PDF';
+
+  @override
+  String get shareTrip => 'هاوبەشکردنی گەشت';
+
+  @override
+  String get annualReport => 'ڕاپۆرتی ساڵانە';
+
+  @override
+  String get annualReportDesc => 'پوختەیەکی جوانی ساڵی گەشتەکانت بکەرەوە.';
+
+  @override
+  String get tripTemplate => 'قاڵبی گەشت';
+
+  @override
+  String get saveAsTemplate => 'پاشەکەوت بکە وەک قاڵب';
+
+  @override
+  String get useTemplate => 'قاڵبەکە بەکار بهێنە';
+
+  @override
+  String get noTemplates => 'هیچ قاڵبێک پاشەکەوت نەکراوە';
+
+  @override
+  String get templateSaved => 'قاڵبەکە پاشەکەوت کرا!';
+
+  @override
+  String get templateUsed => 'قاڵبەکە جێبەجێ کرا!';
+
+  @override
+  String get manageCategories => 'بەڕێوەبردنی هاوپۆلەکان';
+
+  @override
+  String get confirmDeleteCategory => 'ئەم هاوپۆلەیە بسڕەوە؟';
 }
