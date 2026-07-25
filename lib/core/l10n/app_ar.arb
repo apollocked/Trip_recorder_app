@@ -341,5 +341,16 @@
   "templateSaved": "تم حفظ القالب!",
   "templateUsed": "تم تطبيق القالب!",
   "manageCategories": "إدارة الفئات",
-  "confirmDeleteCategory": "حذف هذه الفئة؟"
+  "confirmDeleteCategory": "حذف هذه الفئة؟",
+  "premiumBuyFor": "شراء الاشتراك المميز بسعر {price}",
+  "@premiumBuyFor": {
+    "placeholders": {
+      "price": {"type": "String"}
+    }
+  },
+  "premiumRestore": "استعادة الشراء",
+  "premiumPriceUnavailable": "السعر غير متاح. تحقق من اتصالك.",
+  "premiumPurchaseSuccess": "تم تفعيل الاشتراك المميز!",
+  "premiumPurchaseFailed": "فشل الشراء. يرجى المحاولة مرة أخرى.",
+  "premiumPurchaseCanceled": "تم إلغاء الشراء."
 }

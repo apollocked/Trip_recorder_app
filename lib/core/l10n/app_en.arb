@@ -341,5 +341,16 @@
   "templateSaved": "Template saved!",
   "templateUsed": "Template applied!",
   "manageCategories": "Manage Categories",
-  "confirmDeleteCategory": "Delete this category?"
+  "confirmDeleteCategory": "Delete this category?",
+  "premiumBuyFor": "Buy Premium for {price}",
+  "@premiumBuyFor": {
+    "placeholders": {
+      "price": {"type": "String"}
+    }
+  },
+  "premiumRestore": "Restore Purchase",
+  "premiumPriceUnavailable": "Price unavailable. Check your connection.",
+  "premiumPurchaseSuccess": "Premium activated!",
+  "premiumPurchaseFailed": "Purchase failed. Please try again.",
+  "premiumPurchaseCanceled": "Purchase canceled."
 }

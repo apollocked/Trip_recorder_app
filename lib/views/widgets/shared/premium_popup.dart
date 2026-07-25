@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
+import 'package:animations_in_flutter/services/iap_service.dart';
+import 'package:animations_in_flutter/services/premium_service.dart';
+import 'package:provider/provider.dart';
 
 class PremiumPopup extends StatefulWidget {
   const PremiumPopup({super.key});
@@ -51,6 +54,8 @@ class _PremiumPopupState extends State<PremiumPopup>
     final textTheme = Theme.of(context).textTheme;
     final loc = AppLocalizations.of(context)!;
     final topInset = MediaQuery.of(context).padding.top;
+    final iap = IapService();
+    final price = iap.displayPrice.isNotEmpty ? iap.displayPrice : '4.99';
 
     return FadeTransition(
       opacity: _fadeAnim,
@@ -143,27 +148,64 @@ class _PremiumPopupState extends State<PremiumPopup>
                   text: loc.premiumFeatureSupport,
                   colorScheme: colorScheme,
                 ),
+                const SizedBox(height: 12),
+                _FeatureRow(
+                  icon: Icons.bar_chart_rounded,
+                  text: loc.premiumAdvancedStats,
+                  colorScheme: colorScheme,
+                ),
+                const SizedBox(height: 12),
+                _FeatureRow(
+                  icon: Icons.picture_as_pdf_rounded,
+                  text: loc.premiumFeatureExport,
+                  colorScheme: colorScheme,
+                ),
                 const SizedBox(height: 28),
-                SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: FilledButton(
-                    onPressed: () => Navigator.pop(context, true),
-                    style: FilledButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                Consumer<PremiumService>(
+                  builder: (context, premium, _) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: FilledButton(
+                        onPressed: premium.isLoading
+                            ? null
+                            : () async {
+                                final success = await premium.buyPremium();
+                                if (success && context.mounted) {
+                                  Navigator.pop(context, true);
+                                }
+                              },
+                        style: FilledButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: premium.isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : Text(
+                                loc.premiumBuyFor('$price'),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
-                    ),
-                    child: Text(
-                      loc.premiumActivate,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 8),
+                TextButton(
+                  onPressed: () async {
+                    final premium = context.read<PremiumService>();
+                    await premium.restorePurchases();
+                    if (context.mounted) Navigator.pop(context);
+                  },
+                  child: Text(loc.premiumRestore),
+                ),
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
                   child: Text(loc.premiumNotNow),

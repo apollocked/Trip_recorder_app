@@ -1737,6 +1737,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete this category?'**
   String get confirmDeleteCategory;
+
+  /// No description provided for @premiumBuyFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Premium for {price}'**
+  String premiumBuyFor(String price);
+
+  /// No description provided for @premiumRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchase'**
+  String get premiumRestore;
+
+  /// No description provided for @premiumPriceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Price unavailable. Check your connection.'**
+  String get premiumPriceUnavailable;
+
+  /// No description provided for @premiumPurchaseSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium activated!'**
+  String get premiumPurchaseSuccess;
+
+  /// No description provided for @premiumPurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed. Please try again.'**
+  String get premiumPurchaseFailed;
+
+  /// No description provided for @premiumPurchaseCanceled.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase canceled.'**
+  String get premiumPurchaseCanceled;
 }
 
 class _AppLocalizationsDelegate

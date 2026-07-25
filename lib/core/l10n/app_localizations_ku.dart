@@ -882,4 +882,26 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get confirmDeleteCategory => 'ئەم هاوپۆلەیە بسڕەوە؟';
+
+  @override
+  String premiumBuyFor(String price) {
+    return 'پرەمیوم بیسەرە بە نرخی $price';
+  }
+
+  @override
+  String get premiumRestore => 'گەڕاندنەوەی کڕین';
+
+  @override
+  String get premiumPriceUnavailable =>
+      'نرخ بەردەست نییە. پەیوەندییەکەت بپشکنە.';
+
+  @override
+  String get premiumPurchaseSuccess => 'پرەمیوم چالاک کرا!';
+
+  @override
+  String get premiumPurchaseFailed =>
+      'کڕین سەرنەکەوتوو بوو. تکایە دووبارە هەوڵ بدە.';
+
+  @override
+  String get premiumPurchaseCanceled => 'کڕین هەڵوەشاندرا.';
 }

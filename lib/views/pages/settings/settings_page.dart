@@ -4,6 +4,7 @@ import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/core/l10n/l10n.dart';
 import 'package:animations_in_flutter/data/repositories/custom_category_repository.dart';
 import 'package:animations_in_flutter/model/custom_category.dart';
+import 'package:animations_in_flutter/services/iap_service.dart';
 import 'package:animations_in_flutter/services/language_service.dart';
 import 'package:animations_in_flutter/services/premium_service.dart';
 import 'package:animations_in_flutter/services/supabase_service.dart';
@@ -69,31 +70,15 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _handlePremiumTap() async {
     final premium = context.read<PremiumService>();
     if (premium.isPremium) return;
-    final svc = SupabaseService();
-    if (!svc.isLoggedIn) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.premiumRequiresAuth),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-      }
-      return;
-    }
     final result = await PremiumPopup.show(context);
     if (result == true && mounted) {
-      final success = await premium.activatePremium();
-      if (!success && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.premiumActivateFailed),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.premiumPurchaseSuccess),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
     }
   }
 
@@ -144,7 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              premium.userName,
+                              premium.userName.isNotEmpty ? premium.userName : loc.premiumTitle,
                               style: textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w700,
                                 color: colorScheme.onSurface,
@@ -192,12 +177,39 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: FilledButton.icon(
                           onPressed: _handlePremiumTap,
                           icon: const Icon(Icons.workspace_premium_rounded, size: 20),
-                          label: Text(loc.premiumActivate),
+                          label: Text(loc.premiumBuyFor(IapService().displayPrice)),
                           style: FilledButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () async {
+                            final premiumService = context.read<PremiumService>();
+                            await premiumService.restorePurchases();
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    premiumService.isPremium
+                                        ? loc.premiumPurchaseSuccess
+                                        : loc.premiumPurchaseFailed,
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          icon: const Icon(Icons.restore_rounded, size: 18),
+                          label: Text(loc.premiumRestore),
                         ),
                       ),
                     ],
@@ -525,31 +537,16 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> _handlePremiumThemeTap(BuildContext context) async {
     final premium = context.read<PremiumService>();
-    final svc = SupabaseService();
-    if (!svc.isLoggedIn) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.premiumRequiresAuth),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-      }
-      return;
-    }
+    if (premium.isPremium) return;
     final result = await PremiumPopup.show(context);
     if (result == true && mounted) {
-      final success = await premium.activatePremium();
-      if (!success && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.premiumActivateFailed),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.premiumPurchaseSuccess),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
     }
   }
 
@@ -583,14 +580,13 @@ class _SettingsPageState extends State<SettingsPage> {
     if (result != null && result.isNotEmpty) {
       final repo = CustomCategoryRepository();
       await repo.addCategory(CustomCategory(name: result, type: type));
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(loc.categoryAdded),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(loc.categoryAdded),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     }
   }
 }

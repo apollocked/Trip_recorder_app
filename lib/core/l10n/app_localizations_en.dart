@@ -877,4 +877,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmDeleteCategory => 'Delete this category?';
+
+  @override
+  String premiumBuyFor(String price) {
+    return 'Buy Premium for $price';
+  }
+
+  @override
+  String get premiumRestore => 'Restore Purchase';
+
+  @override
+  String get premiumPriceUnavailable =>
+      'Price unavailable. Check your connection.';
+
+  @override
+  String get premiumPurchaseSuccess => 'Premium activated!';
+
+  @override
+  String get premiumPurchaseFailed => 'Purchase failed. Please try again.';
+
+  @override
+  String get premiumPurchaseCanceled => 'Purchase canceled.';
 }

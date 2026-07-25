@@ -874,4 +874,24 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get confirmDeleteCategory => 'حذف هذه الفئة؟';
+
+  @override
+  String premiumBuyFor(String price) {
+    return 'شراء الاشتراك المميز بسعر $price';
+  }
+
+  @override
+  String get premiumRestore => 'استعادة الشراء';
+
+  @override
+  String get premiumPriceUnavailable => 'السعر غير متاح. تحقق من اتصالك.';
+
+  @override
+  String get premiumPurchaseSuccess => 'تم تفعيل الاشتراك المميز!';
+
+  @override
+  String get premiumPurchaseFailed => 'فشل الشراء. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get premiumPurchaseCanceled => 'تم إلغاء الشراء.';
 }
