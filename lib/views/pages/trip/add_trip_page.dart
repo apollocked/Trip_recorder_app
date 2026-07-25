@@ -78,10 +78,7 @@ class _AddTripPageState extends State<AddTripPage> {
     final premium = context.read<PremiumService>();
     if (widget.tripId == null && !premium.canAddTrip) {
       if (mounted) {
-        final result = await PremiumPopup.show(context);
-        if (result == true && mounted) {
-          await premium.activatePremium();
-        }
+        await PremiumPopup.show(context);
       }
       return;
     }

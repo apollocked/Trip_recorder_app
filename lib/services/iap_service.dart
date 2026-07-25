@@ -20,18 +20,24 @@ class IapService {
   bool _isAvailable = false;
   bool get isAvailable => _isAvailable;
 
-  final _purchaseController = StreamController<PurchaseStatus>.broadcast();
-  Stream<PurchaseStatus> get purchaseStream => _purchaseController.stream;
+  bool _isInitialized = false;
+
+  final _purchaseController = StreamController<PurchaseDetails>.broadcast();
+  Stream<PurchaseDetails> get purchaseStream => _purchaseController.stream;
 
   String get displayPrice => _product?.price ?? '';
 
   Future<void> initialize() async {
+    if (_isInitialized) return;
     _isAvailable = await _iap.isAvailable();
     if (!_isAvailable) return;
 
     _subscription = _iap.purchaseStream.listen(
       _onPurchaseUpdate,
-      onDone: () => _subscription?.cancel(),
+      onDone: () {
+        _subscription?.cancel();
+        _subscription = null;
+      },
       onError: (error) => debugPrint('IAP stream error: $error'),
     );
 
@@ -39,44 +45,75 @@ class IapService {
     if (response.productDetails.isNotEmpty) {
       _product = response.productDetails.first;
     }
+    _isInitialized = true;
   }
 
   void _onPurchaseUpdate(List<PurchaseDetails> purchases) {
     for (final purchase in purchases) {
-      _handlePurchase(purchase);
+      _purchaseController.add(purchase);
     }
   }
 
-  Future<void> _handlePurchase(PurchaseDetails purchase) async {
+  Future<bool> handlePurchase(PurchaseDetails purchase) async {
     if (purchase.status == PurchaseStatus.purchased ||
         purchase.status == PurchaseStatus.restored) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_purchaseIdKey, purchase.productID);
-      _purchaseController.add(PurchaseStatus.purchased);
-    } else if (purchase.status == PurchaseStatus.error) {
-      _purchaseController.add(PurchaseStatus.error);
-    } else if (purchase.status == PurchaseStatus.canceled) {
-      _purchaseController.add(PurchaseStatus.canceled);
+      if (purchase.pendingCompletePurchase) {
+        await _iap.completePurchase(purchase);
+      }
+      return true;
+    }
+
+    if (purchase.status == PurchaseStatus.error) {
+      debugPrint('IAP error: ${(purchase.error as Object?)}');
     }
 
     if (purchase.pendingCompletePurchase) {
       await _iap.completePurchase(purchase);
     }
+    return false;
   }
 
   Future<bool> buyPremium() async {
     if (_product == null || !_isAvailable) return false;
-    final param = PurchaseParam(productDetails: _product!);
-    final success = await _iap.buyNonConsumable(purchaseParam: param);
+
+    final success = await _iap.buyNonConsumable(
+      purchaseParam: PurchaseParam(productDetails: _product!),
+    );
     return success;
   }
 
-  Future<void> restorePurchases() async {
+  Future<List<PurchaseDetails>> restorePurchases() async {
+    final restored = <PurchaseDetails>[];
+
+    final sub = _iap.purchaseStream.listen((purchases) {
+      for (final p in purchases) {
+        if (p.status == PurchaseStatus.restored) {
+          restored.add(p);
+        }
+      }
+    });
+
     await _iap.restorePurchases();
+    await Future.delayed(const Duration(seconds: 2));
+    await sub.cancel();
+
+    for (final p in restored) {
+      await handlePurchase(p);
+    }
+
+    return restored;
+  }
+
+  Future<bool> hasSavedPurchase() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(_purchaseIdKey);
   }
 
   void dispose() {
     _subscription?.cancel();
+    _subscription = null;
     _purchaseController.close();
   }
 }

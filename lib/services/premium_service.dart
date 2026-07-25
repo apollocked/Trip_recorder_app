@@ -14,10 +14,12 @@ class PremiumService extends ChangeNotifier {
   String _userName = '';
   String _userEmail = '';
   bool _isLoading = false;
-  StreamSubscription<PurchaseStatus>? _purchaseSub;
+  String? _error;
+  StreamSubscription<PurchaseDetails>? _purchaseSub;
 
   bool get isPremium => _isPremium;
   bool get isLoading => _isLoading;
+  String? get error => _error;
   String get userName => _userName;
   String get userEmail => _userEmail;
 
@@ -31,20 +33,25 @@ class PremiumService extends ChangeNotifier {
   }
 
   bool get canAddTrip => _isPremium;
-  bool canAddPhotos(int currentCount) => _isPremium || currentCount < AppConstants.freeMaxPhotosPerTrip;
+  bool canAddPhotos(int currentCount) =>
+      _isPremium || currentCount < AppConstants.freeMaxPhotosPerTrip;
   bool get canAddCustomCategory => _isPremium;
 
   String remainingTripsMessage(int currentCount) {
     if (_isPremium) return '';
     final remaining = AppConstants.freeMaxTrips - currentCount;
-    if (remaining <= 0) return 'Free plan limited to ${AppConstants.freeMaxTrips} trips. Upgrade to Premium for unlimited.';
+    if (remaining <= 0) {
+      return 'Free plan limited to ${AppConstants.freeMaxTrips} trips. Upgrade to Premium for unlimited.';
+    }
     return '$remaining trips remaining on free plan.';
   }
 
   String remainingPhotosMessage(int currentCount) {
     if (_isPremium) return '';
     final remaining = AppConstants.freeMaxPhotosPerTrip - currentCount;
-    if (remaining <= 0) return 'Free plan limited to ${AppConstants.freeMaxPhotosPerTrip} photos per trip. Upgrade to Premium for unlimited.';
+    if (remaining <= 0) {
+      return 'Free plan limited to ${AppConstants.freeMaxPhotosPerTrip} photos per trip. Upgrade to Premium for unlimited.';
+    }
     return '$remaining photos remaining.';
   }
 
@@ -63,9 +70,20 @@ class PremiumService extends ChangeNotifier {
       _userEmail = svc.userEmail ?? _userEmail;
     }
 
-    _purchaseSub = IapService().purchaseStream.listen((status) {
-      if (status == PurchaseStatus.purchased || status == PurchaseStatus.restored) {
+    _purchaseSub = IapService().purchaseStream.listen((purchase) async {
+      final success = await IapService().handlePurchase(purchase);
+      if (success) {
         _activateLocal();
+      } else if (purchase.status == PurchaseStatus.error) {
+        _error = 'Purchase failed. Please try again.';
+        _isLoading = false;
+        notifyListeners();
+      } else if (purchase.status == PurchaseStatus.canceled) {
+        _isLoading = false;
+        notifyListeners();
+      } else if (purchase.status == PurchaseStatus.pending) {
+        _error = null;
+        notifyListeners();
       }
     });
 
@@ -73,18 +91,24 @@ class PremiumService extends ChangeNotifier {
   }
 
   Future<void> _verifyExistingPurchase() async {
-    final prefs = await SharedPreferences.getInstance();
-    final savedId = prefs.getString(_purchaseIdKey);
-    if (savedId != null) {
+    final hasLocal = await IapService().hasSavedPurchase();
+    if (hasLocal) {
       _isPremium = true;
       notifyListeners();
       return;
     }
-    await IapService().restorePurchases();
+
+    final restored = await IapService().restorePurchases();
+    if (restored.isNotEmpty) {
+      _isPremium = true;
+      notifyListeners();
+    }
   }
 
   void _activateLocal() async {
     _isPremium = true;
+    _isLoading = false;
+    _error = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_localKey, true);
     final svc = SupabaseService();
@@ -111,28 +135,64 @@ class PremiumService extends ChangeNotifier {
 
   Future<bool> buyPremium() async {
     _isLoading = true;
+    _error = null;
     notifyListeners();
 
     final iap = IapService();
-    if (iap.product == null) {
+
+    if (!iap.isAvailable) {
       _isLoading = false;
+      _error = 'Store not available. Check your connection.';
       notifyListeners();
       return false;
     }
 
-    final success = await iap.buyPremium();
-    if (!success) {
+    if (iap.product == null) {
       _isLoading = false;
+      _error = 'Product not found. Please try again.';
       notifyListeners();
+      return false;
     }
-    return success;
+
+    final initiated = await iap.buyPremium();
+    if (!initiated) {
+      _isLoading = false;
+      _error = 'Could not start purchase. Please try again.';
+      notifyListeners();
+      return false;
+    }
+
+    return true;
   }
 
-  Future<void> restorePurchases() async {
+  Future<bool> restorePurchases() async {
     _isLoading = true;
+    _error = null;
     notifyListeners();
-    await IapService().restorePurchases();
-    _isLoading = false;
+
+    try {
+      final restored = await IapService().restorePurchases();
+      if (restored.isNotEmpty) {
+        _isPremium = true;
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        _isLoading = false;
+        _error = 'No previous purchase found.';
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      _isLoading = false;
+      _error = 'Restore failed. Please try again.';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  void clearError() {
+    _error = null;
     notifyListeners();
   }
 

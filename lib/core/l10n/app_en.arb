@@ -318,6 +318,7 @@
   "premiumUpgrade": "Upgrade to Premium",
   "premiumPhotoLimit": "Photo limit reached",
   "premiumTripLimit": "Trip limit reached",
+  "premiumFeatureExport": "Export trips as PDF",
   "colorScheme": "Color Scheme",
   "customCategories": "Custom Categories",
   "customCategoriesDesc": "Create your own trip and expense categories.",

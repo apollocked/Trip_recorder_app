@@ -809,6 +809,9 @@ class AppLocalizationsKu extends AppLocalizations {
   String get premiumTripLimit => 'سنووری گەشت تەواو بوو';
 
   @override
+  String get premiumFeatureExport => 'هەناردانی گەشتەکان وەک PDF';
+
+  @override
   String get colorScheme => 'سیستەمی رەنگ';
 
   @override

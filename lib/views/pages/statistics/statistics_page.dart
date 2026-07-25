@@ -271,10 +271,7 @@ class _PremiumStatsOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        final result = await PremiumPopup.show(context);
-        if (result == true && context.mounted) {
-          await context.read<PremiumService>().activatePremium();
-        }
+        await PremiumPopup.show(context);
       },
       child: Container(
         width: double.infinity,
@@ -317,10 +314,7 @@ class _PremiumStatsOverlay extends StatelessWidget {
             const SizedBox(height: 14),
             FilledButton.tonal(
               onPressed: () async {
-                final result = await PremiumPopup.show(context);
-                if (result == true && context.mounted) {
-                  await context.read<PremiumService>().activatePremium();
-                }
+                await PremiumPopup.show(context);
               },
               child: Text(loc.premiumUpgrade),
             ),

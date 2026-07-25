@@ -59,10 +59,7 @@ class _AnnualReportPageState extends State<AnnualReportPage> {
               const SizedBox(height: 20),
               FilledButton.tonal(
                 onPressed: () async {
-                  final result = await PremiumPopup.show(context);
-                  if (result == true && context.mounted) {
-                    await context.read<PremiumService>().activatePremium();
-                  }
+                  await PremiumPopup.show(context);
                 },
                 child: Text(loc.premiumUpgrade),
               ),

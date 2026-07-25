@@ -802,6 +802,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get premiumTripLimit => 'تم الوصول للحد الأقصى من الرحلات';
 
   @override
+  String get premiumFeatureExport => 'تصدير الرحلات كـ PDF';
+
+  @override
   String get colorScheme => 'نظام الألوان';
 
   @override

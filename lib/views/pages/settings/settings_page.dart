@@ -191,22 +191,21 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: OutlinedButton.icon(
                           onPressed: () async {
                             final premiumService = context.read<PremiumService>();
-                            await premiumService.restorePurchases();
-                            if (mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    premiumService.isPremium
-                                        ? loc.premiumPurchaseSuccess
-                                        : loc.premiumPurchaseFailed,
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                            final restored = await premiumService.restorePurchases();
+                            if (!mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  restored
+                                      ? loc.premiumPurchaseSuccess
+                                      : (premiumService.error ?? loc.premiumPurchaseFailed),
                                 ),
-                              );
-                            }
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            );
                           },
                           icon: const Icon(Icons.restore_rounded, size: 18),
                           label: Text(loc.premiumRestore),

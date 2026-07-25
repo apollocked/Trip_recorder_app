@@ -1594,6 +1594,12 @@ abstract class AppLocalizations {
   /// **'Trip limit reached'**
   String get premiumTripLimit;
 
+  /// No description provided for @premiumFeatureExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export trips as PDF'**
+  String get premiumFeatureExport;
+
   /// No description provided for @colorScheme.
   ///
   /// In en, this message translates to:

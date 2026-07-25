@@ -188,8 +188,7 @@ class DetailsPage extends StatelessWidget {
             onPressed: () async {
               final premium = context.read<PremiumService>();
               if (!premium.isPremium) {
-                final result = await PremiumPopup.show(context);
-                if (result == true && context.mounted) await premium.activatePremium();
+                await PremiumPopup.show(context);
                 return;
               }
               _saveAsTemplate(context, trip);
@@ -326,8 +325,7 @@ class DetailsPage extends StatelessWidget {
               onTap: () async {
                 Navigator.pop(ctx);
                 if (!premium.isPremium) {
-                  final result = await PremiumPopup.show(context);
-                  if (result == true && context.mounted) await premium.activatePremium();
+                  await PremiumPopup.show(context);
                   return;
                 }
                 await PdfExportService.exportTrip(trip);
@@ -346,8 +344,7 @@ class DetailsPage extends StatelessWidget {
               onTap: () async {
                 Navigator.pop(ctx);
                 if (!premium.isPremium) {
-                  final result = await PremiumPopup.show(context);
-                  if (result == true && context.mounted) await premium.activatePremium();
+                  await PremiumPopup.show(context);
                   return;
                 }
                 await TripShareService.shareTrip(trip);

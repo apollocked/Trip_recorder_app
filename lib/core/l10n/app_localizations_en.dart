@@ -803,6 +803,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumTripLimit => 'Trip limit reached';
 
   @override
+  String get premiumFeatureExport => 'Export trips as PDF';
+
+  @override
   String get colorScheme => 'Color Scheme';
 
   @override

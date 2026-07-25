@@ -318,6 +318,7 @@
   "premiumUpgrade": "ترقية إلى المميز",
   "premiumPhotoLimit": "تم الوصول للحد الأقصى من الصور",
   "premiumTripLimit": "تم الوصول للحد الأقصى من الرحلات",
+  "premiumFeatureExport": "تصدير الرحلات كـ PDF",
   "colorScheme": "نظام الألوان",
   "customCategories": "فئات مخصصة",
   "customCategoriesDesc": "أنشئ فئات رحلات ومصروفات خاصة بك.",
