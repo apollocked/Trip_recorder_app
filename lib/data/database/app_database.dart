@@ -102,6 +102,17 @@ class AppDatabase {
         icon TEXT NOT NULL DEFAULT 'label'
       )
     ''');
+    await db.execute('''
+      CREATE TABLE ${AppConstants.tripTemplatesTable} (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        category TEXT NOT NULL DEFAULT 'other',
+        nights INTEGER NOT NULL DEFAULT 1,
+        description TEXT NOT NULL DEFAULT '',
+        packing_items TEXT NOT NULL DEFAULT '[]',
+        currency TEXT NOT NULL DEFAULT 'USD'
+      )
+    ''');
   }
 
   Future<void> _onDowngrade(Database db, int oldVersion, int newVersion) async {
@@ -249,6 +260,17 @@ class AppDatabase {
           name TEXT NOT NULL,
           type TEXT NOT NULL DEFAULT 'trip',
           icon TEXT NOT NULL DEFAULT 'label'
+        )
+      ''');
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS ${AppConstants.tripTemplatesTable} (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          category TEXT NOT NULL DEFAULT 'other',
+          nights INTEGER NOT NULL DEFAULT 1,
+          description TEXT NOT NULL DEFAULT '',
+          packing_items TEXT NOT NULL DEFAULT '[]',
+          currency TEXT NOT NULL DEFAULT 'USD'
         )
       ''');
     }

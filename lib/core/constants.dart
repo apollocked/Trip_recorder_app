@@ -6,6 +6,7 @@ class AppConstants {
   static const String checklistTable = 'checklist_items';
   static const String journalTable = 'journal_entries';
   static const String customCategoriesTable = 'custom_categories';
+  static const String tripTemplatesTable = 'trip_templates';
   static const String tripImagesDir = 'trip_images';
   static const String prefOnboardingDone = 'onboarding_done';
   static const String prefDataMigrated = 'data_migrated_v2';

@@ -5,6 +5,7 @@ import 'package:animations_in_flutter/model/trip_category.dart';
 import 'package:animations_in_flutter/providers/trip_provider.dart';
 import 'package:animations_in_flutter/services/premium_service.dart';
 import 'package:animations_in_flutter/views/pages/favorites/favorites_page.dart';
+import 'package:animations_in_flutter/views/pages/statistics/annual_report_page.dart';
 import 'package:animations_in_flutter/views/widgets/statistics/category_breakdown.dart';
 import 'package:animations_in_flutter/views/widgets/statistics/category_pie_chart.dart';
 import 'package:animations_in_flutter/views/widgets/shared/empty_state.dart';
@@ -147,6 +148,24 @@ class _StatisticsPageState extends State<StatisticsPage> {
                     ),
                   ),
                   const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () => Navigator.push(context, slideRoute(const AnnualReportPage())),
+                      icon: Icon(Icons.assessment_rounded, color: premium.isPremium ? colorScheme.primary : colorScheme.onSurfaceVariant),
+                      label: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(loc.annualReport),
+                          if (!premium.isPremium) ...[
+                            const SizedBox(width: 8),
+                            Icon(Icons.lock_rounded, size: 14, color: colorScheme.onSurfaceVariant),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
                   if (!premium.isPremium) ...[
                     _PremiumStatsOverlay(
                       colorScheme: colorScheme,
