@@ -139,7 +139,7 @@ class _AnnualReportPageState extends State<AnnualReportPage> {
                       icon: Icons.star_rounded, iconColor: AppColors.statRating, colorScheme: cs)),
                   ]),
                   const SizedBox(height: 12),
-                  StatCard(title: loc.totalSpent, value: '${totalSpent.toStringAsFixed(0)}',
+                  StatCard(title: loc.totalSpent, value: totalSpent.toStringAsFixed(0),
                     icon: Icons.attach_money_rounded, iconColor: AppColors.statSpending, colorScheme: cs),
                   if (topCategory != null) ...[
                     const SizedBox(height: 12),

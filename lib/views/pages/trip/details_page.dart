@@ -94,7 +94,7 @@ class DetailsPage extends StatelessWidget {
                         const SizedBox(height: 16),
                         TripInfoChips(trip: trip, colorScheme: colorScheme),
                         const SizedBox(height: 16),
-                        _buildActionChips(context),
+                        _buildActionChips(context, trip),
                         const SizedBox(height: 16),
                         if (trip.reminderDate != null)
                           _buildReminderBanner(trip, colorScheme, l10n),
@@ -140,7 +140,7 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildActionChips(BuildContext context) {
+  Widget _buildActionChips(BuildContext context, Trip trip) {
     final l10n = AppLocalizations.of(context)!;
     final tripId = this.tripId;
     return SingleChildScrollView(
