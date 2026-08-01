@@ -193,7 +193,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           onPressed: () async {
                             final premiumService = context.read<PremiumService>();
                             final restored = await premiumService.restorePurchases();
-                            if (!mounted) return;
+                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -563,7 +563,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final premium = context.read<PremiumService>();
     if (premium.isPremium) return;
     final result = await PremiumPopup.show(context);
-    if (result == true && mounted) {
+    if (result == true && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppLocalizations.of(context)!.premiumPurchaseSuccess),
@@ -604,7 +604,7 @@ class _SettingsPageState extends State<SettingsPage> {
     if (result != null && result.isNotEmpty) {
       final repo = CustomCategoryRepository();
       await repo.addCategory(CustomCategory(name: result, type: type));
-      if (!mounted) return;
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(loc.categoryAdded),

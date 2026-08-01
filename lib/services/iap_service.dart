@@ -66,11 +66,7 @@ class IapService {
     }
 
     if (purchase.status == PurchaseStatus.error) {
-      debugPrint('IAP error: ${(purchase.error as Object?)}');
-    }
-
-    if (purchase.pendingCompletePurchase) {
-      await _iap.completePurchase(purchase);
+      debugPrint('IAP error: ${purchase.error}');
     }
     return false;
   }
@@ -86,6 +82,7 @@ class IapService {
 
   Future<List<PurchaseDetails>> restorePurchases() async {
     final restored = <PurchaseDetails>[];
+    final completer = Completer<List<PurchaseDetails>>();
 
     final sub = _iap.purchaseStream.listen((purchases) {
       for (final p in purchases) {
@@ -93,14 +90,17 @@ class IapService {
           restored.add(p);
         }
       }
+      if (!completer.isCompleted) {
+        completer.complete(List.of(restored));
+      }
     });
 
-    await _iap.restorePurchases();
-    await Future.delayed(const Duration(seconds: 2));
-    await sub.cancel();
-
-    for (final p in restored) {
-      await handlePurchase(p);
+    try {
+      await _iap.restorePurchases();
+      await completer.future
+          .timeout(const Duration(seconds: 5), onTimeout: () => restored);
+    } finally {
+      await sub.cancel();
     }
 
     return restored;

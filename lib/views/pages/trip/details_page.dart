@@ -270,10 +270,12 @@ class DetailsPage extends StatelessWidget {
 
     await showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (ctx) => Padding(
+      builder: (ctx) => SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -351,6 +353,7 @@ class DetailsPage extends StatelessWidget {
               },
             ),
           ],
+        ),
         ),
       ),
     );

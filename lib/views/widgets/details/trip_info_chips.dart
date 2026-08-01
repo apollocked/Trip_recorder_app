@@ -16,26 +16,29 @@ class TripInfoChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Row(
-      children: [
-        _buildChip(
-          Icons.bedtime_rounded,
-          '${trip.nights} ${l10n.nightsLabel}',
-          colorScheme,
-        ),
-        const SizedBox(width: 12),
-        _buildChip(
-          Icons.attach_money_rounded,
-          '${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}',
-          colorScheme,
-        ),
-        const SizedBox(width: 12),
-        _buildChip(
-          Icons.calendar_today_rounded,
-          '${trip.date.day}/${trip.date.month}/${trip.date.year}',
-          colorScheme,
-        ),
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _buildChip(
+            Icons.bedtime_rounded,
+            '${trip.nights} ${l10n.nightsLabel}',
+            colorScheme,
+          ),
+          const SizedBox(width: 12),
+          _buildChip(
+            Icons.attach_money_rounded,
+            '${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}',
+            colorScheme,
+          ),
+          const SizedBox(width: 12),
+          _buildChip(
+            Icons.calendar_today_rounded,
+            '${trip.date.day}/${trip.date.month}/${trip.date.year}',
+            colorScheme,
+          ),
+        ],
+      ),
     );
   }
 

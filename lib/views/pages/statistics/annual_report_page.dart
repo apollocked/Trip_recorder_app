@@ -173,11 +173,11 @@ class _AnnualReportPageState extends State<AnnualReportPage> {
   }
 
   Future<void> _exportReport(List<Trip> trips) async {
+    if (trips.isEmpty) return;
     if (trips.length == 1) {
       await PdfExportService.exportTrip(trips.first);
     } else {
-      final first = trips.first;
-      await PdfExportService.exportTrip(first);
+      await PdfExportService.exportReport(trips, _selectedYear.toString());
     }
   }
 }

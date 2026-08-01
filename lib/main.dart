@@ -29,7 +29,9 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
   final isFirstTime = prefs.getBool(AppConstants.prefOnboardingDone) != true;
   final premiumService = PremiumService();
-  await premiumService.load();
+  try {
+    await premiumService.load();
+  } catch (_) {}
   final themeService = ThemeService(
     prefs: prefs,
     savedThemeMode: prefs.getString(ThemeService.themeModeKey),

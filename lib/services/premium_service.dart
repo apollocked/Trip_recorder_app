@@ -5,6 +5,7 @@ import 'package:animations_in_flutter/core/constants.dart';
 import 'package:animations_in_flutter/services/supabase_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'iap_service.dart';
+import 'theme_service.dart';
 
 class PremiumService extends ChangeNotifier {
   static const String _localKey = 'is_premium_user';
@@ -33,6 +34,8 @@ class PremiumService extends ChangeNotifier {
   }
 
   bool get canAddTrip => _isPremium;
+  bool canAddTripWithCount(int currentCount) =>
+      _isPremium || currentCount < AppConstants.freeMaxTrips;
   bool canAddPhotos(int currentCount) =>
       _isPremium || currentCount < AppConstants.freeMaxPhotosPerTrip;
   bool get canAddCustomCategory => _isPremium;
@@ -205,6 +208,9 @@ class PremiumService extends ChangeNotifier {
     _isPremium = false;
     _userName = '';
     _userEmail = '';
+    if (ThemeService.isPremiumTheme(prefs.getString(ThemeService.premiumThemeKey) ?? 'default')) {
+      await ThemeService(prefs: prefs).setPremiumTheme('default');
+    }
     await _syncToServer(false);
     notifyListeners();
   }

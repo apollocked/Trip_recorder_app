@@ -77,10 +77,13 @@ class _AddTripPageState extends State<AddTripPage> {
   Future<void> _handleSave() async {
     final premium = context.read<PremiumService>();
     if (widget.tripId == null && !premium.canAddTrip) {
-      if (mounted) {
-        await PremiumPopup.show(context);
+      final tripProvider = context.read<TripProvider>();
+      if (!premium.canAddTripWithCount(tripProvider.trips.length)) {
+        if (context.mounted) {
+          await PremiumPopup.show(context);
+        }
+        return;
       }
-      return;
     }
     final isFormValid = _formKey.currentState!.validate();
     final hasImages = _imageFiles.isNotEmpty || _existingImagePaths.isNotEmpty;

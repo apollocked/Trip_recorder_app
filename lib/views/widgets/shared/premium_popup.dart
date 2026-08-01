@@ -26,6 +26,7 @@ class _PremiumPopupState extends State<PremiumPopup>
   late final Animation<double> _scaleAnim;
   late final Animation<double> _fadeAnim;
   bool _purchaseInProgress = false;
+  Timer? _waitTimer;
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _PremiumPopupState extends State<PremiumPopup>
 
   @override
   void dispose() {
+    _waitTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -72,7 +74,10 @@ class _PremiumPopupState extends State<PremiumPopup>
                   ? '...'
                   : '';
 
-              return Padding(
+              return SingleChildScrollView(
+                child: SafeArea(
+                  top: false,
+                  child: Padding(
                 padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -255,6 +260,7 @@ class _PremiumPopupState extends State<PremiumPopup>
                       child: Text(loc.premiumNotNow),
                     ),
                   ],
+                  ),
                 ),
               );
             },
@@ -274,7 +280,7 @@ class _PremiumPopupState extends State<PremiumPopup>
       return;
     }
 
-    if (!mounted) return;
+    if (!context.mounted) return;
 
     _waitForPurchaseResult(context, premium);
   }
@@ -283,26 +289,31 @@ class _PremiumPopupState extends State<PremiumPopup>
     int elapsed = 0;
     const maxWait = Duration(seconds: 60);
 
-    Timer.periodic(const Duration(milliseconds: 500), (timer) {
+    _waitTimer?.cancel();
+    _waitTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       elapsed += 500;
 
       if (premium.isPremium) {
         timer.cancel();
-        if (mounted) {
+        if (context.mounted) {
           Navigator.pop(context, true);
         }
         return;
       }
 
-      if (premium.error != null) {
+      if (premium.error != null || premium.isLoading == false) {
         timer.cancel();
-        setState(() => _purchaseInProgress = false);
+        if (context.mounted) {
+          setState(() => _purchaseInProgress = false);
+        }
         return;
       }
 
       if (elapsed >= maxWait.inMilliseconds) {
         timer.cancel();
-        setState(() => _purchaseInProgress = false);
+        if (context.mounted) {
+          setState(() => _purchaseInProgress = false);
+        }
       }
     });
   }
@@ -312,7 +323,7 @@ class _PremiumPopupState extends State<PremiumPopup>
     PremiumService premium,
   ) async {
     final restored = await premium.restorePurchases();
-    if (restored && mounted) {
+    if (restored && context.mounted) {
       Navigator.pop(context, true);
     }
   }
