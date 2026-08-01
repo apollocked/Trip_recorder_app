@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:animations_in_flutter/core/constants.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,8 @@ class TripProvider extends ChangeNotifier
   String _sortBy = 'date_desc';
   String get sortBy => _sortBy;
 
+  StreamSubscription? _authSub;
+
   TripProvider({bool isFirstTime = true}) : _isFirstTime = isFirstTime {
     _load();
     _listenToAuth();
@@ -43,7 +46,7 @@ class TripProvider extends ChangeNotifier
   void _listenToAuth() {
     final svc = SupabaseService();
     if (!svc.isInitialized) return;
-    svc.onAuthStateChange.listen((_) {
+    _authSub = svc.onAuthStateChange.listen((_) {
       _load();
     });
   }
@@ -308,5 +311,11 @@ class TripProvider extends ChangeNotifier
         tripDate: trip.date,
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _authSub?.cancel();
+    super.dispose();
   }
 }

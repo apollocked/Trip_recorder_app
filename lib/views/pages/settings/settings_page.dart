@@ -64,7 +64,17 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() => _isLoading = true);
     try {
       await SupabaseService().signOut();
-    } catch (_) {}
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sign out failed: $e'),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
+      }
+    }
     if (mounted) setState(() => _isLoading = false);
   }
 
@@ -601,9 +611,25 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       ),
     );
+    controller.dispose();
     if (result != null && result.isNotEmpty) {
       final repo = CustomCategoryRepository();
-      await repo.addCategory(CustomCategory(name: result, type: type));
+      try {
+        await repo.addCategory(CustomCategory(name: result, type: type));
+      } catch (_) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(loc.categoryAddFailed),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          );
+        }
+        return;
+      }
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -647,11 +673,15 @@ class _SectionCard extends StatelessWidget {
             children: [
               Icon(icon, size: 20, color: colorScheme.primary),
               const SizedBox(width: 8),
-              Text(
-                title,
-                style: textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: colorScheme.onSurface,
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: colorScheme.onSurface,
+                  ),
                 ),
               ),
             ],

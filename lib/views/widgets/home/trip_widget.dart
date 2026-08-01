@@ -160,6 +160,7 @@ Widget tripWidget(
                                   horizontal: 8,
                                   vertical: 3,
                                 ),
+                                constraints: const BoxConstraints(maxWidth: 110),
                                 decoration: BoxDecoration(
                                   color: colorScheme.primaryContainer.withAlpha(
                                     120,
@@ -168,6 +169,8 @@ Widget tripWidget(
                                 ),
                                 child: Text(
                                   trip.category.label(l10n),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600,
@@ -191,11 +194,15 @@ Widget tripWidget(
                                 color: colorScheme.primary,
                               ),
                               const SizedBox(width: 4),
-                              Text(
-                                '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: colorScheme.primary,
-                                  fontWeight: FontWeight.w600,
+                              Flexible(
+                                child: Text(
+                                  '${trip.nights} ${AppLocalizations.of(context)!.nightsLabel}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: colorScheme.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -205,10 +212,14 @@ Widget tripWidget(
                                 color: colorScheme.outline,
                               ),
                               const SizedBox(width: 4),
-                              Text(
-                                '${trip.date.day}/${trip.date.month}/${trip.date.year}',
-                                style: textTheme.labelSmall?.copyWith(
-                                  color: colorScheme.onSurfaceVariant,
+                              Flexible(
+                                child: Text(
+                                  '${trip.date.day}/${trip.date.month}/${trip.date.year}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
                                 ),
                               ),
                             ],

@@ -831,6 +831,10 @@ class AppLocalizationsKu extends AppLocalizations {
   String get categoryAdded => 'هاوپۆلە بە سەرکەوتوویی زیاد کرا!';
 
   @override
+  String get categoryAddFailed =>
+      'زیادکردنی هاوپۆلە سەرنەکەوتوو. تکایە دووبارە هەوڵ بدە.';
+
+  @override
   String get save => 'پاشەکەوت کردن';
 
   @override

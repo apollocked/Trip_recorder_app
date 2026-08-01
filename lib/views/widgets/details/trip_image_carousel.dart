@@ -6,7 +6,7 @@ import 'package:animations_in_flutter/views/pages/memory/image_viewer_page.dart'
 import 'package:animations_in_flutter/views/widgets/shared/cover_image_leading.dart';
 import 'package:animations_in_flutter/core/route_transition.dart';
 
-class TripImageCarousel extends StatelessWidget {
+class TripImageCarousel extends StatefulWidget {
   final Trip trip;
   final ColorScheme colorScheme;
   final AppLocalizations l10n;
@@ -17,6 +17,23 @@ class TripImageCarousel extends StatelessWidget {
     required this.colorScheme,
     required this.l10n,
   });
+
+  @override
+  State<TripImageCarousel> createState() => _TripImageCarouselState();
+}
+
+class _TripImageCarouselState extends State<TripImageCarousel> {
+  PageController? _pageController;
+
+  Trip get trip => widget.trip;
+  ColorScheme get colorScheme => widget.colorScheme;
+  AppLocalizations get l10n => widget.l10n;
+
+  @override
+  void dispose() {
+    _pageController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +64,7 @@ class TripImageCarousel extends StatelessWidget {
       height: size,
       child: PageView.builder(
         itemCount: trip.imagePaths.length,
-        controller: PageController(viewportFraction: 0.75),
+        controller: _pageController ??= PageController(viewportFraction: 0.75),
         itemBuilder: (context, index) {
           return Center(
             child: SizedBox(

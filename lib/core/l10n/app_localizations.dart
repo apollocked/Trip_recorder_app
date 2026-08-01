@@ -1636,6 +1636,12 @@ abstract class AppLocalizations {
   /// **'Category added successfully!'**
   String get categoryAdded;
 
+  /// No description provided for @categoryAddFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to add category. Please try again.'**
+  String get categoryAddFailed;
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:

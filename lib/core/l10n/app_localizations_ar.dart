@@ -823,6 +823,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get categoryAdded => 'تمت إضافة الفئة بنجاح!';
 
   @override
+  String get categoryAddFailed => 'فشل إضافة الفئة. يرجى المحاولة مرة أخرى.';
+
+  @override
   String get save => 'حفظ';
 
   @override

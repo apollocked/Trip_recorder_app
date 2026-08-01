@@ -105,6 +105,7 @@ class _PackingListPageState extends State<PackingListPage> {
             ),
         ),
     );
+    controller.dispose();
 
     if (result != null && mounted) {
       final title = result[0];

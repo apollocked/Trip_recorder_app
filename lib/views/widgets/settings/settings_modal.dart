@@ -34,7 +34,7 @@ class _SettingsModalBody extends StatelessWidget {
       color: colorScheme.surface,
       child: SafeArea(
         top: false,
-        child: Padding(
+        child: SingleChildScrollView(
           padding: EdgeInsets.fromLTRB(20, 12, 20, 20 + bottomPadding),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -194,11 +194,15 @@ class _SectionCard extends StatelessWidget {
             children: [
               Icon(icon, size: 20, color: colorScheme.primary),
               const SizedBox(width: 8),
-              Text(
-                title,
-                style: textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: colorScheme.onSurface,
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: colorScheme.onSurface,
+                  ),
                 ),
               ),
             ],

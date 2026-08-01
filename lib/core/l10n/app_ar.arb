@@ -325,6 +325,7 @@
   "addTripCategory": "إضافة فئة رحلة",
   "addExpenseCategory": "إضافة فئة مصروفات",
   "categoryAdded": "تمت إضافة الفئة بنجاح!",
+  "categoryAddFailed": "فشل إضافة الفئة. يرجى المحاولة مرة أخرى.",
   "save": "حفظ",
   "prioritySupport": "دعم ذو أولوية",
   "premiumSupportDesc": "احصل على دعم أولوية العملاء مع الاشتراك المميز.",

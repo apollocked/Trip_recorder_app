@@ -48,7 +48,7 @@ class _CurrencyChart extends StatelessWidget {
       data[t.title] = (data[t.title] ?? 0) + t.price;
     }
     final sorted = data.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
-    final maxVal = sorted.isNotEmpty ? sorted.first.value : 1.0;
+    final maxVal = sorted.isNotEmpty ? sorted.first.value.clamp(1.0, double.infinity) : 1.0;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),

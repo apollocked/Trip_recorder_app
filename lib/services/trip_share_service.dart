@@ -1,8 +1,9 @@
+import 'dart:ui';
 import 'package:share_plus/share_plus.dart';
 import 'package:animations_in_flutter/model/trip.dart';
 
 class TripShareService {
-  static Future<void> shareTrip(Trip trip) async {
+  static Future<void> shareTrip(Trip trip, {Rect? sharePositionOrigin}) async {
     final buffer = StringBuffer();
     buffer.writeln('=== ${trip.title} ===');
     buffer.writeln('Date: ${trip.date.day}/${trip.date.month}/${trip.date.year}');
@@ -17,7 +18,11 @@ class TripShareService {
     buffer.writeln();
     buffer.writeln('Shared from Trip Recorder');
     await SharePlus.instance.share(
-      ShareParams(text: buffer.toString()),
+      ShareParams(
+        text: buffer.toString(),
+        sharePositionOrigin: sharePositionOrigin ??
+            const Rect.fromLTWH(0, 0, 1, 1),
+      ),
     );
   }
 }

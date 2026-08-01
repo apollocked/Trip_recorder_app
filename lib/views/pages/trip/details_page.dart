@@ -173,15 +173,24 @@ class DetailsPage extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           ActionChip(
-            avatar: Icon(Icons.save_as_rounded, size: 18,
-              color: context.read<PremiumService>().isPremium ? null : Theme.of(context).colorScheme.onSurfaceVariant),
+            avatar: Icon(
+              Icons.save_as_rounded,
+              size: 18,
+              color: context.read<PremiumService>().isPremium
+                  ? null
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
             label: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(l10n.saveAsTemplate),
                 if (!context.read<PremiumService>().isPremium) ...[
                   const SizedBox(width: 4),
-                  Icon(Icons.lock_rounded, size: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  Icon(
+                    Icons.lock_rounded,
+                    size: 12,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ],
               ],
             ),
@@ -215,24 +224,33 @@ class DetailsPage extends StatelessWidget {
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel)),
-          FilledButton(onPressed: () => Navigator.pop(ctx, controller.text.trim()), child: Text(l10n.save)),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            child: Text(l10n.save),
+          ),
         ],
       ),
     );
+    controller.dispose();
     if (result != null && result.isNotEmpty) {
       final repo = TemplateRepository();
-      await repo.addTemplate(TripTemplate(
-        name: result,
-        category: trip.category.name,
-        nights: trip.nights,
-        description: trip.description,
-        currency: trip.currency,
-      ));
+      await repo.addTemplate(
+        TripTemplate(
+          name: result,
+          category: trip.category.name,
+          nights: trip.nights,
+          description: trip.description,
+          currency: trip.currency,
+        ),
+      );
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.templateSaved)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.templateSaved)));
       }
     }
   }
@@ -252,10 +270,17 @@ class DetailsPage extends StatelessWidget {
             color: colorScheme.primary,
           ),
           const SizedBox(width: 8),
-          Text(
-            '${l10n.reminder}: ${l10n.formatDateAbbreviated(trip.reminderDate!)} '
-            '${trip.reminderDate!.hour.toString().padLeft(2, '0')}:${trip.reminderDate!.minute.toString().padLeft(2, '0')}',
-            style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 13),
+          Expanded(
+            child: Text(
+              '${l10n.reminder}: ${l10n.formatDateAbbreviated(trip.reminderDate!)} '
+              '${trip.reminderDate!.hour.toString().padLeft(2, '0')}:${trip.reminderDate!.minute.toString().padLeft(2, '0')}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: colorScheme.onSurfaceVariant,
+                fontSize: 13,
+              ),
+            ),
           ),
         ],
       ),
@@ -280,24 +305,46 @@ class DetailsPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(width: 40, height: 4, decoration: BoxDecoration(
-              color: cs.outlineVariant, borderRadius: BorderRadius.circular(2))),
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: cs.outlineVariant,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
             const SizedBox(height: 20),
-            Text(l10n.exportTrip, style: tt.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+            Text(
+              l10n.exportTrip,
+              style: tt.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 16),
             ListTile(
               leading: Icon(Icons.text_snippet_rounded, color: cs.primary),
               title: Text(l10n.exportTrip),
-              subtitle: Text(l10n.copiedToClipboard, style: TextStyle(fontSize: 12)),
+              subtitle: Text(
+                l10n.copiedToClipboard,
+                style: TextStyle(fontSize: 12),
+              ),
               onTap: () async {
                 Navigator.pop(ctx);
                 final buffer = StringBuffer();
                 buffer.writeln(l10n.exportHeader(trip.title));
-                buffer.writeln('${l10n.tripCategory}: ${trip.category.label(l10n)}');
-                buffer.writeln('${l10n.budget}: ${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}');
+                buffer.writeln(
+                  '${l10n.tripCategory}: ${trip.category.label(l10n)}',
+                );
+                buffer.writeln(
+                  '${l10n.budget}: ${CurrencyInfo.symbolFor(trip.currency)}${trip.price.toStringAsFixed(0)}',
+                );
                 buffer.writeln('${l10n.nights}: ${trip.nights}');
-                buffer.writeln('${l10n.departureDate}: ${l10n.formatDateAbbreviated(trip.date)}');
-                if (trip.rating > 0) buffer.writeln(l10n.exportRating(trip.rating.toStringAsFixed(1)));
+                buffer.writeln(
+                  '${l10n.departureDate}: ${l10n.formatDateAbbreviated(trip.date)}',
+                );
+                if (trip.rating > 0) {
+                  buffer.writeln(
+                    l10n.exportRating(trip.rating.toStringAsFixed(1)),
+                  );
+                }
                 if (trip.description.isNotEmpty) {
                   buffer.writeln('\n${l10n.aboutjourney}:');
                   buffer.writeln(trip.description);
@@ -305,25 +352,41 @@ class DetailsPage extends StatelessWidget {
                 buffer.writeln('\n---\n${l10n.appTitle.replaceAll('\n', ' ')}');
                 final text = buffer.toString();
                 try {
-                  await SharePlus.instance.share(ShareParams(text: text, subject: trip.title));
+                  await SharePlus.instance.share(
+                    ShareParams(text: text, subject: trip.title),
+                  );
                 } catch (_) {
                   await Clipboard.setData(ClipboardData(text: text));
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.copiedToClipboard)));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(l10n.copiedToClipboard)),
+                    );
                   }
                 }
               },
             ),
             ListTile(
-              leading: Icon(Icons.picture_as_pdf_rounded, color: premium.isPremium ? cs.primary : cs.onSurfaceVariant),
-              title: Row(children: [
-                Text(l10n.exportPdf),
-                if (!premium.isPremium) ...[
-                  const SizedBox(width: 8),
-                  Icon(Icons.lock_rounded, size: 14, color: cs.onSurfaceVariant),
+              leading: Icon(
+                Icons.picture_as_pdf_rounded,
+                color: premium.isPremium ? cs.primary : cs.onSurfaceVariant,
+              ),
+              title: Row(
+                children: [
+                  Text(l10n.exportPdf),
+                  if (!premium.isPremium) ...[
+                    const SizedBox(width: 8),
+                    Icon(
+                      Icons.lock_rounded,
+                      size: 14,
+                      color: cs.onSurfaceVariant,
+                    ),
+                  ],
                 ],
-              ]),
-              subtitle: Text(premium.isPremium ? 'Generate PDF' : l10n.premiumUpgrade, style: TextStyle(fontSize: 12)),
+              ),
+              subtitle: Text(
+                premium.isPremium ? 'Generate PDF' : l10n.premiumUpgrade,
+                style: TextStyle(fontSize: 12),
+              ),
               onTap: () async {
                 Navigator.pop(ctx);
                 if (!premium.isPremium) {
@@ -334,26 +397,42 @@ class DetailsPage extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.share_rounded, color: premium.isPremium ? cs.primary : cs.onSurfaceVariant),
-              title: Row(children: [
-                Text(l10n.shareTrip),
-                if (!premium.isPremium) ...[
-                  const SizedBox(width: 8),
-                  Icon(Icons.lock_rounded, size: 14, color: cs.onSurfaceVariant),
+              leading: Icon(
+                Icons.share_rounded,
+                color: premium.isPremium ? cs.primary : cs.onSurfaceVariant,
+              ),
+              title: Row(
+                children: [
+                  Text(l10n.shareTrip),
+                  if (!premium.isPremium) ...[
+                    const SizedBox(width: 8),
+                    Icon(
+                      Icons.lock_rounded,
+                      size: 14,
+                      color: cs.onSurfaceVariant,
+                    ),
+                  ],
                 ],
-              ]),
-              subtitle: Text(premium.isPremium ? 'Share trip details' : l10n.premiumUpgrade, style: TextStyle(fontSize: 12)),
+              ),
+              subtitle: Text(
+                premium.isPremium ? 'Share trip details' : l10n.premiumUpgrade,
+                style: TextStyle(fontSize: 12),
+              ),
               onTap: () async {
                 Navigator.pop(ctx);
                 if (!premium.isPremium) {
                   await PremiumPopup.show(context);
                   return;
                 }
-                await TripShareService.shareTrip(trip);
+                final box = context.findRenderObject() as RenderBox?;
+                await TripShareService.shareTrip(
+                  trip,
+                  sharePositionOrigin:
+                      box!.localToGlobal(Offset.zero) & box.size,
+                );
               },
             ),
           ],
-        ),
         ),
       ),
     );

@@ -46,13 +46,16 @@ class _AnnualReportPageState extends State<AnnualReportPage> {
           title: Text(loc.annualReport, style: tt.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.workspace_premium_rounded, size: 64, color: cs.primary),
-              const SizedBox(height: 16),
-              Text(loc.premiumTitle, style: tt.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.workspace_premium_rounded, size: 64, color: cs.primary),
+                  const SizedBox(height: 16),
+                  Text(loc.premiumTitle, style: tt.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               Text(loc.premiumAdvancedStatsDesc, textAlign: TextAlign.center,
                 style: tt.bodyMedium?.copyWith(color: cs.onSurfaceVariant)),
@@ -63,7 +66,9 @@ class _AnnualReportPageState extends State<AnnualReportPage> {
                 },
                 child: Text(loc.premiumUpgrade),
               ),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
       );
@@ -152,7 +157,14 @@ class _AnnualReportPageState extends State<AnnualReportPage> {
                       child: Row(children: [
                         Icon(Icons.place_rounded, size: 16, color: cs.primary),
                         const SizedBox(width: 8),
-                        Text(d, style: tt.bodyMedium),
+                        Expanded(
+                          child: Text(
+                            d,
+                            style: tt.bodyMedium,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ]),
                     )),
                   ],

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:animations_in_flutter/core/constants.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/core/theme/app_colors.dart';
 import 'package:animations_in_flutter/services/premium_service.dart';
@@ -40,7 +41,16 @@ class TripImagePicker extends StatelessWidget {
       await PremiumPopup.show(context);
       return;
     }
-    pickMultipleImages(context, onAdded);
+    final currentCount = allPaths.length;
+    pickMultipleImages(context, (files) {
+      if (premium.isPremium) {
+        onAdded(files);
+        return;
+      }
+      final remaining = AppConstants.freeMaxPhotosPerTrip - currentCount;
+      if (remaining <= 0) return;
+      onAdded(files.take(remaining).toList());
+    });
   }
 
   @override

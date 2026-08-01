@@ -325,6 +325,7 @@
   "addTripCategory": "Add Trip Category",
   "addExpenseCategory": "Add Expense Category",
   "categoryAdded": "Category added successfully!",
+  "categoryAddFailed": "Failed to add category. Please try again.",
   "save": "Save",
   "prioritySupport": "Priority Support",
   "premiumSupportDesc": "Get priority customer support with Premium.",

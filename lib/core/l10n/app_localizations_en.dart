@@ -825,6 +825,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categoryAdded => 'Category added successfully!';
 
   @override
+  String get categoryAddFailed => 'Failed to add category. Please try again.';
+
+  @override
   String get save => 'Save';
 
   @override

@@ -240,7 +240,8 @@ class _OptionCardState extends State<_OptionCard>
           onTapUp: (_) => _hover.reverse(),
           onTapCancel: () => _hover.reverse(),
           child: Container(
-            height: 140,
+            constraints: const BoxConstraints(minHeight: 140),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               gradient: LinearGradient(
@@ -264,6 +265,8 @@ class _OptionCardState extends State<_OptionCard>
                 const SizedBox(height: 10),
                 Text(
                   widget.label,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   style: tt.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: widget.iconColor,
