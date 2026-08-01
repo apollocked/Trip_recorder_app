@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:animations_in_flutter/core/l10n/app_localizations.dart';
 import 'package:animations_in_flutter/core/l10n/l10n.dart';
@@ -529,9 +530,33 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
+
+          const SizedBox(height: 24),
+          Center(
+            child: FutureBuilder<String>(
+              future: _getAppVersion(),
+              builder: (context, snapshot) {
+                return Text(
+                  'Trip Recorder v${snapshot.data ?? ''}',
+                  style: textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Future<String> _getAppVersion() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      return info.version;
+    } catch (_) {
+      return '';
+    }
   }
 
   Future<void> _handlePremiumThemeTap(BuildContext context) async {
