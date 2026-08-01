@@ -1,30 +1,52 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:animations_in_flutter/main.dart';
+import 'package:animations_in_flutter/core/constants.dart';
+import 'package:animations_in_flutter/services/premium_service.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('PremiumService free-tier limits', () {
+    final service = PremiumService();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    test('free users can add trips up to freeMaxTrips', () {
+      for (var count = 0; count < AppConstants.freeMaxTrips; count++) {
+        expect(service.canAddTripWithCount(count), isTrue,
+            reason: 'should allow trip #${count + 1}');
+      }
+      expect(
+        service.canAddTripWithCount(AppConstants.freeMaxTrips),
+        isFalse,
+        reason: 'should block when at the free trip limit',
+      );
+      expect(service.canAddTripWithCount(50), isFalse);
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    test('free users can add photos up to freeMaxPhotosPerTrip', () {
+      for (var count = 0; count < AppConstants.freeMaxPhotosPerTrip; count++) {
+        expect(service.canAddPhotos(count), isTrue,
+            reason: 'should allow photo #${count + 1}');
+      }
+      expect(
+        service.canAddPhotos(AppConstants.freeMaxPhotosPerTrip),
+        isFalse,
+        reason: 'should block when at the free photo limit',
+      );
+    });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    test('free users cannot add custom categories', () {
+      expect(service.canAddCustomCategory, isFalse);
+    });
+
+    test('remainingTripsMessage reports remaining and full states', () {
+      final remainingMsg = service.remainingTripsMessage(2);
+      expect(
+        remainingMsg,
+        contains('${AppConstants.freeMaxTrips - 2}'),
+        reason: 'should mention remaining trips',
+      );
+
+      final fullMsg = service.remainingTripsMessage(AppConstants.freeMaxTrips);
+      expect(fullMsg, contains('${AppConstants.freeMaxTrips}'),
+          reason: 'should mention the free trip limit');
+    });
   });
 }
